@@ -1,6 +1,8 @@
 var isBlocked = false;
 var isStarted = false;
 
+var screenName = 'home';
+
 function isTooSmall() {
   if(window.innerWidth < 1300 || window.innerHeight < 700) {
     if(isBlocked == false) {
@@ -240,6 +242,7 @@ function prevIco() {
 }
 
 function startGame() {
+  screenName = 'songs';
   songs[nowMusic].fade(1, 0.1, 500);
     $("#main").fadeOut(500, function() {
       songs[nowMusic].pause();
@@ -312,3 +315,20 @@ function modeDropDown() {
 }
 
 Howler.volume(0.3);
+
+document.addEventListener('keypress', keyPressed);
+
+function keyPressed(e) {
+  if(e.code.toLowerCase() == "escape" || e.code.toLowerCase() == "esc" ) {
+    if(screenName == "songs") {
+      screenName = 'home';
+      songs[nowMusic].fade(1, 0.1, 500);
+        $("#selSong").fadeOut(500, function() {
+          songs[nowMusic].pause();
+          songs[nowMusic].play();
+          songs[nowMusic].fade(0.1, 1, 500);
+          $("#main").fadeIn(500);
+        });
+    }
+  }
+}
