@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="/photos/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/photos/icons/favicon.ico" type="image/x-icon"/>
+    <title>Join To Game</title>
+</head>
+<body>
+  <div id="navbar">
+    <i class="material-icons" style="font-size: 2em; color: #3D9CEF;">account_circle</i>
+  </div>
+  <div class="flexbox">
+    <span id="title">Join</span>
+    <form action="/auth/join" method="post">
+        <input id="text" type="text" name="personalData" placeholder="nickname" title="비밀번호는 5~10자, 숫자 또는 영문자의 조건을 충족해야합니다." required pattern="[A-Za-z0-9!_]+" minlength="5" maxlength="10">
+        <br>
+        <input id="text" type="text" name="awesomeName" placeholder="username(ID)" title="아이디는 5~10자, 숫자 또는 영문자의 조건을 충족해야합니다." required pattern="[A-Za-z0-9!_]+" minlength="5" maxlength="10">
+        <br>
+        <input id="text" type="password" name="verySecuredText" placeholder="password" title="비밀번호는 5~10자, 숫자 또는 영문자의 조건을 충족해야합니다." required pattern="[A-Za-z0-9!_]+" minlength="5" maxlength="10">
+        <br>
+        <input id="btn" type="submit" value="Sign up">
+    </form>
+    <a href="/auth/login" style="color: white; text-decoration: none; margin-top: 5px;">Sign In</a>
+  </div>
+</body>
+</html>

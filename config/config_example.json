@@ -1,0 +1,13 @@
+{
+  "orient" : {
+    "host":"your host here",
+    "port":"your port here",
+    "username":"your username here",
+    "password":"your password here"
+  },
+  "app_pw" : {
+    "secret": "your secret key here",
+    "resave": false,
+    "saveUninitialized": true
+  }
+}

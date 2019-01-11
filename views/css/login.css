@@ -1,0 +1,74 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+body {
+ font-family: 'Noto Sans KR', arial, sans-serif;
+  overflow:hidden;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(to bottom right, #56CCF2, #2F80ED);
+  border: 0;
+  margin: 0;
+}
+
+.flexbox {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+#title {
+  font-weight: 100;
+  font-size: 3em;
+  color: white;
+  margin-bottom: 30px;
+}
+
+#text {
+  font-family: 'Noto Sans KR', arial, sans-serif;
+  text-align: center;
+  margin-top: 15px;
+  border-radius: 100px;
+  border: none;
+  border-color: #0d46a0;
+  height: 2em;
+  width: 20em;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+#btn {
+  font-family: 'Noto Sans KR', arial, sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+  margin-top: 50px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 100px;
+  border: none;
+  background-color: white;
+  height: 2em;
+  width: 10em;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+  transition: 0.5s;
+}
+
+#btn:hover {
+  font-size: 1.3em;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.2);
+}
+
+#navbar {
+  position: fixed;
+  width: 100vw;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}

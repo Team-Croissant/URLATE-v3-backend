@@ -1,0 +1,8 @@
+
+config/config\.json
+
+node_modules/
+
+serverOn\.bat
+
+databaseOn\.bat

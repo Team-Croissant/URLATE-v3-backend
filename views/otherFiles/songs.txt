@@ -1,0 +1,5 @@
+SongName|SongFileName|Producer,SingerName|BPM|easy/hard/...|txtfile.txt/txtfile2.txt/...|album.png|ShortName;
+IevanPolkka<span style="font-weight: 200">(VSNSRemix)</span>|Miku Hatsune-Ievan Polkka_VSNSRemix.mp3|VSNS(feat.Miku Hatsune)|130|1/4/8|1.txt/2.txt/3.txt|IevanPolkka.jpg|Ievan;
+Chatty Bones 2018|Chatty Bones 2018.mp3|elsiff|140|2/5/6|1.txt/2.txt/3.txt|chattybones.png|Chatty;
+Autumn in the air|Autumn in the air.mp3|SuReal Original Sound|125|1/3/6|1.txt/2.txt/3.txt|imsi.png|Autumn;
+The weight of time|The weight of time.mp3|SuReal Original Sound|118|3/6/10|1.txt/2.txt/3.txt|imsi.png|WeightTime;
