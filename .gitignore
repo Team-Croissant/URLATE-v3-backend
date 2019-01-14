@@ -6,3 +6,5 @@ node_modules/
 serverOn\.bat
 
 databaseOn\.bat
+
+.well-known/

@@ -24,6 +24,12 @@ body {
   font-weight: 100;
   font-size: 3em;
   color: white;
+}
+
+#smallTitle {
+  font-weight: 100;
+  font-size: 1.5em;
+  color: white;
   margin-bottom: 30px;
 }
 
