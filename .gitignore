@@ -7,4 +7,4 @@ serverOn\.bat
 
 databaseOn\.bat
 
-.well-known/
+config/ssl/

@@ -1,5 +1,8 @@
 var bodyParser = require('body-parser');
-var express = require('express');
+var fs = require('fs'),
+    http = require('http'),
+    https = require('https'),
+    express = require('express');
 var session = require('express-session');
 var OrientDB = require('orientjs');
 var bcrypt = require('bcrypt-nodejs');
@@ -11,7 +14,11 @@ var hasher = bkfd2Password();
 var app = express();
 app.locals.pretty = true;
 var port = 80;
+var httpsPort = 443;
 var userNum = 1;
+
+var privateKey = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-key.pem', 'utf8');
+var certificate = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-crt.pem', 'utf8');
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -252,6 +259,16 @@ app.get('/auth/join', function(req, res){
   res.render('join');
 });
 
-app.listen(port, function(){
-    console.log(`Server running at port ${port}.`);
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(port, function() {
+  console.log(`HTTP Server running at port ${port}.`)
+});
+
+https.createServer({
+    key: privateKey,
+    cert: certificate
+}, app).listen(httpsPort, function() {
+  console.log(`HTTPS Server running at port ${httpsPort}.`)
 });
