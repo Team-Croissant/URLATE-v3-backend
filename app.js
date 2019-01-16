@@ -94,28 +94,24 @@ app.post('/auth/login', function(req, res){
         var user = users[i];
         if(userName === user.userName) {
           if(user.usable == true) {
-            hasher({password: passWord, salt: user.salt}, function(err, pass, salt, hash) {
+            return hasher({password: passWord, salt: user.salt}, function(err, pass, salt, hash) {
               if(hash === user.passWord) {
                 req.session.nickName = user.nickName;
                 req.session.UID = user.userId;
                 req.session.loginedSuccessfully = true;
                 req.session.save(function(){
                   res.redirect('/');
-                  return;
                 });
               } else {
                 res.render('loginDenined');
-                return;
               }
             });
           } else {
             res.render('unableAccount');
-            return;
           }
         }
       }
       res.render('loginDenined');
-      return;
     });
   });
 });
