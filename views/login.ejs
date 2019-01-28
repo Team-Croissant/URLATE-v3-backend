@@ -17,11 +17,11 @@
   <div class="flexbox">
     <span id="title">Login</span>
     <form action="/auth/login" method="post">
-        <input id="text" type="text" name="awesomeName" placeholder="username" minlength="3" required>
+        <input id="text" type="email" name="email" placeholder="email" required>
         <br>
-        <input id="text" type="password" name="verySecuredText" placeholder="password" minlength="3" required>
+        <input id="text" type="password" name="verySecuredText" placeholder="password" minlength="5" required>
         <br>
-        <input id="btn" type="submit" value="Sign in">
+        <input id="btn" type="submit" value="Sign in" style="cursor: pointer;">
     </form>
     <a href="/auth/join" style="color: white; text-decoration: none; margin-top: 5px;">Sign up</a>
   </div>

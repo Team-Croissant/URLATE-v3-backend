@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: 'liga';
-  font-family: 'Noto sans KR', arial, sans-serif;
+  font-family: 'NanumBarunGothic', arial, sans-serif;
   overflow:hidden;
   padding: 0;
   margin: 0;
@@ -15,6 +15,7 @@ body {
   width: 100vw;
   background: rgb(252,252,252);
   background: radial-gradient(circle, rgba(252,252,252,1) 0%, rgba(245,245,245,1) 100%);
+  letter-spacing: -0.5px;
 }
 
 ::-moz-selection {
@@ -136,11 +137,13 @@ body {
 }
 
 .bottomRightText {
+  font-family: 'Noto Sans KR';
+  letter-spacing: 0px;
   text-align: right;
   position: fixed;
-  color: black;
+  color: rgb(100,100,100);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 300;
   bottom: 40px;
   right: 40px;
   z-index: 100;
@@ -150,13 +153,14 @@ body {
 .topLeftText {
   position: fixed;
   text-align: left;
-  top: 0.7em;
+  top: 1em;
   left: 2em;
   font-size: 1.7em;
   font-weight: 200;
 }
 
 .bottomLeftText {
+  font-family: 'Noto Sans KR';
   text-align: left;
   position: fixed;
   color: black;
@@ -176,14 +180,19 @@ body {
 
 #selSong {
   display: none;
-  background: radial-gradient(circle, rgba(252,252,252,1) 0%, rgba(245,245,245,1) 100%);
+  background-image: url('/photos/MY RHY_TRACK_BACKGROUND.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   width: 100vw;
   height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
 }
 
 @keyframes jumpingLogo {
     0%   { width: 10em; }
-    10%  { width: 12em; }
+    5%  { width: 11em; }
     100% { width: 10em; }
 }
 
@@ -201,7 +210,7 @@ body {
 }
 
 .verticalLine {
-  border-left: 4px solid black;
+  border-left: 5px solid black;
   height: 2em;
   position: fixed;
   top: 1.6em;
@@ -210,6 +219,7 @@ body {
 
 #copyright {
   display: none;
+  letter-spacing: -0.7px;
 }
 
 #nowPlaying {
@@ -233,18 +243,19 @@ body {
 
 .rightVerticalLine {
   position: fixed;
-  right: 3.8em;
-  top: 2.2em;
+  right: 3.95em;
+  top: 2em;
   border-left: 2px solid rgb(100,100,100);
   height: 1em;
 }
 
 #top-padding-icon {
-  padding-top: 0.6em;
+  padding-top: 0.45em;
 }
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   #top-padding-icon {
-    padding-top: 0.5em !important;
+    padding-top: 0.35em !important;
   }
 }
 
@@ -270,6 +281,8 @@ body {
 }
 
 #fps {
+  font-family: 'Noto Sans KR';
+  letter-spacing: 0px;
   text-align:center;
   position: fixed;
   color: white;
@@ -285,6 +298,8 @@ body {
 }
 
 #ping {
+  font-family: 'Noto Sans KR';
+  letter-spacing: 0px;
   text-align:center;
   position: fixed;
   color: white;
@@ -313,36 +328,44 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   width: 100%;
-  height: 100%;
+  height: 90%;
   margin-top: 20px;
   border-left-width: 2px;
   border-left-color: rgb(200,200,200);
   border-left-style: solid;
 }
 
+#song_0 {
+  margin-top: 0px;
+}
+
 .songs {
-  padding-bottom: 10px;
+  padding-top: 10px;
   background: none;
   padding-left: 20px;
   transition-duration: 0.5s;
 }
 
 .selectedSong {
-  padding-top: 5px;
+  background-position: right;
+  background-repeat: no-repeat;
+  padding-top: 15px;
   margin-left: 0px;
-  margin-right: 20px;
+  margin-right: 0px;
   padding-left: 20px;
   background-color: rgb(20,20,20);
   color: white;
+  padding-bottom: 10px;
+  margin-top: 15px;
 }
 
 .title {
   font-size: 1.5em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .prod {
-  font-size: 1em;
+  font-size: 1.1em;
   font-weight: 300;
 }
 
@@ -373,17 +396,20 @@ body {
 }
 
 #mode {
+  font-family: 'Noto Sans KR';
+  letter-spacing: 0px;
   background-color: rgb(20,20,20);
   width: 60%;
   padding-left: 5px;
   padding-right: 5px;
   text-align: center;
-  border-radius: 1px;
+  border-radius: 2px;
   box-shadow: 0 0 2px rgba(0,0,0,0.5);
   transition-duration: 0.5s;
   color: rgb(245,245,245);
-  height: 24px;
-  line-height: 24px;
+  font-size: 1.3vh;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 #background_darker {
@@ -397,6 +423,8 @@ body {
 }
 
 #subMode {
+  font-family: 'Noto Sans KR';
+  letter-spacing: 0px;
   display: none;
   width: 80%;
   padding-left: 5px;

@@ -6,16 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/game.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@1.0/nanumbarungothicsubset.css">
   <link rel="icon" href="photos/icons/favicon.ico" type="image/x-icon"/>
   <link rel="shortcut icon" href="photos/icons/favicon.ico" type="image/x-icon"/>
   <script src="pace/pace.js"></script>
   <title>MyRhy Client</title>
 </head>
-<body>
+<body onresize="isTooSmall()">
   <div id="sorry" style="height: 100vh; width: 100vw; position: fixed; background: radial-gradient(circle, rgba(252,252,252,1) 0%, rgba(245,245,245,1) 100%); z-index: 110; display: flex; align-items: center; flex-direction: column; visibility: hidden;">
     <i class="material-icons" style="font-size: 6em;">warning</i>
     <h2 style="text-align: center; width: 100vw;">브라우저의 크기가 너무 작거나<br>(1300px*700px 미만)<br>InternetExplorer를 사용중일경우<br>MyRhy 플레이가 어렵습니다.</h2>
     <h3 style="text-align: center; width: 100vw;">브라우저 배율을 125% 이상으로 설정하지 않았는지, 창이 너무 작지는 않은지 확인해주세요.</h3>
+    <h5 style="text-align: center; width: 100vw;">MyRhy의 최대 지원 해상도는 21:9입니다.</h5>
   </div>
   <div id="loading" class="flexbox">
     <img src="photos/myrhyLogo_blue.png" id="logo">
@@ -69,26 +71,26 @@
     <div style="position: fixed; display: flex; width: 100vw; height: 100vh; align-items: center; justify-content: center;">
       <div align="center" style="display: flex; align-items: center; justify-content: center; height: 50vh; width: 100vw;">
         <div style="position: fixed; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
-          <i class="material-icons" id="top-padding-icon" style="font-size: 2em; z-index: 20; cursor: pointer;" onclick="prevIco()">keyboard_arrow_left</i>
+          <i class="material-icons" id="top-padding-icon" style="font-size: 3em; z-index: 20; cursor: pointer;" onclick="prevIco()">keyboard_arrow_left</i>
           <div style="width: 200px;"></div>
-          <i class="material-icons" id="top-padding-icon" style="font-size: 2em; z-index: 20; cursor: pointer;" onclick="nextIco()">keyboard_arrow_right</i>
+          <i class="material-icons" id="top-padding-icon" style="font-size: 3em; z-index: 20; cursor: pointer;" onclick="nextIco()">keyboard_arrow_right</i>
         </div>
         <div id="editor" onclick="alert('준비중입니다.')" style="z-index: 10; cursor: pointer; display: none;">
           <img src="photos/gameImages/MY RHY_MAIN_EDITOR_ICON.svg" style="width: 150px; -webkit-filter: drop-shadow( 0px 1px 3px rgba(0,0,0,0.2) ); filter: drop-shadow( 0px 1px 3px rgba(0,0,0,0.2) ); margin-left: -15px;">
           <div class="iconHorizontalLine"></div>
-          <p style="font-size: 30px; font-weight: 500; letter-spacing: -1px; margin: 0px; margin-bottom: -10px;">에디터</p>
+          <p style="font-size: 30px; font-weight: 500; letter-spacing: -1px; margin: 0px; margin-bottom: -2px;">에디터</p>
           <span style="font-size: 20px; font-weight: 100;">EDITOR</span>
         </div>
         <div id="startGame" onclick="startGame()" style="z-index: 10; cursor: pointer;">
           <img src="photos/gameImages/DotCursor.png" style="width: 100px;">
           <div class="iconHorizontalLine"></div>
-          <p style="font-size: 30px; font-weight: 500; letter-spacing: -1px; margin: 0px; margin-bottom: -10px;">플레이</p>
+          <p style="font-size: 30px; font-weight: 500; letter-spacing: -1px; margin: 0px; margin-bottom: -2px;">플레이</p>
           <span style="font-size: 20px; font-weight: 100;">PLAY</span>
         </div>
         <div id="ranking" onclick="alert('준비중입니다.')" style="z-index: 10; cursor: pointer; display: none;">
           <img src="photos/gameImages/DotCursor.png" style="width: 100px;">
           <div class="iconHorizontalLine"></div>
-          <p style="font-size: 30px; font-weight: 500; letter-spacing: -1px; margin: 0px; margin-bottom: -10px;">랭킹</p>
+          <p style="font-size: 30px; font-weight: 500; letter-spacing: -1px; margin: 0px; margin-bottom: -2px;">랭킹</p>
           <span style="font-size: 20px; font-weight: 100;">RANKING</span>
         </div>
       </div>
@@ -99,16 +101,16 @@
     </span>
     <div class="verticalLine" id="topLeftLine"></div>
     <span class="topLeftText"><%= nickName %></span>
-    <img src="photos/myrhyLogo_blue.png" id="bottomLogo">
     <div id="rightTopIcons">
-      <i class="material-icons" id="top-padding-icon" style="cursor: pointer;" onclick="info()">info_outline</i>
+      <i class="material-icons" id="top-padding-icon" style="cursor: pointer; font-size: 27px !important;" onclick="info()">info_outline</i>
       <div class="rightVerticalLine"></div>
       <span>&nbsp;</span>
-      <img src="photos/icons/outline-settings.svg" alt="Settings" id="setIco" style="cursor: pointer;" onclick="settings()">
+      <img src="photos/icons/outline-settings.svg" alt="Settings" id="setIco" style="cursor: pointer; width: 27px;" onclick="settings()">
     </div>
+    <img src="photos/myrhyLogo_blue.png" id="bottomLogo">
   </div>
   <div id="selSong">
-    <img src="photos/tempImages/esc.png" alt="< Esc" style="position: fixed; bottom: 10px; left: 1em; width: 7em;">
+    <img src="photos/tempImages/esc.png" alt="< Esc" style="position: fixed; bottom: 29px; left: 2em; width: 7em;">
     <div style="position: fixed; top: 30px; left: 30px; z-index: 10;">
       <div style="height: 6vh;">
         <img src="photos/tempImages/tracks.png" id="tracksIcon" style="width: 11vw; transition-duration: 0.5s;">
@@ -116,12 +118,12 @@
       </div>
       <div>
         <div id="mode">
-          <span style="font-size: 0.7vw;">COMPLEX</span>
+          <span>Complex</span>
         </div>
         <div id="subMode">
-          <span style="font-size: 0.7vw; color: white; margin-top: 10px; cursor: pointer;">HARDER</span>
+          <span style="font-size: 0.7vw; color: white; margin-top: 10px; cursor: pointer;">Harder</span>
           <br>
-          <span style="font-size: 0.7vw; color: white; margin-top: 10px; cursor: pointer;">CLICK</span>
+          <span style="font-size: 0.7vw; color: white; margin-top: 10px; cursor: pointer;">Click</span>
         </div>
       </div>
     </div>
@@ -129,16 +131,16 @@
     <svg style="position: fixed; top: 0; left: 15vw; height: 4.5vw; width: 4.5vw;">
       <line x1="0%" y1="100%" x2="100%" y2="0%" style="stroke: rgb(20, 20, 20); stroke-width: 3px;" />
     </svg>
-    <div style="position: fixed; top: 30px; left: 19vw; height: 6vh; text-align: center; display: flex; align-items: center;">
+    <div style="position: fixed; top: 30px; left: 19vw; height: 6vh; display: flex; align-items: center;">
       <div style="width: 100%;">
-        <span style="font-size: 1.2vw; width: 100%; text-align: center;">모든 곡</span>
-        <br>
-        <span style="font-size: 0.9vw; width: 100%; text-align: center; font-weight: lighter;">ALL SONGS</span>
+        <span style="font-size: 1.2vw; width: 100%; font-weight: 500;">모든 곡</span>
+        <div style="margin-bottom: -2px;"></div>
+        <span style="font-size: 0.8vw; width: 100%; font-weight: lighter;">All Songs</span>
       </div>
     </div>
     <div style="height: 72vh; width: 30vw; margin-top: 18vh; margin-left: 2vw;">
       <div style="text-align: center; display: flex; align-items: center;">
-        <img src="photos/tempImages/list.png" alt="LIST" style="width: 20%;">
+        <img src="photos/tempImages/list.png" alt="LIST" style="height: 2.5vh;">
         <!--<span class="selected category">최신순</span>
         <span class="category">추천순</span>
         <span class="category">플레이순</span>
@@ -148,17 +150,45 @@
       </div>
     </div>
     <div style="position: fixed; height: 72vh; width: 30vw; top: 18vh; left: 34vw;">
-      <div style="text-align: center; display: flex; align-items: center;">
-        <img src="photos/tempImages/info.png" alt="INFO" style="width: 20%;">
+      <div style="padding-left: 5vw;">
+        <div style="text-align: center; display: flex; align-items: center;">
+          <img src="photos/tempImages/info.png" alt="INFO" style="height: 2.5vh;">
+        </div>
+        <img id="albumArt" src="photos/albumArt/imsi.png" alt="AlbumArt" style="margin-top: 22px; width: 20vw; border-radius: 5px;">
+        <br>
+        <span style="font-weight: 200; font-size: 17px;">LEVEL&nbsp;&nbsp;</span>
+        <span id="level" style="font-weight: bold; font-size: 17px;">불러오는 중..</span>
       </div>
-      <img id="albumArt" src="photos/albumArt/imsi.png" alt="AlbumArt" style="margin-top: 22px; width: 20vw;">
-      <br>
-      <span style="font-weight: 300; font-size: 17px;">LEVEL&nbsp;&nbsp;</span>
-      <span id="level" style="font-weight: 500; font-size: 17px;">불러오는 중..</span>
+    </div>
+    <div style="position: fixed; height: 72vh; width: 30vw; top: 18vh; left: 66vw;">
+      <div style="height: 5vh;">
+        <img src="photos/tempImages/record.png" alt="RECORD" style="height: 2.5vh;">
+      </div>
+      <div style="width: 100%;">
+        <div style="width: 45%; float: left;">
+          <img id="rankImage" src="photos/tempImages/rank_U.png" style="width: 12vw;">
+        </div>
+        <div style="width: 55%; float: left; padding-top: 3em;">
+          <span style="font-weight: 600; font-size: 1.2vw; font-family: 'Noto Sans KR';">SCORE</span>
+          <span id="userScoreText" style="font-weight: 300; font-size: 2vw; margin-left: 3px; font-family: 'Noto Sans KR';">00000000</span>
+          <div style="margin-bottom: -15px;"></div>
+          <span style="font-weight: 600; font-size: 1.2vw; font-family: 'Noto Sans KR';">COMBO</span>
+          <span id="userComboText" style="font-weight: 300; font-size: 2vw; margin-left: 3px; font-family: 'Noto Sans KR';">x0</span>
+          <!--<hr style="border-style: inset; border-width: 1px; width: 40%; border-color: rgb(200, 200, 200); margin-left: 1px; margin-bottom: 0px;">-->
+          <div style="margin-bottom: 15px;"></div>
+          <span id="userRankText" style="font-weight: 500; font-size: 3vw; color: rgb(50, 50, 50);">#0</span>
+        </div>
+      </div>
+    </div>
+    <div id="rightTopIcons">
+      <i class="material-icons" id="top-padding-icon" style="cursor: pointer; font-size: 27px !important;" onclick="info()">info_outline</i>
+      <div class="rightVerticalLine"></div>
+      <span>&nbsp;</span>
+      <img src="photos/icons/outline-settings.svg" alt="Settings" id="setIco" style="cursor: pointer; width: 27px;" onclick="settings()">
     </div>
   </div>
   <span class="bottomCenterText"><span style="font-weight: 600; letter-spacing: -1px;">MyRhy</span> Experimental</span>
-  <span id="copyright" class="bottomRightText">Copyright (c) 2018. MyRhy, All rights reserved.<br>For more information, please click <a href="/copyright" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #2196F3;">here</a>.</span>
+  <span id="copyright" class="bottomRightText">&copy; 2019. <b>MyRhy</b>, all rights reserved.<br>For more information, please click <a href="/copyright" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #2196F3;">here</a>.</span>
   <script src="howler/dist/howler.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <div id="script" style="display: none;">

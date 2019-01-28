@@ -88,11 +88,11 @@ app.post('/auth/login', function(req, res){
     user.list().then(function(User){
       users = User;
       ULength = User.length;
-      var userName = req.body.awesomeName;
+      var email = req.body.email;
       var passWord = req.body.verySecuredText;
       for(var i = 0; i < ULength; i++) {
         var user = users[i];
-        if(userName === user.userName) {
+        if(email === user.email) {
           if(user.usable == true) {
             return hasher({password: passWord, salt: user.salt}, function(err, pass, salt, hash) {
               if(hash === user.passWord) {
@@ -133,12 +133,12 @@ app.get('/game', function(req, res){
   }
 });
 
-app.get('/sameID', function(req, res){
-  res.render('sameID');
-});
-
 app.get('/sameName', function(req, res){
   res.render('sameName');
+});
+
+app.get('/sameEmail', function(req, res){
+  res.render('sameEmail');
 });
 
 function makeCode() {
@@ -152,14 +152,12 @@ function makeCode() {
 }
 
 app.post('/auth/join', function(req, res){
-  allowedFormat = /^[a-zA-Z0-9\!\_]{5,15}$/;
+  allowedFormat = /^[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)\_\-\+\=\,\<\.\>\/\?\;\:\'\"\[\{\]\}\|\\]{5,15}$/;
   var usercode = makeCode();
-  console.log(usercode);
-
   req.session.mailCode = usercode;
   console.log(req.session.mailCode);
 
-  if(allowedFormat.test(req.body.awesomeName) && allowedFormat.test(req.body.personalData) && allowedFormat.test(req.body.verySecuredText)) {
+  if(allowedFormat.test(req.body.personalData) && allowedFormat.test(req.body.verySecuredText)) {
     db.class.get('User').then(function(user){
       user.list().then(function(User){
         var ULength = User.length;
@@ -168,10 +166,7 @@ app.post('/auth/join', function(req, res){
         for(var i = 1; i < ULength; i++) {
           var userr = User[i];
           signale.debug(`userEmail = ${req.body.email}, DBEmail = ${userr.email}, result = ${req.body.email == userr.email}`);
-          if(req.body.awesomeName == userr.userName) {
-            res.redirect('/sameID');
-            return;
-          } else if(req.body.personalData == userr.nickName) {
+          if(req.body.personalData == userr.nickName) {
             res.redirect('/sameName');
             return;
           } else if(req.body.email == userr.email){
@@ -207,7 +202,6 @@ app.post('/auth/join', function(req, res){
               user.create({
                 usable: false,
                 email: req.body.email,
-                userName: req.body.awesomeName,
                 passWord: hash,
                 nickName: req.body.personalData,
                 userId: ULength,

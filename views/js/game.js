@@ -1,9 +1,42 @@
 var isBlocked = false;
+var whIsBlocked = false;
 var isStarted = false;
 
 var screenName = 'home';
+var gifName = 'selbox.gif';
 
 function isTooSmall() {
+  if(window.innerHeight / window.innerWidth < 0.4) {
+    if(whIsBlocked == false) {
+      document.getElementById("sorry").style.visibility = "visible";
+      whIsBlocked = true;
+    }
+  } else if(window.innerHeight / window.innerWidth <= 0.42) {
+    document.getElementById('mode').style.marginTop = '2vh';
+    if(whIsBlocked == true) {
+      document.getElementById("sorry").style.visibility = "hidden";
+      whIsBlocked = false;
+    }
+  } else if(window.innerHeight / window.innerWidth <= 0.47) {
+    document.getElementById('mode').style.marginTop = '1vh';
+    if(whIsBlocked == true) {
+      document.getElementById("sorry").style.visibility = "hidden";
+      whIsBlocked = false;
+    }
+  } else {
+    document.getElementById('mode').style.marginTop = '0vh';
+    if(whIsBlocked == true && isBlocked == false) {
+      document.getElementById("sorry").style.visibility = "hidden";
+      whIsBlocked = false;
+    }
+  }
+
+  if(window.innerWidth >= 2200) {
+    gifName = 'selbox_high.gif';
+  } else {
+    gifName = 'selbox.gif';
+  }
+
   if(window.innerWidth < 1300 || window.innerHeight < 700) {
     if(isBlocked == false) {
       console.log("small!");
@@ -11,12 +44,14 @@ function isTooSmall() {
       isBlocked = true;
     }
   } else {
-    if(isBlocked == true) {
+    if(isBlocked == true && whIsBlocked == false) {
       document.getElementById("sorry").style.visibility = "hidden";
       isBlocked = false;
     }
   }
 }
+
+isTooSmall();
 
 var fpsSum = 0, fpsAvg = 0, fpsTime = 0;
 
@@ -58,10 +93,10 @@ function fpsLoop() {
   document.getElementById("fpsValue").innerHTML = "&nbsp;" + fps + "<span style='font-size: 13px;'>/" + fpsAvg + "</span>";
 }
 
-function pad(d) {
-    return (d < 10) ? '0' + d.toString() : d.toString();
+function pad(n, width) {
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
 }
-
 
 var d, n, o, ping;
 function pingLoop() {
@@ -70,12 +105,10 @@ function pingLoop() {
   $.get("ping", function(data, status){
     d = new Date();
     o = d.getTime();
-    ping = pad(o - n);
+    ping = pad(o - n, 2);
     document.getElementById("pingValue").innerHTML = "&nbsp;" + ping;
   });
 }
-
-setInterval(isTooSmall, 500);
 
 var bgm1 = new Howl({
   src: ['Songs/MyRhyThemeSong_ver2_edited.mp3'],
@@ -114,10 +147,13 @@ var shortName = [];
 var photos = [];
 var userScores = [];
 var userRanks = [];
+var userCombos = [];
+var userRecRanks = [];
+var lines = [];
 var songCount;
 var nowMusic;
 var mode = 0;
-var modeName = ['COMPLEX', 'HARDER', 'CLICK'];
+var modeName = ['Complex', 'Harder', 'Click'];
 
 jQuery.get('/otherFiles/songs.txt', function(data) {
   var str = data.split(';');
@@ -126,29 +162,41 @@ jQuery.get('/otherFiles/songs.txt', function(data) {
     var sstr = str[i].split('|');
     songName[i-1] = sstr[0];
     shortName[i-1] = sstr[7];
+    lines[i-1] = sstr[8];
     var t = shortName[i-1];
     if(typeof record !== 'undefined') {
       if(typeof record[t] !== 'undefined') {
-        userScores[i-1] = record[t].score;
+        userScores[i-1] = pad(record[t].score, 8);
         userRanks[i-1] = record[t].rank;
+        userCombos[i-1] = record[t].combo;
+        userRecRanks[i-1] = record[t].recRank;
       } else {
-        userScores[i-1] = '';
-        userRanks[i-1] = 'NotRanked';
+        userScores[i-1] = '00000000';
+        userRanks[i-1] = 'U';
+        userCombos[i-1] = '0';
+        userRecRanks[i-1] = '0';
       }
     } else {
-      userScores[i-1] = '';
-      userRanks[i-1] = 'NotRanked';
+      userScores[i-1] = '00000000';
+      userRanks[i-1] = 'U';
+      userCombos[i-1] = '0';
+      userRecRanks[i-1] = '0';
     }
 
     prodName[i-1] = sstr[2];
-    BPM[i-1] = sstr[3];
+    if(sstr[3].indexOf('/') !== -1) {
+      var tmp = sstr[3].split('/');
+      BPM[i-1] = tmp[0];
+    } else {
+      BPM[i-1] = sstr[3];
+    }
     difficulty[i-1] = sstr[4];
     albumArtFile[i-1] = 'photos/albumArt/' + sstr[6];
     songList[i-1] = 'Songs/GameSongs/' + sstr[1];
     songs[i-1] = new Howl({
       src: songList[i-1]
     });
-    document.getElementById("songListContainer").innerHTML = document.getElementById("songListContainer").innerHTML + `<div class="songs" id="song_${i-1}" onclick="selMusic(${i-1})"> <span class="title">${songName[i-1]}</span> <br> <span class="prod">${prodName[i-1]}</span> </div>`;
+    document.getElementById("songListContainer").innerHTML = document.getElementById("songListContainer").innerHTML + `<div class="songs" id="song_${i-1}" onclick="selMusic(${i-1})"> <span class="title">${songName[i-1]}</span> <div style="height: 5px;"> </div> <span class="prod">${prodName[i-1]}</span> </div>`;
   }
 });
 
@@ -182,6 +230,10 @@ Pace.on('done', function() {
         document.getElementById(`song_${nowMusic}`).className = "songs selectedSong";
         document.getElementById("albumArt").src = albumArtFile[nowMusic];
         document.getElementById("level").innerHTML = difficulty[nowMusic];
+        document.getElementById("userScoreText").innerHTML = userScores[nowMusic];
+        document.getElementById("userComboText").innerHTML = `x${userCombos[nowMusic]}`;
+        document.getElementById("userRankText").innerHTML = `#${userRecRanks[nowMusic]}`;
+        document.getElementById("rankImage").src = `photos/tempImages/rank_${userRanks[nowMusic]}.png`;
       });
     });
   }
@@ -248,7 +300,9 @@ function startGame() {
       songs[nowMusic].pause();
       songs[nowMusic].play();
       songs[nowMusic].fade(0.1, 1, 500);
-      $("#selSong").fadeIn(500);
+      $("#selSong").fadeIn(500, function() {
+        document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = `url("/photos/tempImages/${gifName}` + '?a=' + Math.random() + '")';
+      });
     });
 }
 
@@ -257,21 +311,36 @@ function selMusic(musicID) {
   if(musicID == nowMusic) {
     //선곡 확정
   } else {
+    document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = '';
     document.getElementById('nowPlaying').innerHTML = songName[musicID];
     changeINFOphoto(musicID);
+    changeRANKphoto(musicID);
     for(var i = 1; i <= songCount; i++) {
       document.getElementById(`song_${i-1}`).className = "songs";
     }
     document.getElementById(`song_${musicID}`).className = "songs selectedSong";
-    songs[nowMusic].fade(1, 0, 500);
+    songs[musicID].fade(1, 0, 500);
     setTimeout(function(){
       songs[nowMusic].stop();
       nowMusic = musicID;
       songs[nowMusic].play();
       songs[nowMusic].fade(0, 1, 500);
       document.getElementById("level").innerHTML = difficulty[nowMusic];
+      document.getElementById("userScoreText").innerHTML = userScores[nowMusic];
+      document.getElementById("userComboText").innerHTML = `x${userCombos[nowMusic]}`;
+      document.getElementById("userRankText").innerHTML = `#${userRecRanks[nowMusic]}`;
+      document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = `url("/photos/tempImages/${gifName}` + '?a=' + Math.random() + '")';
     }, 500);
+    document.getElementById('bottomLogo').style.animationDuration = (60 / BPM[musicID]) + "s";
   }
+}
+
+function changeRANKphoto(musicID) {
+  $("#rankImage").fadeOut(250);
+  setTimeout(function(){
+    document.getElementById("rankImage").src = `photos/tempImages/rank_${userRanks[musicID]}.png`;
+    $("#rankImage").fadeIn(250);
+  }, 250);
 }
 
 function changeINFOphoto(musicID) {
@@ -293,9 +362,9 @@ function modeDropDown() {
     document.getElementById("mode").style.color = "rgb(245,245,245)";
     document.getElementById("tracksIcon").src = "photos/tempImages/tracks.png";
     document.getElementById("mode").style.width = "60%";
-    document.getElementById("mode").style.height = "24px";
-    document.getElementById("mode").style.lineHeight = "24px";
-    document.getElementById("mode").style.borderRadius = "1px";
+    document.getElementById("mode").style.paddingBottom = "2px";
+    document.getElementById("mode").style.paddingTop = "2px";
+    document.getElementById("mode").style.borderRadius = "2px";
     $("#background_darker").fadeOut(500);
     $("#subMode").fadeOut(500);
   } else {
@@ -306,8 +375,8 @@ function modeDropDown() {
     document.getElementById("mode").style.color = "rgb(20,20,20)";
     document.getElementById("tracksIcon").src = "photos/tempImages/tracks_light.png";
     document.getElementById("mode").style.width = "80%";
-    document.getElementById("mode").style.height = "30px";
-    document.getElementById("mode").style.lineHeight = "30px";
+    document.getElementById("mode").style.paddingBottom = "4px";
+    document.getElementById("mode").style.paddingTop = "4px";
     document.getElementById("mode").style.borderRadius = "5px";
     $("#subMode").fadeIn(500);
     $("#background_darker").fadeIn(500);
