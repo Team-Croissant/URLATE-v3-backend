@@ -305,14 +305,10 @@ function startGame() {
     });
 }
 
-function escbutton() {
-
-}
-
 function selMusic(musicID) {
   if(musicID == nowMusic) {
-    console.log("music confirmed.");
-
+    screenName = "confirm";
+    $("#confirm").fadeIn(500);
   } else {
     document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = '';
     document.getElementById('nowPlaying').innerHTML = songName[musicID];
@@ -403,7 +399,7 @@ function keyPressed(e) {
         });
     } else if(screenName == "confirm") {
       screenName = 'songs';
-      $("")
+      $("#confirm").fadeOut(500);
     }
   }
 }

@@ -443,7 +443,19 @@ body {
 #esc {
   position: fixed;
   bottom: 29px;
-  left: 5vw;
+  left: 2vw;
   width: 7em;
   cursor: pointer;
+}
+
+#confirm {
+  display: none;
+  background-image: url('/photos/MY RHY SELECT BACKGROUND.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
 }
