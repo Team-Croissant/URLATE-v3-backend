@@ -39,7 +39,6 @@ function isTooSmall() {
 
   if(window.innerWidth < 1300 || window.innerHeight < 700) {
     if(isBlocked == false) {
-      console.log("small!");
       document.getElementById("sorry").style.visibility = "visible";
       isBlocked = true;
     }
@@ -306,10 +305,14 @@ function startGame() {
     });
 }
 
+function escbutton() {
+
+}
+
 function selMusic(musicID) {
-  console.log(musicID);
   if(musicID == nowMusic) {
-    //선곡 확정
+    console.log("music confirmed.");
+
   } else {
     document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = '';
     document.getElementById('nowPlaying').innerHTML = songName[musicID];
@@ -398,6 +401,9 @@ function keyPressed(e) {
           songs[nowMusic].fade(0.1, 1, 500);
           $("#main").fadeIn(500);
         });
+    } else if(screenName == "confirm") {
+      screenName = 'songs';
+      $("")
     }
   }
 }

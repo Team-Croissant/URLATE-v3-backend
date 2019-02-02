@@ -110,8 +110,8 @@
     <img src="photos/myrhyLogo_blue.png" id="bottomLogo">
   </div>
   <div id="selSong">
-    <img src="photos/tempImages/esc.png" alt="< Esc" style="position: fixed; bottom: 29px; left: 2em; width: 7em;">
-    <div style="position: fixed; top: 30px; left: 30px; z-index: 10;">
+    <img src="photos/tempImages/esc.png" alt="< Esc" id="esc" onclick="keyPressed({code: 'esc'})">
+    <div style="position: fixed; top: 30px; left: 5vw; z-index: 10;">
       <div style="height: 6vh;">
         <img src="photos/tempImages/tracks.png" id="tracksIcon" style="width: 11vw; transition-duration: 0.5s;">
         <img src="photos/icons/round-arrow_drop_down-24px.svg" id="dropDownArrow" onclick="modeDropDown()">
@@ -186,6 +186,9 @@
       <span>&nbsp;</span>
       <img src="photos/icons/outline-settings.svg" alt="Settings" id="setIco" style="cursor: pointer; width: 27px;" onclick="settings()">
     </div>
+  </div>
+  <div id="confirm">
+    <!--Todo: confirm 만들기 시작-->
   </div>
   <span class="bottomCenterText"><span style="font-weight: 600; letter-spacing: -1px;">MyRhy</span> Experimental</span>
   <span id="copyright" class="bottomRightText">&copy; 2019. <b>MyRhy</b>, all rights reserved.<br>For more information, please click <a href="/copyright" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #2196F3;">here</a>.</span>

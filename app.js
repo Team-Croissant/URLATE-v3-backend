@@ -16,7 +16,6 @@ var app = express();
 app.locals.pretty = true;
 var port = 80;
 var httpsPort = 443;
-var userNum = 1;
 
 var privateKey = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-key.pem', 'utf8');
 var certificate = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-crt.pem', 'utf8');
@@ -71,8 +70,6 @@ app.get('/', function(req, res){
     res.redirect('/game');
   } else {
     res.render('index');
-    console.log('User' + userNum + ' joined index page.')
-    userNum++;
   }
 });
 
@@ -155,8 +152,6 @@ app.post('/auth/join', function(req, res){
   allowedFormat = /^[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)\_\-\+\=\,\<\.\>\/\?\;\:\'\"\[\{\]\}\|\\]{5,15}$/;
   var usercode = makeCode();
   req.session.mailCode = usercode;
-  console.log(req.session.mailCode);
-
   if(allowedFormat.test(req.body.personalData) && allowedFormat.test(req.body.verySecuredText)) {
     db.class.get('User').then(function(user){
       user.list().then(function(User){
@@ -185,20 +180,15 @@ app.post('/auth/join', function(req, res){
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
           }
         });
 
         hasher({password:req.body.verySecuredText}, function(err, pass, salt, hash){
           db.class.get('UserRecords').then(function(UserRecords){
-            console.log("UserRecords Creating..");
             UserRecords.create({
               userName: req.body.personalData,
               userId: ULength
             }).then(function(){
-              console.log("UserRecords Created!");
-              console.log("user Creating..");
               user.create({
                 usable: false,
                 email: req.body.email,
@@ -208,9 +198,7 @@ app.post('/auth/join', function(req, res){
                 salt: salt
               })
             }).then(function(){
-              console.log("user Created!");
               res.redirect('/auth/chkmail');
-              console.log("email checking..");
             });
           });
         });
@@ -227,7 +215,6 @@ app.get('/auth/chkmail', function(req, res){
 });
 
 app.post('/auth/chkmail', function(req, res){
-  console.log('session mailCode : ' + req.session.mailCode + ', req checkCode : ' + req.body.checkCode + ', result : ', req.session.mailCode == req.body.checkCode);
   if(req.session.mailCode == req.body.checkCode){
     var recordID = '#21:' + req.session.emailUID;
     db.record.get(recordID)
@@ -235,7 +222,6 @@ app.post('/auth/chkmail', function(req, res){
         record.usable = true;
         db.record.update(record)
            .then(function(){
-            console.log("Email checked!");
             res.redirect('login');
             })
         });
@@ -253,6 +239,14 @@ app.get('/auth/login', function(req, res){
     res.redirect('/game');
   } else {
     res.render('login');
+  }
+});
+
+app.get('/play/:songName/:difficulty', function(req, res){
+  if(req.session.nickName && req.session.UID) {
+    res.render('play', {songName: req.params.songName, difficulty: req.params.difficulty});
+  } else {
+    res.redirect('/');
   }
 });
 

@@ -18,6 +18,14 @@ body {
   letter-spacing: -0.5px;
 }
 
+.italic {
+    -moz-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);
+    -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);
+    -o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);
+    -ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);
+}
+
 ::-moz-selection {
     color: white;
     background: #90CAF9;
@@ -430,4 +438,12 @@ body {
   padding-left: 5px;
   padding-right: 5px;
   text-align: center;
+}
+
+#esc {
+  position: fixed;
+  bottom: 29px;
+  left: 5vw;
+  width: 7em;
+  cursor: pointer;
 }
