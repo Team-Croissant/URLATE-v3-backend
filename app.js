@@ -53,7 +53,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/auth/logout', function(req, res){
   delete req.session.nickName;
-  delete req.session.userName;
   delete req.session.passWord;
   delete req.session.loginedSuccessfully;
   req.session.save(function(){
@@ -66,7 +65,10 @@ app.get('/prototype', function(req, res){
 });
 
 app.get('/', function(req, res){
-  if(req.session.nickName && req.session.UID) {
+  signale.debug(req.session.nickName);
+  signale.debug(req.session.UID);
+  signale.debug(req.session.loginedSuccessfully);
+  if(req.session.nickName && req.session.UID && req.session.loginedSuccessfully) {
     res.redirect('/game');
   } else {
     res.render('index');
@@ -85,29 +87,26 @@ app.post('/auth/login', function(req, res){
     user.list().then(function(User){
       users = User;
       ULength = User.length;
-      var email = req.body.email;
       var passWord = req.body.verySecuredText;
-      for(var i = 0; i < ULength; i++) {
-        var user = users[i];
-        if(email === user.email) {
-          if(user.usable == true) {
-            return hasher({password: passWord, salt: user.salt}, function(err, pass, salt, hash) {
-              if(hash === user.passWord) {
-                req.session.nickName = user.nickName;
-                req.session.UID = user.userId;
-                req.session.loginedSuccessfully = true;
-                req.session.save(function(){
-                  res.redirect('/');
-                });
-              } else {
-                res.render('loginDenined');
-              }
-            });
-          } else {
-            res.render('unableAccount');
-          }
+      for(var i = 1; i < ULength; i++) {
+        var userr = users[i];
+        if(JSON.stringify(req.body.email).toLowerCase() == JSON.stringify(userr.email).toLowerCase()) {
+          return hasher({password: passWord, salt: userr.salt}, function(err, pass, salt, hash) {
+            if(hash === userr.passWord) {
+              req.session.nickName = userr.nickName;
+              req.session.UID = '#' + userr.clusterId + ':' + userr.dataId;
+              req.session.loginedSuccessfully = true;
+              req.session.save(function(){
+                signale.debug("login successful");
+                res.redirect('/');
+              });
+            } else {
+              signale.debug("uncorrect password");
+            }
+          });
         }
       }
+      signale.debug("login denined");
       res.render('loginDenined');
     });
   });
@@ -119,7 +118,8 @@ app.get('/copyright', function(req, res){
 
 app.get('/game', function(req, res){
   if(req.session.loginedSuccessfully) {
-    db.record.get('#22:' + req.session.UID)
+    console.log(req.session.UID);
+    db.record.get(req.session.UID)
    .then(
       function(userRecord){
         res.render('game', {nickName: req.session.nickName, UID: req.session.UID, record: JSON.stringify(userRecord.records)});
@@ -149,60 +149,50 @@ function makeCode() {
 }
 
 app.post('/auth/join', function(req, res){
+  req.session.cookie.maxAge = 10 * 60 * 1000;
   allowedFormat = /^[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)\_\-\+\=\,\<\.\>\/\?\;\:\'\"\[\{\]\}\|\\]{5,15}$/;
   var usercode = makeCode();
   req.session.mailCode = usercode;
   if(allowedFormat.test(req.body.personalData) && allowedFormat.test(req.body.verySecuredText)) {
     db.class.get('User').then(function(user){
       user.list().then(function(User){
+        signale.debug(User);
         var ULength = User.length;
         signale.debug(`ULength = ${ULength}`)
         req.session.emailUID = ULength;
         for(var i = 1; i < ULength; i++) {
           var userr = User[i];
-          signale.debug(`userEmail = ${req.body.email}, DBEmail = ${userr.email}, result = ${req.body.email == userr.email}`);
-          if(req.body.personalData == userr.nickName) {
+          if(JSON.stringify(req.body.personalData).toLowerCase() == JSON.stringify(userr.nickName).toLowerCase()) {
             res.redirect('/sameName');
             return;
-          } else if(req.body.email == userr.email){
+          } else if(JSON.stringify(req.body.email).toLowerCase() == JSON.stringify(userr.email).toLowerCase()){
             res.redirect('/sameEmail');
             return;
           }
         }
 
-        var mailOptions = {
-          from: 'myrhydevelopteam@gmail.com',
-          to: req.body.email,
-          subject: 'MyRhy verification code',
-          text: 'MyRhy의 이메일 확인 창에 아래의 메시지를 정확히 입력해주세요.\n아래의 메시지는 당신말고 아무도 알지 못합니다!\n' + usercode
-        };
-
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          }
-        });
-
         hasher({password:req.body.verySecuredText}, function(err, pass, salt, hash){
-          db.class.get('UserRecords').then(function(UserRecords){
-            UserRecords.create({
-              userName: req.body.personalData,
-              userId: ULength
-            }).then(function(){
-              user.create({
-                usable: false,
-                email: req.body.email,
-                passWord: hash,
-                nickName: req.body.personalData,
-                userId: ULength,
-                salt: salt
-              })
-            }).then(function(){
-              res.redirect('/auth/chkmail');
-            });
+          req.session.tempPersonalData = req.body.personalData;
+          req.session.tempVerySecuredText = hash;
+          req.session.tempEmail = req.body.email;
+          req.session.tempSalt = salt;
+          var mailOptions = {
+            from: 'myrhydevelopteam@gmail.com',
+            to: req.body.email,
+            subject: 'MyRhy verification code',
+            text: 'MyRhy의 이메일 확인 창에 아래의 메시지를 정확히 입력해주세요.\n아래의 메시지는 당신말고 아무도 알지 못합니다!\n' + usercode
+          };
+
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            }
+          });
+
+          req.session.save(function(){
+            res.redirect('/auth/chkmail');
           });
         });
-        return;
       });
     });
   } else {
@@ -216,15 +206,35 @@ app.get('/auth/chkmail', function(req, res){
 
 app.post('/auth/chkmail', function(req, res){
   if(req.session.mailCode == req.body.checkCode){
-    var recordID = '#21:' + req.session.emailUID;
-    db.record.get(recordID)
-      .then(function(record){
-        record.usable = true;
-        db.record.update(record)
-           .then(function(){
-            res.redirect('login');
-            })
+    db.class.get('User').then(function(user){
+      user.list().then(function(User){
+        var userCluster = User[User.length - 1];
+        userCluster = userCluster.clusterId;
+        userCluster = Number(userCluster) + 1;
+        if(userCluster >= 25) {
+          userCluster = 21;
+        }
+        var userDataId = Math.floor((User.length - 1) / 4);
+        user.create({
+          clusterId: userCluster,
+          dataId: userDataId,
+          email: req.session.tempEmail,
+          passWord: req.session.tempVerySecuredText,
+          nickName: req.session.tempPersonalData,
+          salt: req.session.tempSalt
+        }).then(function(){
+          db.class.get('UserRecords').then(function(UserRecords){
+            UserRecords.create({
+              email: req.session.tempEmail,
+              clusterId: userCluster + 8,
+              dataId: userDataId,
+            });
+          });
+        }).then(function(){
+          res.redirect('login');
         });
+      });
+    });
   } else {
     res.render('emailDenined');
   }
@@ -235,7 +245,7 @@ app.get('/auth/unAllowedCharacter', function(req, res){
 });
 
 app.get('/auth/login', function(req, res){
-  if(req.session.nickName && req.session.userName && req.session.passWord) {
+  if(req.session.nickName && req.session.passWord) {
     res.redirect('/game');
   } else {
     res.render('login');

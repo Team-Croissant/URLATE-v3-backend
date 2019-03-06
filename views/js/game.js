@@ -384,7 +384,7 @@ function modeDropDown() {
 
 Howler.volume(0.3);
 
-document.addEventListener('keypress', keyPressed);
+document.addEventListener('keydown', keyPressed);
 
 function keyPressed(e) {
   if(e.code.toLowerCase() == "escape" || e.code.toLowerCase() == "esc" ) {
