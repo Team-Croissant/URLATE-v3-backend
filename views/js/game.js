@@ -149,10 +149,13 @@ var userRanks = [];
 var userCombos = [];
 var userRecRanks = [];
 var lines = [];
+var serverSongName = [];
 var songCount;
 var nowMusic;
 var mode = 0;
 var modeName = ['Complex', 'Harder', 'Click'];
+var selLevel;
+var levelList;
 
 jQuery.get('/otherFiles/songs.txt', function(data) {
   var str = data.split(';');
@@ -160,8 +163,9 @@ jQuery.get('/otherFiles/songs.txt', function(data) {
   for(var i = 1; i <= songCount; i++) {
     var sstr = str[i].split('|');
     songName[i-1] = sstr[0];
-    shortName[i-1] = sstr[7];
-    lines[i-1] = sstr[8];
+    shortName[i-1] = sstr[6];
+    lines[i-1] = sstr[7];
+    serverSongName[i-1] = sstr[8];
     var t = shortName[i-1];
     if(typeof record !== 'undefined') {
       if(typeof record[t] !== 'undefined') {
@@ -190,7 +194,7 @@ jQuery.get('/otherFiles/songs.txt', function(data) {
       BPM[i-1] = sstr[3];
     }
     difficulty[i-1] = sstr[4];
-    albumArtFile[i-1] = 'photos/albumArt/' + sstr[6];
+    albumArtFile[i-1] = 'photos/albumArt/' + sstr[5];
     songList[i-1] = 'Songs/GameSongs/' + sstr[1];
     songs[i-1] = new Howl({
       src: songList[i-1]
@@ -308,6 +312,9 @@ function startGame() {
 function selMusic(musicID) {
   if(musicID == nowMusic) {
     screenName = "confirm";
+    levelList = difficulty[nowMusic].split('/');
+    selLevel = 0;
+    document.getElementById('testLevel').textContent = levelList[0];
     $("#confirm").fadeIn(500);
   } else {
     document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = '';
@@ -380,6 +387,20 @@ function modeDropDown() {
     $("#subMode").fadeIn(500);
     $("#background_darker").fadeIn(500);
   }
+}
+
+function testLevel() {
+  selLevel += 1;
+  if(selLevel >= levelList.length) {
+    selLevel = 0;
+  }
+  document.getElementById('testLevel').textContent = levelList[selLevel];
+}
+
+function testConfirm() {
+  $("#fadeOut").fadeIn(500, function() {
+    window.location.href = '/play/' + serverSongName[nowMusic] + '/' + levelList[selLevel];
+  });
 }
 
 Howler.volume(0.3);

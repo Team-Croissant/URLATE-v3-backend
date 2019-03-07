@@ -459,3 +459,15 @@ body {
   left: 0;
   position: fixed;
 }
+
+#confirm {
+  display: none;
+  background-color: #FFFFFF;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+}

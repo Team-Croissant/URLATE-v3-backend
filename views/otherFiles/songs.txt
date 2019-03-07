@@ -1,5 +1,5 @@
-SongName|SongFileName|Producer,SingerName|BPM/BPM(time)|easy/hard/...|txtfile.txt/txtfile2.txt/...|album.png|ShortName|Line;
-IEVAN POLKKA<span style="font-weight: 300">(VSNS Remix)</span>|Miku Hatsune-Ievan Polkka_VSNSRemix.mp3|VSNS(feat.Miku Hatsune)|130|1 / 4 / 8|1.txt/2.txt/3.txt|IevanPolkka.jpg|Ievan|5;
-Chatty Bones 2018|Chatty Bones 2018.mp3|elsiff|140|2 / 5 / 6|1.txt/2.txt/3.txt|chattybones.png|Chatty|5;
-Autumn in the air|Autumn in the air.mp3|SuReal Original Sound|126|1 / 3 / 6|1.txt/2.txt/3.txt|imsi.png|Autumn|5;
-The weight of time|The weight of time.mp3|SuReal Original Sound|118|3 / 6 / 10|1.txt/2.txt/3.txt|imsi.png|WeightTime|5;
+DisplayText|SongFileName|Producer,SingerName|BPM/BPM(time)|easy/hard/...|album.png|ShortName|Line|songName;
+IEVAN POLKKA<span style="font-weight: 300">(VSNS Remix)</span>|Miku Hatsune-Ievan Polkka_VSNSRemix.mp3|VSNS(feat.Miku Hatsune)|130|1 / 4 / 8|IevanPolkka.jpg|Ievan|5|Ievan Polkka(VSNS Remix);
+Chatty Bones 2018|Chatty Bones 2018.mp3|elsiff|140|2 / 5 / 6|chattybones.png|Chatty|5|Chatty Bones 2018;
+Autumn in the air|Autumn in the air.mp3|SuReal Original Sound|126|1 / 3 / 6|imsi.png|Autumn|5|Autumn in the air;
+The weight of time|The weight of time.mp3|SuReal Original Sound|118|3 / 6 / 10|imsi.png|WeightTime|5|The weight of time;
