@@ -4,14 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="css/play.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@1.0/nanumbarungothicsubset.css">
-  <link rel="icon" href="photos/icons/favicon.ico" type="image/x-icon"/>
-  <link rel="shortcut icon" href="photos/icons/favicon.ico" type="image/x-icon"/>
-  <script src="pace/pace.js"></script>
+  <link rel="icon" href="/photos/icons/favicon.ico" type="image/x-icon"/>
+  <link rel="shortcut icon" href="/photos/icons/favicon.ico" type="image/x-icon"/>
+  <link rel="stylesheet" href="/css/play.css">
   <title><%= songName %></title>
 </head>
 <body>
-  <span> Test: <%= difficulty %> </span>
+  <div id="loading">
+    <img src="/photos/albumArt/imsi.png" id="albumart"></img>
+    <span id="songName"><%= songName %></span>
+    <span id="artistName">artistName</span>
+  </div>
+  <script src="/howler/dist/howler.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/pace/pace.js"></script>
+  <script>
+    var varSongName = "<%= songName %>";
+    var varMode = "<%= mode %>";
+    var varDifficulty = "<%= difficulty %>";
+  </script>
+  <script src="/js/play.js"></script>
 </body>

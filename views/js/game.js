@@ -127,12 +127,6 @@ bgm1.once('load', function() {
   }
 });
 
-//document.getElementById("script").innerHTML = "";
-
-/*$(window).bind('beforeunload', function(){
-  return '정말로 나가시겠습니까?<br>Are you sure you want to leave?';
-});*/
-
 var menu = 0;
 
 var songName = [];
@@ -148,7 +142,6 @@ var userScores = [];
 var userRanks = [];
 var userCombos = [];
 var userRecRanks = [];
-var lines = [];
 var serverSongName = [];
 var songCount;
 var nowMusic;
@@ -164,8 +157,7 @@ jQuery.get('/otherFiles/songs.txt', function(data) {
     var sstr = str[i].split('|');
     songName[i-1] = sstr[0];
     shortName[i-1] = sstr[6];
-    lines[i-1] = sstr[7];
-    serverSongName[i-1] = sstr[8];
+    serverSongName[i-1] = sstr[7];
     var t = shortName[i-1];
     if(typeof record !== 'undefined') {
       if(typeof record[t] !== 'undefined') {
@@ -197,7 +189,8 @@ jQuery.get('/otherFiles/songs.txt', function(data) {
     albumArtFile[i-1] = 'photos/albumArt/' + sstr[5];
     songList[i-1] = 'Songs/GameSongs/' + sstr[1];
     songs[i-1] = new Howl({
-      src: songList[i-1]
+      src: songList[i-1],
+      loop: true
     });
     document.getElementById("songListContainer").innerHTML = document.getElementById("songListContainer").innerHTML + `<div class="songs" id="song_${i-1}" onclick="selMusic(${i-1})"> <span class="title">${songName[i-1]}</span> <div style="height: 5px;"> </div> <span class="prod">${prodName[i-1]}</span> </div>`;
   }
@@ -399,7 +392,7 @@ function testLevel() {
 
 function testConfirm() {
   $("#fadeOut").fadeIn(500, function() {
-    window.location.href = '/play/' + serverSongName[nowMusic] + '/' + levelList[selLevel];
+    window.location.href = '/play/' + serverSongName[nowMusic] + '/' + modeName[mode] + '/' + levelList[selLevel];
   });
 }
 

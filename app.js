@@ -1,26 +1,26 @@
-var bodyParser = require('body-parser');
-var signale = require('signale');
-var fs = require('fs'),
+const bodyParser = require('body-parser');
+const signale = require('signale');
+const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     express = require('express');
-var session = require('express-session');
-var OrientDB = require('orientjs');
-var bcrypt = require('bcrypt-nodejs');
-var OrientoStore = require('connect-oriento')(session);
-var config  = require('./config/config.json');
-var bkfd2Password = require("pbkdf2-password");
-var nodemailer = require('nodemailer');
-var hasher = bkfd2Password();
-var app = express();
+const session = require('express-session');
+const OrientDB = require('orientjs');
+const bcrypt = require('bcrypt-nodejs');
+const OrientoStore = require('connect-oriento')(session);
+const config  = require('./config/config.json');
+const bkfd2Password = require("pbkdf2-password");
+const nodemailer = require('nodemailer');
+const hasher = bkfd2Password();
+const app = express();
 app.locals.pretty = true;
-var port = 80;
-var httpsPort = 443;
+const port = 80;
+const httpsPort = 443;
 
-var privateKey = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-key.pem', 'utf8');
-var certificate = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-crt.pem', 'utf8');
+const privateKey = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-key.pem', 'utf8');
+const certificate = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-crt.pem', 'utf8');
 
-var transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'myrhydevelopteam@gmail.com',
@@ -28,14 +28,14 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-var server = OrientDB({
+const server = OrientDB({
    host:config.orient.host,
    port:config.orient.port,
    username:config.orient.username,
    password:config.orient.password
 });
 
-var db = server.use(config.orient.db);
+const db = server.use(config.orient.db);
 
 app.use(session({
     secret: config.app_pw.secret,
@@ -252,9 +252,9 @@ app.get('/auth/login', function(req, res){
   }
 });
 
-app.get('/play/:songName/:difficulty', function(req, res){
+app.get('/play/:songName/:mode/:difficulty', function(req, res){
   if(req.session.nickName && req.session.UID) {
-    res.render('play', {songName: req.params.songName, difficulty: req.params.difficulty});
+    res.render('play', {songName: req.params.songName, mode: req.params.mode, difficulty: req.params.difficulty});
   } else {
     res.redirect('/');
   }
