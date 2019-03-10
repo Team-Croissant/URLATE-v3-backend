@@ -53,7 +53,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/auth/logout', function(req, res){
   delete req.session.nickName;
-  delete req.session.passWord;
+  delete req.session.recId;
   delete req.session.loginedSuccessfully;
   req.session.save(function(){
     res.redirect('/');
@@ -65,10 +65,7 @@ app.get('/prototype', function(req, res){
 });
 
 app.get('/', function(req, res){
-  signale.debug(req.session.nickName);
-  signale.debug(req.session.UID);
-  signale.debug(req.session.loginedSuccessfully);
-  if(req.session.nickName && req.session.UID && req.session.loginedSuccessfully) {
+  if(req.session.nickName && req.session.userId && req.session.loginedSuccessfully) {
     res.redirect('/game');
   } else {
     res.render('index');
@@ -94,8 +91,8 @@ app.post('/auth/login', function(req, res){
           return hasher({password: passWord, salt: userr.salt}, function(err, pass, salt, hash) {
             if(hash === userr.passWord) {
               req.session.nickName = userr.nickName;
-              req.session.UID = '#' + userr.clusterId + ':' + userr.dataId;
               req.session.loginedSuccessfully = true;
+              req.session.userId = userr.userId;
               req.session.save(function(){
                 signale.debug("login successful");
                 res.redirect('/');
@@ -118,13 +115,15 @@ app.get('/copyright', function(req, res){
 
 app.get('/game', function(req, res){
   if(req.session.loginedSuccessfully) {
-    console.log(req.session.UID);
-    db.record.get(req.session.UID)
-   .then(
-      function(userRecord){
-        res.render('game', {nickName: req.session.nickName, UID: req.session.UID, record: JSON.stringify(userRecord.records)});
-      }
-   );
+    db.class.get('userRecords').then(function(records){
+      records.list().then(function(userRecords){
+        var recId = userRecords[req.session.userId]['@rid'];
+        req.session.recId = recId;
+        req.session.save(function(){
+          res.render('game', {nickName: req.session.nickName, recId: recId, record: userRecords});
+        });
+      });
+    });
   } else {
     res.redirect('/');
   }
@@ -208,26 +207,16 @@ app.post('/auth/chkmail', function(req, res){
   if(req.session.mailCode == req.body.checkCode){
     db.class.get('User').then(function(user){
       user.list().then(function(User){
-        var userCluster = User[User.length - 1];
-        userCluster = userCluster.clusterId;
-        userCluster = Number(userCluster) + 1;
-        if(userCluster >= 25) {
-          userCluster = 21;
-        }
-        var userDataId = Math.floor((User.length - 1) / 4);
         user.create({
-          clusterId: userCluster,
-          dataId: userDataId,
           email: req.session.tempEmail,
           passWord: req.session.tempVerySecuredText,
           nickName: req.session.tempPersonalData,
-          salt: req.session.tempSalt
+          salt: req.session.tempSalt,
+          userId: User.length
         }).then(function(){
           db.class.get('UserRecords').then(function(UserRecords){
             UserRecords.create({
-              email: req.session.tempEmail,
-              clusterId: userCluster + 8,
-              dataId: userDataId,
+              userId: User.length
             });
           });
         }).then(function(){
@@ -253,7 +242,7 @@ app.get('/auth/login', function(req, res){
 });
 
 app.get('/play/:songName/:mode/:difficulty', function(req, res){
-  if(req.session.nickName && req.session.UID) {
+  if(req.session.nickName && req.session.recId) {
     res.render('play', {songName: req.params.songName, mode: req.params.mode, difficulty: req.params.difficulty});
   } else {
     res.redirect('/');
