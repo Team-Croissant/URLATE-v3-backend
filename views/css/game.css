@@ -351,20 +351,30 @@ body {
   padding-top: 10px;
   background: none;
   padding-left: 20px;
+  padding-bottom: 10px;
   transition-duration: 0.5s;
 }
 
 .selectedSong {
   background-position: right;
   background-repeat: no-repeat;
-  padding-top: 15px;
-  margin-left: 0px;
-  margin-right: 0px;
+  padding-top: 13px;
   padding-left: 20px;
   background-color: rgb(20,20,20);
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
   color: white;
-  padding-bottom: 10px;
-  margin-top: 15px;
+  padding-bottom: 13px;
+}
+
+.selectedSong:hover {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.songs:not(.selectedSong):hover {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: rgb(220,220,220);
 }
 
 .title {
@@ -460,14 +470,76 @@ body {
   position: fixed;
 }
 
-#confirm {
-  display: none;
-  background-color: #FFFFFF;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
+#chat {
+  bottom: -60vh;
   left: 0;
+  padding-left: 2.5vw;
+  padding-right: 2.5vw;
+  padding-top: 1vh;
   position: fixed;
+  background-color: #FEFEFE;
+  border-top: solid #56c9ff 2px;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+  width: 95vw;
+  height: 50vh;
+  z-index: 150;
+  transition-duration: 0.3s;
+}
+
+#chat:hover {
+  box-shadow: 0 -2px 7px rgba(0,0,0,0.3);
+}
+
+#messageField {
+  width: 90vw;
+  height: 3vh;
+  border-radius: 2em;
+  border: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  transition-duration: 0.3s;
+}
+
+#messageField:hover {
+  box-shadow: 0 0 7px rgba(0,0,0,0.5);
+}
+
+#messageContainer {
+  width: 95vw;
+  height: 70%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+#messageLists {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#messages li {
+  padding: 5px 10px;
+}
+
+#chatTitleContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 5em;
+}
+
+#chatTitle {
+  position: fixed;
+  font-weight: bold;
+  font-size: 2em;
+}
+
+#messageFormContainer {
+  height: 12%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

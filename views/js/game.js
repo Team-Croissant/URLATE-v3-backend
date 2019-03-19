@@ -110,21 +110,11 @@ function pingLoop() {
 }
 
 var bgm1 = new Howl({
-  src: ['Songs/MyRhyThemeSong_ver2_edited.mp3'],
-  onend: function() {
-    bgm2.play();
-  }
-});
-
-var bgm2 = new Howl({
-  src: ['Songs/MyRhyThemeSong_ver2_edited_cutted.mp3'],
-  loop: true
+  src: ['Songs/GameSongs/MyRhy Main theme_DEMO.mp3']
 });
 
 bgm1.once('load', function() {
-  if(isStarted == false) {
-    bgm1.play();
-  }
+  bgm1.play();
 });
 
 var menu = 0;
@@ -210,16 +200,11 @@ Pace.on('done', function() {
   if(isStarted == false) {
     isStarted = true;
     setInterval(pingLoop, 1000);
-    setInterval(fpsLoop, 200);
-    bgm1.fade(1, 0, 2000);
+    setInterval(fpsLoop, 500);
     $("#loading").fadeOut(1000, function() {
       $("#copyright").fadeIn(1000);
       $("#main").fadeIn(1000, function() {
-        bgm1.stop();
-        bgm2.stop();
-        nowMusic = getRandom(1,songCount) - 1;
-        songs[nowMusic].play();
-        songs[nowMusic].fade(0, 1, 5000);
+        nowMusic = 0;
         document.getElementById('bottomLogo').style.animationDuration = (60 / BPM[nowMusic]) + "s";
         document.getElementById('nowPlaying').innerHTML = songName[nowMusic];
         $("#nowPlaying").fadeIn(500);
@@ -289,17 +274,35 @@ function prevIco() {
   }
 }
 
+var isFirstStart = true;
+
 function startGame() {
   screenName = 'songs';
-  songs[nowMusic].fade(1, 0.1, 500);
-    $("#main").fadeOut(500, function() {
-      songs[nowMusic].pause();
+  if(isFirstStart == true) {
+    bgm1.fade(1, 0, 500);
+  } else {
+    songs[nowMusic].fade(1, 0.1, 500);
+  }
+  $("#main").fadeOut(500, function() {
+    if(isFirstStart == true) {
+      bgm1.stop();
+      nowMusic = getRandom(1,songCount) - 1;
+      document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = '';
+      document.getElementById('nowPlaying').innerHTML = songName[nowMusic];
+      changeINFOphoto(nowMusic);
+      changeRANKphoto(nowMusic);
       songs[nowMusic].play();
-      songs[nowMusic].fade(0.1, 1, 500);
-      $("#selSong").fadeIn(500, function() {
-        document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = `url("/photos/tempImages/${gifName}` + '?a=' + Math.random() + '")';
-      });
+    }
+    songs[nowMusic].fade(0.1, 1, 500);
+    isFirstStart = false;
+    for(var i = 1; i <= songCount; i++) {
+      document.getElementById(`song_${i-1}`).className = "songs";
+    }
+    document.getElementById(`song_${nowMusic}`).className = "songs selectedSong";
+    $("#selSong").fadeIn(500, function() {
+      document.getElementsByClassName("songs selectedSong")[0].style.backgroundImage = `url("/photos/tempImages/${gifName}` + '?a=' + Math.random() + '")';
     });
+  });
 }
 
 function selMusic(musicID) {
@@ -400,9 +403,23 @@ Howler.volume(0.3);
 
 document.addEventListener('keydown', keyPressed);
 
+var isChatOn = false;
+
+function chatCheck() {
+  if(isChatOn == false) {
+    isChatOn = true;
+    document.getElementById('chat').style.bottom = '0vh';
+  } else {
+    isChatOn = false;
+    document.getElementById('chat').style.bottom = '-60vh';
+  }
+}
+
 function keyPressed(e) {
-  if(e.code.toLowerCase() == "escape" || e.code.toLowerCase() == "esc" ) {
-    if(screenName == "songs") {
+  if(e.code.toLowerCase() == "f1") {
+    chatCheck();
+  } else if(screenName == "songs") {
+    if(e.code.toLowerCase() == "escape" || e.code.toLowerCase() == "esc") {
       screenName = 'home';
       songs[nowMusic].fade(1, 0.1, 500);
         $("#selSong").fadeOut(500, function() {
@@ -411,9 +428,49 @@ function keyPressed(e) {
           songs[nowMusic].fade(0.1, 1, 500);
           $("#main").fadeIn(500);
         });
-    } else if(screenName == "confirm") {
+    } else if(e.code.toLowerCase() == "arrowup") {
+      if(nowMusic - 1 >= 0) {
+        selMusic(nowMusic - 1);
+      } else {
+        selMusic(songs.length - 1);
+      }
+    } else if(e.code.toLowerCase() == "arrowdown") {
+      if(nowMusic + 1 >= songs.length) {
+        selMusic(0);
+      } else {
+        selMusic(nowMusic + 1);
+      }
+    } else if(e.code.toLowerCase() == "enter") {
+      selMusic(nowMusic);
+    }
+  } else if(screenName == "confirm") {
+    if(e.code.toLowerCase() == "escape" || e.code.toLowerCase() == "esc") {
       screenName = 'songs';
       $("#confirm").fadeOut(500);
+    } else if(e.code.toLowerCase() == "enter") {
+      testConfirm();
     }
   }
 }
+
+var messageID = 0;
+
+//Socket.IO
+$(() => {
+  const socket = io('https://awesomegame.kro.kr:3000');
+  $('form').submit(() => {
+    if($('#messageField').val() !== '') {
+      socket.emit('chat message', nickName + ':' + $('#messageField').val());
+      $('#messageField').val('');
+    }
+    return false;
+  });
+  socket.on('chat message', (msg) => {
+    msg = msg.split(':');
+    document.getElementById('messageLists').innerHTML = document.getElementById('messageLists').innerHTML + `<li style="padding-bottom: 7px;"><b id="name${messageID}"></b><br><span id="text${messageID}"></span></li>`;
+    document.getElementById(`name${messageID}`).textContent = msg[0];
+    document.getElementById(`text${messageID}`).textContent = msg[1];
+    messageID = messageID + 1;
+    $('#messageContainer').scrollTop($('#messageLists')[0].scrollHeight);
+  });
+});

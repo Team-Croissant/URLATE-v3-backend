@@ -29,7 +29,7 @@
     </div>
     <div id="infoContent" style="width: 100vw; height: 100vh; display: flex; align-items: center; flex-direction: column; overflow-y: scroll;">
       <h2 style="margin-top: 3em;">Develop</h2>
-      <img src="photos/profilePhotos/credible.png" alt="CreDible" class="profileImg">
+      <img src="photos/profilePhotos/credible.jpg" alt="CreDible" class="profileImg">
       <span class="profileName">CreDible</span>
       <span class="profileDescription">개발조무사</span>
       <h2>Design</h2>
@@ -195,11 +195,24 @@
     <br>
     <span id="testLevel">Level here</span>
   </div>
+  <div id="chat">
+    <div id="chatTitleContainer">
+      <span id="chatTitle">Chat</span>
+      <i class="material-icons" style="position: fixed; right: 1.3em; cursor: pointer;" onclick="chatCheck()">close</i>
+    </div>
+    <div id="messageContainer">
+      <ul id="messageLists"></ul>
+    </div>
+    <div id="messageFormContainer">
+      <form action="" id="messageForm">
+        <input id="messageField" placeholder="메시지를 입력 후 엔터를 누르세요" autocomplete="off" />
+      </form>
+    </div>
+  </div>
   <div id="fadeOut"></div>
   <span class="bottomCenterText"><span style="font-weight: 600; letter-spacing: -1px;">MyRhy</span> Experimental</span>
   <span id="copyright" class="bottomRightText">&copy; 2019. <b>MyRhy</b>, all rights reserved.<br>For more information, please click <a href="/copyright" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #2196F3;">here</a>.</span>
   <script src="howler/dist/howler.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <div id="script" style="display: none;">
     <% if(nickName) { %>
       <script>
@@ -217,6 +230,8 @@
       </script>
     <% } %>
   </div>
+  <script src="https://awesomegame.kro.kr:3000/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>

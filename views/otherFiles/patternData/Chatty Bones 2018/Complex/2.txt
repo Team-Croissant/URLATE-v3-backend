@@ -1,7 +1,8 @@
 comment{bg, click, slide, direction, hold, bpm, tempo, length}
 comment{Coordinates MUST BE within -50 ~ 50(0 is center)}
 length{272}
-bpm{1/1;130}
+bpm{1/1;140}
+comment{4/1;75}
 tempo{4}
 comment{tempo based on 'how many beats per tempo'}
 bg{#3acaff to #2d70ed}

@@ -1,4 +1,5 @@
-DisplayText|SongFileName|Producer,SingerName|BPM/BPM(time)|easy/hard/...|album.png|ShortName|Line|songName;
+DisplayText|SongFileName|Producer,SingerName|BPM/BPM(time)|easy/hard/...|album.png|ShortName|songName;
+MyRhy Main Theme|MyRhy Main theme_DEMO.mp3|Geoplex|174|2/7/9|imsi.png|theme|MyRhy Main Theme;
 IEVAN POLKKA<span style="font-weight: 300">(VSNS Remix)</span>|Miku Hatsune-Ievan Polkka_VSNSRemix_short.mp3|VSNS(feat.Miku Hatsune)|130|1/4/8|IevanPolkka.jpg|Ievan|Ievan Polkka(VSNS Remix);
 Chatty Bones 2018|Chatty Bones 2018_short.mp3|elsiff|140|2/5/6|chattybones.png|Chatty|Chatty Bones 2018;
 Autumn in the air|Autumn in the air_short.mp3|SuReal Original Sound|126|1/3/6|imsi.png|Autumn|Autumn in the air;

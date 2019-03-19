@@ -120,7 +120,7 @@ app.get('/game', function(req, res){
         var recId = userRecords[req.session.userId]['@rid'];
         req.session.recId = recId;
         req.session.save(function(){
-          res.render('game', {nickName: req.session.nickName, recId: recId, record: userRecords});
+          res.render('game', {nickName: req.session.nickName, recId: recId, record: JSON.stringify(userRecords)});
         });
       });
     });
@@ -265,4 +265,21 @@ https.createServer({
     cert: certificate
 }, app).listen(httpsPort, function() {
   signale.success(`HTTPS Server running at port ${httpsPort}.`);
+});
+
+//socket.io
+var socketPort = 3000;
+var socketServer = https.createServer({
+  key: privateKey,
+  cert: certificate
+}, app);
+socketServer.listen(socketPort, function() {
+  signale.success(`Socket server running at port ${socketPort}`);
+});
+var io = require('socket.io').listen(socketServer);
+
+io.sockets.on('connection',function (socket) {
+    socket.on('chat message', (msg) => {
+      io.emit('chat message', msg);
+    });
 });
