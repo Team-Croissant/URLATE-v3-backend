@@ -5,10 +5,10 @@ const fs = require('fs'),
     https = require('https'),
     express = require('express');
 const session = require('express-session');
-const OrientDB = require('orientjs');
+const OrientDBClient = require("orientjs").OrientDBClient;
 const bcrypt = require('bcrypt-nodejs');
 const OrientoStore = require('connect-oriento')(session);
-const config  = require('./config/config.json');
+const config = require('./config/config.json');
 const bkfd2Password = require("pbkdf2-password");
 const nodemailer = require('nodemailer');
 const hasher = bkfd2Password();
@@ -17,8 +17,8 @@ app.locals.pretty = true;
 const port = 80;
 const httpsPort = 443;
 
-const privateKey = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-key.pem', 'utf8');
-const certificate = fs.readFileSync('config/ssl/RWdSme569UCsFkURI5sOUg-crt.pem', 'utf8');
+const privateKey = fs.readFileSync(config.keys.key, 'utf8');
+const certificate = fs.readFileSync(config.keys.crt, 'utf8');
 
 const lawInfo = fs.readFileSync('views/other/개인정보처리방침.txt', 'utf8');
 
@@ -30,14 +30,14 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const server = OrientDB({
-   host:config.orient.host,
-   port:config.orient.port,
-   username:config.orient.username,
-   password:config.orient.password
+OrientDBClient.connect({
+  host: "localhost",
+  port: 2424
+}).then(client => {
+  return client.close();
+}).then(()=> {
+  signale.success("DB client closed");
 });
-
-const db = server.use(config.orient.db);
 
 app.use(session({
     secret: config.app_pw.secret,
@@ -53,7 +53,9 @@ app.set('views', './views');
 app.use(express.static('views'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
+app.get('/', function(req, res){
+  res.render('index');
+});
 
 http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
