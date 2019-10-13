@@ -1,13 +1,21 @@
 {
   "orient" : {
-    "host":"your host here",
-    "port":"your port here",
-    "username":"your username here",
-    "password":"your password here"
+    "db":"DB NAME HERE",
+    "host":"HOST HERE",
+    "port":"PORT HERE",
+    "username":"USERNAME HERE",
+    "password":"PASSWORD HERE"
   },
   "app_pw" : {
-    "secret": "your secret key here",
-    "resave": false,
-    "saveUninitialized": true
+    "secret": "SECRET KEY HERE",
+    "resave": "BOOLEAN HERE",
+    "saveUninitialized": "BOOLEAN HERE"
+  },
+  "store" : {
+    "server": "host=HOST HERE&port=PORT HERE&username=USERNAME HERE&password=PASSWORD HERE&db=DB NAME HERE"
+  },
+  "keys" : {
+    "key" : "KEY ADDRESS HERE",
+    "crt" : "CRT ADDRESS HERE"
   }
 }
