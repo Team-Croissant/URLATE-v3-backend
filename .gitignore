@@ -8,5 +8,3 @@ serverOn\.bat
 databaseOn\.bat
 
 config/ssl/
-
-views/chat\.ejs
