@@ -6,13 +6,14 @@ const fs = require('fs'),
     express = require('express');
 const session = require('express-session');
 const OrientDBClient = require("orientjs").OrientDBClient;
-const bcrypt = require('bcrypt-nodejs');
 const OrientoStore = require('connect-oriento')(session);
-const config = require('./config/config.json');
 const bkfd2Password = require("pbkdf2-password");
 const nodemailer = require('nodemailer');
 const hasher = bkfd2Password();
 const app = express();
+
+const config = require('./config/config.json');
+
 app.locals.pretty = true;
 const port = 80;
 const httpsPort = 443;
@@ -20,7 +21,7 @@ const httpsPort = 443;
 const privateKey = fs.readFileSync(config.keys.key, 'utf8');
 const certificate = fs.readFileSync(config.keys.crt, 'utf8');
 
-const lawInfo = fs.readFileSync('views/other/개인정보처리방침.txt', 'utf8');
+const lawInfo = fs.readFileSync('views/others/개인정보처리방침.txt', 'utf8');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',

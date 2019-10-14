@@ -1,12 +1,12 @@
 {
-  "name": "allnewmyrhy",
+  "name": "MyRhy",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "inCreDible",
   "license": "ISC",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -16,14 +16,10 @@
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.17.0",
-    "jade": "^1.11.0",
-    "md5": "^2.2.1",
     "nodemailer": "^6.3.1",
     "npm": "^6.12.0",
     "orientjs": "^3.0.7",
     "pbkdf2-password": "^1.2.1",
-    "pug": "^2.0.4",
-    "sha256": "^0.2.0",
     "signale": "^1.4.0",
     "socket.io": "^2.3.0",
     "supervisor": "^0.12.0"
