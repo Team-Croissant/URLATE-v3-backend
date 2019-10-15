@@ -1,5 +1,5 @@
 {
-  "name": "MyRhy",
+  "name": "myrhy",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,9 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "inCreDible",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
     "connect-oriento": "^0.1.4",
     "ejs": "^2.7.1",

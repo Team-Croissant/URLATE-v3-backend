@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo&display=swap');
+
 body {
     margin: 0;
     padding: 0;
     background-color: #EEE;
-    overflow: hidden;
+    text-align: center;
+    font-family: 'Heebo', sans-serif;
 }
 
-#logoBox {
+#logoContainer {
     width: 100vw;
     height: 62vh;
     display: flex;
@@ -14,10 +17,34 @@ body {
     align-items: center;
 }
 
-#emptyBox {
-    
+#buttonContainer {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 7vh;
+    opacity: 0;
+    transition-duration: 0s;
 }
 
 #logo {
     height: 24vh;
+}
+
+#footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 5vh;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    position: fixed;
+    bottom: 0;
+}
+
+.link {
+    padding: 5vw;
+    text-decoration: none;
+    color: rgb(34, 34, 34);
 }

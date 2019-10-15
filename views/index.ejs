@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com">
     <link rel="stylesheet" href="css/index.css">
     <title>MyRhy</title>
 </head>
 <body>
-    <div id="logoBox">
+    <div id="logoContainer">
         <img src="images/myrhyLogo_blue.png" id="logo">
     </div>
-    <div id="emptyBox"></div>
-    <input type="button" value="asdf" />
+    <div id="buttonContainer">
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
+    <div id="footer">
+        <a href="/community" class="link">Community</a>
+        <a href="https://mirai.rhyga.me" class="link">Mirai</a>
+        <a href="https://twitter.com" class="link">Twitter</a>
+        <a href="/info" class="link">Info</a>
+    </div>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="js/index.js"></script>
 </body>
 </html>

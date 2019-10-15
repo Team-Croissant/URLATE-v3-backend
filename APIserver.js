@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const signale = require('signale');
 const express = require('express');
+const router = express.Router();
 const OrientDBClient = require("orientjs").OrientDBClient;
 const bkfd2Password = require("pbkdf2-password");
 const hasher = bkfd2Password();
@@ -22,9 +23,8 @@ OrientDBClient.connect({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', function(req, res){
-  console.log('User wants some info.');
-  res.send('Welcome to APIServer');
+app.get('/', function(req, res) {
+  res.send('Welcome to our API!');
 });
 
 app.listen(port, function () {
