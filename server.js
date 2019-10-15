@@ -7,9 +7,7 @@ const fs = require('fs'),
 const session = require('express-session');
 const OrientDBClient = require("orientjs").OrientDBClient;
 const OrientoStore = require('connect-oriento')(session);
-const bkfd2Password = require("pbkdf2-password");
 const nodemailer = require('nodemailer');
-const hasher = bkfd2Password();
 const app = express();
 
 const config = require('./config/config.json');
@@ -37,7 +35,7 @@ OrientDBClient.connect({
 }).then(client => {
   return client.close();
 }).then(()=> {
-  signale.success("DB client closed");
+  signale.success("DB client loaded");
 });
 
 app.use(session({
@@ -70,21 +68,4 @@ https.createServer({
     cert: certificate
 }, app).listen(httpsPort, function() {
   signale.success(`HTTPS Server running at port ${httpsPort}.`);
-});
-
-//socket.io
-var socketPort = 3000;
-var socketServer = https.createServer({
-  key: privateKey,
-  cert: certificate
-}, app);
-socketServer.listen(socketPort, function() {
-  signale.success(`Socket server running at port ${socketPort}`);
-});
-var io = require('socket.io').listen(socketServer);
-
-io.sockets.on('connection',function (socket) {
-    socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
-    });
 });

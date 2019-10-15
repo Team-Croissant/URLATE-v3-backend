@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #EEE;
+    overflow: hidden;
+}
+
+#logoBox {
+    width: 100vw;
+    height: 62vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#emptyBox {
+    
+}
+
+#logo {
+    height: 24vh;
+}
