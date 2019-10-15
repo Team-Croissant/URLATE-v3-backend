@@ -44,7 +44,8 @@ body {
 }
 
 .link {
-    padding: 5vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
     text-decoration: none;
     color: rgb(34, 34, 34);
 }
