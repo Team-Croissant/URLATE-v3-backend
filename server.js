@@ -21,6 +21,13 @@ const certificate = fs.readFileSync(config.keys.crt, 'utf8');
 
 const lawInfo = fs.readFileSync('views/others/개인정보처리방침.txt', 'utf8');
 
+const {google} = require('googleapis');
+const plus = google.plus('v1');
+const OAuth2 = google.auth.OAuth2;
+const ClientId = config.google.clientId;
+const ClientSecret = config.google.clientSecret;
+const RedirectionUrl = "https://rhyga.me";
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -53,7 +60,79 @@ app.use(express.static('views'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', function(req, res){
-  res.render('index');
+  if(req.session.accessToken && req.session.refreshToken) {
+    res.redirect('/game');
+  } else {
+    res.render('index');
+  }
+});
+
+function getOAuthClient() {
+  return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
+}
+
+function getAuthUrl() {
+  var oauth2Client = getOAuthClient();
+  
+  var scopes = [
+      'https://www.googleapis.com/auth/plus.me'
+  ];
+
+  var url = oauth2Client.generateAuthUrl({
+      access_type: 'offline',
+      scope: scopes
+  });
+
+  return url;
+}
+
+app.post("/login", function(req, res) {
+  var oauth2Client = getOAuthClient();
+  var code = req.body.code;
+  oauth2Client.getToken(code, function(err, tokens) {
+      if (!err) {
+        oauth2Client.setCredentials({
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token
+        });
+        req.session.accessToken = tokens.access_token;
+        req.session.refreshToken = tokens.refresh_token;
+        plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
+          res.end('{"msg": "success"}');
+        });
+      } else {
+        res.end('{"msg": "fail"}');
+      }
+  });
+});
+
+app.get("/game", function(req, res) {
+  var oauth2Client = getOAuthClient();
+  oauth2Client.setCredentials({
+    access_token: req.session.accessToken,
+    refresh_token: req.session.refreshToken
+  });
+
+  client.session({ name: "demodb", username: "admin", password: "admin" })
+  .then(session => {
+      //TODO
+      return session.close();
+  });
+
+  plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
+    if(err) {
+      res.send("잘못된 접근입니다.");
+    } else {
+      console.log(response);
+      res.render('game', { name : response.data.displayName, id : response.data.id });
+    }
+  });
+});
+
+app.get("/logout", function(req, res) {
+  delete req.session.accessToken;
+  delete req.session.refreshToken;
+  res.redirect('/');
 });
 
 http.createServer(function (req, res) {

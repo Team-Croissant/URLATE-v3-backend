@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo&display=swap');
+@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
 
 body {
     margin: 0;
     padding: 0;
     background-color: #EEE;
     text-align: center;
-    font-family: 'Heebo', sans-serif;
+    font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', sans-serif;
 }
 
 #logoContainer {

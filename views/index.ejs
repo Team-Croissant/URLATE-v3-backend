@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html itemscope itemtype="http://schema.org/Article">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-signin-client_id" content="300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com">
     <link rel="stylesheet" href="css/index.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script>
+        function start() {
+            gapi.load('auth2', function() {
+                auth2 = gapi.auth2.init({
+                    client_id: '300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com'
+                });
+            });
+            gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 150,
+                'height': 40,
+                'longtitle': false,
+                'theme': 'Light'
+            });
+        }
+    </script>
     <title>MyRhy</title>
 </head>
 <body>
@@ -12,7 +29,7 @@
         <img src="images/myrhyLogo_blue.png" id="logo">
     </div>
     <div id="buttonContainer">
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <div id="my-signin2"></div>
     </div>
     <div id="footer">
         <a href="/community" class="link">Community</a>
@@ -20,7 +37,7 @@
         <a href="https://twitter.com" class="link">Twitter</a>
         <a href="/info" class="link">Info</a>
     </div>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>
