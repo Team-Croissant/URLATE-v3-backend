@@ -36,15 +36,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-OrientDBClient.connect({
-  host: "localhost",
-  port: 2424
-}).then(client => {
-  return client.close();
-}).then(()=> {
-  signale.success("DB client loaded");
-});
-
 app.use(session({
     secret: config.app_pw.secret,
     resave: config.app_pw.resave,
@@ -58,14 +49,6 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('views'));
 app.use(bodyParser.urlencoded({ extended: false }));
-
-app.get('/', function(req, res){
-  if(req.session.accessToken && req.session.refreshToken) {
-    res.redirect('/game');
-  } else {
-    res.render('index');
-  }
-});
 
 function getOAuthClient() {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
@@ -85,6 +68,14 @@ function getAuthUrl() {
 
   return url;
 }
+
+app.get('/', function(req, res){
+  if(req.session.accessToken && req.session.refreshToken) {
+    res.redirect('/game');
+  } else {
+    res.render('index');
+  }
+});
 
 app.post("/login", function(req, res) {
   var oauth2Client = getOAuthClient();
@@ -113,25 +104,43 @@ app.get("/game", function(req, res) {
     refresh_token: req.session.refreshToken
   });
 
-  client.session({ name: "demodb", username: "admin", password: "admin" })
-  .then(session => {
-      //TODO
-      return session.close();
-  });
-
   plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
     if(err) {
       res.send("잘못된 접근입니다.");
     } else {
-      console.log(response);
-      res.render('game', { name : response.data.displayName, id : response.data.id });
+      req.session.id = response.data.id;
+      OrientDBClient.connect({
+        host: "localhost",
+        port: 2424
+      }).then(client => {
+        client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
+        .then(session => {
+          session.query("select from User where id = :id", {params: { id: response.data.id }})
+          .all()
+          .then((results)=> {
+              if(Object.keys(results).length !== 0) {
+                signale.debug('results here');
+                res.render('game', { name : response.data.displayName, id : response.data.id });
+              } else {
+                signale.debug('No results');
+                res.redirect('/join');
+              }
+          });
+          return session.close();
+        });
+      });
     }
   });
+});
+
+app.get("/join", function(req, res) {
+  res.render('join');
 });
 
 app.get("/logout", function(req, res) {
   delete req.session.accessToken;
   delete req.session.refreshToken;
+  delete req.session.id;
   res.redirect('/');
 });
 
