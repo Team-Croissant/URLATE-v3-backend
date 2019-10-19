@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo&display=swap');
+@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #EEE;
+    font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#title {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.textbox {
+    background-color: #EEE;
+    border: 0;
+    width: 15vw;
+    min-width: 200px;
+    height: 3vh;
+    min-height: 25px;
+    margin: 10px;
+    border-bottom: 2px solid rgb(110, 110, 110);
+    transition-duration: 0.3s;
+}
+
+.textbox:hover {
+    background-color: rgb(250, 250, 250);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    border-bottom: 2px solid rgb(35, 35, 35);
+}
+
+.textbox:focus {
+    background-color: rgb(250, 250, 250);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    border-bottom: 2px solid rgb(35, 35, 35);
+}
+
+.button {
+    background-color: #FFF;
+    border: 0;
+    width: 5vw;
+    min-width: 50px;
+    height: 3vh;
+    min-height: 25px;
+    margin: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+#name {
+    display: none;
+}
+
+#pw {
+    display: none;
+}

@@ -103,26 +103,26 @@ app.get("/game", function(req, res) {
     access_token: req.session.accessToken,
     refresh_token: req.session.refreshToken
   });
-
   plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
     if(err) {
       res.send("잘못된 접근입니다.");
     } else {
-      req.session.id = response.data.id;
+      req.session.userid = response.data.id;
       OrientDBClient.connect({
         host: "localhost",
         port: 2424
       }).then(client => {
         client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
         .then(session => {
-          session.query("select from User where id = :id", {params: { id: response.data.id }})
+          session.query("select from User where userid = :id", {params: { id: response.data.id }})
           .all()
           .then((results)=> {
               if(Object.keys(results).length !== 0) {
-                signale.debug('results here');
-                res.render('game', { name : response.data.displayName, id : response.data.id });
+                if(response.data.id == results[0].userid) {
+                  res.render('game', { name : results[0].nickname, id : response.data.id });
+                }
               } else {
-                signale.debug('No results');
+                req.session.tempName = response.data.displayName;
                 res.redirect('/join');
               }
           });
@@ -134,13 +134,48 @@ app.get("/game", function(req, res) {
 });
 
 app.get("/join", function(req, res) {
-  res.render('join');
+  if(req.session.tempName) {
+    res.render('join', { name : req.session.tempName });
+  } else {
+    res.send('잘못된 접근입니다.');
+  }
+});
+
+app.post("/join", function(req, res) {
+  if(req.session.tempName && req.session.accessToken && req.session.refreshToken) {
+    OrientDBClient.connect({
+      host: "localhost",
+      port: 2424
+    }).then(client => {
+      client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
+      .then(session => {
+        session.insert().into("User")
+        .set({
+            userid : req.session.userid,
+            secondary : req.body.secondaryPassword,
+            nickname : req.body.displayName,
+            settings : {
+              volume : 100
+            }
+        })
+        .one()
+        .then((User) => {
+          delete req.session.tempName;
+          res.redirect("/game");
+        });
+        return session.close();
+      });
+    });
+  } else {
+    res.send('잘못된 접근입니다.');
+  }
 });
 
 app.get("/logout", function(req, res) {
   delete req.session.accessToken;
   delete req.session.refreshToken;
-  delete req.session.id;
+  delete req.session.userid;
+  delete req.session.tempName;
   res.redirect('/');
 });
 
