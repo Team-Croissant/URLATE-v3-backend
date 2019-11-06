@@ -8,6 +8,7 @@ const session = require('express-session');
 const OrientDBClient = require("orientjs").OrientDBClient;
 const OrientoStore = require('connect-oriento')(session);
 const nodemailer = require('nodemailer');
+const hasher = require("pbkdf2-password")();
 const app = express();
 
 const config = require('./config/config.json');
@@ -118,8 +119,12 @@ app.get("/game", function(req, res) {
           .all()
           .then((results)=> {
               if(Object.keys(results).length !== 0) {
-                if(response.data.id == results[0].userid) {
-                  res.render('game', { name : results[0].nickname, id : response.data.id });
+                if(req.session.authorized) {
+                  if(response.data.id == results[0].userid) {
+                    res.render('game', { name : results[0].nickname, id : response.data.id });
+                  }
+                } else {
+                  res.redirect('/authorize');
                 }
               } else {
                 req.session.tempName = response.data.displayName;
@@ -149,26 +154,53 @@ app.post("/join", function(req, res) {
     }).then(client => {
       client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
       .then(session => {
-        session.insert().into("User")
-        .set({
-            userid : req.session.userid,
-            secondary : req.body.secondaryPassword,
-            nickname : req.body.displayName,
-            settings : {
-              volume : 100
-            }
-        })
-        .one()
-        .then((User) => {
-          delete req.session.tempName;
-          res.redirect("/game");
+        hasher({password:req.body.secondaryPassword}, (err, pass, salt, hash) => {
+          session.insert().into("User")
+          .set({
+              userid : req.session.userid,
+              salt : salt,
+              secondary : hash,
+              nickname : req.body.displayName,
+              settings : {
+                general : {
+                  'lang' : 'en'
+                },
+                display : {
+                  'FPScounter' : true,
+                  'elementsRes' : 'auto',
+                  'autoImg' : true,
+                  'genEffect' : true,
+                  'lightEffect' : true
+                },
+                ingame : {
+                  'brightness' : 50,
+                  'genEffect' : true,
+                  'comEffect' : true,
+                  'lightEffect' : true
+                },
+                sound : {
+                  'musicVolume' : 50,
+                  'effectVolume' : 30,
+                  'offset' : 0
+                }
+              }
+          })
+          .one()
+          .then((User) => {
+            delete req.session.tempName;
+            res.redirect("/authorize");
+          });
+          return session.close();
         });
-        return session.close();
       });
     });
   } else {
     res.send('잘못된 접근입니다.');
   }
+});
+
+app.get("/authorize", function(req, res) {
+  res.render('authorize');
 });
 
 app.get("/logout", function(req, res) {
