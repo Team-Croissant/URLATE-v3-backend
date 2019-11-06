@@ -69,3 +69,7 @@ form {
 #pw {
     display: none;
 }
+
+#failed {
+    color: red;
+}

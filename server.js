@@ -200,7 +200,18 @@ app.post("/join", function(req, res) {
 });
 
 app.get("/authorize", function(req, res) {
-  res.render('authorize');
+  if(req.session.accessToken && req.session.refreshToken && req.session.userid) {
+    if(req.session.authorized) {
+      res.redirect('/game');
+    }
+    if(req.query.status == 'fail') {
+      res.render('authorizeFail')
+    } else {
+      res.render('authorize');
+    }
+  } else {
+    res.send('잘못된 접근입니다.');
+  }
 });
 
 app.post("/authorize", function(req, res) {
@@ -219,6 +230,8 @@ app.post("/authorize", function(req, res) {
               if(hash == results[0].secondary) {
                 req.session.authorized = true;
                 res.redirect('/game');
+              } else {
+                res.redirect('/authorize?status=fail');
               }
             });
         });
