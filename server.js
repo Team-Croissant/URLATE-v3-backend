@@ -203,7 +203,32 @@ app.get("/authorize", function(req, res) {
   res.render('authorize');
 });
 
+app.post("/authorize", function(req, res) {
+    OrientDBClient.connect({
+      host: "localhost",
+      port: 2424
+    }).then(client => {
+      client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
+       .then(session => {
+        session.query("select from User where userid = :id", {params: { id: req.session.userid }})
+        .all()
+        .then((results)=> {
+            console.log(results);
+            console.log(results[0].salt);
+            hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
+              if(hash == results[0].secondary) {
+                req.session.authorized = true;
+                res.redirect('/game');
+              }
+            });
+        });
+        return session.close();
+      });
+    });
+});
+
 app.get("/logout", function(req, res) {
+  delete req.session.authorized;
   delete req.session.accessToken;
   delete req.session.refreshToken;
   delete req.session.userid;

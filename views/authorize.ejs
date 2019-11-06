@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/join.css">
+    <title>Authorize your Account</title>
+</head>
+<body>
+    <span id="title">2차 비밀번호 확인</span>
+    <form action="/authorize" method="POST">
+        <input type="password" name="secondaryPassword" placeholder="2차 비밀번호" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="4" required>
+        <span id="pw">2차 비밀번호는 0부터 9까지의 숫자 4자리로 이루어져야 합니다.</span>
+        <input type="submit" class="button" value="완료">
+    </form>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/authorize.js"></script>
+</body>
+</html>
