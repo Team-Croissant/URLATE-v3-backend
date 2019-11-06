@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo:100,300,400,700&display=swap');
+@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #EEE;
+    text-align: center;
+    font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', sans-serif;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.lighter {
+    font-weight: 100;
+}
+
+.light {
+    font-weight: 300;
+}
+
+.medium {
+    font-weight: 400;
+}
+
+.link {
+    text-decoration: none;
+    color: #2196F3;
+}
+
+#loadingContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('/images/LoadingBackground.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+#logo {
+    width: 25vw;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+#footer {
+    position: fixed;
+    height: 10vh;
+    width: 100vw;
+    bottom: 0;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+#footerLeft {
+    padding-left: 5vw;
+    height: 100%;
+    width: 33vw;
+    display: flex;
+    text-align: left;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1.3em;
+}
+
+#footerCenter {
+    height: 100%;
+    width: 34vw;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+}
+
+#footerRight {
+    padding-right: 5vw;
+    height: 100%;
+    width: 33vw;
+    display: flex;
+    text-align: right;
+    align-items: center;
+    justify-content: flex-end;
+}
