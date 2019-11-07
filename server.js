@@ -99,6 +99,7 @@ app.post("/login", function(req, res) {
 });
 
 app.get("/game", function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
   var oauth2Client = getOAuthClient();
   oauth2Client.setCredentials({
     access_token: req.session.accessToken,

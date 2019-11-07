@@ -4,24 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyRhy Client</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/game.css">
+    <script src="js/pace.js"></script>
 </head>
 <body>
     <!--<span>Hi, <%=name %>! Your ID is <%=id %>.</span>-->
-    <script src="js/game.js"></script>
     <div id="footer">
         <div id="footerLeft">
-            
+            <img src="images/parts/returnIcon.png" class="icon" />
+            <span class="medium">&nbsp;Enter & Click to <strong>Select</strong></span>
         </div>
         <div id="footerCenter">
             <span class="light"><strong>MyRhy</strong> Experimental</span>
         </div>
         <div id="footerRight">
-            <span>&copy; 2019 <strong>MyRhy</strong>, all rights reserved.<span class="medium"><br>자세한 정보는 <a href="/copyright" target="_blank" rel="noopener noreferrer" class="link">여기</a>에서 확인하실 수 있습니다.</span></span>
+            <span>&copy; 2019 <strong>MyRhy</strong>, all rights reserved.<span class="medium"><br>자세한 정보는 <a href="/copyrights" target="_blank" rel="noopener noreferrer" class="link">여기</a>에서 확인하실 수 있습니다.</span></span>
         </div>
     </div>
     <div id="loadingContainer">
         <img src="images/myrhyLogo_blue.png" id="logo" />
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>
