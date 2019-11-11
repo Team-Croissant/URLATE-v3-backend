@@ -148,7 +148,9 @@ app.get("/join", function(req, res) {
 });
 
 app.post("/join", function(req, res) {
-  if(req.session.tempName && req.session.accessToken && req.session.refreshToken) {
+  const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
+  const passReg = /^[0-9]{4}$/;
+  if(req.session.tempName && req.session.accessToken && req.session.refreshToken && nameReg.test(req.body.displayName) && passReg.test(req.body.secondaryPassword)) {
     OrientDBClient.connect({
       host: "localhost",
       port: 2424
