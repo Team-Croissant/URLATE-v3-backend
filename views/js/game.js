@@ -16,6 +16,9 @@ Pace.on('done', () => {
       $("#myrhyText").css("font-size", "1em");
       $("#myrhyText").css("margin-bottom", "0vh");
       $("#songName").css("font-size", "1.8em");
+      $("#header").animate({
+        opacity: 100
+      }, 1000);
       $("#footerLeft").animate({
         opacity: 100
       }, 1000, () => {
