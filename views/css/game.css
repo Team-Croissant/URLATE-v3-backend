@@ -6,7 +6,7 @@ body {
     padding: 0;
     background-color: #EEE;
     text-align: center;
-    font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', sans-serif;
+    font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', '나눔바른고딕', arial;
     overflow-x: hidden;
     overflow-y: hidden;
 }
@@ -146,7 +146,8 @@ body {
     text-align: center;
     align-items: center;
     justify-content: center;
-    font-size: 1.4em;
+    flex-direction: column;
+    transition-duration: 1s;
 }
 
 #footerRight {
@@ -157,4 +158,20 @@ body {
     text-align: right;
     align-items: center;
     justify-content: flex-end;
+}
+
+#myrhyText {
+  font-size: 1.4em;
+  transition-duration: 1s;
+  margin-bottom: 2vh;
+}
+
+#songName {
+  opacity: 0;
+  font-size: 1em;
+  transition-duration: 1s;
+}
+
+#noteIcon {
+  height: 0.8em;
 }
