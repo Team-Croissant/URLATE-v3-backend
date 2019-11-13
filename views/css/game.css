@@ -34,6 +34,20 @@ body {
     height: 3vh;
 }
 
+.mainIcon {
+  height: 18vh;
+}
+
+.menuTitle {
+  font-size: 3vh;
+  font-weight: 600;
+}
+
+.menuSubtitle {
+  font-size: 2vh;
+  margin-top: -5px;
+}
+
 .pace {
     -webkit-pointer-events: none;
     pointer-events: none;
@@ -179,10 +193,11 @@ body {
 }
 
 #header {
+  position: fixed;
   opacity: 0;
   height: 15vh;
   width: 100vw;
-  top: 5vh;
+  top: 0;
   display: flex;
   text-align: center;
   align-items: center;
@@ -224,6 +239,12 @@ body {
   margin: 5px;
 }
 
+#Hline {
+  border-top: 2px solid #BBB;
+  width: 1.5em;
+  margin: 10px;
+}
+
 #selectContainer {
   position: fixed;
   top: 0;
@@ -235,4 +256,22 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+#menuContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+#menuMain {
+  margin: 3vw;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }

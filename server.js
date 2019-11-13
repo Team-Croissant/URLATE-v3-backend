@@ -228,8 +228,6 @@ app.post("/authorize", function(req, res) {
         session.query("select from User where userid = :id", {params: { id: req.session.userid }})
         .all()
         .then((results)=> {
-            console.log(results);
-            console.log(results[0].salt);
             hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
               if(hash == results[0].secondary) {
                 req.session.authorized = true;
