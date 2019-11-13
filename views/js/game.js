@@ -1,5 +1,3 @@
-//var songConfig = $.getJSON("others/songs.json");
-
 Howler.volume(0.5);
 
 var songs = new Howl({

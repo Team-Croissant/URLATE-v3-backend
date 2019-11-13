@@ -1,4 +1,4 @@
-const passReg = /^[0-9]{4}$/;
+const passReg = /^[0-9]{4,6}$/;
 
 $("#password").blur(() => {
     if(!passReg.test($("#password").val())) {

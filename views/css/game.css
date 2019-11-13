@@ -215,5 +215,24 @@ body {
 #name {
   color: white;
   padding-left: 5vw;
-  font-size: 2em;
+  font-size: 3.5vh;
+}
+
+#line {
+  border-left: 2px solid #BBB;
+  height: 1em;
+  margin: 5px;
+}
+
+#selectContainer {
+  position: fixed;
+  top: 0;
+  display: none;
+  opacity: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/myrhyTrackBackground.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }

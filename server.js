@@ -99,7 +99,6 @@ app.post("/login", function(req, res) {
 });
 
 app.get("/game", function(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
   var oauth2Client = getOAuthClient();
   oauth2Client.setCredentials({
     access_token: req.session.accessToken,
@@ -149,7 +148,7 @@ app.get("/join", function(req, res) {
 
 app.post("/join", function(req, res) {
   const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
-  const passReg = /^[0-9]{4}$/;
+  const passReg = /^[0-9]{4,6}$/;
   if(req.session.tempName && req.session.accessToken && req.session.refreshToken && nameReg.test(req.body.displayName) && passReg.test(req.body.secondaryPassword)) {
     OrientDBClient.connect({
       host: "localhost",
@@ -218,6 +217,8 @@ app.get("/authorize", function(req, res) {
 });
 
 app.post("/authorize", function(req, res) {
+  const passReg = /^[0-9]{4,6}$/;
+  if(passReg.test(req.body.secondaryPassword)) {
     OrientDBClient.connect({
       host: "localhost",
       port: 2424
@@ -241,6 +242,9 @@ app.post("/authorize", function(req, res) {
         return session.close();
       });
     });
+  } else {
+    res.send("잘못된 접근입니다.");
+  }
 });
 
 app.get("/logout", function(req, res) {

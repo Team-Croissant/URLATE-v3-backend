@@ -1,5 +1,5 @@
 const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
-const passReg = /^[0-9]{4}$/;
+const passReg = /^[0-9]{4,6}$/;
 
 $("#nickname").blur(() => {
     if(!nameReg.test($("#nickname").val())) {
