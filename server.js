@@ -121,7 +121,7 @@ app.get("/game", function(req, res) {
               if(Object.keys(results).length !== 0) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
-                    res.render('game', { name : results[0].nickname, id : response.data.id });
+                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
                   }
                 } else {
                   res.redirect('/authorize');
