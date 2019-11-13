@@ -13,7 +13,7 @@
         <span id="name">닉네임(별명)은 5글자에서 12글자의 문자열(A-Z, a-z, _, -)로 이루어져야 합니다.</span>
         <input type="password" name="secondaryPassword" placeholder="2차 비밀번호" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
         <span id="pw">2차 비밀번호는 0부터 9까지의 숫자 4-6자리로 이루어져야 합니다.</span>
-        <input type="submit" class="button" value="완료">
+        <input type="submit" class="button" onclick="check()" value="완료">
     </form>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/join.js"></script>
