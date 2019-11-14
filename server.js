@@ -255,6 +255,10 @@ app.get("/logout", function(req, res) {
   res.redirect('/');
 });
 
+app.use(function(req, res, next) {
+  res.status(404).render('404');
+});
+
 http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
     res.end();
