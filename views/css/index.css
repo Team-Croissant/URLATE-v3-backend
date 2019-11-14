@@ -42,6 +42,7 @@ body {
     box-shadow: 0 1px 5px rgba(0,0,0,0.5);
     position: fixed;
     bottom: 0;
+    font-weight: bold;
 }
 
 .link {

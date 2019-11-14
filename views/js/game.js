@@ -1,9 +1,8 @@
-Howler.volume(settings.sound.musicVolume / 100);
-
 var songs = new Howl({
   src: ['https://cdn.rhyga.me/songs/192kbps/MyRhyThemeSong.mp3'],
   autoplay: true,
   loop: true,
+  volume : settings.sound.musicVolume / 100,
   onend: function() {
   }
 });
