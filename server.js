@@ -164,6 +164,10 @@ app.post("/join", function(req, res) {
               secondary : hash,
               nickname : req.body.displayName,
               settings : {
+                private : {
+                  'advancedStatus' : 0,
+                  'advancedDate' : ''
+                },
                 general : {
                   'lang' : 'en'
                 },
