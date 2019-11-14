@@ -175,14 +175,15 @@ app.post("/join", function(req, res) {
                   'lightEffect' : true
                 },
                 ingame : {
-                  'brightness' : 50,
+                  'brightness' : 25,
+                  'blur' : 100,
                   'genEffect' : true,
                   'comEffect' : true,
                   'lightEffect' : true
                 },
                 sound : {
-                  'musicVolume' : 50,
-                  'effectVolume' : 30,
+                  'musicVolume' : 10,
+                  'effectVolume' : 5,
                   'offset' : 0
                 }
               }
