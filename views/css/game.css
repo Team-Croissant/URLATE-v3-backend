@@ -38,6 +38,11 @@ body {
   height: 18vh;
 }
 
+.shadowIcon {
+  filter: drop-shadow(0 0 5px rgba(0,0,0,.5));
+  height: 18vh;
+}
+
 .menuTitle {
   font-size: 3vh;
   font-weight: 600;
@@ -267,11 +272,19 @@ body {
   justify-content: center;
 }
 
-#menuMain {
+.menuSelector {
   margin: 3vw;
   display: flex;
   flex-direction: column;
   text-align: center;
   align-items: center;
   justify-content: center;
+}
+
+#menuEditor {
+  display: none;
+}
+
+#menuAdvanced {
+  display: none;
 }
