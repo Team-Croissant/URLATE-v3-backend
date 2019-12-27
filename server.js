@@ -6,7 +6,7 @@ const fs = require('fs'),
     https = require('https'),
     express = require('express');
 const session = require('express-session');
-const OrientDBClient = require("orientjs").OrientDBClient;
+const OrientDB = require("orientjs");
 const OrientoStore = require('connect-oriento')(session);
 const nodemailer = require('nodemailer');
 const hasher = require("pbkdf2-password")();
@@ -30,6 +30,24 @@ const OAuth2 = google.auth.OAuth2;
 const ClientId = config.google.clientId;
 const ClientSecret = config.google.clientSecret;
 const RedirectionUrl = "https://rhyga.me";
+
+const server = OrientDB({
+  host:config.orient.host,
+  port:config.orient.port,
+  username:config.orient.username,
+  password:config.orient.password
+});
+
+const db = server.use(config.orient.db);
+
+app.use(session({
+   secret: config.app_pw.secret,
+   resave: config.app_pw.resave,
+   saveUninitialized: config.app_pw.saveUninitialized,
+   store: new OrientoStore({
+     server: config.store.server
+   })
+}));
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -123,30 +141,22 @@ app.get("/game", function(req, res) {
       res.render('accessDenined');
     } else {
       req.session.userid = response.data.id;
-      OrientDBClient.connect({
-        host: "localhost",
-        port: 2424
-      }).then(client => {
-        client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
-        .then(session => {
-          session.query("select from User where userid = :id", {params: { id: response.data.id }})
-          .all()
-          .then((results)=> {
-              if(Object.keys(results).length !== 0) {
-                if(req.session.authorized) {
-                  if(response.data.id == results[0].userid) {
-                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
-                  }
-                } else {
-                  res.redirect('/authorize');
-                }
-              } else {
-                req.session.tempName = response.data.displayName;
-                res.redirect('/join');
-              }
-          });
-          return session.close();
-        });
+      db.query("select from User where userid = :id", {params: { id: response.data.id }})
+      .all()
+      .then((results)=> {
+        if(Object.keys(results).length !== 0) {
+          if(req.session.authorized) {
+            if(response.data.id == results[0].userid) {
+              res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
+            }
+          } else {
+              res.redirect('/authorize');
+          }
+        } else {
+          req.session.tempEmail = response.data.emails[0].value;
+          req.session.tempName = response.data.displayName;
+          res.redirect('/join');
+        }
       });
     }
   });
@@ -164,54 +174,46 @@ app.post("/join", function(req, res) {
   const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
   const passReg = /^[0-9]{4,6}$/;
   if(req.session.tempName && req.session.accessToken && req.session.refreshToken && nameReg.test(req.body.displayName) && passReg.test(req.body.secondaryPassword)) {
-    OrientDBClient.connect({
-      host: "localhost",
-      port: 2424
-    }).then(client => {
-      client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
-      .then(session => {
-        hasher({password:req.body.secondaryPassword}, (err, pass, salt, hash) => {
-          session.insert().into("User")
-          .set({
-              userid : req.session.userid,
-              salt : salt,
-              secondary : hash,
-              nickname : req.body.displayName,
-              settings : {
-                private : {
-                  'advancedStatus' : 0,
-                  'advancedDate' : ''
-                },
-                general : {
-                  'lang' : 'en'
-                },
-                display : {
-                  'FPScounter' : true,
-                  'elementsRes' : 'auto',
-                  'autoImg' : true,
-                  'genEffect' : true,
-                  'lightEffect' : true
-                },
-                ingame : {
-                  'brightness' : 25,
-                  'blur' : 100,
-                  'genEffect' : true,
-                  'comEffect' : true,
-                  'lightEffect' : true
-                },
-                sound : {
-                  'musicVolume' : 10,
-                  'effectVolume' : 5,
-                  'offset' : 0
-                }
-              }
-          })
-          .one()
-          .then((User) => {
-            delete req.session.tempName;
-            res.redirect("/authorize");
-          });
-          return session.close();
+    db.class.get('User').then(function(user){
+      hasher({password:req.body.secondaryPassword}, (err, pass, salt, hash) => {
+        user.create({
+          userid : req.session.userid,
+          salt : salt,
+          secondary : hash,
+          nickname : req.body.displayName,
+          email : req.session.tempEmail,
+          settings : {
+            private : {
+              'advancedStatus' : 0,
+              'advancedDate' : ''
+            },
+            general : {
+              'lang' : 'en'
+            },
+            display : {
+              'FPScounter' : true,
+              'elementsRes' : 'auto',
+              'autoImg' : true,
+              'genEffect' : true,
+              'lightEffect' : true
+            },
+            ingame : {
+              'brightness' : 25,
+              'blur' : 100,
+              'genEffect' : true,
+              'comEffect' : true,
+              'lightEffect' : true
+            },
+            sound : {
+              'musicVolume' : 10,
+              'effectVolume' : 5,
+              'offset' : 0
+            }
+          }
+        }).then(() => {
+          delete req.session.tempName;
+          delete req.session.tempEmail;
+          res.redirect("/authorize");
         });
       });
     });
@@ -238,27 +240,18 @@ app.get("/authorize", function(req, res) {
 app.post("/authorize", function(req, res) {
   const passReg = /^[0-9]{4,6}$/;
   if(passReg.test(req.body.secondaryPassword)) {
-    OrientDBClient.connect({
-      host: "localhost",
-      port: 2424
-    }).then(client => {
-      client.session({ name: config.orient.db, username: config.orient.username, password: config.orient.password })
-       .then(session => {
-        session.query("select from User where userid = :id", {params: { id: req.session.userid }})
-        .all()
-        .then((results)=> {
-            hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
-              if(hash == results[0].secondary) {
-                req.session.authorized = true;
-                res.redirect('/game');
-              } else {
-                res.redirect('/authorize?status=fail');
-              }
-            });
-        });
-        return session.close();
+    db.query("select from User where userid = :id", {params: { id: req.session.userid }})
+      .all()
+      .then((results)=> {
+          hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
+            if(hash == results[0].secondary) {
+              req.session.authorized = true;
+              res.redirect('/game');
+            } else {
+              res.redirect('/authorize?status=fail');
+            }
+          });
       });
-    });
   } else {
     res.render('accessDenined');
   }
@@ -270,6 +263,7 @@ app.get("/logout", function(req, res) {
   delete req.session.refreshToken;
   delete req.session.userid;
   delete req.session.tempName;
+  delete req.session.tempEmail;
   res.redirect('/');
 });
 
