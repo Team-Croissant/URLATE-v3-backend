@@ -1,0 +1,23 @@
+{
+	"lang": "ko",
+	"index_logoAlt": "Avoid & Get on the tempo, MyRhy",
+	"community": "커뮤니티",
+	"mirai": "미라이",
+	"twitter": "트위터",
+	"info": "정보",
+	"join_title": "MyRhy의 세계로!",
+	"join": "최초 등록",
+	"namePlaceholder": "닉네임(별명)",
+	"nameText": "닉네임(별명)은 5글자에서 12글자의 문자열(A-Z, a-z, _, -)로 이루어져야 합니다.",
+	"pwPlaceholder": "2차 비밀번호",
+	"pwText": "2차 비밀번호는 0부터 9까지의 숫자 4-6자리로 이루어져야 합니다.",
+	"done": "완료!",
+	"authorize_title": "똑똑, 계세요?",
+	"authorize": "비밀번호 확인",
+	"authorizeFailed": "비밀번호가 잘못되었습니다. 다시 한 번 확인해주세요.",
+	"oops": "앗!",
+	"404_text": "이 페이지는 존재하지 않습니다.",
+	"mainPage": "메인화면으로 돌아가기",
+	"access_denined": "액세스 거절됨",
+	"access_denined_text": "액세스 권한이 없습니다."
+}

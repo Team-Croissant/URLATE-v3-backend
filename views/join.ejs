@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="<%= __('lang') %>">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/join.css">
     <link rel="shortcut icon" href="images/parts/favicon.ico">
-    <title>Join to MyRhy</title>
+    <title><%= __('join_title') %></title>
 </head>
 <body>
-    <span id="title">최초 등록</span>
+    <span id="title"><%= __('join') %></span>
     <form action="/join" method="POST">
-        <input type="text" name="displayName" placeholder="닉네임(별명)" id="nickname" class="textbox" pattern="^[a-zA-Z0-9_-]*$" minlength="5" maxlength="12" value="<%=name %>" required>
-        <span id="name">닉네임(별명)은 5글자에서 12글자의 문자열(A-Z, a-z, _, -)로 이루어져야 합니다.</span>
-        <input type="password" name="secondaryPassword" placeholder="2차 비밀번호" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
-        <span id="pw">2차 비밀번호는 0부터 9까지의 숫자 4-6자리로 이루어져야 합니다.</span>
-        <input type="submit" class="button" onclick="check()" value="완료">
+        <input type="text" name="displayName" placeholder="<%= __('namePlaceholder') %>" id="nickname" class="textbox" pattern="^[a-zA-Z0-9_-]*$" minlength="5" maxlength="12" value="<%=name %>" required>
+        <span id="name"><%= __('nameText') %></span>
+        <input type="password" name="secondaryPassword" placeholder="<%= __('pwPlaceholder') %>" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
+        <span id="pw"><%= __('pwText') %></span>
+        <input type="submit" class="button" onclick="check()" value="<%= __('done') %>">
     </form>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/join.js"></script>

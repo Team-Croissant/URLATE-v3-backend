@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 const signale = require('signale');
 const fs = require('fs'),
     http = require('http'),
@@ -10,6 +11,7 @@ const OrientoStore = require('connect-oriento')(session);
 const nodemailer = require('nodemailer');
 const hasher = require("pbkdf2-password")();
 const app = express();
+const i18n = require('./i18n');
 
 const config = require('./config/config.json');
 
@@ -50,6 +52,8 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('views'));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(i18n);
 
 function getOAuthClient() {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
@@ -76,6 +80,16 @@ app.get('/', function(req, res){
   } else {
     res.render('index');
   }
+});
+
+app.get('/en', function(req, res) {
+  res.cookie('lang', 'en');
+  res.redirect('/');
+});
+
+app.get('/ko', function(req, res) {
+  res.cookie('lang', 'ko');
+  res.redirect('/');
 });
 
 app.post("/login", function(req, res) {
@@ -106,7 +120,7 @@ app.get("/game", function(req, res) {
   });
   plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
     if(err) {
-      res.send("잘못된 접근입니다.");
+      res.render('accessDenined');
     } else {
       req.session.userid = response.data.id;
       OrientDBClient.connect({
@@ -142,7 +156,7 @@ app.get("/join", function(req, res) {
   if(req.session.tempName) {
     res.render('join', { name : req.session.tempName });
   } else {
-    res.send('잘못된 접근입니다.');
+    res.render('accessDenined');
   }
 });
 
@@ -202,7 +216,7 @@ app.post("/join", function(req, res) {
       });
     });
   } else {
-    res.send('잘못된 접근입니다.');
+    res.render('accessDenined');
   }
 });
 
@@ -217,7 +231,7 @@ app.get("/authorize", function(req, res) {
       res.render('authorize');
     }
   } else {
-    res.send('잘못된 접근입니다.');
+    res.render('accessDenined');
   }
 });
 
@@ -246,7 +260,7 @@ app.post("/authorize", function(req, res) {
       });
     });
   } else {
-    res.send("잘못된 접근입니다.");
+    res.render('accessDenined');
   }
 });
 

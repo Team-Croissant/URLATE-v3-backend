@@ -31,17 +31,22 @@
 </head>
 <body>
     <div id="logoContainer">
-        <img src="images/myrhyLogo_blue.png" id="logo" alt="Avoid & Get on the tempo, MyRhy">
+        <img src="images/myrhyLogo_blue.png" id="logo" alt="<%= __('index_logoAlt') %>">
     </div>
     <div id="buttonContainer">
         <div id="my-signin2"></div>
     </div>
     <div id="footer">
-        <a href="https://community.rhyga.me" class="link">Community</a>
-        <a href="https://mirai.rhyga.me" class="link">Mirai</a>
-        <a href="https://twitter.com" class="link">Twitter</a>
-        <a href="/info" class="link">Info</a>
+        <a href="https://community.rhyga.me" class="link"><%= __('community') %></a>
+        <a href="https://mirai.rhyga.me" class="link"><%= __('mirai') %></a>
+        <a href="https://twitter.com" class="link"><%= __('twitter') %></a>
+        <a href="/info" class="link"><%= __('info') %></a>
     </div>
+    <% if(__('lang') == 'en') { %>
+        <a href="/ko" class="top">한국어(Korean)</a>
+    <% } else { %>
+        <a href="/en" class="top">English(영어)</a>
+    <% } %>
     <script src="js/index.js"></script>
 </body>
 </html>

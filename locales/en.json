@@ -1,0 +1,23 @@
+{
+	"lang": "en",
+	"index_logoAlt": "Avoid & Get on the tempo, MyRhy",
+	"community": "Community",
+	"mirai": "Mirai",
+	"twitter": "Twitter",
+	"info": "Info",
+	"join_title": "Welcome to world of MyRhy!",
+	"join": "Registration",
+	"namePlaceholder": "Nickname",
+	"nameText": "Nickname must consist of a string of 5 to 12 characters (A-Z, a-z, _, -).",
+	"pwPlaceholder": "Secondary password",
+	"pwText": "The secondary password must consist of 4-6 digits of the number 0 through 9.",
+	"done": "Done!",
+	"authorize_title": "Hi, there?",
+	"authorize": "Confirm Password",
+	"authorizeFailed": "Incorrect password. Please check again.",
+	"oops": "Oops!",
+	"404_text": "This page does not exist",
+	"mainPage": "Return to main page",
+	"access_denined": "Access Denined",
+	"access_denined_text": "You do not have permission to access."
+}

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="<%= __('lang') %>">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/join.css">
     <link rel="shortcut icon" href="images/parts/favicon.ico">
-    <title>Authorize your Account</title>
+    <title><%= __('authorize_title') %></title>
 </head>
 <body>
-    <span id="title">2차 비밀번호 확인</span>
+    <span id="title"><%= __('authorize') %></span>
     <form action="/authorize" method="POST">
-        <input type="password" name="secondaryPassword" placeholder="2차 비밀번호" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
-        <span id="pw">2차 비밀번호는 0부터 9까지의 숫자 4-6자리로 이루어져야 합니다.</span>
-        <input type="submit" class="button" value="완료">
+        <input type="password" name="secondaryPassword" placeholder="<%= __('pwPlaceholder') %>" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
+        <span id="pw"><%= __('pwText') %></span>
+        <input type="submit" class="button" value="<%= __('done') %>">
     </form>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/authorize.js"></script>

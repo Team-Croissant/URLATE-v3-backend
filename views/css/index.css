@@ -42,7 +42,6 @@ body {
     box-shadow: 0 1px 5px rgba(0,0,0,0.5);
     position: fixed;
     bottom: 0;
-    font-weight: bold;
 }
 
 .link {
@@ -50,4 +49,12 @@ body {
     margin-right: 5vw;
     text-decoration: none;
     color: rgb(34, 34, 34);
+}
+
+.top {
+    text-decoration: none;
+    color: rgb(34, 34, 34);
+    position: fixed;
+    top: 1vh;
+    right: 1vw;
 }
