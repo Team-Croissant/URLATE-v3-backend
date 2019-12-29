@@ -22,8 +22,6 @@ const httpsPort = 443;
 const privateKey = fs.readFileSync(config.keys.key, 'utf8');
 const certificate = fs.readFileSync(config.keys.crt, 'utf8');
 
-const lawInfo = fs.readFileSync('views/others/개인정보처리방침.txt', 'utf8');
-
 const {google} = require('googleapis');
 const plus = google.plus('v1');
 const OAuth2 = google.auth.OAuth2;
