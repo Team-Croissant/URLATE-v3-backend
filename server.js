@@ -5,8 +5,6 @@ const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     express = require('express');
-const subdomain = require('express-subdomain');
-const api = express.Router();
 const session = require('express-session');
 const OrientDB = require("orientjs");
 const OrientoStore = require('connect-oriento')(session);
@@ -74,11 +72,6 @@ app.use(express.static('views'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(i18n);
-app.use(subdomain('api', api));
-
-api.get('/', function(req, res) {
-  res.send('Welcome to our API!');
-});
 
 function getOAuthClient() {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
@@ -279,7 +272,7 @@ app.use(function(req, res, next) {
 });
 
 http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.writeHead(301, { "Location": "https://rhyga.me" });
     res.end();
 }).listen(port, function() {
   signale.success(`HTTP Server running at port ${port}.`);
