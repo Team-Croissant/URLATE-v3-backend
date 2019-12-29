@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.17.0",
+    "express-subdomain": "^1.0.5",
     "googleapis": "^44.0.0",
     "i18n": "^0.8.4",
     "nodemailer": "^6.3.1",

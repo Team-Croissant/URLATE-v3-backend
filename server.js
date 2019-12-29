@@ -5,6 +5,8 @@ const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     express = require('express');
+const subdomain = require('express-subdomain');
+const api = express.Router();
 const session = require('express-session');
 const OrientDB = require("orientjs");
 const OrientoStore = require('connect-oriento')(session);
@@ -72,6 +74,11 @@ app.use(express.static('views'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(i18n);
+app.use(subdomain('api', api));
+
+api.get('/', function(req, res) {
+  res.send('Welcome to our API!');
+});
 
 function getOAuthClient() {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
