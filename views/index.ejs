@@ -32,6 +32,11 @@
 <body>
     <div id="logoContainer">
         <img src="images/myrhyLogo_blue.png" id="logo" alt="<%= __('index_logoAlt') %>">
+        <% if(__('lang') == 'en') { %>
+            <a href="/ko" class="bottomLang">English(영어)</a>
+        <% } else { %>
+            <a href="/en" class="bottomLang">한국어(Korean)</a>
+        <% } %>
     </div>
     <div id="buttonContainer">
         <div id="my-signin2"></div>
@@ -42,11 +47,6 @@
         <a href="https://twitter.com/MyrhyO" class="link"><%= __('twitter') %></a>
         <a href="/info" class="link"><%= __('info') %></a>
     </div>
-    <% if(__('lang') == 'en') { %>
-        <a href="/ko" class="top">English(영어)</a>
-    <% } else { %>
-        <a href="/en" class="top">한국어(Korean)</a>
-    <% } %>
     <script src="js/index.js"></script>
 </body>
 </html>

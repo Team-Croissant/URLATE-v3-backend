@@ -51,10 +51,8 @@ body {
     color: rgb(34, 34, 34);
 }
 
-.top {
+.bottomLang {
     text-decoration: none;
-    color: rgb(34, 34, 34);
-    position: fixed;
-    top: 1vh;
-    right: 1vw;
+    color: rgb(25, 153, 204);
+    font-size: .9em;
 }
