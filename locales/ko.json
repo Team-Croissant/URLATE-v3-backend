@@ -12,12 +12,21 @@
 	"pwPlaceholder": "2차 비밀번호",
 	"pwText": "2차 비밀번호는 0부터 9까지의 숫자 4-6자리로 이루어져야 합니다.",
 	"done": "완료!",
-	"authorize_title": "똑똑, 계세요?",
+	"authorize_title": "신분증 보여주실래요?",
 	"authorize": "비밀번호 확인",
 	"authorizeFailed": "비밀번호가 잘못되었습니다. 다시 한 번 확인해주세요.",
 	"oops": "앗!",
 	"404_text": "이 페이지는 존재하지 않습니다.",
 	"mainPage": "메인화면으로 돌아가기",
 	"access_denined": "액세스 거절됨",
-	"access_denined_text": "액세스 권한이 없습니다."
+	"access_denined_text": "액세스 권한이 없습니다.",
+	"more_info_1": "자세한 정보는 ",
+	"more_info_here": "여기",
+	"more_info_2": "에서 확인하실 수 있습니다.",
+	"play_title": "플레이",
+	"play_subtitle": "PLAY",
+	"editor_title": "에디터",
+	"editor_subtitle": "EDITOR",
+	"advanced_title": "월정액",
+	"advanced_subtitle": "ADVANCED"
 }

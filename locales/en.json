@@ -19,5 +19,14 @@
 	"404_text": "This page does not exist",
 	"mainPage": "Return to main page",
 	"access_denined": "Access Denined",
-	"access_denined_text": "You do not have permission to access."
+	"access_denined_text": "You do not have permission to access.",
+	"more_info_1": "More information can be found ",
+	"more_info_here": "here",
+	"more_info_2": ".",
+	"play_title": "PLAY",
+	"play_subtitle": "플레이",
+	"editor_title": "EDITOR",
+	"editor_subtitle": "에디터",
+	"advanced_title": "ADVANCED",
+	"advanced_subtitle": "월정액"
 }
