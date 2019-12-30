@@ -306,6 +306,8 @@ body {
 #advancedContainer {
   z-index: 100;
   position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
   top: 0;
   display: none;
   opacity: 0;
@@ -347,4 +349,29 @@ body {
   position: fixed;
   top: 6vh;
   right: 5vw;
+}
+
+table {
+  text-align: center;
+  border-collapse: collapse;
+  width: 40vw;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+#tableHeader {
+  background: linear-gradient(to Right, #eabed8, #78d6ee);
+  color: white;
+}
+
+#tableContainer {
+  opacity: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }

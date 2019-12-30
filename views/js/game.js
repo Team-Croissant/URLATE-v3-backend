@@ -75,14 +75,18 @@ function advanced() {
             $("#advancedDetails").animate({
               opacity: 1
             }, 300, () => {
-              for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
-                setTimeout(() => {
-                  $(".advancedDetails").eq(eqn).animate({
-                    opacity: 1
-                  }, 300);
-                  eqn++;
-                }, 300 * i);
-              }
+              $("#tableContainer").animate({
+                opacity: 1
+              }, 300, () => {
+                for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
+                  setTimeout(() => {
+                    $(".advancedDetails").eq(eqn).animate({
+                      opacity: 1
+                    }, 300);
+                    eqn++;
+                  }, 300 * i);
+                }
+              });
             });
           });
         });
@@ -112,6 +116,7 @@ function displayClose() {
       $("#advancedSupport").css("opacity", 0);
       $("#supportDetails").css("opacity", 0);
       $("#advancedDetails").css("opacity", 0);
+      $("#tableContainer").css("opacity", 0);
       for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
         $(".advancedDetails").eq(i).css("opacity", 0);
       }

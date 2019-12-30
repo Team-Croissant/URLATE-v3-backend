@@ -69,11 +69,34 @@
         <p id="supportDetails"><%= __('advanced_supportDetails1') %><br><%= __('advanced_supportDetails2') %><br><%= __('advanced_supportDetails3') %></p>
         <br>
         <h2 class="advancedSubtitle" id="advancedDetails"><%= __('advanced_details') %></h2>
-        <p class="advancedDetails"><%= __('advanced_details1') %></p>
-        <p class="advancedDetails"><%= __('advanced_details2') %></p>
-        <p class="advancedDetails"><%= __('advanced_details3') %></p>
-        <p class="advancedDetails"><%= __('advanced_details4') %></p>
-        <p class="advancedDetails"><%= __('advanced_details5') %></p>
+        <div id="tableContainer">
+            <table>
+                <tr id="tableHeader">
+                  <th>PURE</th>
+                  <th>ADVANCED</th>
+                </tr>
+                <tr>
+                    <td><p class="advancedDetails"><%= __('advanced_details6') %></p></td>
+                    <td><p class="advancedDetails"><%= __('advanced_details1') %></p></td>
+                </tr>
+                <tr>
+                    <td><p class="advancedDetails"><%= __('advanced_details7') %></p></td>
+                    <td><p class="advancedDetails"><%= __('advanced_details2') %></p></td>
+                </tr>
+                <tr>
+                    <td><p class="advancedDetails"><%= __('advanced_details8') %></p></td>
+                    <td><p class="advancedDetails"><%= __('advanced_details3') %></p></td>
+                </tr>
+                <tr>
+                    <td><p class="advancedDetails"><%= __('advanced_details9') %></p></td>
+                    <td><p class="advancedDetails"><%= __('advanced_details4') %></p></td>
+                </tr>
+                <tr>
+                    <td><p class="advancedDetails"><%= __('advanced_details10') %></p></td>
+                    <td><p class="advancedDetails"><%= __('advanced_details5') %></p></td>
+                </tr>
+              </table>
+        </div>
     </div>
     <div id="infoContainer">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
