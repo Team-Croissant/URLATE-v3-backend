@@ -8,7 +8,7 @@ body {
     font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', '나눔바른고딕', arial;
     overflow-x: hidden;
     overflow-y: hidden;
-    background-image: url('/images/temp/mainBackground.png');
+    background-image: url('/images/mainBackground.png');
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -28,6 +28,11 @@ body {
 .link {
     text-decoration: none;
     color: #2196F3;
+}
+
+.gray {
+  color: #888;
+  font-style: italic;
 }
 
 .icon {
@@ -156,7 +161,7 @@ body {
     text-align: left;
     align-items: center;
     justify-content: flex-start;
-    font-size: 1.3em;
+    font-size: 2vh;
     transition-duration: 1s;
 }
 
@@ -172,6 +177,7 @@ body {
 }
 
 #footerRight {
+    font-size: 1.6vh;
     padding-right: 5vw;
     height: 100%;
     width: 33vw;
@@ -182,14 +188,13 @@ body {
 }
 
 #myrhyText {
-  font-size: 1.4em;
   transition-duration: 1s;
   margin-bottom: 2vh;
 }
 
 #songName {
   opacity: 0;
-  font-size: 1em;
+  font-size: 2vh;
   transition-duration: 1s;
 }
 
@@ -216,7 +221,7 @@ body {
   text-align: left;
   align-items: center;
   justify-content: flex-start;
-  background-image: url('/images/temp/namespace.png');
+  background-image: url('/images/parts/namespace.png');
   background-repeat: no-repeat;
   background-position: left center;
   background-size: auto 9vh;
@@ -236,6 +241,7 @@ body {
   color: white;
   padding-left: 5vw;
   font-size: 3vh;
+  margin-top: 5px;
 }
 
 #line {
@@ -272,13 +278,8 @@ body {
   justify-content: center;
 }
 
-.menuSelector {
-  margin: 3vw;
+#menuMain {
   display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
 }
 
 #menuEditor {
@@ -287,4 +288,63 @@ body {
 
 #menuAdvanced {
   display: none;
+}
+
+.menuSelector {
+  width: 13vw;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+#advancedContainer {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  display: none;
+  opacity: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #eee;
+}
+
+#advancedIcon {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+  margin-top: 10vh;
+  width: 20vw;
+  opacity: 0;
+}
+
+#advancedDescription {
+  opacity: 0;
+  color: #111;
+}
+
+.advancedSubtitle {
+  opacity: 0;
+  margin-top: 8vh;
+}
+
+#editorIcon {
+  margin-left: -23px;
+}
+
+.advancedDetails {
+  opacity: 0;
+}
+
+#supportDetails {
+  opacity: 0;
+}
+
+.closeBtn {
+  position: fixed;
+  top: 6vh;
+  right: 5vw;
 }

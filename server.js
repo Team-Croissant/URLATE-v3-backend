@@ -185,9 +185,6 @@ app.post("/join", function(req, res) {
               'advancedStatus' : 0,
               'advancedDate' : ''
             },
-            general : {
-              'lang' : 'en'
-            },
             display : {
               'FPScounter' : true,
               'elementsRes' : 'auto',
@@ -203,8 +200,8 @@ app.post("/join", function(req, res) {
               'lightEffect' : true
             },
             sound : {
-              'musicVolume' : 10,
-              'effectVolume' : 5,
+              'musicVolume' : 30,
+              'effectVolume' : 20,
               'offset' : 0
             }
           }
