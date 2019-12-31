@@ -25,6 +25,7 @@
     "pbkdf2-password": "^1.2.1",
     "signale": "^1.4.0",
     "socket.io": "^2.3.0",
-    "supervisor": "^0.12.0"
+    "supervisor": "^0.12.0",
+    "xsolla": "^0.5.3"
   }
 }

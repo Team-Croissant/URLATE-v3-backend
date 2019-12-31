@@ -362,7 +362,7 @@ th, td {
   padding: 8px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+/*tr:nth-child(even){background-color: #e6e6e6}*/
 
 #tableHeader {
   background: linear-gradient(to Right, #eabed8, #78d6ee);
@@ -374,4 +374,17 @@ tr:nth-child(even){background-color: #f2f2f2}
   width: 100vw;
   display: flex;
   justify-content: center;
+}
+
+#infoContainer {
+  z-index: 100;
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  top: 0;
+  display: none;
+  opacity: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #eee;
 }
