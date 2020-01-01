@@ -13,14 +13,14 @@ const hasher = require("pbkdf2-password")();
 const i18n = require(__dirname + '/i18n');
 
 //config 파일
-const config = require(__dirname + '/config/config.json');
+const config = require(__dirname + '/../../config/config.json');
 
 //settings 기본값 파일
-const settingsConfig = require(__dirname + '/config/settings.json');
+const settingsConfig = require(__dirname + '/../../config/settings.json');
 
 //https 인증서
-const privateKey = fs.readFileSync(config.keys.key, 'utf8');
-const certificate = fs.readFileSync(config.keys.crt, 'utf8');
+const privateKey = fs.readFileSync(__dirname + config.keys.key, 'utf8');
+const certificate = fs.readFileSync(__dirname + config.keys.crt, 'utf8');
 
 //google API 정의
 const {google} = require('googleapis');
@@ -56,9 +56,9 @@ app.use(session({
 }));
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/views'));
-app.use(express.static(__dirname + '/public'));
+app.set('views', __dirname + '/../../views');
+app.use(express.static(__dirname + '/../../views'));
+app.use(express.static(__dirname + '/../../public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(i18n); //다국어 지원 라이브러리
