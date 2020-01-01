@@ -226,7 +226,12 @@ app.get("/logout", function(req, res) {
 
 
 app.use(function(req, res, next) {
+  res.status(300).render('300');
+  res.status(400).render('400');
+  res.status(403).render('403');
   res.status(404).render('404');
+  res.status(409).render('409');
+  res.status(500).render('500');
 });
 
 
