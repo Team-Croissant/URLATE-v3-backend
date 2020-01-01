@@ -23,14 +23,14 @@ Pace.on('done', () => {
     $("#songName").css("font-size", "1.8em");
     $("#header").animate({
       opacity: 1
-    }, 1000);
-    $("#footerLeft").animate({
-      opacity: 1
     }, 1000, () => {
       $("#songName").animate({
         opacity: 1
-      });
+      }, 1000);
     });
+    $("#footerLeft").animate({
+      opacity: 1
+    }, 1000);
   });
 });
 
@@ -53,6 +53,7 @@ function menuRight() {
 }
 
 function advanced() {
+  advancedInit();
   display = 3;
   var eqn = 0;
   $("#advancedContainer").css("display", "block");
@@ -68,23 +69,26 @@ function advanced() {
       }, 500, () => {
         $("#advancedSupport").animate({
           opacity: 1
-        }, 300, () => {
+        }, 200, () => {
           $("#supportDetails").animate({
             opacity: 1
-          }, 300, () => {
+          }, 200, () => {
             $("#advancedDetails").animate({
               opacity: 1
-            }, 300, () => {
+            }, 200, () => {
               $("#tableContainer").animate({
                 opacity: 1
-              }, 300, () => {
+              }, 200, () => {
                 for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
                   setTimeout(() => {
                     $(".advancedDetails").eq(eqn).animate({
                       opacity: 1
-                    }, 300);
+                    }, 200);
                     eqn++;
-                  }, 300 * i);
+                    if(eqn > document.getElementsByClassName('advancedDetails').length) {
+                      eqn = 0;
+                    }
+                  }, 200 * i);
                 }
               });
             });
@@ -97,6 +101,11 @@ function advanced() {
 
 function infoScreen() {
   display = 4;
+  infoInit();
+  $("#infoContainer").css("display", "block");
+  $("#infoContainer").animate({
+    opacity: 1
+  }, 1000);
 }
 
 function displayClose() {
@@ -108,21 +117,37 @@ function displayClose() {
     $("#advancedContainer").animate({
       opacity: 0
     }, 1000, () => {
-      $("#advancedContainer").css("display", "none");
-      $("#advancedContainer").css("opacity", 0);
-      $("#advancedIcon").css("marginTop", "10vh");
-      $("#advancedIcon").css("opacity", 0);
-      $("#advancedDescription").css("opacity", 0);
-      $("#advancedSupport").css("opacity", 0);
-      $("#supportDetails").css("opacity", 0);
-      $("#advancedDetails").css("opacity", 0);
-      $("#tableContainer").css("opacity", 0);
-      for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
-        $(".advancedDetails").eq(i).css("opacity", 0);
-      }
+      advancedInit();
     });
   } else if(display == 4) {
-
+    $("#infoContainer").animate({
+      opacity: 0
+    }, 1000, () => {
+      infoInit();
+    });
   }
   display = 0;
+}
+
+function advancedInit() {
+  $("#advancedContainer").css("display", "none");
+  $("#advancedContainer").css("opacity", 0);
+  $("#advancedIcon").css("marginTop", "10vh");
+  $("#advancedIcon").css("opacity", 0);
+  $("#advancedDescription").css("opacity", 0);
+  $("#advancedSupport").css("opacity", 0);
+  $("#supportDetails").css("opacity", 0);
+  $("#advancedDetails").css("opacity", 0);
+  $("#tableContainer").css("opacity", 0);
+  for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
+    $(".advancedDetails").eq(i).css("opacity", 0);
+  }
+}
+
+function infoInit() {
+  $("#infoContainer").css("display", "none");
+}
+
+function editor() {
+  window.location.href = 'https://rhyga.me/editor'; 
 }

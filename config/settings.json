@@ -1,0 +1,25 @@
+{
+  "private" : {
+    "advancedStatus" : 0,
+    "advancedDate" : ""
+  },
+  "display" : {
+    "FPScounter" : true,
+    "elementsRes" : "auto",
+    "autoImg" : true,
+    "genEffect" : true,
+    "lightEffect" : true
+  },
+  "ingame" : {
+    "brightness" : 25,
+    "blur" : 100,
+    "genEffect" : true,
+    "comEffect" : true,
+    "lightEffect" : true
+  },
+  "sound" : {
+    "musicVolume" : 30,
+    "effectVolume" : 20,
+    "offset" : 0
+  }
+}
