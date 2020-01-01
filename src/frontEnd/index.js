@@ -1,4 +1,3 @@
-//라이브러리
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const signale = require('signale');
@@ -12,17 +11,13 @@ const OrientoStore = require('connect-oriento')(session);
 const hasher = require("pbkdf2-password")();
 const i18n = require(__dirname + '/i18n');
 
-//config 파일
 const config = require(__dirname + '/../../config/config.json');
 
-//settings 기본값 파일
 const settingsConfig = require(__dirname + '/../../config/settings.json');
 
-//https 인증서
 const privateKey = fs.readFileSync(__dirname + config.keys.key, 'utf8');
 const certificate = fs.readFileSync(__dirname + config.keys.crt, 'utf8');
 
-//google API 정의
 const {google} = require('googleapis');
 const plus = google.plus('v1');
 const OAuth2 = google.auth.OAuth2;
@@ -30,7 +25,6 @@ const ClientId = config.google.clientId;
 const ClientSecret = config.google.clientSecret;
 const RedirectionUrl = "https://rhyga.me";
 
-//OrientDB 상세설정
 const server = OrientDB({
   host:config.orient.host,
   port:config.orient.port,
@@ -40,7 +34,6 @@ const server = OrientDB({
 
 const db = server.use(config.orient.db);
 
-//express 상세설정
 const app = express();
 app.locals.pretty = true;
 const port = 80;
@@ -61,9 +54,8 @@ app.use(express.static(__dirname + '/../../views'));
 app.use(express.static(__dirname + '/../../public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(i18n); //다국어 지원 라이브러리
+app.use(i18n);
 
-//google API 함수 정의
 function getOAuthClient() {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
 }
@@ -83,8 +75,6 @@ function getOAuthClient() {
   return url;
 } */
 
-//express 웹서버
-//index GET
 app.get('/', function(req, res){
   if(req.session.accessToken && req.session.refreshToken) {
     res.redirect('/game');
@@ -92,17 +82,17 @@ app.get('/', function(req, res){
     res.render('index');
   }
 });
-//영문 전환 GET
+
 app.get('/en', function(req, res) {
   res.cookie('lang', 'en');
   res.redirect('/');
 });
-//한글 전환 GET
+
 app.get('/ko', function(req, res) {
   res.cookie('lang', 'ko');
   res.redirect('/');
 });
-//로그인 POST
+
 app.post("/login", function(req, res) {
   var oauth2Client = getOAuthClient();
   var code = req.body.code;
@@ -122,7 +112,7 @@ app.post("/login", function(req, res) {
       }
   });
 });
-//game GET
+
 app.get("/game", function(req, res) {
   var oauth2Client = getOAuthClient();
   oauth2Client.setCredentials({
@@ -154,7 +144,7 @@ app.get("/game", function(req, res) {
     }
   });
 });
-//회원가입 GET
+
 app.get("/join", function(req, res) {
   if(req.session.tempName) {
     res.render('join', { name : req.session.tempName });
@@ -162,7 +152,7 @@ app.get("/join", function(req, res) {
     res.render('accessDenined');
   }
 });
-//회원가입 POST
+
 app.post("/join", function(req, res) {
   const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
   const passReg = /^[0-9]{4,6}$/;
@@ -188,7 +178,7 @@ app.post("/join", function(req, res) {
     res.render('accessDenined');
   }
 });
-//2차 비밀번호 인증 GET
+
 app.get("/authorize", function(req, res) {
   if(req.session.accessToken && req.session.refreshToken && req.session.userid) {
     if(req.session.authorized) {
@@ -203,7 +193,7 @@ app.get("/authorize", function(req, res) {
     res.render('accessDenined');
   }
 });
-//2차 비밀번호 인증 POST
+
 app.post("/authorize", function(req, res) {
   const passReg = /^[0-9]{4,6}$/;
   if(passReg.test(req.body.secondaryPassword)) {
@@ -223,7 +213,7 @@ app.post("/authorize", function(req, res) {
     res.render('accessDenined');
   }
 });
-//로그이웃 GET
+
 app.get("/logout", function(req, res) {
   delete req.session.authorized;
   delete req.session.accessToken;
@@ -234,13 +224,12 @@ app.get("/logout", function(req, res) {
   res.redirect('/');
 });
 
-//404페이지 설정
+
 app.use(function(req, res, next) {
   res.status(404).render('404');
 });
 
 
-//서버 구동
 http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://rhyga.me" });
     res.end();

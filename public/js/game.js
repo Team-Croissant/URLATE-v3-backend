@@ -1,6 +1,6 @@
-var selection = 0; //선택된 메뉴의 번호
+var selection = 0;
 var selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
-var display = 0; //보여지는 화면의 번호
+var display = 0;
 
 var songs = new Howl({
   src: ['https://cdn.rhyga.me/songs/192kbps/MyRhyThemeSong.mp3'],
@@ -11,7 +11,6 @@ var songs = new Howl({
   }
 });
 
-//로딩이 끝났을 때
 Pace.on('done', () => {
   if($("#name").width() > 300) {
     $("#name").css("font-size", "1.7vh");
@@ -37,7 +36,6 @@ Pace.on('done', () => {
   });
 });
 
-//메뉴 왼쪽 버튼
 function menuLeft() {
   $(`#${selectionList[selection]}`).css("display", "none");
   selection--;
@@ -46,7 +44,7 @@ function menuLeft() {
   }
   $(`#${selectionList[selection]}`).css("display", "flex");
 }
-//메뉴 오른쪽 버튼
+
 function menuRight() {
   $(`#${selectionList[selection]}`).css("display", "none");
   selection++;
@@ -56,7 +54,6 @@ function menuRight() {
   $(`#${selectionList[selection]}`).css("display", "flex");
 }
 
-//정보 창 표시
 function infoScreen() {
   display = 4;
   infoInit();
@@ -68,18 +65,18 @@ function infoScreen() {
 
 function displayClose() {
   if(display == 1) {
-    //PLAY화면
+    //PLAY
   } else if(display == 2) {
-    //Settings화면
+    //Settings
   } else if(display == 3) {
-    //ADVANCED화면
+    //ADVANCED
     $("#advancedContainer").animate({
       opacity: 0
     }, 1000, () => {
       advancedInit();
     });
   } else if(display == 4) {
-    //Info화면
+    //Info
     $("#infoContainer").animate({
       opacity: 0
     }, 1000, () => {
