@@ -1,4 +1,4 @@
-const signale = require('signale');
+/*const signale = require('signale');
 const fs = require('fs')
 const https = require('https');
 const app = require('express')();
@@ -22,3 +22,4 @@ io.sockets.on('connection',function (socket) {
       io.emit('chat message', msg);
     });
 });
+*/
