@@ -1,6 +1,6 @@
-var selection = 0;
+var selection = 0; //선택된 메뉴의 번호
 var selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
-var display = 0;
+var display = 0; //보여지는 화면의 번호
 
 var songs = new Howl({
   src: ['https://cdn.rhyga.me/songs/192kbps/MyRhyThemeSong.mp3'],
@@ -55,53 +55,7 @@ function menuRight() {
   }
   $(`#${selectionList[selection]}`).css("display", "flex");
 }
-//ADVANCED 창 표시
-function advanced() {
-  advancedInit();
-  display = 3;
-  var eqn = 0;
-  $("#advancedContainer").css("display", "block");
-  $("#advancedContainer").animate({
-    opacity: 1
-  }, 1000, () => {
-    $("#advancedIcon").animate({
-      marginTop: "5vh",
-      opacity: 1
-    }, 1000, () => {
-      $("#advancedDescription").animate({
-        opacity: 1
-      }, 500, () => {
-        $("#advancedSupport").animate({
-          opacity: 1
-        }, 200, () => {
-          $("#supportDetails").animate({
-            opacity: 1
-          }, 200, () => {
-            $("#advancedDetails").animate({
-              opacity: 1
-            }, 200, () => {
-              $("#tableContainer").animate({
-                opacity: 1
-              }, 200, () => {
-                for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
-                  setTimeout(() => {
-                    $(".advancedDetails").eq(eqn).animate({
-                      opacity: 1
-                    }, 200);
-                    eqn++;
-                    if(eqn > document.getElementsByClassName('advancedDetails').length) {
-                      eqn = 0;
-                    }
-                  }, 200 * i);
-                }
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-}
+
 //정보 창 표시
 function infoScreen() {
   display = 4;
@@ -114,16 +68,18 @@ function infoScreen() {
 
 function displayClose() {
   if(display == 1) {
-
+    //PLAY화면
   } else if(display == 2) {
-
+    //Settings화면
   } else if(display == 3) {
+    //ADVANCED화면
     $("#advancedContainer").animate({
       opacity: 0
     }, 1000, () => {
       advancedInit();
     });
   } else if(display == 4) {
+    //Info화면
     $("#infoContainer").animate({
       opacity: 0
     }, 1000, () => {
@@ -152,6 +108,57 @@ function infoInit() {
   $("#infoContainer").css("display", "none");
 }
 
-function editor() {
-  window.location.href = 'https://rhyga.me/editor'; 
+function menuSelected() {
+  if(selection == 0) {
+    //play
+  } else if(selection == 1) {
+    //editor
+    window.location.href = 'https://rhyga.me/editor'; 
+  } else if(selection == 2) {
+    //advanced
+    advancedInit();
+    display = 3;
+    var eqn = 0;
+    $("#advancedContainer").css("display", "block");
+    $("#advancedContainer").animate({
+      opacity: 1
+    }, 1000, () => {
+      $("#advancedIcon").animate({
+        marginTop: "5vh",
+        opacity: 1
+      }, 1000, () => {
+        $("#advancedDescription").animate({
+          opacity: 1
+        }, 500, () => {
+          $("#advancedSupport").animate({
+            opacity: 1
+          }, 200, () => {
+            $("#supportDetails").animate({
+              opacity: 1
+            }, 200, () => {
+              $("#advancedDetails").animate({
+                opacity: 1
+              }, 200, () => {
+                $("#tableContainer").animate({
+                  opacity: 1
+                }, 200, () => {
+                  for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
+                    setTimeout(() => {
+                      $(".advancedDetails").eq(eqn).animate({
+                        opacity: 1
+                      }, 200);
+                      eqn++;
+                      if(eqn > document.getElementsByClassName('advancedDetails').length) {
+                        eqn = 0;
+                      }
+                    }, 200 * i);
+                  }
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  }
 }
