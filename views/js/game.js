@@ -11,10 +11,13 @@ var songs = new Howl({
   }
 });
 
+//로딩이 끝났을 때
 Pace.on('done', () => {
-  if($("#name").text().length > 8) {
+  if($("#name").width() > 300) {
+    $("#name").css("font-size", "1.7vh");
+  } else if($("#name").width() > 200) {
     $("#name").css("font-size", "2vh");
-  } else if($("#name").text().length > 7) {
+  } else if($("#name").width() > 180) {
     $("#name").css("font-size", "2.5vh");
   }
   $('#loadingContainer').fadeOut(1000, () => {
@@ -34,6 +37,7 @@ Pace.on('done', () => {
   });
 });
 
+//메뉴 왼쪽 버튼
 function menuLeft() {
   $(`#${selectionList[selection]}`).css("display", "none");
   selection--;
@@ -42,7 +46,7 @@ function menuLeft() {
   }
   $(`#${selectionList[selection]}`).css("display", "flex");
 }
-
+//메뉴 오른쪽 버튼
 function menuRight() {
   $(`#${selectionList[selection]}`).css("display", "none");
   selection++;
@@ -51,7 +55,7 @@ function menuRight() {
   }
   $(`#${selectionList[selection]}`).css("display", "flex");
 }
-
+//ADVANCED 창 표시
 function advanced() {
   advancedInit();
   display = 3;
@@ -98,7 +102,7 @@ function advanced() {
     });
   });
 }
-
+//정보 창 표시
 function infoScreen() {
   display = 4;
   infoInit();
