@@ -2,22 +2,21 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const signale = require('signale');
-const fs = require('fs'),
-    http = require('http'),
-    https = require('https'),
-    express = require('express');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const express = require('express');
 const session = require('express-session');
 const OrientDB = require("orientjs");
 const OrientoStore = require('connect-oriento')(session);
 const hasher = require("pbkdf2-password")();
-const app = express();
-const i18n = require('./i18n');
+const i18n = require(__dirname + '/i18n');
 
 //config 파일
-const config = require('./config/config.json');
+const config = require(__dirname + '/config/config.json');
 
 //settings 기본값 파일
-const settingsConfig = require('./config/settings.json');
+const settingsConfig = require(__dirname + '/config/settings.json');
 
 //https 인증서
 const privateKey = fs.readFileSync(config.keys.key, 'utf8');
@@ -42,6 +41,7 @@ const server = OrientDB({
 const db = server.use(config.orient.db);
 
 //express 상세설정
+const app = express();
 app.locals.pretty = true;
 const port = 80;
 const httpsPort = 443;
@@ -56,8 +56,9 @@ app.use(session({
 }));
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
-app.use(express.static('views'));
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/views'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(i18n); //다국어 지원 라이브러리

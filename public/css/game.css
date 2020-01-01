@@ -375,3 +375,12 @@ th, td {
   height: 100vh;
   background: #eee;
 }
+
+#croissantLogo {
+  margin-top: 10vh;
+  width: 20vw;
+  height: auto;
+}
+
+#infoTitle {
+}
