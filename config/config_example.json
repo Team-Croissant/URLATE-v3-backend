@@ -1,21 +1,23 @@
 {
-  "orient" : {
-    "db":"DB NAME HERE",
-    "host":"HOST HERE",
-    "port":"PORT HERE",
-    "username":"USERNAME HERE",
-    "password":"PASSWORD HERE"
+  "maria" : {
+    "db": "DB NAME HERE",
+    "host": "HOST HERE",
+    "port": 3306,
+    "user": "USER NAME HERE",
+    "password": "PASSWORD HERE"
   },
-  "app_pw" : {
-    "secret": "SECRET KEY HERE",
-    "resave": "BOOLEAN HERE",
-    "saveUninitialized": "BOOLEAN HERE"
-  },
-  "store" : {
-    "server": "host=HOST HERE&port=PORT HERE&username=USERNAME HERE&password=PASSWORD HERE&db=DB NAME HERE"
+  "session" : {
+    "key": "SESSION KEY HERE",
+    "secret": "SESSION SECRET STRING HERE",
+    "resave": false,
+    "saveUninitialized": true
   },
   "keys" : {
-    "key" : "KEY ADDRESS HERE",
-    "crt" : "CRT ADDRESS HERE"
+    "key" : "KEY.pem LOCATION HERE",
+    "crt" : "crt.pem LOCATION HERE"
+  },
+  "google" : {
+    "clientId" : "GOOGLE CLIENT ID HERE",
+    "clientSecret" : "GOOGLE CLIENT SECRET KEY HERE"
   }
 }
