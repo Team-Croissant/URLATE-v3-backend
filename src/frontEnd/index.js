@@ -9,6 +9,7 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 const i18n = require(__dirname + '/i18n');
+const mariadb = require('mariadb');
 
 const config = require(__dirname + '/../../config/config.json');
 
@@ -28,6 +29,8 @@ const app = express();
 app.locals.pretty = true;
 const port = 80;
 const httpsPort = 443;
+
+const pool = mariadb.createPool({host: config.maria.host, user: config.maria.user, password: config.maria.password, connectionLimit: 5});
 
 const sessionStore = new MySQLStore({
   host: config.maria.host,
@@ -121,22 +124,27 @@ app.get("/game", function(req, res) {
       res.render('accessDenined');
     } else {
       req.session.userid = response.data.id;
-      db.query("select from User where userid = :id", {params: { id: response.data.id }})
-      .all()
-      .then((results)=> {
-        if(Object.keys(results).length !== 0) {
-          if(req.session.authorized) {
-            if(response.data.id == results[0].userid) {
-              res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
-            }
-          } else {
-              res.redirect('/authorize');
-          }
-        } else {
-          req.session.tempEmail = response.data.emails[0].value;
-          req.session.tempName = response.data.displayName;
-          res.redirect('/join');
-        }
+      pool.getConnection()
+        .then(conn => {
+          conn.query(`USE myrhyservicedb`)
+            .then((res) => {
+              return conn.query(`SELECT userid FROM users WHERE userid = ${response.data.id}`);
+            })
+            .then((results)=> {
+              if(results[0] !== "undefined") {
+                if(req.session.authorized) {
+                  if(response.data.id == results[0].userid) {
+                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
+                  }
+                } else {
+                    res.redirect('/authorize');
+                }
+              } else {
+                req.session.tempEmail = response.data.emails[0].value;
+                req.session.tempName = response.data.displayName;
+                res.redirect('/join');
+              }
+            });
       });
     }
   });
