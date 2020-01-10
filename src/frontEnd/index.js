@@ -127,10 +127,10 @@ app.get("/game", function(req, res) {
       pool.getConnection()
         .then(conn => {
           conn.query(`USE myrhyservicedb`)
-            .then((res) => {
+            .then(() => {
               return conn.query(`SELECT userid FROM users WHERE userid = ${response.data.id}`);
             })
-            .then((results)=> {
+            .then((results) => {
               if(results[0] !== undefined) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
@@ -163,22 +163,20 @@ app.post("/join", function(req, res) {
   const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
   const passReg = /^[0-9]{4,6}$/;
   if(req.session.tempName && req.session.accessToken && req.session.refreshToken && nameReg.test(req.body.displayName) && passReg.test(req.body.secondaryPassword)) {
-    db.class.get('User').then(function(user){
-      hasher({password:req.body.secondaryPassword}, (err, pass, salt, hash) => {
-        user.create({
-          userid : req.session.userid,
-          salt : salt,
-          secondary : hash,
-          date : new Date(),
-          nickname : req.body.displayName,
-          email : req.session.tempEmail,
-          settings : settingsConfig
-        }).then(() => {
-          delete req.session.tempName;
-          delete req.session.tempEmail;
-          res.redirect("/authorize");
-        });
-      });
+    hasher({password:req.body.secondaryPassword}, (err, pass, salt, hash) => {
+      pool.getConnection()
+        .then(conn => {
+          conn.query(`USE myrhyservicedb`)
+            .then(() => {
+              return conn.query(`INSERT INTO users VALUES ("${req.body.displayName}", "${req.session.userid}", "${salt}", "${hash}", "${new Date()}", "${req.session.tempEmail}", '${JSON.stringify(settingsConfig)}')`);
+            })
+            .then((response) => {
+              delete req.session.tempName;
+              delete req.session.tempEmail;
+              res.redirect("/authorize");
+              conn.release();
+            });
+          });
     });
   } else {
     res.render('accessDenined');
@@ -203,18 +201,23 @@ app.get("/authorize", function(req, res) {
 app.post("/authorize", function(req, res) {
   const passReg = /^[0-9]{4,6}$/;
   if(passReg.test(req.body.secondaryPassword)) {
-    db.query("select from User where userid = :id", {params: { id: req.session.userid }})
-      .all()
-      .then((results)=> {
-          hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
-            if(hash == results[0].secondary) {
-              req.session.authorized = true;
-              res.redirect('/game');
-            } else {
-              res.redirect('/authorize?status=fail');
-            }
+    pool.getConnection()
+        .then(conn => {
+          conn.query(`USE myrhyservicedb`)
+            .then(() => {
+              return conn.query(`SELECT secondary, salt, userid FROM users WHERE userid = ${ req.session.userid }`);
+            })
+            .then((results)=> {
+              hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
+                if(hash == results[0].secondary) {
+                  req.session.authorized = true;
+                  res.redirect('/game');
+                } else {
+                  res.redirect('/authorize?status=fail');
+                }
+              });
+            });
           });
-      });
   } else {
     res.render('accessDenined');
   }
