@@ -131,7 +131,7 @@ app.get("/game", function(req, res) {
               return conn.query(`SELECT userid FROM users WHERE userid = ${response.data.id}`);
             })
             .then((results)=> {
-              if(results[0] !== "undefined") {
+              if(results[0] !== undefined) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
                     res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
@@ -144,6 +144,7 @@ app.get("/game", function(req, res) {
                 req.session.tempName = response.data.displayName;
                 res.redirect('/join');
               }
+              conn.release();
             });
       });
     }
