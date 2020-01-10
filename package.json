@@ -1,4 +1,8 @@
 {
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/Swift_CreDible/myrhy.git"
+  },
   "name": "myrhy",
   "version": "1.0.0",
   "description": "",
@@ -10,7 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "connect-oriento": "^0.1.4",
     "cookie-parser": "^1.4.4",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
@@ -19,13 +22,12 @@
     "express-subdomain": "^1.0.5",
     "googleapis": "^44.0.0",
     "i18n": "^0.8.4",
+    "mariadb": "^2.1.5",
     "nodemailer": "^6.4.2",
     "npm": "^6.12.0",
-    "orientjs": "^3.0.9",
     "pbkdf2-password": "^1.2.1",
     "signale": "^1.4.0",
     "socket.io": "^2.3.0",
-    "supervisor": "^0.12.0",
-    "xsolla": "^0.5.3"
+    "supervisor": "^0.12.0"
   }
 }

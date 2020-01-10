@@ -6,7 +6,8 @@ const http = require('http');
 const https = require('https');
 const express = require('express');
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+const OrientDB = require("orientjs");
+const OrientoStore = require('connect-oriento')(session);
 const hasher = require("pbkdf2-password")();
 const i18n = require(__dirname + '/i18n');
 
@@ -24,25 +25,27 @@ const ClientId = config.google.clientId;
 const ClientSecret = config.google.clientSecret;
 const RedirectionUrl = "https://rhyga.me";
 
+const server = OrientDB({
+  host:config.orient.host,
+  port:config.orient.port,
+  username:config.orient.username,
+  password:config.orient.password
+});
+
+const db = server.use(config.orient.db);
+
 const app = express();
 app.locals.pretty = true;
 const port = 80;
 const httpsPort = 443;
 
-const sessionStore = new MySQLStore({
-  host: config.maria.host,
-  port: config.maria.port,
-  user: config.maria.user,
-  password: config.maria.password,
-  database: config.maria.db
-});
-
 app.use(session({
-  key: config.session.key,
-  secret: config.session.secret,
-  store: sessionStore,
-  resave: config.session.resave,
-  saveUninitialized: config.session.saveUninitialized
+   secret: config.app_pw.secret,
+   resave: config.app_pw.resave,
+   saveUninitialized: config.app_pw.saveUninitialized,
+   store: new OrientoStore({
+     server: config.store.server
+   })
 }));
 
 app.set('view engine', 'ejs');

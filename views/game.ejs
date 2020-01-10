@@ -49,7 +49,7 @@
             <span class="light menuSubtitle"><%= __('editor_subtitle') %></span>
         </div>
         <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/heart.png" class="shadowIcon">
+            <img src="images/parts/heart.png" class="shadowIcon" id="titleAdvancedIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('advanced_title') %></span>
             <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
@@ -97,6 +97,7 @@
                 </tr>
               </table>
         </div>
+        <input type="button" value="<%= __('support') %>" onclick="supportPurchase()" id="supportButton">
     </div>
     <div id="infoContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
