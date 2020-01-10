@@ -128,13 +128,14 @@ app.get("/game", function(req, res) {
         .then(conn => {
           conn.query(`USE myrhyservicedb`)
             .then(() => {
-              return conn.query(`SELECT userid FROM users WHERE userid = ${response.data.id}`);
+              return conn.query(`SELECT userid, nickname, settings FROM users WHERE userid = ${response.data.id}`);
             })
             .then((results) => {
               if(results[0] !== undefined) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
-                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : JSON.stringify(results[0].settings) });
+                    console.log(results[0].settings);
+                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : results[0].settings });
                   }
                 } else {
                     res.redirect('/authorize');
