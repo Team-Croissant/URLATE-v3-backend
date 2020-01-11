@@ -1,3 +1,3 @@
 # MyRhy
 
-Spaghetti.
+Avoid & Get on the tempo, MyRhy
