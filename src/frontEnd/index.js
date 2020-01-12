@@ -27,7 +27,7 @@ const RedirectionUrl = "https://rhyga.me";
 
 const app = express();
 app.locals.pretty = true;
-const port = 80;
+const port = 8080;
 const httpsPort = 443;
 
 const pool = mariadb.createPool({host: config.maria.host, user: config.maria.user, password: config.maria.password, connectionLimit: 5});
@@ -134,7 +134,6 @@ app.get("/game", function(req, res) {
               if(results[0] !== undefined) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
-                    console.log(results[0].settings);
                     res.render('game', { name : results[0].nickname, id : response.data.id, settings : results[0].settings });
                   }
                 } else {
@@ -246,15 +245,15 @@ app.use(function(req, res, next) {
 
 
 http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://rhyga.me" });
-    res.end();
+  res.writeHead(301, { "Location": "https://rhyga.me" });
+  res.end();
 }).listen(port, function() {
   signale.success(`HTTP Server running at port ${port}.`);
 });
 
 https.createServer({
-    key: privateKey,
-    cert: certificate
+  key: privateKey,
+  cert: certificate
 }, app).listen(httpsPort, function() {
   signale.success(`HTTPS Server running at port ${httpsPort}.`);
 });
