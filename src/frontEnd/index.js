@@ -23,7 +23,7 @@ const plus = google.plus('v1');
 const OAuth2 = google.auth.OAuth2;
 const ClientId = config.google.clientId;
 const ClientSecret = config.google.clientSecret;
-const RedirectionUrl = "https://rhyga.me";
+const RedirectionUrl = config.project.url;
 
 const app = express();
 app.locals.pretty = true;
@@ -79,7 +79,7 @@ app.get('/', function(req, res){
   if(req.session.accessToken && req.session.refreshToken) {
     res.redirect('/game');
   } else {
-    res.render('index');
+    res.render('index', { url : config.project.url, communityUrl : config.project.communityUrl, miraiUrl : config.project.miraiUrl });
   }
 });
 
@@ -121,7 +121,7 @@ app.get("/game", function(req, res) {
   });
   plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
     if(err) {
-      res.render('accessDenined');
+      res.render('accessDenined', { url : config.project.url });
     } else {
       req.session.userid = response.data.id;
       pool.getConnection()
@@ -134,7 +134,7 @@ app.get("/game", function(req, res) {
               if(results[0] !== undefined) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
-                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : results[0].settings });
+                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : results[0].settings, cdnUrl : config.project.cdn });
                   }
                 } else {
                     res.redirect('/authorize');
@@ -153,9 +153,9 @@ app.get("/game", function(req, res) {
 
 app.get("/join", function(req, res) {
   if(req.session.tempName) {
-    res.render('join', { name : req.session.tempName });
+    res.render('join', { name : req.session.tempName, url : config.project.url });
   } else {
-    res.render('accessDenined');
+    res.render('accessDenined', { url : config.project.url });
   }
 });
 
@@ -179,7 +179,7 @@ app.post("/join", function(req, res) {
           });
     });
   } else {
-    res.render('accessDenined');
+    res.render('accessDenined', { url : config.project.url });
   }
 });
 
@@ -189,12 +189,12 @@ app.get("/authorize", function(req, res) {
       res.redirect('/game');
     }
     if(req.query.status == 'fail') {
-      res.render('authorizeFail')
+      res.render('authorizeFail', { url : config.project.url })
     } else {
-      res.render('authorize');
+      res.render('authorize', { url : config.project.url });
     }
   } else {
-    res.render('accessDenined');
+    res.render('accessDenined', { url : config.project.url });
   }
 });
 
@@ -219,7 +219,7 @@ app.post("/authorize", function(req, res) {
             });
           });
   } else {
-    res.render('accessDenined');
+    res.render('accessDenined', { url : config.project.url });
   }
 });
 
@@ -235,17 +235,17 @@ app.get("/logout", function(req, res) {
 
 
 app.use(function(req, res, next) {
-  res.status(300).render('300');
-  res.status(400).render('400');
-  res.status(403).render('403');
-  res.status(404).render('404');
-  res.status(409).render('409');
-  res.status(500).render('500');
+  res.status(300).render('300', { url : config.project.url });
+  res.status(400).render('400', { url : config.project.url });
+  res.status(403).render('403', { url : config.project.url });
+  res.status(404).render('404', { url : config.project.url });
+  res.status(409).render('409', { url : config.project.url });
+  res.status(500).render('500', { url : config.project.url });
 });
 
 
 http.createServer(function (req, res) {
-  res.writeHead(301, { "Location": "https://rhyga.me" });
+  res.writeHead(301, { "Location": config.project.url });
   res.end();
 }).listen(port, function() {
   signale.success(`HTTP Server running at port ${port}.`);

@@ -3,7 +3,7 @@ var selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 var display = 0;
 
 var songs = new Howl({
-  src: ['https://cdn.rhyga.me/songs/192kbps/MyRhyThemeSong.mp3'],
+  src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
   autoplay: true,
   loop: true,
   volume : settings.sound.musicVolume / 100,

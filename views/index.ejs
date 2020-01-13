@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta property="og:title" content="MyRhy">
     <meta property="og:site_name" content="MyRhy">
-    <meta property="og:url" content="https://rhyga.me/">
+    <meta property="og:url" content="<%= url %>">
     <meta property="og:description" content="Avoid & Get on the tempo, MyRhy">
     <meta property="og:image" content="images/mainImage.png">
     <link rel="shortcut icon" href="images/parts/favicon.ico">
@@ -42,11 +42,14 @@
         <div id="my-signin2"></div>
     </div>
     <div id="footer">
-        <a href="https://community.rhyga.me" class="link"><%= __('community') %></a>
-        <a href="https://mirai.rhyga.me" class="link"><%= __('mirai') %></a>
+        <a href="<%= communityUrl %>" class="link"><%= __('community') %></a>
+        <a href="<%= miraiUrl %>" class="link"><%= __('mirai') %></a>
         <a href="https://twitter.com/MyrhyO" class="link"><%= __('twitter') %></a>
         <a href="/info" class="link"><%= __('info') %></a>
     </div>
+    <script>
+        const projectUrl = "<%= url %>";
+    </script>
     <script src="js/index.js"></script>
 </body>
 </html>

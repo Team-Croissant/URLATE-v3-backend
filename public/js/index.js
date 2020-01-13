@@ -16,12 +16,12 @@ function signInCallback(authResult) {
     console.log(authResult['code']);
     $.ajax({
       type: 'POST',
-      url: 'https://rhyga.me/login',
+      url: `${projectUrl}/login`,
       dataType: 'JSON',
       data: { "code" : authResult['code'] },
       success: function(data){
         if(data.msg == "success") {
-          window.location.href = 'https://rhyga.me/game';
+          window.location.href = `${projectUrl}/game`;
         } else if(data.msg == "fail") {
           alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
         }
