@@ -101,11 +101,14 @@
     </div>
     <div id="infoContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <img src="images/temp/croissant.png" id="croissantLogo">
-        <h1 id="infoTitle"><span class="light">Produced by </span>Team Croissant</h1>
+        <img src="images/myrhyLogo_blue.png" id="infoLogo">
+        <h2>&copy;2020 MyRhy<span class="light"><br>All contents cannot be copied without permission.</span></h2>
+        <div id="infoLineContainer"><div id="infoLine"></div></div>
+        <img src="images/croissant.png" id="croissantLogo">
     </div>
     <script>
         const cdnUrl = "<%= cdnUrl %>";
+        const url = "<%= url %>";
         var settings = JSON.parse('<%-settings %>');
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>

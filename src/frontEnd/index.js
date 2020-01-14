@@ -134,7 +134,7 @@ app.get("/game", function(req, res) {
               if(results[0] !== undefined) {
                 if(req.session.authorized) {
                   if(response.data.id == results[0].userid) {
-                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : results[0].settings, cdnUrl : config.project.cdn });
+                    res.render('game', { name : results[0].nickname, id : response.data.id, settings : results[0].settings, cdnUrl : config.project.cdn, url : config.project.url });
                   }
                 } else {
                     res.redirect('/authorize');

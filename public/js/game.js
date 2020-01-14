@@ -110,7 +110,7 @@ function menuSelected() {
     //play
   } else if(selection == 1) {
     //editor
-    window.location.href = 'https://rhyga.me/editor'; 
+    window.location.href = `${url}/editor`;
   } else if(selection == 2) {
     //advanced
     advancedInit();

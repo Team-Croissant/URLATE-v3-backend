@@ -380,10 +380,10 @@ th, td {
   background: #eee;
 }
 
-#croissantLogo {
-  margin-top: 10vh;
+#infoLogo {
   width: 20vw;
   height: auto;
+  margin-top: 10vh;
 }
 
 #supportButton {
@@ -396,4 +396,21 @@ th, td {
   margin: 3vh;
   font-size: 1.5em;
   font-weight: bold;
+}
+
+#infoLineContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#infoLine {
+  border-top: 2px solid rgb(39, 39, 39);
+  width: 3em;
+  margin: 10px;
+}
+
+#croissantLogo {
+  width: 10vw;
 }
