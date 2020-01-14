@@ -1,23 +1,26 @@
 {
+  "project" : {
+    "url": "https://example.com",
+    "api": "https://api.example.com",
+    "cdn": "https://cdn.example.com",
+    "communityUrl": "https://community.example.com",
+    "miraiUrl": "https://mirai.example.com"
+  },
   "maria" : {
-    "db": "DB NAME HERE",
-    "host": "HOST HERE",
+    "db": "ExampleDB",
+    "host": "localhost",
     "port": 3306,
-    "user": "USER NAME HERE",
-    "password": "PASSWORD HERE"
+    "user": "USERNAME",
+    "password": "PASSWORD"
   },
   "session" : {
-    "key": "SESSION KEY HERE",
-    "secret": "SESSION SECRET STRING HERE",
+    "key": "SESSION KEY",
+    "secret": "SESSION SECRET",
     "resave": false,
     "saveUninitialized": true
   },
-  "keys" : {
-    "key" : "KEY.pem LOCATION HERE",
-    "crt" : "crt.pem LOCATION HERE"
-  },
   "google" : {
-    "clientId" : "GOOGLE CLIENT ID HERE",
-    "clientSecret" : "GOOGLE CLIENT SECRET KEY HERE"
+    "clientId" : "GOOGLE CLIENT ID",
+    "clientSecret" : "GOOGLE CLIENT SECRET"
   }
 }

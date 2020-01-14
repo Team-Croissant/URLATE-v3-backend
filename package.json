@@ -26,6 +26,7 @@
     "nodemailer": "^6.4.2",
     "npm": "^6.12.0",
     "pbkdf2-password": "^1.2.1",
+    "request": "^2.88.0",
     "signale": "^1.4.0",
     "socket.io": "^2.3.0",
     "supervisor": "^0.12.0"

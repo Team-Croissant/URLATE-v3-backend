@@ -8,7 +8,7 @@
 </head>
 <body>
     <span id="title"><%= __('authorize') %></span>
-    <form action="/authorize" method="POST">
+    <form action="<%= api %>/authorizeCheck" method="POST">
         <input type="password" name="secondaryPassword" placeholder="<%= __('pwPlaceholder') %>" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
         <span id="pw"><%= __('pwText') %></span>
         <input type="submit" class="button" value="<%= __('done') %>">

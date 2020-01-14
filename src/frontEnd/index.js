@@ -1,3 +1,5 @@
+//TODO: /game, /join frontEnd와 api분리
+
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const signale = require('signale');
@@ -10,13 +12,11 @@ const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 const i18n = require(__dirname + '/i18n');
 const mariadb = require('mariadb');
+const request = require('request');
 
 const config = require(__dirname + '/../../config/config.json');
 
 const settingsConfig = require(__dirname + '/../../config/settings.json');
-
-const privateKey = fs.readFileSync(__dirname + config.keys.key, 'utf8');
-const certificate = fs.readFileSync(__dirname + config.keys.crt, 'utf8');
 
 const {google} = require('googleapis');
 const plus = google.plus('v1');
@@ -28,7 +28,6 @@ const RedirectionUrl = config.project.url;
 const app = express();
 app.locals.pretty = true;
 const port = 8080;
-const httpsPort = 443;
 
 const pool = mariadb.createPool({host: config.maria.host, user: config.maria.user, password: config.maria.password, connectionLimit: 5});
 
@@ -56,6 +55,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(i18n);
 
+process.env.Node_TLS_REJECT_UNAUTHORIZED = "0";
+
 function getOAuthClient() {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
 }
@@ -79,7 +80,7 @@ app.get('/', function(req, res){
   if(req.session.accessToken && req.session.refreshToken) {
     res.redirect('/game');
   } else {
-    res.render('index', { url : config.project.url, communityUrl : config.project.communityUrl, miraiUrl : config.project.miraiUrl });
+    res.render('index', { url : config.project.url, api : config.project.api, communityUrl : config.project.communityUrl, miraiUrl : config.project.miraiUrl });
   }
 });
 
@@ -91,26 +92,6 @@ app.get('/en', function(req, res) {
 app.get('/ko', function(req, res) {
   res.cookie('lang', 'ko');
   res.redirect('/');
-});
-
-app.post("/login", function(req, res) {
-  var oauth2Client = getOAuthClient();
-  var code = req.body.code;
-  oauth2Client.getToken(code, function(err, tokens) {
-      if (!err) {
-        oauth2Client.setCredentials({
-          access_token: tokens.access_token,
-          refresh_token: tokens.refresh_token
-        });
-        req.session.accessToken = tokens.access_token;
-        req.session.refreshToken = tokens.refresh_token;
-        plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
-          res.end('{"msg": "success"}');
-        });
-      } else {
-        res.end('{"msg": "fail"}');
-      }
-  });
 });
 
 app.get("/game", function(req, res) {
@@ -184,55 +165,31 @@ app.post("/join", function(req, res) {
 });
 
 app.get("/authorize", function(req, res) {
-  if(req.session.accessToken && req.session.refreshToken && req.session.userid) {
-    if(req.session.authorized) {
+  request.post({
+    url:'https://api.rhyga.me/authorize'
+  },
+  function(err, httpResponse, body) {
+    if(JSON.parse(body).msg == 'authorized') {
       res.redirect('/game');
+    } else if(JSON.parse(body).msg == 'vaild') {
+      if(req.query.status == 'fail') {
+        res.render('authorizeFail', { url : config.project.url, api : config.project.api })
+      } else {
+        res.render('authorize', { url : config.project.url, api : config.project.api });
+      }
+    } else if(JSON.parse(body).msg == 'invaild') {
+      res.render('accessDenined', { url : config.project.url });
     }
-    if(req.query.status == 'fail') {
-      res.render('authorizeFail', { url : config.project.url })
-    } else {
-      res.render('authorize', { url : config.project.url });
-    }
-  } else {
-    res.render('accessDenined', { url : config.project.url });
-  }
+  });
 });
 
-app.post("/authorize", function(req, res) {
-  const passReg = /^[0-9]{4,6}$/;
-  if(passReg.test(req.body.secondaryPassword)) {
-    pool.getConnection()
-        .then(conn => {
-          conn.query(`USE myrhyservicedb`)
-            .then(() => {
-              return conn.query(`SELECT secondary, salt, userid FROM users WHERE userid = ${ req.session.userid }`);
-            })
-            .then((results)=> {
-              hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
-                if(hash == results[0].secondary) {
-                  req.session.authorized = true;
-                  res.redirect('/game');
-                } else {
-                  res.redirect('/authorize?status=fail');
-                }
-              });
-            });
-          });
-  } else {
-    res.render('accessDenined', { url : config.project.url });
-  }
+app.get("/accessDenined", function(req, res) {
+  res.render('accessDenined', { url : config.project.url });
 });
 
 app.get("/logout", function(req, res) {
-  delete req.session.authorized;
-  delete req.session.accessToken;
-  delete req.session.refreshToken;
-  delete req.session.userid;
-  delete req.session.tempName;
-  delete req.session.tempEmail;
-  res.redirect('/');
+  res.redirect(`${config.project.api}/logout`);
 });
-
 
 app.use(function(req, res, next) {
   res.status(300).render('300', { url : config.project.url });
@@ -243,17 +200,6 @@ app.use(function(req, res, next) {
   res.status(500).render('500', { url : config.project.url });
 });
 
-
-http.createServer(function (req, res) {
-  res.writeHead(301, { "Location": config.project.url });
-  res.end();
-}).listen(port, function() {
+http.createServer(app).listen(port, function() {
   signale.success(`HTTP Server running at port ${port}.`);
-});
-
-https.createServer({
-  key: privateKey,
-  cert: certificate
-}, app).listen(httpsPort, function() {
-  signale.success(`HTTPS Server running at port ${httpsPort}.`);
 });

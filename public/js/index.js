@@ -16,7 +16,7 @@ function signInCallback(authResult) {
     console.log(authResult['code']);
     $.ajax({
       type: 'POST',
-      url: `${projectUrl}/login`,
+      url: `${api}/login`,
       dataType: 'JSON',
       data: { "code" : authResult['code'] },
       success: function(data){
