@@ -8,15 +8,17 @@
 </head>
 <body>
     <span id="title"><%= __('join') %></span>
-    <form action="/join" method="POST">
-        <input type="text" name="displayName" placeholder="<%= __('namePlaceholder') %>" id="nickname" class="textbox" pattern="^[a-zA-Z0-9_-]*$" minlength="5" maxlength="12" value="<%=name %>" required>
-        <span id="name"><%= __('nameText') %></span>
-        <input type="password" name="secondaryPassword" placeholder="<%= __('pwPlaceholder') %>" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
-        <span id="pw"><%= __('pwText') %></span>
-        <input type="submit" class="button" onclick="check()" value="<%= __('done') %>">
-    </form>
+    <input type="text" name="displayName" placeholder="<%= __('namePlaceholder') %>" id="nickname" class="textbox" pattern="^[a-zA-Z0-9_-]*$" minlength="5" maxlength="12" required>
+    <span id="name"><%= __('nameText') %></span>
+    <input type="password" name="secondaryPassword" placeholder="<%= __('pwPlaceholder') %>" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
+    <span id="pw"><%= __('pwText') %></span>
+    <input type="submit" class="button" onclick="check()" value="<%= __('done') %>">
     <h5><a href="<%= url %>/logout" style="color: rgb(0, 135, 197); font-weight: 400;"><%= __('mainPage') %></a></h5>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        const projectUrl = "<%= url %>";
+        const api = "<%= api %>";
+    </script>
     <script src="js/join.js"></script>
 </body>
 </html>

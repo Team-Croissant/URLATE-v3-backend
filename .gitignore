@@ -5,8 +5,6 @@ node_modules/
 
 serverOn\.bat
 
-databaseOn\.bat
-
 APIserverOn\.bat
 
 socketServerOn\.bat

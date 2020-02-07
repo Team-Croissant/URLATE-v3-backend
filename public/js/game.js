@@ -6,10 +6,32 @@ var songs = new Howl({
   src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
   autoplay: true,
   loop: true,
-  volume : settings.sound.musicVolume / 100,
-  onend: function() {
-  }
+  onend: function() {}
 });
+
+window.onload = function() {
+  $.ajax({
+    type: 'GET',
+    url: `${api}/getSettings`,
+    dataType: 'JSON',
+    xhrFields: {
+        withCredentials: true
+    },
+    success: function(data){
+      console.log(data);
+        if(data.result == "loaded") {
+            settings = data.settings;
+            minit();
+        } else if(data.result == "failed") {
+            alert('An error occured.');
+        }
+    }
+  });
+}
+
+function minit() {
+  Howler.volume = settings.sound.musicVolume / 100;
+}
 
 Pace.on('done', () => {
   if($("#name").width() > 300) {

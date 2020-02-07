@@ -26,7 +26,7 @@
     </div>
     <div id="header">
         <div id="headerLeft">
-            <span id="name" class="light"><%=name %></span>
+            <span id="name" class="light">USERNAME</span>
         </div>
         <div id="headerRight">
             <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable" onclick="infoScreen()">
@@ -106,13 +106,14 @@
         <div id="infoLineContainer"><div id="infoLine"></div></div>
         <img src="images/croissant.png" id="croissantLogo">
     </div>
-    <script>
-        const cdnUrl = "<%= cdnUrl %>";
-        const url = "<%= url %>";
-        var settings = JSON.parse('<%-settings %>');
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var settings = [];
+        const cdnUrl = "<%= cdnUrl %>";
+        const url = "<%= url %>";
+        const api = "<%= api %>";
+    </script>
     <script src="js/game.js"></script>
 </body>
 </html>

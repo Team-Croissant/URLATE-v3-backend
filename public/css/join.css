@@ -71,5 +71,6 @@ form {
 }
 
 #failed {
+    display: none;
     color: red;
 }

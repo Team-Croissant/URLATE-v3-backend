@@ -1,4 +1,21 @@
 window.onload = function() {
+  $.ajax({
+    type: 'GET',
+    url: `${api}/vaildCheck`,
+    dataType: 'JSON',
+    xhrFields: {
+      withCredentials: true
+    },
+    success: function(data){
+      if(data.result == "logined") {
+        window.location.href = `${projectUrl}/game`;
+      } else if(data.result == "Not authorized") {
+        window.location.href = `${projectUrl}/authorize`;
+      } else if(data.result == "Not registered") {
+        window.location.href = `${projectUrl}/join`;
+      }
+    }
+  });
   document.getElementById('buttonContainer').style.transitionDuration = '2s';
   setTimeout(function() {
     document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[1].innerHTML = document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[0].innerHTML;
@@ -18,17 +35,25 @@ function signInCallback(authResult) {
       type: 'POST',
       url: `${api}/login`,
       dataType: 'JSON',
-      data: { "code" : authResult['code'] },
+      xhrFields: {
+        withCredentials: true
+      },
+      data: {
+        "ClientId" : "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
+        "ClientSecret" : "WVUB-PJDdwdm3dHpkOMbacqw",
+        "RedirectionUrl" : `${projectUrl}`,
+        "code" : authResult['code']
+      },
       success: function(data){
-        if(data.msg == "success") {
-          window.location.href = `${projectUrl}/game`;
-        } else if(data.msg == "fail") {
-          alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
+        if(data.result == "logined") {
+          window.location.href = `${projectUrl}/join`;
+        } else if(data.result == "failed") {
+          alert(loginFailed);
         }
       }
     });
   } else {
-    alert('로그인 과정에서 에러가 발생했습니다.\n다시 시도해주세요.');
+    alert(loginError);
   }
 }
   

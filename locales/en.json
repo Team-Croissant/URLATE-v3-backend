@@ -33,5 +33,7 @@
 	"editor_title": "EDITOR",
 	"editor_subtitle": "에디터",
 	"advanced_title": "ADVANCED",
-	"advanced_subtitle": "월정액"
+	"advanced_subtitle": "월정액",
+	"login_failed": "login_failed",
+	"login_error": "login_error"
 }
