@@ -1,37 +1,57 @@
 var selection = 0;
 var selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 var display = 0;
+var username = '';
 
 var songs = new Howl({
   src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
   autoplay: true,
   loop: true,
-  onend: function() {}
+  onend: () => {}
 });
 
-window.onload = function() {
-  $.ajax({
-    type: 'GET',
-    url: `${api}/getSettings`,
-    dataType: 'JSON',
-    xhrFields: {
-        withCredentials: true
-    },
-    success: function(data){
-      console.log(data);
-        if(data.result == "loaded") {
-            settings = data.settings;
-            minit();
-        } else if(data.result == "failed") {
-            alert('An error occured.');
-        }
-    }
-  });
+function settingApply() {
+  Howler.volume(settings.sound.musicVolume / 100);
 }
 
-function minit() {
-  Howler.volume = settings.sound.musicVolume / 100;
-}
+window.onload = () => {
+  $.ajax({
+    type: 'GET',
+    url: `${api}/vaildCheck`,
+    dataType: 'JSON',
+    xhrFields: {
+      withCredentials: true
+    },
+    success: (data => {
+      if(data.result == "Not logined") {
+        window.location.href = `${projectUrl}`;
+      } else if(data.result == "Not authorized") {
+        window.location.href = `${projectUrl}/authorize`;
+      } else if(data.result == "Not registered") {
+        window.location.href = `${projectUrl}/join`;
+      } else {
+        $.ajax({
+          type: 'GET',
+          url: `${api}/getUser`,
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          success: (res) => {
+            settings = JSON.parse(res[0].settings);
+            username = res[0].nickname;
+            $("#name").text(username);
+            settingApply();
+          },
+          error: (err) => {
+            alert(`Error ocurred.\n${err}`);
+            window.location.href = `${projectUrl}`;
+          }
+        });
+      }
+    })
+  });
+};
 
 Pace.on('done', () => {
   if($("#name").width() > 300) {
