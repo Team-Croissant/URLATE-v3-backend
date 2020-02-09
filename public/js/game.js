@@ -2,6 +2,7 @@ var selection = 0;
 var selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 var display = 0;
 var username = '';
+var analyser, dataArray;
 
 var songs = new Howl({
   src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
@@ -14,7 +15,56 @@ function settingApply() {
   Howler.volume(settings.sound.musicVolume / 100);
 }
 
+function drawBar(x1, y1, x2, y2, width, frequency) {
+  frequency = frequency / 1.5 + 85;
+  if(frequency > 180) {
+    frequency = 180;
+  } else if(frequency < 150) {
+    frequency = 150;
+  }
+  lineColor = `rgb(${frequency}, ${frequency}, ${frequency})`;
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.lineTo(x2,y2);
+  ctx.stroke();
+}
+
+function animationLooper() {
+  bars = 100;
+  barWidth = window.innerHeight / bars;
+
+  // set to the size of device
+  canvas = document.getElementById("renderer");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx = canvas.getContext("2d");
+  
+  analyser.getByteFrequencyData(dataArray);
+  for(var i = 0; i < bars; i++){
+    barHeight = dataArray[i] * window.innerHeight / 700;
+    y = barWidth * i;
+    x = 0;
+    x_end = barHeight / 1.3;
+    drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
+  }
+  for(var i = 0; i < bars; i++){
+    barHeight = dataArray[i] * window.innerHeight / 700;
+    y = window.innerHeight - barWidth * i;
+    x = window.innerWidth;
+    x_end = window.innerWidth - (barHeight / 1.3);
+    drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
+  }
+  window.requestAnimationFrame(animationLooper);
+}
+
 window.onload = () => {
+  analyser = Howler.ctx.createAnalyser();
+  Howler.masterGain.connect(analyser);
+  analyser.connect(Howler.ctx.destination);
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+  animationLooper();
   $.ajax({
     type: 'GET',
     url: `${api}/vaildCheck`,
@@ -38,8 +88,8 @@ window.onload = () => {
             withCredentials: true
           },
           success: (res) => {
-            settings = JSON.parse(res[0].settings);
-            username = res[0].nickname;
+            settings = JSON.parse(res.settings);
+            username = res.nickname;
             $("#name").text(username);
             settingApply();
           },

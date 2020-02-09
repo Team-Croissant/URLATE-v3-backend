@@ -64,18 +64,18 @@ app.get('/vaildCheck', (req, res) => {
           .then((results) => {
             if(results[0] != undefined) {
               if(req.session.accessToken && req.session.refreshToken && req.session.authorized) {
-                res.json([{"result": "logined"}]);
+                res.json({"result": "logined"});
               } else {
-                res.json([{"result": "Not authorized"}]);
+                res.json({"result": "Not authorized"});
               }
             } else {
-              res.json([{"result": "Not registered"}]);
+              res.json({"result": "Not registered"});
             }
             conn.release();
           });
         });
   } else {
-    res.json([{"result": "Not logined"}]);
+    res.json({"result": "Not logined"});
   }
 });
 
@@ -94,11 +94,11 @@ app.post('/login', (req, res) => {
         req.session.accessToken = tokens.access_token;
         req.session.refreshToken = tokens.refresh_token;
         req.session.save(() => {
-          res.json([{"result": "logined"}]);
+          res.json({"result": "logined"});
         });
       });
     } else {
-      res.json([{"result": "failed", "error": "${err.response.data.error}", "error_description": "${err.response.data['error_description']}"}]);
+      res.json({"result": "failed", "error": "${err.response.data.error}", "error_description": "${err.response.data['error_description']}"});
     }
   });
 });
@@ -119,17 +119,17 @@ app.post("/join", function(req, res) {
                 delete req.session.tempName;
                 delete req.session.tempEmail;
                 req.session.save(() => {
-                  res.json([{"result": "registered"}]);
+                  res.json({"result": "registered"});
                   conn.release();
                 });
               });
             });
       });
     } else {
-      res.json([{"result": "failed", "error": "Wrong Format", "error_description": "Wrong name OR password format."}]);
+      res.json({"result": "failed", "error": "Wrong Format", "error_description": "Wrong name OR password format."});
     }
   } else {
-    res.json([{"result": "failed", "error": "Wrong Request", "error_description": "You need to login first."}]);
+    res.json({"result": "failed", "error": "Wrong Request", "error_description": "You need to login first."});
   }
 });
 
@@ -146,15 +146,15 @@ app.post("/authorize", function(req, res) {
               hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
                 if(hash == results[0].secondary) {
                   req.session.authorized = true;
-                  res.json([{"result": "authorized"}]);
+                  res.json({"result": "authorized"});
                 } else {
-                  res.json([{"result": "failed", "error" : "Wrong Password"}]);
+                  res.json({"result": "failed", "error" : "Wrong Password"});
                 }
               });
             });
           });
   } else {
-    res.json([{"result": "failed", "error": "Wrong Format", "error_description": "Wrong password format."}]);
+    res.json({"result": "failed", "error": "Wrong Format", "error_description": "Wrong password format."});
   }
 });
 
@@ -168,15 +168,15 @@ app.get("/getUser", function(req, res) {
         })
         .then((results) => {
           if(results[0] !== undefined) {
-            res.json([{"result": "loaded", "settings": results[0].settings, "nickname": results[0].nickname}]);
+            res.json({"result": "loaded", "settings": results[0].settings, "nickname": results[0].nickname});
           } else {
-            res.json([{"result": "failed", "error": "Load Failed", "error_description": "Failed to load settings. Maybe wrong userid?"}]);
+            res.json({"result": "failed", "error": "Load Failed", "error_description": "Failed to load settings. Maybe wrong userid?"});
           }
           conn.release();
         });
     });
   } else {
-    res.json([{"result": "failed", "error": "UserID Required", "error_description": "UserID is required for this task."}]);
+    res.json({"result": "failed", "error": "UserID Required", "error_description": "UserID is required for this task."});
   }
 });
 

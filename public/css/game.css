@@ -414,3 +414,17 @@ th, td {
 #croissantLogo {
   width: 10vw;
 }
+
+#visualizer {
+  mix-blend-mode: color-burn;
+  filter: sepia(2%) saturate(6166%) hue-rotate(184deg) contrast(116%) brightness(120%);
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vw;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  opacity: 0.3;
+}
