@@ -4,6 +4,7 @@ var display = 0;
 var username = '';
 var analyser, dataArray;
 
+//volume need to 0.1~0.8
 var songs = new Howl({
   src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
   autoplay: true,
@@ -30,27 +31,33 @@ function drawBar(x1, y1, x2, y2, width, frequency) {
   ctx.lineTo(x2,y2);
   ctx.stroke();
 }
-
+var milis = 0;
 function animationLooper() {
   bars = 100;
   barWidth = window.innerHeight / bars;
-
-  // set to the size of device
   canvas = document.getElementById("renderer");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  ctx = canvas.getContext("2d");
-  
+  ctx = canvas.getContext("2d");  
   analyser.getByteFrequencyData(dataArray);
+  bassLimit = 130 + Howler.volume() * 120;
+  d = new Date();
+  if(dataArray[0] > bassLimit && d.getTime() - milis > 100) {
+    milis = d.getTime();
+    $('#visualizer').toggleClass('boom');
+    setTimeout(() => {
+      $('#visualizer').toggleClass('boom');
+    }, 100);
+  }
   for(var i = 0; i < bars; i++){
-    barHeight = dataArray[i] * window.innerHeight / 700;
+    barHeight = dataArray[i] * window.innerHeight / 1000;
     y = barWidth * i;
     x = 0;
     x_end = barHeight / 1.3;
     drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
   for(var i = 0; i < bars; i++){
-    barHeight = dataArray[i] * window.innerHeight / 700;
+    barHeight = dataArray[i] * window.innerHeight / 1000;
     y = window.innerHeight - barWidth * i;
     x = window.innerWidth;
     x_end = window.innerWidth - (barHeight / 1.3);
@@ -74,11 +81,11 @@ window.onload = () => {
     },
     success: (data => {
       if(data.result == "Not logined") {
-        window.location.href = `${projectUrl}`;
+        window.location.href = `${url}`;
       } else if(data.result == "Not authorized") {
-        window.location.href = `${projectUrl}/authorize`;
+        window.location.href = `${url}/authorize`;
       } else if(data.result == "Not registered") {
-        window.location.href = `${projectUrl}/join`;
+        window.location.href = `${url}/join`;
       } else {
         $.ajax({
           type: 'GET',

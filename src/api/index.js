@@ -20,7 +20,7 @@ const app = express();
 app.locals.pretty = true;
 const port = 1024;
 
-const pool = mariadb.createPool({host: config.maria.host, user: config.maria.user, password: config.maria.password, connectionLimit: 5});
+const pool = mariadb.createPool({host: config.maria.host, user: config.maria.user, password: config.maria.password, connectionLimit: 50});
 
 const sessionStore = new MySQLStore({
   host: config.maria.host,
