@@ -49,6 +49,10 @@ app.get('/game', (req, res) => {
   res.render('game', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
+app.get('/proto', (req, res) => {
+  res.render('proto');
+});
+
 app.get('/accessDenined', (req, res) => {
   res.render('accessDenined');
 });

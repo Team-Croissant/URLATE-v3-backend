@@ -207,6 +207,8 @@ function infoInit() {
 function menuSelected() {
   if(selection == 0) {
     //play
+    //prototype code
+    window.location.href = `${url}/proto`;
   } else if(selection == 1) {
     //editor
     window.location.href = `${url}/editor`;
