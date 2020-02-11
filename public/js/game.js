@@ -32,6 +32,7 @@ function drawBar(x1, y1, x2, y2, width, frequency) {
   ctx.stroke();
 }
 var milis = 0;
+var isBoom = false;
 function animationLooper() {
   bars = 100;
   barWidth = window.innerHeight / bars;
@@ -40,14 +41,16 @@ function animationLooper() {
   canvas.height = window.innerHeight;
   ctx = canvas.getContext("2d");  
   analyser.getByteFrequencyData(dataArray);
-  bassLimit = 130 + Howler.volume() * 120;
+  dataLimit = 130 + Howler.volume() * 110;
   d = new Date();
-  if(dataArray[0] > bassLimit && d.getTime() - milis > 100) {
+  if(dataArray[1] > dataLimit && d.getTime() - milis > 100 && isBoom == false) {
     milis = d.getTime();
     $('#visualizer').toggleClass('boom');
-    setTimeout(() => {
-      $('#visualizer').toggleClass('boom');
-    }, 100);
+    isBoom = true;
+  } else if(dataArray[1] < dataLimit && d.getTime() - milis && isBoom == true) {
+    milis = d.getTime();
+    $('#visualizer').toggleClass('boom');
+    isBoom = false;
   }
   for(var i = 0; i < bars; i++){
     barHeight = dataArray[i] * window.innerHeight / 1000;
