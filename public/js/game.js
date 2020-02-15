@@ -31,6 +31,7 @@ function drawBar(x1, y1, x2, y2, width, frequency) {
   ctx.lineTo(x2,y2);
   ctx.stroke();
 }
+
 var milis = 0;
 var isBoom = false;
 function animationLooper() {
@@ -121,7 +122,9 @@ Pace.on('done', () => {
   } else if($("#name").width() > 180) {
     $("#name").css("font-size", "2.5vh");
   }
-  $('#loadingContainer').fadeOut(1000, () => {
+  $("#menuContainer").css("display", "flex");
+  $("#loadingContainer").fadeOut(500, () => {
+    $("#menuContainer").toggleClass("loaded");
     $("#myrhyText").css("font-size", "1em");
     $("#myrhyText").css("margin-bottom", "0vh");
     $("#songName").css("font-size", "1.8em");

@@ -8,9 +8,6 @@ body {
     font-family: 'Heebo', 'Spoqa Han Sans', 'Spoqa Han Sans KR', '나눔바른고딕', arial;
     overflow-x: hidden;
     overflow-y: hidden;
-    background-image: url('/images/mainBackground.png');
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .lighter {
@@ -204,6 +201,7 @@ body {
 
 #header {
   position: fixed;
+  z-index: 5;
   opacity: 0;
   height: 15vh;
   width: 100vw;
@@ -258,6 +256,7 @@ body {
 
 #selectContainer {
   position: fixed;
+  z-index: 0;
   top: 0;
   display: none;
   opacity: 0;
@@ -270,12 +269,24 @@ body {
 }
 
 #menuContainer {
+  background-image: url('/images/mainBackground.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   width: 100vw;
   height: 100vh;
-  display: flex;
+  display: none;
+  opacity: 0;
+  transform: scale(1.1);
   text-align: center;
   align-items: center;
   justify-content: center;
+  transition-duration: 0.5s;
+}
+
+#menuContainer.loaded {
+  opacity: 1;
+  transform: scale(1);
 }
 
 #menuMain {
