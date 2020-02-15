@@ -5,18 +5,18 @@ var username = '';
 var analyser, dataArray;
 
 //volume need to 0.1~0.8
-var songs = new Howl({
+const songs = new Howl({
   src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
   autoplay: true,
   loop: true,
   onend: () => {}
 });
 
-function settingApply() {
+const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
-}
+};
 
-function drawBar(x1, y1, x2, y2, width, frequency) {
+const drawBar = (x1, y1, x2, y2, width, frequency) => {
   frequency = frequency / 1.5 + 85;
   if(frequency > 180) {
     frequency = 180;
@@ -30,11 +30,11 @@ function drawBar(x1, y1, x2, y2, width, frequency) {
   ctx.moveTo(x1,y1);
   ctx.lineTo(x2,y2);
   ctx.stroke();
-}
+};
 
 var milis = 0;
 var isBoom = false;
-function animationLooper() {
+const animationLooper = () => {
   bars = 100;
   barWidth = window.innerHeight / bars;
   canvas = document.getElementById("renderer");
@@ -68,7 +68,7 @@ function animationLooper() {
     drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
   window.requestAnimationFrame(animationLooper);
-}
+};
 
 window.onload = () => {
   analyser = Howler.ctx.createAnalyser();
@@ -141,34 +141,34 @@ Pace.on('done', () => {
   });
 });
 
-function menuLeft() {
+const menuLeft = () => {
   $(`#${selectionList[selection]}`).css("display", "none");
   selection--;
   if(selection < 0) {
     selection = selectionList.length - 1;
   }
   $(`#${selectionList[selection]}`).css("display", "flex");
-}
+};
 
-function menuRight() {
+const menuRight = () => {
   $(`#${selectionList[selection]}`).css("display", "none");
   selection++;
   if(selection > selectionList.length - 1) {
     selection = 0;
   }
   $(`#${selectionList[selection]}`).css("display", "flex");
-}
+};
 
-function infoScreen() {
+const infoScreen = () => {
   display = 4;
   infoInit();
   $("#infoContainer").css("display", "block");
   $("#infoContainer").animate({
     opacity: 1
   }, 1000);
-}
+};
 
-function displayClose() {
+const displayClose = () => {
   if(display == 1) {
     //PLAY
   } else if(display == 2) {
@@ -189,9 +189,9 @@ function displayClose() {
     });
   }
   display = 0;
-}
+};
 
-function advancedInit() {
+const advancedInit = () => {
   $("#advancedContainer").css("display", "none");
   $("#advancedContainer").css("opacity", 0);
   $("#advancedIcon").css("marginTop", "10vh");
@@ -204,13 +204,13 @@ function advancedInit() {
   for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
     $(".advancedDetails").eq(i).css("opacity", 0);
   }
-}
+};
 
-function infoInit() {
+const infoInit = () => {
   $("#infoContainer").css("display", "none");
-}
+};
 
-function menuSelected() {
+const menuSelected = () => {
   if(selection == 0) {
     //play
     //prototype code
@@ -265,4 +265,4 @@ function menuSelected() {
       });
     });
   }
-}
+};
