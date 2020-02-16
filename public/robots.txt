@@ -1,3 +1,6 @@
 User-agent: *
 Disallow: /
-Allow : /$ 
+Allow : /$
+Allow: /images/favicon.ico
+Allow: /images/mainImage.png
+Allow: /images/logo

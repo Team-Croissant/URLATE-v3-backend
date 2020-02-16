@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <title>MyRhy Client</title>
     <link rel="stylesheet" href="css/game.css">
-    <link rel="shortcut icon" href="images/parts/favicon.ico">
+    <link rel="shortcut icon" href="images/favicon.ico">
     <script src="js/pace.js"></script>
 </head>
 <body>
     <div id="footer">
         <div id="footerLeft">
-            <img src="images/parts/returnIcon.png" class="icon">
+            <img src="images/parts/icons/return.png" class="icon">
             <span class="medium">&nbsp;&nbsp;Enter or Click to <strong>Select</strong></span>
         </div>
         <div id="footerCenter">
-            <strong id="songName"><img src="images/parts/note.png" id="noteIcon"><span>&nbsp;SongName</span></strong>
+            <strong id="songName"><img src="images/parts/icons/note.png" id="noteIcon"><span>&nbsp;SongName</span></strong>
             <span class="light" id="myrhyText"><strong>MyRhy</strong> Experimental</span>
         </div>
         <div id="footerRight">
@@ -22,7 +22,7 @@
         </div>
     </div>
     <div id="loadingContainer">
-        <img src="images/myrhyLogo_blue.png" id="logo">
+        <img src="images/logos/myrhy_blue.png" id="logo">
     </div>
     <div id="header">
         <div id="headerLeft">
@@ -37,19 +37,19 @@
     <div id="menuContainer">
         <img src="https://img.icons8.com/metro/52/000000/chevron-left.png" class="icon clickable" onclick="menuLeft()">
         <div id="menuMain" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/DotCursor.png" class="mainIcon">
+            <img src="images/parts/bigIcons/cursor.png" class="mainIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('play_title') %></span>
             <span class="light menuSubtitle"><%= __('play_subtitle') %></span>
         </div>
         <div id="menuEditor" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/MY RHY_MAIN_EDITOR_ICON.svg" class="shadowIcon" id="editorIcon">
+            <img src="images/parts/bigIcons/editor.svg" class="shadowIcon" id="editorIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('editor_title') %></span>
             <span class="light menuSubtitle"><%= __('editor_subtitle') %></span>
         </div>
         <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/heart.png" class="shadowIcon" id="titleAdvancedIcon">
+            <img src="images/parts/bigIcons/heart.png" class="shadowIcon" id="titleAdvancedIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('advanced_title') %></span>
             <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
@@ -61,7 +61,7 @@
     </div>
     <div id="advancedContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <img src="images/parts/advancedLogo.png" id="advancedIcon">
+        <img src="images/logos/advanced.png" id="advancedIcon">
         <br>
         <span class="medium" id="advancedDescription"><%= __('advanced_description1') %><br><%= __('advanced_description2') %><br><span class="gray"><%= __('advanced_description3') %></span></span>
         <br>
@@ -101,10 +101,10 @@
     </div>
     <div id="infoContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <img src="images/myrhyLogo_blue.png" id="infoLogo">
+        <img src="images/logos/myrhy_blue.png" id="infoLogo">
         <h2>&copy;2020 MyRhy<span class="light"><br>All contents cannot be copied without permission.</span></h2>
         <div id="infoLineContainer"><div id="infoLine"></div></div>
-        <img src="images/croissant.png" id="croissantLogo">
+        <img src="images/logos/croissant.png" id="croissantLogo">
     </div>
     <div id="visualizer"><canvas id="renderer"></canvas></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>

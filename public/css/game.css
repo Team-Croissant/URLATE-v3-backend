@@ -127,7 +127,7 @@ body {
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    background-image: url('/images/LoadingBackground.png');
+    background-image: url('/images/backgrounds/loading.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -219,7 +219,7 @@ body {
   text-align: left;
   align-items: center;
   justify-content: flex-start;
-  background-image: url('/images/parts/namespace.png');
+  background-image: url('/images/parts/elements/namespace.png');
   background-repeat: no-repeat;
   background-position: left center;
   background-size: auto 9vh;
@@ -262,14 +262,14 @@ body {
   opacity: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('/images/myrhyTrackBackground.png');
+  background-image: url('/images/backgrounds/track.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
 #menuContainer {
-  background-image: url('/images/mainBackground.png');
+  background-image: url('/images/backgrounds/main.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
