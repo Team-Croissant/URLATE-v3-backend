@@ -1,5 +1,5 @@
 # MyRhy
-![MyRhyLogo](./public/images/bigImage.png)
+![MyRhyLogo](./public/images/others/bigImage.png)
 
 > Avoid & Get on the tempo, MyRhy.
 
