@@ -41,9 +41,9 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-function getOAuthClient(ClientId, ClientSecret, RedirectionUrl) {
+const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) => {
   return new OAuth2(ClientId, ClientSecret, RedirectionUrl);
-}
+};
 
 app.get('/', (req, res) => {
   res.end('Welcome to MyRhy API!');
