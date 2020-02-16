@@ -1,4 +1,4 @@
-window.onload = function() {
+$(document).ready(() => {
     $.ajax({
         type: 'GET',
         url: `${api}/vaildCheck`,
@@ -6,7 +6,7 @@ window.onload = function() {
         xhrFields: {
           withCredentials: true
         },
-        success: function(data){
+        success: (data) => {
             if(data.result == "logined") {
                 window.location.href = `${projectUrl}/game`;
             } else if(data.result == "Not authorized") {
@@ -16,7 +16,7 @@ window.onload = function() {
             }
         }
     });
-};
+});
 
 const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
 const passReg = /^[0-9]{4,6}$/;
@@ -37,7 +37,7 @@ $("#password").blur(() => {
     }
 });
 
-function check() {
+const check = () => {
     if(!nameReg.test($("#nickname").val())) {
         $("#name").fadeIn(500);
     } else {
@@ -57,7 +57,7 @@ function check() {
                     "displayName": $('#nickname').val(),
                     "secondaryPassword": $('#password').val()
                 },
-                success: function(data){
+                success: (data) => {
                   if(data.result == "registered") {
                     window.location.href = `${projectUrl}/authorize`;
                   } else if(data.result == "failed") {
@@ -68,9 +68,9 @@ function check() {
             });
         }
     }
-}
+};
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', (event) => {
     if(event.code == 'Enter') {
         check();
     }

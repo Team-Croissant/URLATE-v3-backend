@@ -70,12 +70,7 @@ const animationLooper = () => {
   window.requestAnimationFrame(animationLooper);
 };
 
-window.onload = () => {
-  analyser = Howler.ctx.createAnalyser();
-  Howler.masterGain.connect(analyser);
-  analyser.connect(Howler.ctx.destination);
-  dataArray = new Uint8Array(analyser.frequencyBinCount);
-  animationLooper();
+$(document).ready(() => {
   $.ajax({
     type: 'GET',
     url: `${api}/vaildCheck`,
@@ -112,6 +107,14 @@ window.onload = () => {
       }
     })
   });
+});
+
+window.onload = () => {
+  analyser = Howler.ctx.createAnalyser();
+  Howler.masterGain.connect(analyser);
+  analyser.connect(Howler.ctx.destination);
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+  animationLooper();
 };
 
 Pace.on('done', () => {

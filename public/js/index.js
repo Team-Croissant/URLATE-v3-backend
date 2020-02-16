@@ -1,4 +1,4 @@
-window.onload = function() {
+$(document).ready(() => {
   $.ajax({
     type: 'GET',
     url: `${api}/vaildCheck`,
@@ -6,7 +6,7 @@ window.onload = function() {
     xhrFields: {
       withCredentials: true
     },
-    success: function(data){
+    success: (data) => {
       if(data.result == "logined") {
         window.location.href = `${projectUrl}/game`;
       } else if(data.result == "Not authorized") {
@@ -16,19 +16,22 @@ window.onload = function() {
       }
     }
   });
+});
+
+window.onload = () => {
   document.getElementById('buttonContainer').style.transitionDuration = '2s';
-  setTimeout(function() {
+  setTimeout(() => {
     document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[1].innerHTML = document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[0].innerHTML;
     document.getElementById('buttonContainer').style.marginTop = '2vh';
     document.getElementById('buttonContainer').style.opacity = '1';
   }, 500);
 };
 
- $('#my-signin2').click(function() {
+ $('#my-signin2').click(() => {
   auth2.grantOfflineAccess().then(signInCallback);
 });
 
-function signInCallback(authResult) {
+const signInCallback = (authResult) => {
   if (authResult['code']) {
     console.log(authResult['code']);
     $.ajax({
@@ -44,7 +47,7 @@ function signInCallback(authResult) {
         "RedirectionUrl" : `${projectUrl}`,
         "code" : authResult['code']
       },
-      success: function(data){
+      success: (data) => {
         if(data.result == "logined") {
           window.location.href = `${projectUrl}/join`;
         } else if(data.result == "failed") {
@@ -55,12 +58,12 @@ function signInCallback(authResult) {
   } else {
     alert(loginError);
   }
-}
+};
   
 
-function signOut() {
+const signOut = () => {
   var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
+  auth2.signOut().then(() => {
     console.log('User signed out.');
   });
-}
+};
