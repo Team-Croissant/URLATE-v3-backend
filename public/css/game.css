@@ -264,15 +264,9 @@ body {
   height: 100vh;
   background-image: url('/images/backgrounds/track.png');
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 }
 
 #menuContainer {
-  background-image: url('/images/backgrounds/main.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   width: 100vw;
   height: 100vh;
   display: none;
@@ -282,6 +276,23 @@ body {
   align-items: center;
   justify-content: center;
   transition-duration: 1s;
+  background-image: url('/images/backgrounds/main.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: 100% 0%; 
+  background-size: 120%;
+  animation-name: menuBack;
+  animation-duration: 20s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes menuBack {
+  0%   { background-position: 100% 0%;  }
+  100% { background-position: 0% 100%;  }
 }
 
 #menuContainer.loaded {
@@ -308,6 +319,10 @@ body {
   text-align: center;
   align-items: center;
   justify-content: center;
+}
+
+.noClick {
+  pointer-events: none;
 }
 
 .clickable {
@@ -445,4 +460,95 @@ th, td {
 #visualizer.boom {
   opacity: 0.7;
   transition-duration: 0s;
+}
+
+.backIcon {
+  position: fixed;
+  opacity: 0;
+  mix-blend-mode: color-burn;
+}
+
+#back1 {
+  top: 20vh;
+  right: 15vw;
+  height: 20vh;
+  width: auto;
+  animation-name: back1move;
+  animation-duration: 10s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes back1move {
+  0%   { top: 20vh; }
+  100% { top: 40vh; }
+}
+
+#back2 {
+  top: 0vh;
+  right: 25vw;
+  height: 30vh;
+  width: auto;
+  animation-name: back2move;
+  animation-duration: 7s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes back2move {
+  0%   { top: 0vh; }
+  100% { top: -10vh; }
+}
+
+#back3 {
+  top: 50vh;
+  right: 22vw;
+  height: 10vh;
+  width: auto;
+  animation-name: back3move;
+  animation-duration: 15s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes back3move {
+  0%   { top: 50vh; }
+  100% { top: 30vh; }
+}
+
+#back4 {
+  top: 30vh;
+  left: 13vw;
+  height: 18vh;
+  width: auto;
+  animation-name: back4move;
+  animation-duration: 12s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes back4move {
+  0%   { top: 30vh; }
+  100% { top: 10vh; }
+}
+
+#back5 {
+  bottom: 15vh;
+  left: 20vw;
+  height: 13vh;
+  width: auto;
+  animation-name: back5move;
+  animation-duration: 17s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes back5move {
+  0%   { left: 20vw; }
+  100% { left: 30vw; }
 }

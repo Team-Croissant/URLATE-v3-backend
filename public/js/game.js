@@ -54,14 +54,14 @@ const animationLooper = () => {
     isBoom = false;
   }
   for(var i = 0; i < bars; i++){
-    barHeight = dataArray[i] * window.innerHeight / 1000;
+    barHeight = dataArray[i] * window.innerHeight / 1500;
     y = barWidth * i;
     x = 0;
     x_end = barHeight / 1.3;
     drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
   for(var i = 0; i < bars; i++){
-    barHeight = dataArray[i] * window.innerHeight / 1000;
+    barHeight = dataArray[i] * window.innerHeight / 1500;
     y = window.innerHeight - barWidth * i;
     x = window.innerWidth;
     x_end = window.innerWidth - (barHeight / 1.3);
@@ -133,7 +133,10 @@ Pace.on('done', () => {
     $("#songName").css("font-size", "1.8em");
     $("#header").animate({
       opacity: 1
-    }, 1000, () => {
+    }, 500, () => {
+      $(".backIcon").animate({
+        opacity: 0.3
+      }, 500);
       $("#songName").animate({
         opacity: 1
       }, 1000);
