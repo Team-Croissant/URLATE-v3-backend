@@ -453,7 +453,7 @@ th, td {
   overflow-x: hidden;
   overflow-y: hidden;
   opacity: 0.3;
-  transform: scale(1);
+  transform: scaleX(1.2);
   transition-duration: 0.3s;
 }
 
@@ -463,9 +463,9 @@ th, td {
 }
 
 .backIcon {
+  mix-blend-mode: color-burn;
   position: fixed;
   opacity: 0;
-  mix-blend-mode: color-burn;
 }
 
 #back1 {
