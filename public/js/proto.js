@@ -1,4 +1,4 @@
-let track, difficulty, version, beat, bpm, speed;
+let track, difficulty, version, beat, bpm, speed, player;
 
 let getParam = (sname) => {
   var params = location.search.substr(location.search.indexOf("?") + 1);
@@ -40,6 +40,12 @@ $(document).ready(() => {
           },
           success: (res) => {
             settings = JSON.parse(res.settings);
+            player = new Howl({
+              src: [`${cdnUrl}/tracks/${settings.sound.quality}/${getParam("track")}.mp3`],
+              autoplay: false,
+              loop: false,
+              onend: result()
+            });
             username = res.nickname;
             settingApply();
             if(!getParam("track") || !getParam("difficulty")) {
@@ -70,3 +76,7 @@ Pace.on('done', () => {
     window.location.href = `${url}/game`;
   });
 });
+
+const result = () => {
+  //show result
+}

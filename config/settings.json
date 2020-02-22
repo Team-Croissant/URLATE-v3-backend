@@ -18,6 +18,7 @@
     "lightEffect" : true
   },
   "sound" : {
+    "quality" : "128kbps",
     "musicVolume" : 30,
     "effectVolume" : 20,
     "offset" : 0
