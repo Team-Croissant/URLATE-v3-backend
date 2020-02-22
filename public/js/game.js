@@ -1,12 +1,12 @@
-var selection = 0;
-var selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
-var display = 0;
-var username = '';
-var analyser, dataArray;
+let selection = 0;
+let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
+let display = 0;
+let username = '';
+let analyser, dataArray;
 
 //volume need to 0.1~0.8
 const songs = new Howl({
-  src: [`${cdnUrl}/songs/192kbps/MyRhyThemeSong.mp3`],
+  src: [`${cdnUrl}/tracks/192kbps/MyRhy Theme.mp3`],
   autoplay: true,
   loop: true,
   onend: () => {}
@@ -32,8 +32,8 @@ const drawBar = (x1, y1, x2, y2, width, frequency) => {
   ctx.stroke();
 };
 
-var milis = 0;
-var isBoom = false;
+let milis = 0;
+let isBoom = false;
 const animationLooper = () => {
   bars = 100;
   barWidth = window.innerHeight / bars;
@@ -220,7 +220,7 @@ const menuSelected = () => {
   if(selection == 0) {
     //play
     //prototype code
-    window.location.href = `${url}/proto`;
+    window.location.href = `${url}/proto?track=Chatty%20Bones%202018&difficulty=1`;
   } else if(selection == 1) {
     //editor
     window.location.href = `${url}/editor`;

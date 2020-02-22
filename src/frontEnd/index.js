@@ -50,7 +50,7 @@ app.get('/game', (req, res) => {
 });
 
 app.get('/proto', (req, res) => {
-  res.render('proto');
+  res.render('proto', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
 app.get('/accessDenined', (req, res) => {
