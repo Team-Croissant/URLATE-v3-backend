@@ -277,6 +277,16 @@ body {
   justify-content: center;
   transition-duration: 1s;
   background-image: url('/images/backgrounds/main.png');
+}
+
+#backIconContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  mix-blend-mode: color-burn;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/backgrounds/icons.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -382,6 +392,7 @@ th, td {
 /*tr:nth-child(even){background-color: #e6e6e6}*/
 
 #tableHeader {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)) saturate(170%);
   background: linear-gradient(to Right, #eabed8, #78d6ee);
   color: white;
 }
@@ -416,7 +427,7 @@ th, td {
   background: linear-gradient(to Right, #eabed8, #78d6ee);
   color: white;
   border: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,.5);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)) saturate(170%);
   width: 10vw;
   height: 6vh;
   margin: 3vh;
