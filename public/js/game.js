@@ -53,14 +53,14 @@ const animationLooper = () => {
     $('#visualizer').toggleClass('boom');
     isBoom = false;
   }
-  for(var i = 0; i < bars; i++){
+  for(let i = 0; i < bars; i++){
     barHeight = dataArray[i] * window.innerHeight / 500;
     y = barWidth * i;
     x = 0;
     x_end = barHeight / 1.3;
     drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
-  for(var i = 0; i < bars; i++){
+  for(let i = 0; i < bars; i++){
     barHeight = dataArray[i] * window.innerHeight / 500;
     y = window.innerHeight - barWidth * i;
     x = window.innerWidth;
@@ -101,7 +101,7 @@ $(document).ready(() => {
           },
           error: (err) => {
             alert(`Error ocurred.\n${err}`);
-            window.location.href = `${projectUrl}`;
+            window.location.href = `${url}`;
           }
         });
       }
@@ -207,7 +207,7 @@ const advancedInit = () => {
   $("#supportDetails").css("opacity", 0);
   $("#advancedDetails").css("opacity", 0);
   $("#tableContainer").css("opacity", 0);
-  for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
+  for (let i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
     $(".advancedDetails").eq(i).css("opacity", 0);
   }
 };
@@ -228,7 +228,7 @@ const menuSelected = () => {
     //advanced
     advancedInit();
     display = 3;
-    var eqn = 0;
+    let eqn = 0;
     $("#advancedContainer").css("display", "block");
     $("#advancedContainer").animate({
       opacity: 1
@@ -252,7 +252,7 @@ const menuSelected = () => {
                 $("#tableContainer").animate({
                   opacity: 1
                 }, 200, () => {
-                  for (var i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
+                  for (let i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
                     setTimeout(() => {
                       $(".advancedDetails").eq(eqn).animate({
                         opacity: 1
