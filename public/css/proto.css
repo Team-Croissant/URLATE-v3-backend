@@ -72,3 +72,48 @@ body {
   0% { transform: rotate(0deg); transform: rotate(0deg); }
   100% { transform: rotate(360deg); transform: rotate(360deg); }
 }
+
+#loadingContainer {
+  opacity: 1;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1);
+  transition-duration: 1s;
+}
+
+#loadingContainer.fadeOut {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+#loading {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#albumArt {
+  height: 50vh;
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+  border-radius: 0.5vw;
+}
+
+#title {
+  font-weight: 600;
+  font-size: 2.5em;
+  margin-top: 5vh;
+}
+
+#composer {
+  font-weight: 300;
+  font-size: 1.7em;
+  margin: 0;
+}

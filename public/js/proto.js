@@ -1,4 +1,4 @@
-let track, difficulty, version, beat, bpm, speed, player, patterns;
+let track, difficulty, version, beat, bpm, speed, player, patterns, settings;
 
 let getParam = (sname) => {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -23,6 +23,7 @@ const sortArray = (a, b) => {
 }
 
 $(document).ready(() => {
+  $('#albumArt').attr('src', `images/album/${getParam("track")}.png`);
   $.ajax({
     type: 'GET',
     url: `${api}/vaildCheck`,
@@ -65,7 +66,7 @@ $(document).ready(() => {
               beat = pattern.information.beat;
               bpm = pattern.information.bpm;
               speed = pattern.information.speed;
-              patterns = pattern.sort(sortArray);
+              patterns = pattern.patterns.sort(sortArray);
             }).fail(() => {
               alert("Invaild data error");
               window.location.href = `${url}/game`;
@@ -82,7 +83,12 @@ $(document).ready(() => {
 });
 
 Pace.on('done', () => {
-  
+  setTimeout(() => {
+    $('#loadingContainer').toggleClass('fadeOut');
+    setTimeout(() => {
+      $('#loadingContainer').css('display', 'none');
+    }, 1000);
+  }, 1000);
 });
 
 const result = () => {

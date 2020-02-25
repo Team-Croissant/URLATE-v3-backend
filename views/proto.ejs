@@ -8,10 +8,16 @@
   <script src="js/pace.js"></script>
 </head>
 <body>
+  <div id="loadingContainer">
+    <div id="loading">
+      <img id="albumArt" onerror="this.onerror=null;this.src='images/album/temp.png';">
+      <span id="title">Chatty Bones 2018</span>
+      <span id="composer">Elsiff</span>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script>
-    var settings = [];
     const cdnUrl = "<%= cdnUrl %>";
     const url = "<%= url %>";
     const api = "<%= api %>";
