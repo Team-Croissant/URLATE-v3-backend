@@ -6,7 +6,7 @@ const express = require('express');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
-const mariadb = require('mariadb');
+const QueryBuilder = require('node-querybuilder');
 
 const config = require(__dirname + '/../../config/config.json');
 
@@ -20,7 +20,13 @@ const app = express();
 app.locals.pretty = true;
 const port = 1024;
 
-const pool = mariadb.createPool({host: config.maria.host, user: config.maria.user, password: config.maria.password, connectionLimit: 50});
+const pool = new QueryBuilder({
+  host: config.maria.host,
+  database: config.maria.db,
+  user: config.maria.user,
+  password: config.maria.password,
+  pool_size: 50
+}, 'mysql', 'pool');
 
 const sessionStore = new MySQLStore({
   host: config.maria.host,
@@ -55,25 +61,21 @@ app.post('/', (req, res) => {
 
 app.get('/vaildCheck', (req, res) => {
   if(req.session.accessToken && req.session.refreshToken) {
-    pool.getConnection()
-      .then(conn => {
-        conn.query(`USE myrhyservicedb`)
-          .then(() => {
-            return conn.query(`SELECT userid, nickname, settings FROM users WHERE userid = ${req.session.userid}`);
-          })
-          .then((results) => {
-            if(results[0] != undefined) {
-              if(req.session.accessToken && req.session.refreshToken && req.session.authorized) {
-                res.json({"result": "logined"});
-              } else {
-                res.json({"result": "Not authorized"});
-              }
-            } else {
-              res.json({"result": "Not registered"});
-            }
-            conn.release();
-          });
-        });
+    pool.get_connection(conn => {
+      conn.select('userid, nickname').from('users').where('userid', req.session.userid).get()
+      .then((results) => {
+        if(results[0] != undefined) {
+          if(req.session.accessToken && req.session.refreshToken && req.session.authorized) {
+            res.json({"result": "logined"});
+          } else {
+            res.json({"result": "Not authorized"});
+          }
+        } else {
+          res.json({"result": "Not registered"});
+        }
+        conn.release();
+      });
+    });
   } else {
     res.json({"result": "Not logined"});
   }
@@ -109,21 +111,17 @@ app.post("/join", function(req, res) {
   if(req.session.tempName && req.session.accessToken && req.session.refreshToken) {
     if(nameReg.test(req.body.displayName) && passReg.test(req.body.secondaryPassword)) {
       hasher({password:req.body.secondaryPassword}, (err, pass, salt, hash) => {
-        pool.getConnection()
-          .then(conn => {
-            conn.query(`USE myrhyservicedb`)
-              .then(() => {
-                return conn.query(`INSERT INTO users VALUES ("${req.body.displayName}", "${req.session.userid}", "${salt}", "${hash}", "${new Date()}", "${req.session.tempEmail}", '${JSON.stringify(settingsConfig)}')`);
-              })
-              .then((response) => {
-                delete req.session.tempName;
-                delete req.session.tempEmail;
-                req.session.save(() => {
-                  res.json({"result": "registered"});
-                  conn.release();
-                });
+        pool.get_connection(conn => {
+          conn.insert('users', {nickname: req.body.displayName, userid: req.session.userid, salt: salt, secondary: hash, date: new Date(), email: req.session.tempEmail, settings: JSON.stringify(settingsConfig)})
+            .then(() => {
+              delete req.session.tempName;
+              delete req.session.tempEmail;
+              req.session.save(() => {
+                res.json({"result": "registered"});
+                conn.release();
               });
             });
+        });
       });
     } else {
       res.json({"result": "failed", "error": "Wrong Format", "error_description": "Wrong name OR password format."});
@@ -136,23 +134,20 @@ app.post("/join", function(req, res) {
 app.post("/authorize", function(req, res) {
   const passReg = /^[0-9]{4,6}$/;
   if(passReg.test(req.body.secondaryPassword)) {
-    pool.getConnection()
-        .then(conn => {
-          conn.query(`USE myrhyservicedb`)
-            .then(() => {
-              return conn.query(`SELECT secondary, salt, userid FROM users WHERE userid = ${ req.session.userid }`);
-            })
-            .then((results)=> {
-              hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
-                if(hash == results[0].secondary) {
-                  req.session.authorized = true;
-                  res.json({"result": "authorized"});
-                } else {
-                  res.json({"result": "failed", "error" : "Wrong Password"});
-                }
-              });
-            });
-          });
+    pool.get_connection(conn => {
+      conn.select('secondary, salt').from('users').where('userid', req.session.userid).get()
+      .then((results) => {
+        hasher({password:req.body.secondaryPassword, salt:results[0].salt}, (err, pass, salt, hash) => {
+          if(hash == results[0].secondary) {
+            req.session.authorized = true;
+            res.json({"result": "authorized"});
+          } else {
+            res.json({"result": "failed", "error" : "Wrong Password"});
+          }
+        });
+        conn.release();
+      });
+    });
   } else {
     res.json({"result": "failed", "error": "Wrong Format", "error_description": "Wrong password format."});
   }
@@ -160,20 +155,16 @@ app.post("/authorize", function(req, res) {
 
 app.get("/getUser", function(req, res) {
   if(req.session.userid) {
-    pool.getConnection()
-    .then(conn => {
-      conn.query(`USE myrhyservicedb`)
-        .then(() => {
-          return conn.query(`SELECT userid, nickname, settings FROM users WHERE userid = ${req.session.userid}`);
-        })
-        .then((results) => {
-          if(results[0] !== undefined) {
-            res.json({"result": "loaded", "settings": results[0].settings, "nickname": results[0].nickname});
-          } else {
-            res.json({"result": "failed", "error": "Load Failed", "error_description": "Failed to load settings. Maybe wrong userid?"});
-          }
-          conn.release();
-        });
+    pool.get_connection(conn => {
+      conn.select('nickname, settings').from('users').where('userid', req.session.userid).get()
+      .then((results) => {
+        if(results[0] !== undefined) {
+          res.json({"result": "loaded", "settings": results[0].settings, "nickname": results[0].nickname});
+        } else {
+          res.json({"result": "failed", "error": "Load Failed", "error_description": "Failed to load settings. Maybe wrong userid?"});
+        }
+        conn.release();
+      });
     });
   } else {
     res.json({"result": "failed", "error": "UserID Required", "error_description": "UserID is required for this task."});

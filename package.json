@@ -22,7 +22,7 @@
     "express-subdomain": "^1.0.5",
     "googleapis": "^44.0.0",
     "i18n": "^0.8.4",
-    "mariadb": "^2.1.5",
+    "node-querybuilder": "^2.1.1",
     "nodemailer": "^6.4.2",
     "npm": "^6.12.0",
     "pbkdf2-password": "^1.2.1",

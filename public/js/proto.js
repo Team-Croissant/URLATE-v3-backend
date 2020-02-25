@@ -1,4 +1,4 @@
-let track, difficulty, version, beat, bpm, speed, player;
+let track, difficulty, version, beat, bpm, speed, player, patterns;
 
 let getParam = (sname) => {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -15,9 +15,12 @@ const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
 };
 
-let readyForPlay = (pattern) => {
-  //parse pattern, set timing, etc
-};
+const sortArray = (a, b) => {
+  if(a.tempo == b.tempo) {
+    return 0
+  }
+  return a.tempo > b.tempo ? 1 : -1;
+}
 
 $(document).ready(() => {
   $.ajax({
@@ -62,7 +65,7 @@ $(document).ready(() => {
               beat = pattern.information.beat;
               bpm = pattern.information.bpm;
               speed = pattern.information.speed;
-              readyForPlay(pattern);
+              patterns = pattern.sort(sortArray);
             }).fail(() => {
               alert("Invaild data error");
               window.location.href = `${url}/game`;
