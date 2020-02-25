@@ -78,12 +78,12 @@ $(document).ready(() => {
     xhrFields: {
       withCredentials: true
     },
-    success: (data => {
-      if(data.result == "Not logined") {
+    complete: (data => {
+      if(data.responseJSON.result == "Not logined") {
         window.location.href = `${url}`;
-      } else if(data.result == "Not authorized") {
+      } else if(data.responseJSON.result == "Not authorized") {
         window.location.href = `${url}/authorize`;
-      } else if(data.result == "Not registered") {
+      } else if(data.responseJSON.result == "Not registered") {
         window.location.href = `${url}/join`;
       } else {
         $.ajax({
@@ -93,9 +93,9 @@ $(document).ready(() => {
           xhrFields: {
             withCredentials: true
           },
-          success: (res) => {
-            settings = JSON.parse(res.settings);
-            username = res.nickname;
+          complete: (res) => {
+            settings = JSON.parse(res.responseJSON.settings);
+            username = res.responseJSON.nickname;
             $("#name").text(username);
             settingApply();
           },

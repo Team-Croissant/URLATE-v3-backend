@@ -6,12 +6,13 @@ $(document).ready(() => {
     xhrFields: {
       withCredentials: true
     },
-    success: (data) => {
-      if(data.result == "logined") {
+    complete: (data) => {
+      console.log(data);
+      if(data.responseJSON.result == "logined") {
         window.location.href = `${projectUrl}/game`;
-      } else if(data.result == "Not authorized") {
+      } else if(data.responseJSON.result == "Not authorized") {
         window.location.href = `${projectUrl}/authorize`;
-      } else if(data.result == "Not registered") {
+      } else if(data.responseJSON.result == "Not registered") {
         window.location.href = `${projectUrl}/join`;
       }
     }
@@ -47,10 +48,10 @@ const signInCallback = (authResult) => {
         "RedirectionUrl" : `${projectUrl}`,
         "code" : authResult['code']
       },
-      success: (data) => {
-        if(data.result == "logined") {
+      complete: (data) => {
+        if(data.responseJSON.result == "logined") {
           window.location.href = `${projectUrl}/join`;
-        } else if(data.result == "failed") {
+        } else if(data.responseJSON.result == "failed") {
           alert(loginFailed);
         }
       }

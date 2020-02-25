@@ -1,4 +1,5 @@
 let track, difficulty, version, beat, bpm, speed, player, patterns, settings;
+let beatDuration = [0,1];
 
 let getParam = (sname) => {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -20,7 +21,11 @@ const sortArray = (a, b) => {
     return 0
   }
   return a.tempo > b.tempo ? 1 : -1;
-}
+};
+
+const patternLoop = () => {
+  console.log(beatDuration);
+};
 
 $(document).ready(() => {
   $('#albumArt').attr('src', `images/album/${getParam("track")}.png`);
@@ -46,7 +51,8 @@ $(document).ready(() => {
           xhrFields: {
             withCredentials: true
           },
-          success: (res) => {
+          complete: (res) => {
+            res = res.responseJSON;
             settings = JSON.parse(res.settings);
             settingApply();
             track = getParam("track");
@@ -87,6 +93,7 @@ Pace.on('done', () => {
     $('#loadingContainer').toggleClass('fadeOut');
     setTimeout(() => {
       $('#loadingContainer').css('display', 'none');
+      setTimeout(patternLoop(), 1000);
     }, 1000);
   }, 1000);
 });

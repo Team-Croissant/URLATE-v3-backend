@@ -6,12 +6,12 @@ $(document).ready(() => {
         xhrFields: {
           withCredentials: true
         },
-        success: (data) => {
-            if(data.result == "logined") {
+        complete: (data) => {
+            if(data.responseJSON.result == "logined") {
                 window.location.href = `${projectUrl}/game`;
-            } else if(data.result == "Not logined") {
+            } else if(data.responseJSON.result == "Not logined") {
                 window.location.href = `${projectUrl}`;
-            } else if(data.result == "Not registered") {
+            } else if(data.responseJSON.result == "Not registered") {
                 window.location.href = `${projectUrl}/join`;
             }
         }
@@ -43,13 +43,14 @@ const check = () => {
             data: {
                 "secondaryPassword": $('#password').val()
             },
-            success: (data) => {
-              if(data.result == "authorized") {
+            complete: (data) => {
+                console.log(data);
+              if(data.responseJSON.result == "authorized") {
                 window.location.href = `${projectUrl}/game`;
-              } else if(data.result == "failed") {
+              } else if(data.responseJSON.result == "failed") {
                 if(data.error == "Wrong Format") {
                     $("#pw").fadeIn(500);
-                } else if(data.error == "Wrong Password") {
+                } else if(data.responseJSON.error == "Wrong Password") {
                     $("#failed").fadeOut(500, () => {
                         $("#failed").fadeIn(500);
                     });
