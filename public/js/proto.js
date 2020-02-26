@@ -36,8 +36,15 @@ const introLoop = () => {
   }
   if(beatDuration[0] == 1 && beatDuration[1] == 1) {
     setTimeout(() => {
-      player.play();
-      setTimeout(afterLoop, sync);
+      if(sync >= 0) {
+        player.play();
+        player.seek(sync / 1000);
+      } else {
+        setTimeout(() => {
+          player.play();
+        }, -sync);
+      }
+      afterLoop();
     }, 60 / bpm * 1000);
   } else {
     setTimeout(introLoop, 60 / bpm * 1000)
