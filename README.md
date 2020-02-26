@@ -51,7 +51,7 @@
 
 ## 규칙
 
-![Game](./public/images/readme/myrhyGame.png)
+![Game](./public/images/readme/play.jpg)
 1. 총알은 벽에서 날아옵니다.
 2. 일반탄(원뿔형)은 좌우측 벽의 정해진 위치에서 생성되어 정해진 각도로 날아옵니다.
 3. 조준탄(사각형)은 좌우측 벽의 정해진 위치에서 생성되어 생성당시 플레이어의 방향으로 날아옵니다.
