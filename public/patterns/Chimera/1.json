@@ -1,0 +1,212 @@
+{
+  "information" : {
+    "version" : "1.0",
+    "beat" : "4",
+    "bpm" : 170,
+    "speed" : 1
+  },
+  "patterns" : [
+    {
+      "tempo" : "1/1",
+      "value" : "n0",
+      "option" : {
+        "x" : -100,
+        "y" : -100
+      }
+    },
+    {
+      "tempo" : "1/1",
+      "value" : "n0",
+      "option" : {
+        "x" : 0,
+        "y" : -100
+      }
+    },
+    {
+      "tempo" : "1/1",
+      "value" : "n0",
+      "option" : {
+        "x" : 100,
+        "y" : -100
+      }
+    },
+    {
+      "tempo" : "1/2",
+      "value" : "n0",
+      "option" : {
+        "x" : -100,
+        "y" : 0
+      }
+    },
+    {
+      "tempo" : "1/2",
+      "value" : "n0",
+      "option" : {
+        "x" : 0,
+        "y" : 0
+      }
+    },
+    {
+      "tempo" : "1/2",
+      "value" : "n0",
+      "option" : {
+        "x" : 100,
+        "y" : 0
+      }
+    },
+    {
+      "tempo" : "1/3",
+      "value" : "n0",
+      "option" : {
+        "x" : -100,
+        "y" : 100
+      }
+    },
+    {
+      "tempo" : "1/3",
+      "value" : "n0",
+      "option" : {
+        "x" : 0,
+        "y" : 100
+      }
+    },
+    {
+      "tempo" : "1/3",
+      "value" : "n0",
+      "option" : {
+        "x" : 100,
+        "y" : 100
+      }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "b0",
+      "direction" : "L",
+      "location" : 0,
+      "option" : {
+        "angle" : 0,
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "b0",
+      "direction" : "L",
+      "location" : -100,
+      "option" : {
+        "angle" : 45,
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "b0",
+      "direction" : "L",
+      "location" : 100,
+      "option" : {
+        "angle" : -45,
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "b0",
+      "direction" : "R",
+      "location" : 0,
+      "option" : {
+        "angle" : 0,
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "b0",
+      "direction" : "R",
+      "location" : -100,
+      "option" : {
+        "angle" : 45,
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "b0",
+      "direction" : "R",
+      "location" : 100,
+      "option" : {
+        "angle" : -45,
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "3/1",
+      "value" : "b1",
+      "direction" : "L",
+      "location" : 100,
+      "option" : {
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "3/1",
+      "value" : "b1",
+      "direction" : "L",
+      "location" : 0,
+      "option" : {
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "3/1",
+      "value" : "b1",
+      "direction" : "L",
+      "location" : -100,
+      "option" : {
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "4/1",
+      "value" : "b1",
+      "direction" : "R",
+      "location" : 100,
+      "option" : {
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "4/1",
+      "value" : "b1",
+      "direction" : "R",
+      "location" : 0,
+      "option" : {
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "4/1",
+      "value" : "b1",
+      "direction" : "R",
+      "location" : -100,
+      "option" : {
+        "speed" : 1
+      }
+    },
+    {
+      "tempo" : "5/1",
+      "value" : "b2",
+      "direction" : "L",
+      "option" : {
+        "time" : "6/1"
+      }
+    },
+    {
+      "tempo" : "5/3",
+      "value" : "b2",
+      "direction" : "R",
+      "option" : {
+        "time" : "6/1"
+      }
+    }
+  ]
+}

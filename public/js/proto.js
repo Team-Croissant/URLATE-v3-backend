@@ -1,4 +1,5 @@
 let track, difficulty, version, beat, bpm, speed, player, patterns, settings;
+let sync = 0;
 let beatDuration = [0,1];
 
 let getParam = (sname) => {
@@ -23,20 +24,37 @@ const sortArray = (a, b) => {
   return a.tempo > b.tempo ? 1 : -1;
 };
 
-const patternLoop = () => {
+const introLoop = () => {
   console.log(beatDuration[0], beatDuration[1]);
-  if(beatDuration[0] == 1 && beatDuration[1] == 1) {
-    player.play();
-  }
-
-  
-
+  patternLoop();
   beatDuration[1]++;
   if(beatDuration[1] > beat) {
     beatDuration[0]++;
     beatDuration[1] = 1;
   }
-  setTimeout(patternLoop, 60 / bpm * 1000);
+  if(beatDuration[0] == 1 && beatDuration[1] == 1) {
+    setTimeout(() => {
+      player.play();
+      setTimeout(afterLoop, sync);
+    }, 60 / bpm * 1000);
+  } else {
+    setTimeout(introLoop, 60 / bpm * 1000)
+  }
+};
+
+const afterLoop = () => {
+  console.log(beatDuration[0], beatDuration[1]);
+  patternLoop();
+  beatDuration[1]++;
+  if(beatDuration[1] > beat) {
+    beatDuration[0]++;
+    beatDuration[1] = 1;
+  }
+  setTimeout(afterLoop, 60 / bpm * 1000);
+};
+
+const patternLoop = () => {
+
 };
 
 $(document).ready(() => {
@@ -105,7 +123,7 @@ Pace.on('done', () => {
     $('#loadingContainer').toggleClass('fadeOut');
     setTimeout(() => {
       $('#loadingContainer').css('display', 'none');
-      setTimeout(patternLoop, 1000);
+      setTimeout(introLoop, 1000);
     }, 1000);
   }, 1000);
 });
