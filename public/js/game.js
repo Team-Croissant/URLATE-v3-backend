@@ -5,15 +5,16 @@ let username = '';
 let analyser, dataArray;
 
 //volume need to 0.1~0.8
-const songs = new Howl({
-  src: [`${cdnUrl}/tracks/192kbps/MyRhy Theme.mp3`],
-  autoplay: true,
-  loop: true,
-  onend: () => {}
-});
+let songs;
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
+  songs = new Howl({
+    src: [`${cdnUrl}/tracks/${settings.sound.quality}/MyRhy Theme.mp3`],
+    autoplay: false,
+    loop: true,
+    onend: () => {}
+  })
 };
 
 const drawBar = (x1, y1, x2, y2, width, frequency) => {
@@ -118,6 +119,7 @@ window.onload = () => {
 };
 
 Pace.on('done', () => {
+  songs.play();
   if($("#name").width() > 300) {
     $("#name").css("font-size", "1.7vh");
   } else if($("#name").width() > 200) {
