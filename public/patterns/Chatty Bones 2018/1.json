@@ -207,6 +207,27 @@
       "option" : {
         "time" : "6/1"
       }
+    },
+    {
+      "tempo" : "2/1",
+      "value" : "2",
+      "option" : {
+        "BPM" : 70
+      }
+    },
+    {
+      "tempo" : "3/1",
+      "value" : "2",
+      "option" : {
+        "BPM" : 280
+      }
+    },
+    {
+      "tempo" : "5/1",
+      "value" : "2",
+      "option" : {
+        "BPM" : 140
+      }
     }
   ]
 }

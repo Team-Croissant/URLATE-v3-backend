@@ -74,9 +74,9 @@ const patternLoop = () => {
       } else if(patterns[otherSeek].value == '1') {
         console.log(`patterns[${otherSeek}] has a command 'Destroy All' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
       } else if(patterns[otherSeek].value == '2') {
-        console.log(`patterns[${otherSeek}] has a command 'BPM(Hard)' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+        bpm = patterns[otherSeek].option.BPM;
       } else if(patterns[otherSeek].value == '3') {
-        console.log(`patterns[${otherSeek}] has a command 'BPM(smooth)' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+        console.log(`patterns[${otherSeek}] has a command 'BPM(Smooth)' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
       } else if(patterns[otherSeek].value == '4') {
         console.log(`patterns[${otherSeek}] has a command 'Opacity' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
       }
