@@ -1,4 +1,6 @@
 let track, difficulty, version, beat, bpm, speed, player, patterns, settings;
+let noteSeek = 0;
+let otherSeek = 0;
 let sync = 0;
 let beatDuration = [0,1];
 
@@ -54,6 +56,28 @@ const afterLoop = () => {
 };
 
 const patternLoop = () => {
+  while(1) {
+    if(patterns[otherSeek] != undefined && patterns[otherSeek].tempo == `${beatDuration[0]}/${beatDuration[1]}`) {
+      if(patterns[otherSeek].value == 'b0') {
+        console.log(`patterns[${otherSeek}] has a bullet[0] about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      } else if(patterns[otherSeek].value == 'b1') {
+        console.log(`patterns[${otherSeek}] has a bullet[1] about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      } else if(patterns[otherSeek].value == '0') {
+        console.log(`patterns[${otherSeek}] has a command 'Destroy' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      } else if(patterns[otherSeek].value == '1') {
+        console.log(`patterns[${otherSeek}] has a command 'Destroy All' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      } else if(patterns[otherSeek].value == '2') {
+        console.log(`patterns[${otherSeek}] has a command 'BPM(Hard)' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      } else if(patterns[otherSeek].value == '3') {
+        console.log(`patterns[${otherSeek}] has a command 'BPM(smooth)' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      } else if(patterns[otherSeek].value == '4') {
+        console.log(`patterns[${otherSeek}] has a command 'Opacity' about tempo ${beatDuration[0]}/${beatDuration[1]}.`);
+      }
+      otherSeek++;
+    } else {
+      break;
+    }
+  }
   let seeking;
   if(beatDuration[1] + 4 - speed > beat) {
     if((beatDuration[1] + 4 - speed) % beat == 0) {
@@ -64,8 +88,14 @@ const patternLoop = () => {
   } else {
     seeking = `${beatDuration[0]}/${beatDuration[1] + 4 - speed}`;
   }
-  
-  console.log(seeking);
+  while(1) {
+    if(patterns[noteSeek] != undefined && patterns[noteSeek].tempo == seeking && patterns[noteSeek].value.indexOf('n') != -1) {
+      console.log(`patterns[${noteSeek}] has a note about tempo ${seeking}.`);
+      noteSeek++;
+    } else {
+      break;
+    }
+  }
 };
 
 $(document).ready(() => {
@@ -105,7 +135,7 @@ $(document).ready(() => {
               src: [`${cdnUrl}/tracks/${settings.sound.quality}/${track}.mp3`],
               autoplay: false,
               loop: false,
-              onend: result()
+              onend: result
             });
             username = res.nickname;
             $.getJSON(`/patterns/${track}/${difficulty}.json`, function(pattern) {
@@ -140,5 +170,5 @@ Pace.on('done', () => {
 });
 
 const result = () => {
-  //show result
+  alert('yup this is result >_O');
 }
