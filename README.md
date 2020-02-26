@@ -47,7 +47,7 @@
 
 ## 개요
 
-노래에 맞춰 날아오는 탄(Bullet)들을 피하며 노트(Note)를 클릭하는 리듬게임. 탄은 화면 양측 둥근 모양의 벽(Wall)에서 날아오며 벽에 부딪히면 사라집니다.
+노래에 맞춰 날아오는 탄(Bullet)들을 피하며 노트(Note)를 클릭하는 리듬게임. 탄은 화면 양측에서 날아오며 벽에 부딪히거나 특정 명령어로 사라집니다.
 
 ## 규칙
 
@@ -55,16 +55,15 @@
 1. 총알은 벽에서 날아옵니다.
 2. 일반탄(원뿔형)은 좌우측 벽의 정해진 위치에서 생성되어 정해진 각도로 날아옵니다.
 3. 조준탄(사각형)은 좌우측 벽의 정해진 위치에서 생성되어 생성당시 플레이어의 방향으로 날아옵니다.
-4. 유도탄(원형)은 좌우측 벽의 가운데에서 생성되어 일정 시간 후 파괴되기 전까지 플레이어를 향해 날아옵니다.
-5. 플레이어는 벽을 제외한 모든 영역을 마우스로 이동할 수 있습니다.
-6. 게임의 목적은 탄들을 피하며 노트를 클릭하는 게임으로, 노트를 놓치거나(MISS) 탄에 부딪히면 콤보가 깨집니다.
-7. 한 곡당 탄에 10번 부딪히면 게임이 중단되며 중단시점의 점수가 저장됩니다.
-8. Destroy 명령어로 총알을 벽에 닿는 판정 전에 파괴할 수 있습니다.
+4. 플레이어는 벽을 제외한 모든 영역을 마우스로 이동할 수 있습니다.
+5. 게임의 목적은 탄들을 피하며 노트를 클릭하는 게임으로, 노트를 놓치거나(MISS) 탄에 부딪히면 콤보가 깨집니다.
+6. 한 곡당 탄에 10번 부딪히면 게임이 중단되며 중단시점의 점수가 저장됩니다.
+7. Destroy 명령어로 총알을 벽에 닿는 판정 전에 파괴할 수 있습니다.
 
 ## 채보 파일(v1.0)
 
 mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .json으로, 정해진 규칙에 따라 작성되어야합니다.
-이름의 규칙은 곡명_난이도.json이고, 파일의 규칙은 다음과 같습니다(n=number, s=string).
+이름의 규칙은 난이도.json이고, 파일의 규칙은 다음과 같습니다(n=number, s=string).
 
 우선 채보파일의 최상단에는 다음과 같은 형식의 정보가 기록되어야 합니다.
 
@@ -116,15 +115,6 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
     <td>speed : 1~5</td>
   </tr>
   <tr>
-    <td>유도탄</td>
-    <td>n/n</td>
-    <td>b2</td>
-    <td>L/R</td>
-    <td></td>
-    <td>{time}</td>
-    <td>time : n/n</td>
-  </tr>
-  <tr>
     <td>Destroy</td>
     <td>n/n</td>
     <td>0</td>
@@ -134,9 +124,18 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
     <td>아직 Destroy처리 되지 않은 Bullet을 Destroy시킬 수 있습니다.<br>num : n번째 Bullet의 번호 n</td>
   </tr>
   <tr>
-    <td>BPM<br>(Hard)</td>
+    <td>Destroy All</td>
     <td>n/n</td>
     <td>1</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>모든 Bullet을 Destroy시킬 수 있습니다.</td>
+  </tr>
+  <tr>
+    <td>BPM<br>(Hard)</td>
+    <td>n/n</td>
+    <td>2</td>
     <td>-</td>
     <td>-</td>
     <td>{BPM}</td>
@@ -145,11 +144,20 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
   <tr>
     <td>BPM<br>(Smooth)</td>
     <td>n/n</td>
-    <td>2</td>
+    <td>3</td>
     <td>-</td>
     <td>-</td>
     <td>{BPM, time}</td>
     <td>특정 박자부터 지정된 박자까지 채보의 BPM을 서서히 바꾸는 명령어입니다.<br>BPM : n, time : n/n</td>
+  </tr>
+  <tr>
+    <td>Opacity</td>
+    <td>n/n</td>
+    <td>4</td>
+    <td>-</td>
+    <td>-</td>
+    <td>{time, opacity}</td>
+    <td>특정 박자부터 일정 시간동안 채보 전체의 투명도를 조절하는 명령어입니다.<br>time: ms, opacity: 0~1</td>
   </tr>
 </table>
 
@@ -179,11 +187,11 @@ MyRhy는 플레이의 다시보기를 지원합니다. 다시보기 파일의 �
 
 ### 판정
 
-+-60000 / BPM / 20(ms) : Perfect
++-60000 / BPM / 10(ms) : Perfect
 <br>
-+60000 / BPM / 11(ms) : Great
++60000 / BPM / 6(ms) : Great
 <br>
-+60000 / BPM / 5(ms) : Bad
++60000 / BPM / 4(ms) : Bad
 <br>
 이외경우 또는 피격 : Miss
 
@@ -245,80 +253,85 @@ MyRhy의 하드유저를 위한 멤버십으로, 월 1,000-8,000원 또는 년 1
   <tr>
     <th>작곡가</th>
     <th>곡 이름</th>
-    <th>사용 허가 출처</th>
     <th>음원 저작권 소유 단체</th>
   </tr>
   <tr>
-    <td rowspan="4">Geoplex</td>
-    <td>MyRhy Theme</td>
-    <td rowspan="4">Gmail</td>
-    <td rowspan="4">-</td>
-  </tr>
-  <tr>
-    <td>Chimera</td>
-  </tr>
-  <tr>
-    <td>Subvert</td>
-  </tr>
-  <tr>
-    <td>Florescence</td>
-  </tr>
-  <tr>
-    <td rowspan="2">VSNS</td>
-    <td>Warrior</td>
-    <td rowspan="2">Gmail</td>
-    <td rowspan="2">VSNS Release</td>
-  </tr>
-  <tr>
-    <td>Phantom</td>
-  </tr>
-  <tr>
-    <td rowspan="2">SUReal</td>
-    <td>Euphoria</td>
-    <td>Gmail(확정 아님)</td>
-    <td rowspan="2">-</td>
-  </tr>
-  <tr>
-    <td>The weight of time</td>
-    <td>Gmail</td>
-  </tr>
-  <tr>
-    <td>Tido Kang</td>
-    <td>필연(必然)</td>
-    <td>Instagram DM</td>
-    <td>-</td>
-  </tr>
-  <tr>
-    <td>Elsiff</td>
-    <td>Chatty Bones 2018</td>
-    <td>Telegram</td>
-    <td>-</td>
-  </tr>
-  <tr>
-    <td>SVRGE</td>
-    <td>GAMES</td>
-    <td rowspan="5">Facebook Messenger</td>
-    <td rowspan="5">Argofox Release</td>
-  </tr>
-  <tr>
-    <td rowspan="2">Minerva</td>
-    <td>Colors</td>
-  </tr>
-  <tr>
-    <td>CLOUD_NINE</td>
-  </tr>
-  <tr>
-    <td>Rewayde</td>
-    <td>Shining Waves</td>
-  </tr>
-  <tr>
-    <td>Hexalyte</td>
-    <td>Horizon</td>
-  </tr>
-  <tr>
-    <td>Canonblade</td>
-    <td>Escape</td>
-    <td>Gmail</td>
-    <td>-</td>
-  </tr>
+      <td rowspan="4">Geoplex</td>
+      <td>MyRhy Theme</td>
+      <td>Team Croissant</td>
+    </tr>
+    <tr>
+      <td>Chimera</td>
+      <td rowspan="3">-</td>
+    </tr>
+    <tr>
+      <td>Subvert</td>
+    </tr>
+    <tr>
+      <td>Florescence</td>
+    </tr>
+    <tr>
+      <td rowspan="2">VSNS</td>
+      <td>Warrior</td>
+      <td rowspan="2">VSNS Release</td>
+    </tr>
+    <tr>
+      <td>Phantom</td>
+    </tr>
+    <tr>
+      <td>SUReal</td>
+      <td>The weight of time</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>Tido Kang</td>
+      <td>필연(<span style="font-family: system-ui;">必然</span>)</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>Elsiff</td>
+      <td>Chatty Bones 2018</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>SVRGE</td>
+      <td>GAMES</td>
+      <td rowspan="5">Argofox Release</td>
+    </tr>
+    <tr>
+      <td rowspan="2">Minerva</td>
+      <td>Colors</td>
+    </tr>
+    <tr>
+      <td>CLOUD_NINE</td>
+    </tr>
+    <tr>
+      <td>Rewayde</td>
+      <td>Shining Waves</td>
+    </tr>
+    <tr>
+      <td>Hexalyte</td>
+      <td>Horizon</td>
+    </tr>
+    <tr>
+      <td rowspan="2">Canonblade</td>
+      <td>Escape</td>
+      <td rowspan="2">-</td>
+    </tr>
+    <tr>
+      <td>Overcharge</td>
+    </tr>
+    <tr>
+      <td>Sereno</td>
+      <td>심야열차(<span style="font-family: system-ui;">深夜列車</span>)</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td rowspan="2">Sterrezo</td>
+      <td>Zenith</td>
+      <td rowspan="2">Twitter DM</td>
+    </tr>
+    <tr>
+      <td>Fantasy</td>
+    </tr>
 </table>
