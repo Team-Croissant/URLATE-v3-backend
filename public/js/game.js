@@ -3,19 +3,17 @@ let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 let display = 0;
 let username = '';
 let analyser, dataArray;
-//let socket = io(`http://rhyga.me:3000`);
 
 //volume need to 0.1~0.8
-let songs;
+const songs = new Howl({
+  src: [`${cdnUrl}/tracks/192kbps/MyRhy Theme.mp3`],
+  autoplay: false,
+  loop: true,
+  onend: () => {}
+});
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
-  songs = new Howl({
-    src: [`${cdnUrl}/tracks/${settings.sound.quality}/MyRhy Theme.mp3`],
-    autoplay: false,
-    loop: true,
-    onend: () => {}
-  })
 };
 
 const drawBar = (x1, y1, x2, y2, width, frequency) => {
@@ -101,10 +99,6 @@ $(document).ready(() => {
             userid = res.responseJSON.userid;
             $("#name").text(username);
             settingApply();
-            /*socket.emit("login", {
-              name: username,
-              userid: userid
-            });*/
           },
           error: (err) => {
             alert(`Error ocurred.\n${err}`);
