@@ -54,7 +54,18 @@ const afterLoop = () => {
 };
 
 const patternLoop = () => {
-
+  let seeking;
+  if(beatDuration[1] + 4 - speed > beat) {
+    if((beatDuration[1] + 4 - speed) % beat == 0) {
+      seeking = `${beatDuration[0] + parseInt((beatDuration[1] + 4 - speed) / beat)}/${(beatDuration[1] + 4 - speed) / beat}`;
+    } else {
+      seeking = `${beatDuration[0] + parseInt((beatDuration[1] + 4 - speed) / beat)}/${(beatDuration[1] + 4 - speed) % beat}`;
+    }
+  } else {
+    seeking = `${beatDuration[0]}/${beatDuration[1] + 4 - speed}`;
+  }
+  
+  console.log(seeking);
 };
 
 $(document).ready(() => {
