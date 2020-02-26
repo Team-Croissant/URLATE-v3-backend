@@ -1,7 +1,10 @@
 # MyRhy
+이 페이지는 업데이트가 늦습니다!
+<br>최신버전은 [여기](https://shd.one/myrhykr)에서 확인 가능합니다.
 ![MyRhyLogo](./public/images/others/bigImage.png)
 
 > Avoid & Get on the tempo, MyRhy.
+
 
 <table>
   <tr>
