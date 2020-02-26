@@ -24,7 +24,19 @@ const sortArray = (a, b) => {
 };
 
 const patternLoop = () => {
-  console.log(beatDuration);
+  console.log(beatDuration[0], beatDuration[1]);
+  if(beatDuration[0] == 1 && beatDuration[1] == 1) {
+    player.play();
+  }
+
+  
+
+  beatDuration[1]++;
+  if(beatDuration[1] > beat) {
+    beatDuration[0]++;
+    beatDuration[1] = 1;
+  }
+  setTimeout(patternLoop, 60 / bpm * 1000);
 };
 
 $(document).ready(() => {
@@ -93,7 +105,7 @@ Pace.on('done', () => {
     $('#loadingContainer').toggleClass('fadeOut');
     setTimeout(() => {
       $('#loadingContainer').css('display', 'none');
-      setTimeout(patternLoop(), 1000);
+      setTimeout(patternLoop, 1000);
     }, 1000);
   }, 1000);
 });
