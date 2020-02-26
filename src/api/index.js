@@ -157,7 +157,7 @@ app.get("/getUser", function(req, res) {
     knex('users').select('nickname', 'settings').where('userid', req.session.userid)
       .then((results) => {
         if(results[0] !== undefined) {
-          res.status(200).json({"result": "loaded", "settings": results[0].settings, "nickname": results[0].nickname});
+          res.status(200).json({"result": "loaded", "settings": results[0].settings, "nickname": results[0].nickname, "userid": req.session.userid});
         } else {
           res.status(400).json({"result": "failed", "error": "Load Failed", "error_description": "Failed to load settings. Maybe wrong userid?"});
         }

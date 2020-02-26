@@ -3,6 +3,7 @@ let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 let display = 0;
 let username = '';
 let analyser, dataArray;
+//let socket = io(`http://rhyga.me:3000`);
 
 //volume need to 0.1~0.8
 let songs;
@@ -97,8 +98,13 @@ $(document).ready(() => {
           complete: (res) => {
             settings = JSON.parse(res.responseJSON.settings);
             username = res.responseJSON.nickname;
+            userid = res.responseJSON.userid;
             $("#name").text(username);
             settingApply();
+            /*socket.emit("login", {
+              name: username,
+              userid: userid
+            });*/
           },
           error: (err) => {
             alert(`Error ocurred.\n${err}`);
