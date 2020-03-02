@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/index.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
     <script>
         function start() {
@@ -39,12 +40,12 @@
         <% } %>
     </div>
     <div id="buttonContainer">
-        <div id="my-signin2"></div>
+        <div id="my-signin2" onclick="loginTrigger()"></div>
     </div>
     <div id="footer">
         <a href="<%= communityUrl %>" class="link"><%= __('community') %></a>
         <a href="<%= miraiUrl %>" class="link"><%= __('mirai') %></a>
-        <a href="https://twitter.com/MyrhyO" class="link"><%= __('twitter') %></a>
+        <a href="https://twitter.com/MyrhyOfficial" class="link"><%= __('twitter') %></a>
         <a href="/info" class="link"><%= __('info') %></a>
     </div>
     <script>
