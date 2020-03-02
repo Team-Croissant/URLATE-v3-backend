@@ -53,6 +53,10 @@ app.get('/proto', (req, res) => {
   res.render('proto', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
+app.get('/editor', (req, res) => {
+  res.render('editor', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
+});
+
 app.get('/accessDenined', (req, res) => {
   res.render('accessDenined');
 });

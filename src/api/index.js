@@ -80,6 +80,7 @@ app.get('/vaildCheck', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+  console.log(req);
   var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
   oauth2Client.getToken(req.body.code, function(err, tokens) {
     if (!err) {
@@ -98,7 +99,8 @@ app.post('/login', (req, res) => {
         });
       });
     } else {
-      res.status(400).json({"result": "failed", "error": "${err.response.data.error}", "error_description": "${err.response.data['error_description']}"});
+      console.log(err);
+      res.status(400).json({"result": "failed", "error": `${err.response.data.error}`, "error_description": `${err.response.data['error_description']}`});
     }
   });
 });

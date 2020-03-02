@@ -1,21 +1,19 @@
-$(document).ready(() => {
-  $.ajax({
-    type: 'GET',
+document.addEventListener("DOMContentLoaded", (event) => {
+  axios({
+    method: 'get',
     url: `${api}/vaildCheck`,
-    dataType: 'JSON',
-    xhrFields: {
-      withCredentials: true
-    },
-    complete: (data) => {
-      console.log(data);
-      if(data.responseJSON.result == "logined") {
-        window.location.href = `${projectUrl}/game`;
-      } else if(data.responseJSON.result == "Not authorized") {
-        window.location.href = `${projectUrl}/authorize`;
-      } else if(data.responseJSON.result == "Not registered") {
-        window.location.href = `${projectUrl}/join`;
-      }
+    withCredentials: true
+  }).then((data) => {
+    data = data.data;
+    if(data.result == "logined") {
+      window.location.href = `${projectUrl}/game`;
+    } else if(data.result == "Not authorized") {
+      window.location.href = `${projectUrl}/authorize`;
+    } else if(data.result == "Not registered") {
+      window.location.href = `${projectUrl}/join`;
     }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
   });
 });
 
@@ -28,33 +26,38 @@ window.onload = () => {
   }, 500);
 };
 
- $('#my-signin2').click(() => {
+const loginTrigger = () => {
   auth2.grantOfflineAccess().then(signInCallback);
-});
+};
 
 const signInCallback = (authResult) => {
+  let bodyFormData = new FormData();
+  bodyFormData.set('ClientId', '300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com');
+  bodyFormData.set('ClientSecret', "WVUB-PJDdwdm3dHpkOMbacqw");
+  bodyFormData.set('RedirectionUrl', `${projectUrl}`);
+  bodyFormData.set('code', authResult['code']);
   if (authResult['code']) {
-    console.log(authResult['code']);
-    $.ajax({
-      type: 'POST',
-      url: `${api}/login`,
-      dataType: 'JSON',
-      xhrFields: {
-        withCredentials: true
+    axios.post(`${api}/login`, {
+      ClientId : "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
+      ClientSecret : "WVUB-PJDdwdm3dHpkOMbacqw",
+      RedirectionUrl : `${projectUrl}`,
+      code : authResult['code']
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
       },
-      data: {
-        "ClientId" : "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
-        "ClientSecret" : "WVUB-PJDdwdm3dHpkOMbacqw",
-        "RedirectionUrl" : `${projectUrl}`,
-        "code" : authResult['code']
-      },
-      complete: (data) => {
-        if(data.responseJSON.result == "logined") {
-          window.location.href = `${projectUrl}/join`;
-        } else if(data.responseJSON.result == "failed") {
-          alert(loginFailed);
-        }
+      withCredentials: true
+    }).then((data) => {
+      console.log(data);
+      data = data.data;
+      console.log(data.result);
+      if(data.result == "logined") {
+        window.location.href = `${projectUrl}/join`;
+      } else if(data.result == "failed") {
+        alert(loginFailed);
       }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
     });
   } else {
     alert(loginError);
