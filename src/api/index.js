@@ -45,6 +45,7 @@ app.use(session({
   saveUninitialized: config.session.saveUninitialized
 }));
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -80,7 +81,6 @@ app.get('/vaildCheck', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  console.log(req);
   var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
   oauth2Client.getToken(req.body.code, function(err, tokens) {
     if (!err) {
@@ -99,7 +99,6 @@ app.post('/login', (req, res) => {
         });
       });
     } else {
-      console.log(err);
       res.status(400).json({"result": "failed", "error": `${err.response.data.error}`, "error_description": `${err.response.data['error_description']}`});
     }
   });

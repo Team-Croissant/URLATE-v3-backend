@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-  axios({
-    method: 'get',
-    url: `${api}/vaildCheck`,
-    withCredentials: true
-  }).then((data) => {
-    data = data.data;
+  fetch(`${api}/vaildCheck`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
     if(data.result == "logined") {
       window.location.href = `${projectUrl}/game`;
     } else if(data.result == "Not authorized") {
@@ -31,26 +31,22 @@ const loginTrigger = () => {
 };
 
 const signInCallback = (authResult) => {
-  let bodyFormData = new FormData();
-  bodyFormData.set('ClientId', '300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com');
-  bodyFormData.set('ClientSecret', "WVUB-PJDdwdm3dHpkOMbacqw");
-  bodyFormData.set('RedirectionUrl', `${projectUrl}`);
-  bodyFormData.set('code', authResult['code']);
   if (authResult['code']) {
-    axios.post(`${api}/login`, {
-      ClientId : "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
-      ClientSecret : "WVUB-PJDdwdm3dHpkOMbacqw",
-      RedirectionUrl : `${projectUrl}`,
-      code : authResult['code']
-    }, {
+    fetch(`${api}/login`, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({
+        ClientId : "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
+        ClientSecret : "WVUB-PJDdwdm3dHpkOMbacqw",
+        RedirectionUrl : `${projectUrl}`,
+        code : authResult['code']
+      }),
       headers: {
         'Content-Type': 'application/json'
-      },
-      withCredentials: true
-    }).then((data) => {
-      console.log(data);
-      data = data.data;
-      console.log(data.result);
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
       if(data.result == "logined") {
         window.location.href = `${projectUrl}/join`;
       } else if(data.result == "failed") {
