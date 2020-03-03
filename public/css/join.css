@@ -63,14 +63,19 @@ form {
 }
 
 #name {
-    display: none;
+    opacity: 0;
+    transition-duration: .5s;
+}
+
+#name.show {
+    opacity: 1;
 }
 
 #pw {
-    display: none;
+    opacity: 0;
+    transition-duration: .5s;
 }
 
-#failed {
-    display: none;
-    color: red;
+#pw.show {
+    opacity: 1;
 }

@@ -20,7 +20,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 window.onload = () => {
   document.getElementById('buttonContainer').style.transitionDuration = '2s';
   setTimeout(() => {
-    document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[1].innerHTML = document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[0].innerHTML;
+    try {
+      document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[1].innerHTML = document.getElementsByClassName('abcRioButtonContents')[0].getElementsByTagName("span")[0].innerHTML;
+    } catch (e) {
+      console.log(e);
+    }
     document.getElementById('buttonContainer').style.marginTop = '2vh';
     document.getElementById('buttonContainer').style.opacity = '1';
   }, 500);
