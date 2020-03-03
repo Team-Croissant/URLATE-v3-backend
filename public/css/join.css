@@ -79,3 +79,13 @@ form {
 #pw.show {
     opacity: 1;
 }
+
+#failed {
+    opacity: 0;
+    color: red;
+    transition-duration: .5s;
+}
+
+#failed.show {
+    opacity: 1;
+}

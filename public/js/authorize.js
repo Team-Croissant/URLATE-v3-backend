@@ -1,65 +1,80 @@
-$(document).ready(() => {
-    $.ajax({
-        type: 'GET',
-        url: `${api}/vaildCheck`,
-        dataType: 'JSON',
-        xhrFields: {
-          withCredentials: true
-        },
-        complete: (data) => {
-            if(data.responseJSON.result == "logined") {
-                window.location.href = `${projectUrl}/game`;
-            } else if(data.responseJSON.result == "Not logined") {
-                window.location.href = `${projectUrl}`;
-            } else if(data.responseJSON.result == "Not registered") {
-                window.location.href = `${projectUrl}/join`;
-            }
-        }
+document.addEventListener("DOMContentLoaded", (event) => {
+    fetch(`${api}/vaildCheck`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result == "logined") {
+        window.location.href = `${projectUrl}/game`;
+      } else if(data.result == "Not registered") {
+        window.location.href = `${projectUrl}/join`;
+      } else if(data.result == "Not logined") {
+        window.location.href = projectUrl;
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
     });
-});
+  });
 
 const passReg = /^[0-9]{4,6}$/;
 
-$("#password").blur(() => {
-    if(!passReg.test($("#password").val())) {
-        $("#pw").fadeIn(500);
+document.getElementById('password').addEventListener("blur", (e) => {
+    if(!passReg.test(this.value)) {
+        if(!document.getElementById('pw').classList[0]) {
+            document.getElementById('pw').classList.toggle("show");
+        }
     } else {
-        $("#pw").fadeOut(500);
-    }
-});
+        if(document.getElementById('pw').classList[0]) {
+            document.getElementById('pw').classList.toggle("show");
+        }
+    }   
+}, true);
 
 const check = () => {
-    if(!passReg.test($("#password").val())) {
-        $("#pw").fadeIn(500);
+    if(!passReg.test(document.getElementById('password').value)) {
+        if(!document.getElementById('pw').classList[0]) {
+            document.getElementById('pw').classList.toggle("show");
+        }
     } else {
-        $("#pw").fadeOut(500);
-        $.ajax({
-            type: 'POST',
-            url: `${api}/authorize`,
-            dataType: 'JSON',
-            xhrFields: {
-              withCredentials: true
-            },
-            data: {
-                "secondaryPassword": $('#password').val()
-            },
-            complete: (data) => {
-                console.log(data);
-              if(data.responseJSON.result == "authorized") {
-                window.location.href = `${projectUrl}/game`;
-              } else if(data.responseJSON.result == "failed") {
+        if(document.getElementById('pw').classList[0]) {
+            document.getElementById('pw').classList.toggle("show");
+        }
+        fetch(`${api}/authorize`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({
+                secondaryPassword: document.getElementById('password').value
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(res => res.json())
+          .then((data) => {
+              if(data.result == "authorized") {
+                  window.location.href = `${projectUrl}/game`;
+              } else if(data.result == "failed") {
                 if(data.error == "Wrong Format") {
-                    $("#pw").fadeIn(500);
-                } else if(data.responseJSON.error == "Wrong Password") {
-                    $("#failed").fadeOut(500, () => {
-                        $("#failed").fadeIn(500);
-                    });
+                    if(!document.getElementById('pw').classList[0]) {
+                        document.getElementById('pw').classList.toggle("show");
+                    }
+                } else if(data.error == "Wrong Password") {
+                    if(!document.getElementById('failed').classList[0]) {
+                        document.getElementById('failed').classList.toggle("show");
+                    } else {
+                        document.getElementById('failed').classList.toggle("show");
+                        setTimeout(() => {
+                            document.getElementById('failed').classList.toggle("show");
+                        }, 500);
+                    }
                 } else {
                     alert("Authorize Failed.");
                 }
               }
-            }
-        });
+          }).catch((error) => {
+              alert(`Error occured.\n${error}`);
+          });
     }
 };
 

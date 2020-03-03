@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
 const passReg = /^[0-9]{4,6}$/;
 
-document.getElementById('nickname').addEventListener("blur", function(event) {
+document.getElementById('nickname').addEventListener("blur", (e) => {
     if(!nameReg.test(this.value)) {
         console.log('hi');
         if(!document.getElementById('name').classList[0]) {
@@ -34,8 +34,8 @@ document.getElementById('nickname').addEventListener("blur", function(event) {
     }   
 }, true);
 
-document.getElementById('password').addEventListener("blur", function(event) {
-    if(!nameReg.test(this.value)) {
+document.getElementById('password').addEventListener("blur", (e) => {
+    if(!passReg.test(this.value)) {
         if(!document.getElementById('pw').classList[0]) {
             document.getElementById('pw').classList.toggle("show");
         }
