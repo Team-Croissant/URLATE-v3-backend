@@ -46,11 +46,11 @@ const animationLooper = () => {
   d = new Date();
   if(dataArray[1] > dataLimit && d.getTime() - milis > 100 && isBoom == false) {
     milis = d.getTime();
-    $('#visualizer').toggleClass('boom');
+    document.getElementById('visualizer').classList.toggle("boom");
     isBoom = true;
   } else if(dataArray[1] < dataLimit && d.getTime() - milis && isBoom == true) {
     milis = d.getTime();
-    $('#visualizer').toggleClass('boom');
+    document.getElementById('visualizer').classList.toggle("boom");
     isBoom = false;
   }
   for(let i = 0; i < bars; i++){
@@ -70,43 +70,37 @@ const animationLooper = () => {
   window.requestAnimationFrame(animationLooper);
 };
 
-$(document).ready(() => {
-  $.ajax({
-    type: 'GET',
-    url: `${api}/vaildCheck`,
-    dataType: 'JSON',
-    xhrFields: {
-      withCredentials: true
-    },
-    complete: (data => {
-      if(data.responseJSON.result == "Not logined") {
-        window.location.href = `${url}`;
-      } else if(data.responseJSON.result == "Not authorized") {
-        window.location.href = `${url}/authorize`;
-      } else if(data.responseJSON.result == "Not registered") {
-        window.location.href = `${url}/join`;
-      } else {
-        $.ajax({
-          type: 'GET',
-          url: `${api}/getUser`,
-          dataType: 'JSON',
-          xhrFields: {
-            withCredentials: true
-          },
-          complete: (res) => {
-            settings = JSON.parse(res.responseJSON.settings);
-            username = res.responseJSON.nickname;
-            userid = res.responseJSON.userid;
-            $("#name").text(username);
-            settingApply();
-          },
-          error: (err) => {
-            alert(`Error ocurred.\n${err}`);
-            window.location.href = `${url}`;
-          }
-        });
-      }
-    })
+document.addEventListener("DOMContentLoaded", (event) => {
+  fetch(`${api}/vaildCheck`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == "Not authorized") {
+      window.location.href = `${url}/authorize`;
+    } else if(data.result == "Not registered") {
+      window.location.href = `${url}/join`;
+    } else if(data.result == "Not logined") {
+      window.location.href = url;
+    } else {
+      fetch(`${api}/getUser`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+      .then(res => res.json())
+      .then((data) => {
+        settings = JSON.parse(data.settings);
+        username = data.nickname;
+        userid = data.userid;
+        document.getElementById('name').textContent = username;
+        settingApply();
+      }).catch((error) => {
+        alert(`Error occured.\n${error}`);
+      });
+    }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
   });
 });
 
@@ -120,19 +114,20 @@ window.onload = () => {
 
 Pace.on('done', () => {
   songs.play();
-  if($("#name").width() > 300) {
-    $("#name").css("font-size", "1.7vh");
-  } else if($("#name").width() > 200) {
-    $("#name").css("font-size", "2vh");
-  } else if($("#name").width() > 180) {
-    $("#name").css("font-size", "2.5vh");
+  let nameWidth = document.getElementById("name").offsetWidth;
+  if(nameWidth > 300) {
+    document.getElementById("name").style.fontSize = "1.7vh";
+  } else if(nameWidth > 200) {
+    document.getElementById("name").style.fontSize = "2vh";
+  } else if(nameWidth > 180) {
+    document.getElementById("name").style.fontSize = "2.5vh";
   }
-  $("#menuContainer").css("display", "flex");
+  document.getElementById("menuContainer").style.display = "flex";
   $("#loadingContainer").fadeOut(500, () => {
-    $("#menuContainer").toggleClass("loaded");
-    $("#myrhyText").css("font-size", "1em");
-    $("#myrhyText").css("margin-bottom", "0vh");
-    $("#songName").css("font-size", "1.8em");
+    document.getElementById('menuContainer').classList.toggle("loaded");
+    document.getElementById("myrhyText").style.fontSize = "1em";
+    document.getElementById("myrhyText").style.marginBottom = "0";
+    document.getElementById("songName").style.fontSize = "1.8em";
     $("#header").animate({
       opacity: 1
     }, 500, () => {
@@ -150,27 +145,27 @@ Pace.on('done', () => {
 });
 
 const menuLeft = () => {
-  $(`#${selectionList[selection]}`).css("display", "none");
+  document.getElementById(selectionList[selection]).style.display = "none";
   selection--;
   if(selection < 0) {
     selection = selectionList.length - 1;
   }
-  $(`#${selectionList[selection]}`).css("display", "flex");
+  document.getElementById(selectionList[selection]).style.display = "flex";
 };
 
 const menuRight = () => {
-  $(`#${selectionList[selection]}`).css("display", "none");
+  document.getElementById(selectionList[selection]).style.display = "none";
   selection++;
   if(selection > selectionList.length - 1) {
     selection = 0;
   }
-  $(`#${selectionList[selection]}`).css("display", "flex");
+  document.getElementById(selectionList[selection]).style.display = "flex";
 };
 
 const infoScreen = () => {
   display = 4;
   infoInit();
-  $("#infoContainer").css("display", "block");
+  document.getElementById('infoContainer').style.display = "block";
   $("#infoContainer").animate({
     opacity: 1
   }, 1000);
@@ -200,22 +195,22 @@ const displayClose = () => {
 };
 
 const advancedInit = () => {
-  $("#advancedContainer").css("display", "none");
-  $("#advancedContainer").css("opacity", 0);
-  $("#advancedIcon").css("marginTop", "10vh");
-  $("#advancedIcon").css("opacity", 0);
-  $("#advancedDescription").css("opacity", 0);
-  $("#advancedSupport").css("opacity", 0);
-  $("#supportDetails").css("opacity", 0);
-  $("#advancedDetails").css("opacity", 0);
-  $("#tableContainer").css("opacity", 0);
+  document.getElementById('advancedContainer').style.display = "none";
+  document.getElementById('advancedContainer').style.opacity = "0";
+  document.getElementById('advancedIcon').style.marginTop = "10vh";
+  document.getElementById('advancedIcon').style.opacity = "0";
+  document.getElementById('advancedDescription').style.opacity = "0";
+  document.getElementById('advancedSupport').style.opacity = "0";
+  document.getElementById('supportDetails').style.opacity = "0";
+  document.getElementById('advancedDetails').style.opacity = "0";
+  document.getElementById('tableContainer').style.opacity = "0";
   for (let i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
-    $(".advancedDetails").eq(i).css("opacity", 0);
+    document.getElementsByClassName('advancedDetails')[i].style.opacity = "0";
   }
 };
 
 const infoInit = () => {
-  $("#infoContainer").css("display", "none");
+  document.getElementById('infoContainer').style.display = "none";
 };
 
 const menuSelected = () => {
@@ -231,7 +226,7 @@ const menuSelected = () => {
     advancedInit();
     display = 3;
     let eqn = 0;
-    $("#advancedContainer").css("display", "block");
+    document.getElementById('advancedContainer').style.display = "block";
     $("#advancedContainer").animate({
       opacity: 1
     }, 1000, () => {

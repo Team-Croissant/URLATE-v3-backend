@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }).catch((error) => {
       alert(`Error occured.\n${error}`);
     });
-  });
+});
 
 const passReg = /^[0-9]{4,6}$/;
 
