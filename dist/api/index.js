@@ -92,21 +92,21 @@ app.get('/getStatus', function (req, res) { return __awaiter(void 0, void 0, voi
             case 0:
                 hasToken = req.session.accessToken && req.session.refreshToken;
                 if (!hasToken) {
-                    res.status(200).json({ result: "Not logined" });
+                    res.status(200).json(api_response_1.createStatusResponse('Not logined'));
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, knex('users').select('userid', 'nickname').where('userid', req.session.userid)];
             case 1:
                 results = _a.sent();
                 if (!results[0]) {
-                    res.status(200).json(api_response_1.createSuccessResponse('Not registered'));
+                    res.status(200).json(api_response_1.createStatusResponse('Not registered'));
                     return [2 /*return*/];
                 }
                 if (!req.session.authorized) {
-                    res.status(200).json(api_response_1.createSuccessResponse('Not authorized'));
+                    res.status(200).json(api_response_1.createStatusResponse('Not authorized'));
                     return [2 /*return*/];
                 }
-                res.status(200).json(api_response_1.createSuccessResponse('logined'));
+                res.status(200).json(api_response_1.createStatusResponse('logined'));
                 return [2 /*return*/];
         }
     });
@@ -115,11 +115,7 @@ app.post('/login', function (req, res) {
     var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
     oauth2Client.getToken(req.body.code, function (err, tokens) {
         if (err) {
-            res.status(400).json({
-                result: "failed",
-                error: err.response.data.error,
-                description: err.response.data.error_description
-            });
+            res.status(400).json(api_response_1.createErrorResponse('failed', err.response.data.error, err.response.data.error_description));
             return;
         }
         var access_token = tokens.access_token, refresh_token = tokens.refresh_token;
@@ -131,7 +127,7 @@ app.post('/login', function (req, res) {
             req.session.accessToken = access_token;
             req.session.refreshToken = refresh_token;
             req.session.save(function () {
-                res.status(200).json(api_response_1.createSuccessResponse('logined'));
+                res.status(200).json(api_response_1.createSuccessResponse('success'));
             });
         });
     });
@@ -139,22 +135,14 @@ app.post('/login', function (req, res) {
 app.post("/join", function (req, res) {
     var hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken;
     if (!hasToken) {
-        res.status(400).json({
-            result: "failed",
-            error: "Wrong Request",
-            description: "You need to login first."
-        });
+        res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Request', 'You need to login first.'));
         return;
     }
     var namePattern = /^[a-zA-Z0-9_-]{5,12}$/;
     var passPattern = /^[0-9]{4,6}$/;
     var isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword);
     if (!isValidated) {
-        res.status(400).json({
-            result: "failed",
-            error: "Wrong Format",
-            description: "Wrong name OR password format."
-        });
+        res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Format', 'Wrong name OR password format.'));
         return;
     }
     hasher({
@@ -176,7 +164,7 @@ app.post("/join", function (req, res) {
                     delete req.session.tempName;
                     delete req.session.tempEmail;
                     req.session.save(function () {
-                        res.status(200).json({ result: "registered" });
+                        res.status(200).json(api_response_1.createSuccessResponse('success'));
                     });
                     return [2 /*return*/];
             }
@@ -190,11 +178,7 @@ app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 if (!passwordPattern.test(req.body.secondaryPassword)) {
-                    res.status(400).json({
-                        result: "failed",
-                        error: "Wrong Format",
-                        description: "Wrong password format."
-                    });
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Format', 'Wrong password format.'));
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, knex('users').select('secondary', 'salt').where('userid', req.session.userid)];
@@ -205,11 +189,11 @@ app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, vo
                     salt: results[0].salt
                 }, function (err, pass, salt, hash) {
                     if (hash !== results[0].secondary) {
-                        res.status(400).json({ result: "failed", error: "Wrong Password" });
+                        res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Password', 'User entered wrong password.'));
                         return;
                     }
                     req.session.authorized = true;
-                    res.status(200).json({ result: "authorized" });
+                    res.status(200).json(api_response_1.createSuccessResponse('success'));
                 });
                 return [2 /*return*/];
         }
@@ -221,18 +205,14 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
         switch (_b.label) {
             case 0:
                 if (!req.session.userid) {
-                    res.status(400).json({
-                        result: "failed",
-                        error: "UserID Required",
-                        description: "UserID is required for this task."
-                    });
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, knex('users').select('nickname', 'settings').where('userid', req.session.userid)];
             case 1:
                 results = _b.sent();
                 if (!results.length) {
-                    res.status(400).json({ result: "failed", error: "Load Failed", description: "Failed to load settings. Maybe wrong userid?" });
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
                     return [2 /*return*/];
                 }
                 _a = results[0], settings = _a.settings, nickname = _a.nickname;
@@ -250,7 +230,7 @@ app.get('/logout', function (req, res) {
     delete req.session.tempEmail;
     delete req.session.vaildChecked;
     req.session.save(function () {
-        res.status(400).json([{ result: "success" }]);
+        res.status(200).json(api_response_1.createSuccessResponse('success'));
     });
 });
 var PORT = 1024;

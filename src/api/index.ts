@@ -14,7 +14,7 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
-import { createSuccessResponse, createErrorResponse } from './api-response';
+import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
 
 const app = express();
 app.locals.pretty = true;
@@ -62,33 +62,29 @@ app.post('/', (req, res) => {
 app.get('/getStatus', async (req, res) => {
   const hasToken = req.session.accessToken && req.session.refreshToken;
   if (!hasToken) {
-    res.status(200).json({ result: "Not logined" });
+    res.status(200).json(createStatusResponse('Not logined'));
     return;
   }
 
   const results = await knex('users').select('userid', 'nickname').where('userid', req.session.userid)
   if (!results[0]) {
-    res.status(200).json(createSuccessResponse('Not registered'));
+    res.status(200).json(createStatusResponse('Not registered'));
     return;
   }
 
   if(!req.session.authorized) {
-    res.status(200).json(createSuccessResponse('Not authorized'));
+    res.status(200).json(createStatusResponse('Not authorized'));
     return;
   }
 
-  res.status(200).json(createSuccessResponse('logined'));
+  res.status(200).json(createStatusResponse('logined'));
 });
 
 app.post('/login', (req, res) => {
   var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
   oauth2Client.getToken(req.body.code, (err, tokens) => {
     if (err) {
-      res.status(400).json({
-        result: "failed",
-        error: err.response.data.error,
-        description: err.response.data.error_description
-      });
+      res.status(400).json(createErrorResponse('failed', err.response.data.error, err.response.data.error_description));
       return;
     }
 
@@ -101,7 +97,7 @@ app.post('/login', (req, res) => {
       req.session.accessToken = access_token;
       req.session.refreshToken = refresh_token;
       req.session.save(() => {
-        res.status(200).json(createSuccessResponse('logined'));
+        res.status(200).json(createSuccessResponse('success'));
       });
     });
   });
@@ -110,11 +106,7 @@ app.post('/login', (req, res) => {
 app.post("/join", (req, res) => {
   const hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken
   if (!hasToken) {
-    res.status(400).json({
-      result: "failed",
-      error: "Wrong Request",
-      description: "You need to login first."
-    });
+    res.status(400).json(createErrorResponse('failed', 'Wrong Request', 'You need to login first.'));
     return;
   }
 
@@ -122,11 +114,7 @@ app.post("/join", (req, res) => {
   const passPattern = /^[0-9]{4,6}$/;
   const isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword)
   if (!isValidated) {
-    res.status(400).json({
-      result: "failed",
-      error: "Wrong Format",
-      description: "Wrong name OR password format."
-    });
+    res.status(400).json(createErrorResponse('failed', 'Wrong Format', 'Wrong name OR password format.'));
     return;
   }
 
@@ -146,7 +134,7 @@ app.post("/join", (req, res) => {
     delete req.session.tempName;
     delete req.session.tempEmail;
     req.session.save(() => {
-      res.status(200).json({ result: "registered" });
+      res.status(200).json(createSuccessResponse('success'));
     });
   });
 });
@@ -154,11 +142,7 @@ app.post("/join", (req, res) => {
 const passwordPattern = /^[0-9]{4,6}$/;
 app.post("/authorize", async (req, res) => {
   if (!passwordPattern.test(req.body.secondaryPassword)) { 
-    res.status(400).json({
-      result: "failed",
-      error: "Wrong Format",
-      description: "Wrong password format."
-    });
+    res.status(400).json(createErrorResponse('failed', 'Wrong Format', 'Wrong password format.'));
     return;
   }
   const results = await knex('users').select('secondary', 'salt').where('userid', req.session.userid);
@@ -168,33 +152,29 @@ app.post("/authorize", async (req, res) => {
     salt: results[0].salt
   }, (err, pass, salt, hash) => {
     if(hash !== results[0].secondary) {
-      res.status(400).json({ result: "failed", error : "Wrong Password"});
+      res.status(400).json(createErrorResponse('failed', 'Wrong Password', 'User entered wrong password.'));
       return;
     }
 
     req.session.authorized = true;
-    res.status(200).json({ result: "authorized"});
+    res.status(200).json(createSuccessResponse('success'));
   });
 });
 
 app.get("/getUser", async (req, res) => {
   if(!req.session.userid) {
-    res.status(400).json({
-      result: "failed",
-      error: "UserID Required",
-      description: "UserID is required for this task."
-    });
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
     return;
   }
 
   const results = await knex('users').select('nickname', 'settings').where('userid', req.session.userid)
   if (!results.length) {
-    res.status(400).json({ result: "failed", error: "Load Failed", description: "Failed to load settings. Maybe wrong userid?"});
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
     return;
   }
   
   const { settings, nickname } = results[0];
-  res.status(200).json({ result: "success", settings, nickname, userid: req.session.userid});
+  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid});
 });
 
 app.get('/logout', (req, res) => {
@@ -206,7 +186,7 @@ app.get('/logout', (req, res) => {
   delete req.session.tempEmail;
   delete req.session.vaildChecked;
   req.session.save(() => {
-    res.status(400).json([{ result: "success" }]);
+    res.status(200).json(createSuccessResponse('success'));
   });
 });
 

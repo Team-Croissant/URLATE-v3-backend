@@ -11,11 +11,11 @@ $(document).ready(() => {
       withCredentials: true
     },
     success: (data => {
-      if(data.result == "Not logined") {
+      if(data.status == "Not logined") {
         window.location.href = `${url}`;
-      } else if(data.result == "Not authorized") {
+      } else if(data.status == "Not authorized") {
         window.location.href = `${url}/authorize`;
-      } else if(data.result == "Not registered") {
+      } else if(data.status == "Not registered") {
         window.location.href = `${url}/join`;
       } else {
         $.ajax({

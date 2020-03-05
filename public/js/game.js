@@ -77,11 +77,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   })
   .then(res => res.json())
   .then((data) => {
-    if(data.result == "Not authorized") {
+    if(data.status == "Not authorized") {
       window.location.href = `${url}/authorize`;
-    } else if(data.result == "Not registered") {
+    } else if(data.status == "Not registered") {
       window.location.href = `${url}/join`;
-    } else if(data.result == "Not logined") {
+    } else if(data.status == "Not logined") {
       window.location.href = url;
     } else {
       fetch(`${api}/getUser`, {

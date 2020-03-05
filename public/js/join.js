@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     })
     .then(res => res.json())
     .then((data) => {
-      if(data.result == "logined") {
+      if(data.status == "logined") {
         window.location.href = `${projectUrl}/game`;
-      } else if(data.result == "Not authorized") {
+      } else if(data.status == "Not authorized") {
         window.location.href = `${projectUrl}/authorize`;
-      } else if(data.result == "Not logined") {
+      } else if(data.status == "Not logined") {
         window.location.href = projectUrl;
       }
     }).catch((error) => {
@@ -76,7 +76,7 @@ const check = () => {
             })
             .then(res => res.json())
             .then((data) => {
-                if(data.result == "registered") {
+                if(data.result == "success") {
                     window.location.href = `${projectUrl}/authorize`;
                 } else if(data.result == "failed") {
                     alert("join failed.");

@@ -8,3 +8,7 @@ function createErrorResponse(result, error, description) {
     return { result: result, error: error, description: description };
 }
 exports.createErrorResponse = createErrorResponse;
+function createStatusResponse(status) {
+    return { status: status };
+}
+exports.createStatusResponse = createStatusResponse;

@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   })
   .then(res => res.json())
   .then((data) => {
-    if(data.result == "logined") {
+    if(data.status == "logined") {
       window.location.href = `${projectUrl}/game`;
-    } else if(data.result == "Not authorized") {
+    } else if(data.status == "Not authorized") {
       window.location.href = `${projectUrl}/authorize`;
-    } else if(data.result == "Not registered") {
+    } else if(data.status == "Not registered") {
       window.location.href = `${projectUrl}/join`;
     }
   }).catch((error) => {
@@ -51,7 +51,7 @@ const signInCallback = (authResult) => {
     })
     .then(res => res.json())
     .then((data) => {
-      if(data.result == "logined") {
+      if(data.result == "success") {
         window.location.href = `${projectUrl}/join`;
       } else if(data.result == "failed") {
         alert(loginFailed);
