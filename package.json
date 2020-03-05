@@ -1,16 +1,20 @@
 {
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/Swift_CreDible/myrhy.git"
+    "url": "https://gitlab.com/credible/myrhy.git"
   },
   "name": "myrhy",
   "version": "1.0.0",
-  "description": "Avoid & Get on the tempo, WEB GAME PROJECT MyRhy",
-  "main": "index.js",
+  "description": "Avoid & Get on the tempo, MyRhy",
+  "main": "src/",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "auto-build": "watch tsc src",
+    "start-api-server": "supervisor dist/api/index.js",
+    "start-web-server": "supervisor dist/frontEnd/index.js",
+    "start-game-server": "supervisor dist/game/index.js",
+    "start-socket-server": "supervisor dist/socket/index.js"
   },
-  "author": "inCreDible",
+  "author": "Team Croissant",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -24,11 +28,15 @@
     "i18n": "^0.8.4",
     "knex": "^0.20.10",
     "nodemailer": "^6.4.2",
-    "npm": "^6.12.0",
     "pbkdf2-password": "^1.2.1",
     "request": "^2.88.0",
-    "signale": "^1.4.0",
     "socket.io": "^2.3.0",
-    "supervisor": "^0.12.0"
+    "supervisor": "^0.12.0",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.7",
+    "watch": "^1.0.2",
+    "signale": "^1.4.0"
   }
 }

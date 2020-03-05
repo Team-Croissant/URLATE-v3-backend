@@ -1,9 +1,9 @@
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const signale = require('signale');
-const http = require('http');
-const express = require('express');
-const i18n = require(__dirname + '/i18n');
+import bodyParser = require('body-parser');
+import cookieParser = require('cookie-parser');
+import signale = require('signale');
+import http = require('http');
+import express = require('express');
+import i18n from './i18n';
 
 const config = require(__dirname + '/../../config/config.json');
 

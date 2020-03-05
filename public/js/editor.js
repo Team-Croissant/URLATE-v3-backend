@@ -5,7 +5,7 @@ const settingApply = () => {
 $(document).ready(() => {
   $.ajax({
     type: 'GET',
-    url: `${api}/vaildCheck`,
+    url: `${api}/getStatus`,
     dataType: 'JSON',
     xhrFields: {
       withCredentials: true

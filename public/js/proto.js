@@ -109,7 +109,7 @@ $(document).ready(() => {
   $('#albumArt').attr('src', `images/album/${getParam("track")}.png`);
   $.ajax({
     type: 'GET',
-    url: `${api}/vaildCheck`,
+    url: `${api}/getStatus`,
     dataType: 'JSON',
     xhrFields: {
       withCredentials: true

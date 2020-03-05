@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-  fetch(`${api}/vaildCheck`, {
+  fetch(`${api}/getStatus`, {
     method: 'GET',
     credentials: 'include'
   })

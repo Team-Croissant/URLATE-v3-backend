@@ -71,7 +71,7 @@ const animationLooper = () => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  fetch(`${api}/vaildCheck`, {
+  fetch(`${api}/getStatus`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -90,11 +90,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       })
       .then(res => res.json())
       .then((data) => {
-        settings = JSON.parse(data.settings);
-        username = data.nickname;
-        userid = data.userid;
-        document.getElementById('name').textContent = username;
-        settingApply();
+        if(data.result == 'success') {
+          settings = JSON.parse(data.settings);
+          username = data.nickname;
+          userid = data.userid;
+          document.getElementById('name').textContent = username;
+          settingApply();
+        } else {
+          alert(`Error occured.\n${data.description}`);
+        }
       }).catch((error) => {
         alert(`Error occured.\n${error}`);
       });
@@ -114,11 +118,14 @@ window.onload = () => {
 
 Pace.on('done', () => {
   songs.play();
-  let nameWidth = document.getElementById("name").offsetWidth;
-  if(nameWidth > 300) {
-    document.getElementById("name").style.fontSize = "1.7vh";
+  const nameStyle = window.getComputedStyle(document.getElementById("name"), null);
+  const nameWidth = parseFloat(nameStyle.getPropertyValue("width"));
+  if(nameWidth > 265) {
+    document.getElementById("name").style.fontSize = "2.2vh";
+    document.getElementById("name").style.paddingLeft = "2.5vw";
   } else if(nameWidth > 200) {
-    document.getElementById("name").style.fontSize = "2vh";
+    document.getElementById("name").style.fontSize = "2.3vh";
+    document.getElementById("name").style.paddingLeft = "4vw";
   } else if(nameWidth > 180) {
     document.getElementById("name").style.fontSize = "2.5vh";
   }
@@ -213,59 +220,75 @@ const infoInit = () => {
   document.getElementById('infoContainer').style.display = "none";
 };
 
-const menuSelected = () => {
+function menuSelected() {
   if(selection == 0) {
     //play
-    //prototype code
-    window.location.href = `${url}/proto?track=Chatty%20Bones%202018&difficulty=1`;
+    menu0Selected();
   } else if(selection == 1) {
     //editor
-    window.location.href = `${url}/editor`;
+    menu1Selected();
   } else if(selection == 2) {
     //advanced
-    advancedInit();
-    display = 3;
-    let eqn = 0;
-    document.getElementById('advancedContainer').style.display = "block";
-    $("#advancedContainer").animate({
-      opacity: 1
-    }, 1000, () => {
-      $("#advancedIcon").animate({
-        marginTop: "5vh",
-        opacity: 1
-      }, 1000, () => {
-        $("#advancedDescription").animate({
-          opacity: 1
-        }, 500, () => {
-          $("#advancedSupport").animate({
-            opacity: 1
-          }, 200, () => {
-            $("#supportDetails").animate({
-              opacity: 1
-            }, 200, () => {
-              $("#advancedDetails").animate({
-                opacity: 1
-              }, 200, () => {
-                $("#tableContainer").animate({
-                  opacity: 1
-                }, 200, () => {
-                  for (let i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
-                    setTimeout(() => {
-                      $(".advancedDetails").eq(eqn).animate({
-                        opacity: 1
-                      }, 200);
-                      eqn++;
-                      if(eqn > document.getElementsByClassName('advancedDetails').length) {
-                        eqn = 0;
-                      }
-                    }, 200 * i);
-                  }
-                });
-              });
-            });
-          });
-        });
-      });
-    });
+    menu2Selected();
   }
 };
+
+function menu0Selected() {
+  window.location.href = `${url}/proto?track=Chatty%20Bones%202018&difficulty=1`;
+};
+
+function menu1Selected() {
+  window.location.href = `${url}/editor`;
+};
+
+async function menu2Selected() {
+  //advanced
+  advancedInit();
+  display = 3;
+  let eqn = 0;
+  document.getElementById('advancedContainer').style.display = "block";
+  await animate("#advancedContainer", {
+    opacity: 1
+  }, 1000);
+  await animate("#advancedIcon", {
+    marginTop: "5vh",
+    opacity: 1
+  }, 1000);
+  await animate("#advancedDescription", {
+    opacity: 1
+  }, 500);
+  await animate("#advancedSupport", {
+    opacity: 1
+  }, 200);
+  await animate("#supportDetails", {
+    opacity: 1
+  }, 200);
+  await animate("#advancedDetails", {
+    opacity: 1
+  }, 200);
+  await animate("#tableContainer", {
+    opacity: 1
+  }, 200);
+
+  const advancedDetails = document.getElementsByClassName('advancedDetails');
+  for (let i = 0; i < advancedDetails.length; i++) {
+    setTimeout(() => {
+      $(".advancedDetails").eq(eqn).animate({
+        opacity: 1
+      }, 200);
+      eqn++;
+      if(eqn > advancedDetails.length) {
+        eqn = 0;
+      }
+    }, 200 * i);
+  }
+};
+
+function animate(selector, param, delay) {
+  return new Promise((resolve) => {
+    console.log(selector);
+    console.log(param);
+    console.log(delay);
+    $(selector).animate(param, delay, () => resolve());
+  });
+}

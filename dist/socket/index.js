@@ -1,4 +1,4 @@
-const signale = require('signale');
+/*const signale = require('signale');
 const http = require('http');
 const express = require('express');
 const socketPort = 3000;
@@ -15,7 +15,7 @@ app.get('/', function(req, res) {
 });
 
 io.sockets.on('connection', (socket) => {
-  socket.on('login', function(data) { 
+  socket.on('login', function(data) {
     console.log('Client logged-in:\n name:' + data.name + '\n userid: ' + data.userid);
     socket.name = data.name;
     socket.userid = data.userid;
@@ -40,4 +40,4 @@ io.sockets.on('connection', (socket) => {
   socket.on('disconnect', function() {
     console.log('user disconnected: ' + socket.name);
   });
-});
+});*/ 
