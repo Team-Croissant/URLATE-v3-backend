@@ -48,5 +48,9 @@
 	"advanced_details10": "정식버전 플레이 가능",
 	"support": "후원하기!",
 	"login_failed": "로그인 실패!",
-	"login_error": "로그인 에러!"
+	"login_error": "로그인 에러!",
+	"load": "불러오기",
+	"save": "저장",
+	"offset": "오프셋 수정",
+	"exit": "끝내기"
 }

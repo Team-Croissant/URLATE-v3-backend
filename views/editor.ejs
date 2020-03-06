@@ -39,16 +39,26 @@
       <img src="https://img.icons8.com/ios/50/000000/circled-m.png" id="macroIcon" class="icon clickable">
     </div>
   </div>
+  <div id="menu">
+    <div id="menuTop">
+      <span onclick="load()"><%= __('load') %></span>
+      <br>
+      <span onclick="save()"><%= __('save') %></span>
+      <br>
+      <span onclick="offset()"><%= __('offset') %></span>
+    </div>
+    <div id="menuBottom">
+      <span onclick="exit()" id="exitText"><%= __('exit') %></span>
+    </div>
+  </div>
   <div id="bottomNav">
     <div id="bottomLeftNav">
-      <img src="/images/parts/elements/play/circle.png" class="elementIcon selectedIcon">
+      <img src="/images/parts/elements/play/circle.png" class="elementIcon selectedIcon ">
       <img src="/images/parts/elements/play/square.png" class="elementIcon unselectedIcon">
       <img src="/images/parts/elements/play/bullet.png" class="elementIcon unselectedIcon">
     </div>
     <div id="timeline">
-      <div id="timelineContent">
-        <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat repellendus consequuntur vero velit consectetur incidunt odit totam impedit cupiditate asperiores voluptatum tempore earum consequatur doloribus, omnis fugit nihil magnam illum. Dolorem non laboriosam quaerat praesentium! Recusandae aliquid tenetur consequuntur placeat debitis praesentium quia. Exercitationem sequi repudiandae ad earum excepturi nihil ipsam cupiditate consequuntur velit fuga, voluptas officia dolor molestiae modi. In, dolorum nesciunt. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat repellendus consequuntur vero velit consectetur incidunt odit totam impedit cupiditate asperiores voluptatum tempore earum consequatur doloribus, omnis fugit nihil magnam illum. Dolorem non laboriosam quaerat praesentium! Recusandae aliquid tenetur consequuntur placeat debitis praesentium quia. Exercitationem sequi repudiandae ad earum excepturi nihil ipsam cupiditate consequuntur velit fuga, voluptas officia dolor molestiae modi. In, dolorum nesciunt.</span>
-      </div>
+      <div id="timelineContent"></div>
     </div>
   </div>
   <img src="images/parts/elements/wall.svg" id="wall_left" class="wall">
