@@ -7,6 +7,7 @@ body {
   padding: 0;
   text-align: center;
   font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  letter-spacing: -1px;
   overflow-x: hidden;
   overflow-y: hidden;
 }

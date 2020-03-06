@@ -7,6 +7,7 @@ body {
     background-color: #EEE;
     text-align: center;
     font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', sans-serif;
+    letter-spacing: -1px;
 }
 
 #logoContainer {
