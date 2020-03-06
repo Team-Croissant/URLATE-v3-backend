@@ -11,7 +11,7 @@
 <body>
   <div id="topNav">
     <div id="topLeftNav">
-      <img src="https://img.icons8.com/material-outlined/24/000000/menu.png" id="menuIcon" class="icon clickable">
+      <img src="https://img.icons8.com/material-outlined/24/000000/menu.png" id="menuIcon" class="icon clickable" onclick="menu()">
     </div>
     <div id="topCenterNav">
       <div id="speedContainer" class="clickable">
@@ -23,8 +23,7 @@
           <img src="https://img.icons8.com/windows/64/000000/settings.png" class="icon clickable">
         </div>
         <div id="songNameContainer">
-          <span>TEST</span>
-          <span>subtitle</span>
+          <span id="songName"></span>
         </div>
         <div id="infoIconContainer">
           <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable">
@@ -41,15 +40,18 @@
   </div>
   <div id="menu">
     <div id="menuTop">
-      <span onclick="load()"><%= __('load') %></span>
+      <span onclick="load()" class="clickable"><%= __('load') %></span>
       <br>
-      <span onclick="save()"><%= __('save') %></span>
+      <span onclick="save()" class="clickable"><%= __('save') %></span>
       <br>
-      <span onclick="offset()"><%= __('offset') %></span>
+      <span onclick="offset()" class="clickable"><%= __('offset') %></span>
     </div>
     <div id="menuBottom">
-      <span onclick="exit()" id="exitText"><%= __('exit') %></span>
+      <span onclick="exit()" class="clickable" id="exitText"><%= __('exit') %></span>
     </div>
+  </div>
+  <div id="fileOpener">
+    <input type="file" id="file" accept=".json" onchange="fileUploaded(this)">
   </div>
   <div id="bottomNav">
     <div id="bottomLeftNav">
@@ -66,6 +68,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
   <div id="background"></div>
   <script>
+    const rusure = "<%= __('RUSure') %>";
     const cdnUrl = "<%= cdnUrl %>";
     const url = "<%= url %>";
     const api = "<%= api %>";

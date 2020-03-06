@@ -221,6 +221,7 @@ body {
 }
 
 #menu {
+  display: none;
   text-align: left;
   position: fixed;
   z-index: 3;
@@ -246,4 +247,14 @@ body {
 #exitText {
   color: rgb(245, 72, 41);
   text-decoration: underline;
+}
+
+#fileOpener {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  padding: 2vw;
+  top: 7vh;
+  background-color: rgb(240,240,240);
+  filter: drop-shadow(0 10px 3px rgba(0,0,0,0.1));
 }

@@ -1,3 +1,8 @@
+let isMenuOpened = false;
+let isFileOpenerOpened = false;
+let pattern = {};
+let songName = '';
+
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
 };
@@ -36,3 +41,46 @@ document.addEventListener("DOMContentLoaded", (event) => {
     alert(`Error occured.\n${error}`);
   });
 });
+
+const menu = () => {
+  if(isMenuOpened) {
+    document.getElementById("menu").style.display = 'none';
+    isMenuOpened = false;
+  } else {
+    if(isFileOpenerOpened) {
+      document.getElementById("fileOpener").style.display = 'none';
+      isFileOpenerOpened = false;
+    } else {
+      document.getElementById("menu").style.display = 'block';
+      isMenuOpened = true;
+    }
+  }
+};
+
+const exit = () => {
+  if(window.confirm(rusure)) {
+    window.location.href = `${url}/game`;
+  }
+};
+
+const load = () => {
+  document.getElementById("menu").style.display = 'none';
+  isMenuOpened = false;
+  document.getElementById("fileOpener").style.display = 'block';
+  isFileOpenerOpened = true;
+};
+
+const fileUploaded = (patternFile) => {
+  document.getElementById("fileOpener").style.display = 'none';
+  isFileOpenerOpened = false;
+  patternFile = patternFile.files[0];
+  parsePattern(patternFile); //TODO:PARSE JSON PATTERN FILE AND SHOW
+};
+
+const save = () => {
+  var a = document.createElement("a");
+  var file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
+  a.href = URL.createObjectURL(file);
+  a.download = 'songName.json';
+  a.click();
+};
