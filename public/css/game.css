@@ -348,6 +348,7 @@ body {
   margin-top: 10vh;
   width: 20vw;
   opacity: 0;
+  transition-duration: 1s;
 }
 
 #advancedDescription {
@@ -477,6 +478,11 @@ th, td {
   mix-blend-mode: color-burn;
   position: fixed;
   opacity: 0;
+  transition-duration: .5s;
+}
+
+.backIcon.show {
+  opacity: 0.3;
 }
 
 #back1 {
@@ -562,4 +568,31 @@ th, td {
 @keyframes back5move {
   0%   { left: 20vw; }
   100% { left: 30vw; }
+}
+
+.fadeIn {
+  animation: fadeIn .5s linear forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fadeOut {
+  animation: fadeOut .5s linear forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.shortFadeIn {
+  animation: shortFadeIn .2s linear forwards;
+}
+
+@keyframes shortFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }

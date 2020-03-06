@@ -130,25 +130,23 @@ Pace.on('done', () => {
     document.getElementById("name").style.fontSize = "2.5vh";
   }
   document.getElementById("menuContainer").style.display = "flex";
-  $("#loadingContainer").fadeOut(500, () => {
-    document.getElementById('menuContainer').classList.toggle("loaded");
+  document.getElementById("loadingContainer").classList.toggle("fadeOut");
+  setTimeout(() => {
+    document.getElementById("loadingContainer").style.display = "none";
+    document.getElementById("menuContainer").classList.toggle("loaded");
     document.getElementById("myrhyText").style.fontSize = "1em";
     document.getElementById("myrhyText").style.marginBottom = "0";
     document.getElementById("songName").style.fontSize = "1.8em";
-    $("#header").animate({
-      opacity: 1
-    }, 500, () => {
-      $(".backIcon").animate({
-        opacity: 0.3
-      }, 500);
-      $("#songName").animate({
-        opacity: 1
-      }, 1000);
+    document.getElementById("header").classList.toggle("fadeIn");
+    setTimeout(() => {
+      let backIcons = document.getElementsByClassName("backIcon");
+      for (let i = 0; i < backIcons.length; i++) {
+        backIcons[i].classList.add('show');
+      }
+      document.getElementById("songName").classList.toggle("fadeIn");
     });
-    $("#footerLeft").animate({
-      opacity: 1
-    }, 1000);
-  });
+    document.getElementById("footerLeft").classList.toggle("fadeIn");
+  }, 500);
 });
 
 const menuLeft = () => {
@@ -172,10 +170,8 @@ const menuRight = () => {
 const infoScreen = () => {
   display = 4;
   infoInit();
-  document.getElementById('infoContainer').style.display = "block";
-  $("#infoContainer").animate({
-    opacity: 1
-  }, 1000);
+  document.getElementById("infoContainer").style.display = "block";
+  document.getElementById("infoContainer").classList.toggle("fadeIn");
 };
 
 const displayClose = () => {
@@ -185,18 +181,20 @@ const displayClose = () => {
     //Settings
   } else if(display == 3) {
     //ADVANCED
-    $("#advancedContainer").animate({
-      opacity: 0
-    }, 1000, () => {
+    document.getElementById("advancedContainer").classList.remove("fadeIn");
+    document.getElementById("advancedContainer").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("advancedContainer").classList.remove("fadeOut");
       advancedInit();
-    });
+    }, 500);
   } else if(display == 4) {
     //Info
-    $("#infoContainer").animate({
-      opacity: 0
-    }, 1000, () => {
+    document.getElementById("infoContainer").classList.remove("fadeIn");
+    document.getElementById("infoContainer").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("infoContainer").classList.remove("fadeOut");
       infoInit();
-    });
+    }, 500);
   }
   display = 0;
 };
@@ -220,7 +218,7 @@ const infoInit = () => {
   document.getElementById('infoContainer').style.display = "none";
 };
 
-function menuSelected() {
+const menuSelected = () => {
   if(selection == 0) {
     //play
     menu0Selected();
@@ -233,62 +231,53 @@ function menuSelected() {
   }
 };
 
-function menu0Selected() {
+const menu0Selected = () => {
   window.location.href = `${url}/proto?track=Chatty%20Bones%202018&difficulty=1`;
 };
 
-function menu1Selected() {
+const menu1Selected = () => {
   window.location.href = `${url}/editor`;
 };
 
-async function menu2Selected() {
+const menu2Selected = async () => {
   //advanced
   advancedInit();
   display = 3;
-  let eqn = 0;
   document.getElementById('advancedContainer').style.display = "block";
-  await animate("#advancedContainer", {
-    opacity: 1
-  }, 1000);
-  await animate("#advancedIcon", {
-    marginTop: "5vh",
-    opacity: 1
-  }, 1000);
-  await animate("#advancedDescription", {
-    opacity: 1
-  }, 500);
-  await animate("#advancedSupport", {
-    opacity: 1
-  }, 200);
-  await animate("#supportDetails", {
-    opacity: 1
-  }, 200);
-  await animate("#advancedDetails", {
-    opacity: 1
-  }, 200);
-  await animate("#tableContainer", {
-    opacity: 1
-  }, 200);
+  await new Promise((resolve) => {
+    document.getElementById("advancedContainer").classList.add("fadeIn");
+    setTimeout(resolve, 500);
+  });
+  await new Promise((resolve) => {
+    document.getElementById('advancedIcon').style.marginTop = "5vh";
+    document.getElementById('advancedIcon').style.opacity = 1;
+    setTimeout(resolve, 1000);
+  });
+  await new Promise((resolve) => {
+    document.getElementById("advancedDescription").classList.add("fadeIn");
+    setTimeout(resolve, 500);
+  });
+  await new Promise((resolve) => {
+    document.getElementById("advancedSupport").classList.add("shortFadeIn");
+    setTimeout(resolve, 200);
+  });
+  await new Promise((resolve) => {
+    document.getElementById("supportDetails").classList.add("shortFadeIn");
+    setTimeout(resolve, 200);
+  });
+  await new Promise((resolve) => {
+    document.getElementById("advancedDetails").classList.add("shortFadeIn");
+    setTimeout(resolve, 200);
+  });
+  await new Promise((resolve) => {
+    document.getElementById("tableContainer").classList.add("shortFadeIn");
+    setTimeout(resolve, 200);
+  });
 
   const advancedDetails = document.getElementsByClassName('advancedDetails');
   for (let i = 0; i < advancedDetails.length; i++) {
     setTimeout(() => {
-      $(".advancedDetails").eq(eqn).animate({
-        opacity: 1
-      }, 200);
-      eqn++;
-      if(eqn > advancedDetails.length) {
-        eqn = 0;
-      }
+      advancedDetails[i].classList.add("shortFadeIn");
     }, 200 * i);
   }
 };
-
-function animate(selector, param, delay) {
-  return new Promise((resolve) => {
-    console.log(selector);
-    console.log(param);
-    console.log(delay);
-    $(selector).animate(param, delay, () => resolve());
-  });
-}
