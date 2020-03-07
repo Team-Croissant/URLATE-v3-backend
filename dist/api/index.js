@@ -221,6 +221,22 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); });
+app.get("/getTracks", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, knex('tracks').select('name', 'producer', 'bpm')];
+            case 1:
+                results = _a.sent();
+                if (!results.length) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load tracks. It may be a problem with the DB.'));
+                    return [2 /*return*/];
+                }
+                res.status(200).json({ result: "success", tracks: results });
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

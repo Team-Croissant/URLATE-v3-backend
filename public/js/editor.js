@@ -1,10 +1,18 @@
 let isMenuOpened = false;
 let isFileOpenerOpened = false;
+let isSettingsOpened = false;
 let pattern = {};
-let songName = '';
+let songName = 'Select a song';
+let offset = 0;
+let sync = 0;
+let tracks;
+let song;
+let bpm = 130;
+let speed = 1;
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
+  sync = parseInt(settings.sound.offset);
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -40,6 +48,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
   });
+  fetch(`${api}/getTracks`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == 'success') {
+      tracks = data.tracks;
+      for(let i = 0; tracks.length > i; i++) {
+        let option = document.createElement("option");
+        option.innerHTML = tracks[i].name + '.mp3';
+        option.value = tracks[i].name + '.mp3';
+        document.getElementById("tracks").options.add(option);
+      }
+    } else {
+      alert('Failed to load song list.');
+    }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+  });
 });
 
 const menu = () => {
@@ -58,9 +86,7 @@ const menu = () => {
 };
 
 const exit = () => {
-  if(window.confirm(rusure)) {
-    window.location.href = `${url}/game`;
-  }
+  window.location.href = `${url}/game`;
 };
 
 const load = () => {
@@ -81,6 +107,84 @@ const save = () => {
   var a = document.createElement("a");
   var file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
   a.href = URL.createObjectURL(file);
-  a.download = 'songName.json';
+  a.download = `${songName}.json`;
   a.click();
 };
+
+const openSettings = () => {
+  if(isSettingsOpened) {
+    document.getElementById("settings").style.display = 'none';
+    isSettingsOpened = false;
+  } else {
+    document.getElementById("settings").style.display = 'block';
+    isSettingsOpened = true;
+  }
+};
+
+const musicSelected = (e) => {
+  if(e.options[0].value == '-') {
+    e.remove(0);
+  }
+  song = new Howl({
+    src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
+    autoplay: false,
+    loop: false,
+    onend: () => {}
+  });
+  musicInit(e.selectedIndex);
+};
+
+const musicInit = (index) => {
+  songName = tracks[index].name;
+  document.getElementById("songName").innerText = tracks[index].name;
+  document.getElementById("titleField").value = tracks[index].name;
+  document.getElementById("producerField").value = tracks[index].producer;
+  document.getElementById("bpmField").innerText = tracks[index].bpm;
+  document.getElementById("bpmTextField").value = tracks[index].bpm;
+  bpm = tracks[index].bpm;
+};
+
+const speedShow = () => {
+  document.getElementById("speedFieldContainer").style.pointerEvents = 'auto';
+  document.getElementById("speedFieldContainer").style.opacity = 1;
+};
+
+const speedSelected = (e) => {
+  document.getElementById("speedField").innerText = e.options[e.selectedIndex].value + 'x';
+  speed = parseInt(e.options[e.selectedIndex].value);
+};
+
+const speedClose = () => {
+  document.getElementById("speedFieldContainer").style.pointerEvents = 'none';
+  document.getElementById("speedFieldContainer").style.opacity = 0;
+};
+
+const bpmShow = () => {
+  document.getElementById("bpmFieldContainer").style.pointerEvents = 'auto';
+  document.getElementById("bpmFieldContainer").style.opacity = 1;
+};
+
+const bpmClose = () => {
+  document.getElementById("bpmFieldContainer").style.pointerEvents = 'none';
+  document.getElementById("bpmFieldContainer").style.opacity = 0;
+};
+
+const bpmChanged = (e) => {
+  document.getElementById("bpmField").innerText = e.value;
+  bpm = parseInt(e.value);
+};
+
+const scrollHorizontally = (e) => {
+  e = window.event || e;
+  var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+  document.getElementById('timeline').scrollLeft -= (delta*30);
+  e.preventDefault();
+};
+
+document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally, false);
+document.getElementById('timeline').addEventListener("DOMMouseScroll", scrollHorizontally, false);
+
+window.addEventListener("beforeunload", function (e) {
+  (e || window.event).returnValue = rusure;
+  return rusure;
+});

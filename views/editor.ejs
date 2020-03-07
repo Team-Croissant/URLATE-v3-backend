@@ -9,29 +9,49 @@
   <script src="js/pace.js"></script>
 </head>
 <body>
+  <div id="speedFieldContainer">
+    <div id="speedFieldDiv">
+      <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable classBtn" onclick="speedClose()">
+      <span class="fieldDivTitle">SPEED</span>
+      <select id="speeds" onchange="speedSelected(this)">
+        <option value="1" selected>1x</option>
+        <option value="2">2x</option>
+        <option value="3">3x</option>
+        <option value="4">4x</option>
+        <option value="5">5x</option>
+      </select>
+    </div>
+  </div>
+  <div id="bpmFieldContainer">
+    <div id="bpmFieldDiv">
+      <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable classBtn" onclick="bpmClose()">
+      <span class="fieldDivTitle">BPM</span>
+      <input type="text" id="bpmTextField" value="130" onchange="bpmChanged(this)">
+    </div>
+  </div>
   <div id="topNav">
     <div id="topLeftNav">
       <img src="https://img.icons8.com/material-outlined/24/000000/menu.png" id="menuIcon" class="icon clickable" onclick="menu()">
     </div>
     <div id="topCenterNav">
-      <div id="speedContainer" class="clickable">
+      <div id="speedContainer" class="clickable" onclick="speedShow()">
         <span>SPEED</span>
-        <span class="settingValue">1x</span>
+        <span class="settingValue" id="speedField">1x</span>
       </div>
       <div id="songContainer">
         <div id="settingIconContainer">
-          <img src="https://img.icons8.com/windows/64/000000/settings.png" class="icon clickable">
+          <img src="https://img.icons8.com/windows/64/000000/settings.png" class="icon clickable" onclick="openSettings()">
         </div>
         <div id="songNameContainer">
-          <span id="songName"></span>
+          <span id="songName">Select a song</span>
         </div>
         <div id="infoIconContainer">
           <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable">
         </div>
       </div>
-      <div id="bpmContainer" class="clickable">
+      <div id="bpmContainer" class="clickable" onclick="bpmShow()">
         <span>BPM</span>
-        <span class="settingValue">130</span>
+        <span class="settingValue" id="bpmField">130</span>
       </div>
     </div>
     <div id="topRightNav">
@@ -50,6 +70,33 @@
       <span onclick="exit()" class="clickable" id="exitText"><%= __('exit') %></span>
     </div>
   </div>
+  <div id="settings">
+    <div id="settingsTop">
+      <span>
+        <span class="settingsText">
+          <%= __('track:') %>
+        </span>
+        <select id="tracks" onchange="musicSelected(this)">
+          <option value="-" selected>--------</option>
+        </select>
+      </span>
+      <span id="title">
+        <span class="settingsText">
+          <%= __('title:') %>
+        </span>
+        <input type="text" id="titleField">
+      </span>
+      <span id="producer">
+        <span class="settingsText">
+          <%= __('producer:') %>
+        </span>
+        <input type="text" id="producerField">
+      </span>
+    </div>
+    <div id="settingsBottom">
+      <span>Settings</span>
+    </div>
+  </div>
   <div id="fileOpener">
     <input type="file" id="file" accept=".json" onchange="fileUploaded(this)">
   </div>
@@ -60,7 +107,9 @@
       <img src="/images/parts/elements/play/bullet.png" class="elementIcon unselectedIcon">
     </div>
     <div id="timeline">
-      <div id="timelineContent"></div>
+      <div id="timelineContent">
+        <img src="/images/parts/elements/redTri.png" id="nowPlayingMark">
+      </div>
     </div>
   </div>
   <img src="images/parts/elements/wall.svg" id="wall_left" class="wall">
