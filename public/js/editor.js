@@ -1,14 +1,26 @@
 let isMenuOpened = false;
 let isFileOpenerOpened = false;
+let isOffsetOpened = false;
 let isSettingsOpened = false;
-let pattern = {};
 let songName = 'Select a song';
+let producer = '';
 let offset = 0;
 let sync = 0;
 let tracks;
 let song;
 let bpm = 130;
 let speed = 1;
+let pattern = {
+  "information": {
+    "version": "1.0",
+    "track": songName,
+    "producer": producer,
+    "bpm": bpm,
+    "speed": speed,
+    "offset": offset
+  },
+  "patterns" : []
+};
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -79,8 +91,13 @@ const menu = () => {
       document.getElementById("fileOpener").style.display = 'none';
       isFileOpenerOpened = false;
     } else {
-      document.getElementById("menu").style.display = 'block';
-      isMenuOpened = true;
+      if(isOffsetOpened) {
+        document.getElementById("offsetContainer").style.display = 'none';
+        isOffsetOpened = false;
+      } else {
+        document.getElementById("menu").style.display = 'block';
+        isMenuOpened = true;
+      }
     }
   }
 };
@@ -104,11 +121,39 @@ const fileUploaded = (patternFile) => {
 };
 
 const save = () => {
-  var a = document.createElement("a");
-  var file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
+  pattern.information = {
+    "version": "1.0",
+    "track": songName,
+    "producer": producer,
+    "bpm": bpm,
+    "speed": speed,
+    "offset": offset
+  }
+  let a = document.createElement("a");
+  let file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
   a.href = URL.createObjectURL(file);
   a.download = `${songName}.json`;
   a.click();
+};
+
+const offsetOpen = () => {
+  document.getElementById("menu").style.display = 'none';
+  isMenuOpened = false;
+  document.getElementById("offsetContainer").style.display = 'block';
+  isOffsetOpened = true;
+};
+
+const offsetChanged = (e) => {
+  offset = parseInt(e.value);
+};
+
+const titleChanged = (e) => {
+  document.getElementById("songName").innerText = e.value;
+  songName = e.value;
+};
+
+const producerChanged = (e) => {
+  producer = e.value;
 };
 
 const openSettings = () => {
@@ -141,7 +186,9 @@ const musicInit = (index) => {
   document.getElementById("producerField").value = tracks[index].producer;
   document.getElementById("bpmField").innerText = tracks[index].bpm;
   document.getElementById("bpmTextField").value = tracks[index].bpm;
+  document.getElementById("background").style.backgroundImage = `url('/images/album/${tracks[index].name}.png')`;
   bpm = tracks[index].bpm;
+  producer = tracks[index].producer;
 };
 
 const speedShow = () => {

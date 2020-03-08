@@ -26,7 +26,7 @@
     <div id="bpmFieldDiv">
       <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable classBtn" onclick="bpmClose()">
       <span class="fieldDivTitle">BPM</span>
-      <input type="text" id="bpmTextField" value="130" onchange="bpmChanged(this)">
+      <input type="text" id="bpmTextField" class="textField" value="130" onchange="bpmChanged(this)">
     </div>
   </div>
   <div id="topNav">
@@ -64,7 +64,7 @@
       <br>
       <span onclick="save()" class="clickable"><%= __('save') %></span>
       <br>
-      <span onclick="offset()" class="clickable"><%= __('offset') %></span>
+      <span onclick="offsetOpen()" class="clickable"><%= __('offset') %></span>
     </div>
     <div id="menuBottom">
       <span onclick="exit()" class="clickable" id="exitText"><%= __('exit') %></span>
@@ -84,21 +84,24 @@
         <span class="settingsText">
           <%= __('title:') %>
         </span>
-        <input type="text" id="titleField">
+        <input type="text" id="titleField" class="textField" onchange="titleChanged(this)">
       </span>
       <span id="producer">
         <span class="settingsText">
           <%= __('producer:') %>
         </span>
-        <input type="text" id="producerField">
+        <input type="text" id="producerField" class="textField" onchange="producerChanged(this)">
       </span>
     </div>
     <div id="settingsBottom">
       <span>Settings</span>
     </div>
   </div>
-  <div id="fileOpener">
+  <div id="fileOpener" class="topLeftSmallMenu">
     <input type="file" id="file" accept=".json" onchange="fileUploaded(this)">
+  </div>
+  <div id="offsetContainer" class="topLeftSmallMenu">
+    <input type="text" id="offsetField" class="textField" onchange="offsetChanged(this)" value="0" placeholder="offset">
   </div>
   <div id="bottomNav">
     <div id="bottomLeftNav">

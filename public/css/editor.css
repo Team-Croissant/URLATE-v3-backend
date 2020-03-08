@@ -292,7 +292,7 @@ body {
   text-decoration: underline;
 }
 
-#fileOpener {
+.topLeftSmallMenu {
   display: none;
   position: fixed;
   z-index: 3;
@@ -356,17 +356,7 @@ select {
   letter-spacing: -1px;
 }
 
-#titleField {
-  background-color: rgb(240,240,240);
-  height: 3vh;
-  width: 15vw;
-  font-size: 1.7vh;
-  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
-  letter-spacing: -1px;
-  border: solid gray 1px;
-}
-
-#producerField {
+.textField {
   background-color: rgb(240,240,240);
   height: 3vh;
   width: 15vw;
@@ -448,11 +438,4 @@ select {
 
 #bpmTextField {
   margin-top: 2vh;
-  background-color: rgb(240,240,240);
-  height: 3vh;
-  width: 15vw;
-  font-size: 1.7vh;
-  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
-  letter-spacing: -1px;
-  border: solid gray 1px;
 }
