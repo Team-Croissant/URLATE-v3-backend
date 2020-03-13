@@ -347,15 +347,6 @@ body {
   height: 5vh;
 }
 
-select {
-  background-color: rgb(240,240,240);
-  height: 3.5vh;
-  width: 15.3vw;
-  font-size: 1.7vh;
-  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
-  letter-spacing: -1px;
-}
-
 .textField {
   background-color: rgb(240,240,240);
   height: 3vh;
@@ -367,35 +358,20 @@ select {
 }
 
 #speedFieldContainer {
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  left: 0;
-  display: flex;
-  pointer-events: none;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0,0,0,0.5);
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
-  transition-duration: .5s;
-}
-
-#speedFieldDiv {
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 30vw;
-  height: 30vh;
+  display: none;
+  text-align: center;
+  position: fixed;
+  z-index: 3;
+  width: 8vw;
+  height: 10vh;
+  top: 7vh;
+  left: 30vw;
   background-color: rgb(240,240,240);
-  border-radius: 5px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.5);
-}
-
-.fieldDivTitle {
-  font-size: 3vh;
+  filter: drop-shadow(0 10px 3px rgba(0,0,0,0.1));
+  font-size: 2.5vh;
 }
 
 .classBtn {
@@ -404,38 +380,47 @@ select {
   right: 36vw;
 }
 
+#tracks {
+  background-color: rgb(240,240,240);
+  height: 3.5vh;
+  width: 15.3vw;
+  font-size: 1.7vh;
+  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  letter-spacing: -1px;
+}
+
 #speeds {
-  margin-top: 2vh;
+  background-color: rgb(240,240,240);
+  height: 3.5vh;
+  width: 80%;
+  font-size: 1.7vh;
+  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  letter-spacing: -1px;
 }
 
 #bpmFieldContainer {
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  left: 0;
-  display: flex;
-  pointer-events: none;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0,0,0,0.5);
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
-  transition-duration: .5s;
-}
-
-#bpmFieldDiv {
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 30vw;
-  height: 30vh;
+  display: none;
+  text-align: center;
+  position: fixed;
+  z-index: 3;
+  width: 8vw;
+  height: 10vh;
+  top: 7vh;
+  left: 62vw;
   background-color: rgb(240,240,240);
-  border-radius: 5px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+  filter: drop-shadow(0 10px 3px rgba(0,0,0,0.1));
+  font-size: 2.5vh;
 }
 
 #bpmTextField {
-  margin-top: 2vh;
+  background-color: rgb(240,240,240);
+  height: 3vh;
+  width: 80%;
+  font-size: 1.7vh;
+  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  letter-spacing: -1px;
+  border: solid gray 1px;
 }

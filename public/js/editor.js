@@ -2,6 +2,8 @@ let isMenuOpened = false;
 let isFileOpenerOpened = false;
 let isOffsetOpened = false;
 let isSettingsOpened = false;
+let isSpeedOpened = false;
+let isBpmOpened = false;
 let songName = 'Select a song';
 let producer = '';
 let offset = 0;
@@ -192,8 +194,13 @@ const musicInit = (index) => {
 };
 
 const speedShow = () => {
-  document.getElementById("speedFieldContainer").style.pointerEvents = 'auto';
-  document.getElementById("speedFieldContainer").style.opacity = 1;
+  if(isSpeedOpened) {
+    document.getElementById("speedFieldContainer").style.display = 'none';
+    isSpeedOpened = false;
+  } else {
+    document.getElementById("speedFieldContainer").style.display = 'flex';
+    isSpeedOpened = true;
+  }
 };
 
 const speedSelected = (e) => {
@@ -201,19 +208,14 @@ const speedSelected = (e) => {
   speed = parseInt(e.options[e.selectedIndex].value);
 };
 
-const speedClose = () => {
-  document.getElementById("speedFieldContainer").style.pointerEvents = 'none';
-  document.getElementById("speedFieldContainer").style.opacity = 0;
-};
-
 const bpmShow = () => {
-  document.getElementById("bpmFieldContainer").style.pointerEvents = 'auto';
-  document.getElementById("bpmFieldContainer").style.opacity = 1;
-};
-
-const bpmClose = () => {
-  document.getElementById("bpmFieldContainer").style.pointerEvents = 'none';
-  document.getElementById("bpmFieldContainer").style.opacity = 0;
+  if(isBpmOpened) {
+    document.getElementById("bpmFieldContainer").style.display = 'none';
+    isBpmOpened = false;
+  } else {
+    document.getElementById("bpmFieldContainer").style.display = 'flex';
+    isBpmOpened = true;
+  }
 };
 
 const bpmChanged = (e) => {
@@ -228,8 +230,8 @@ const scrollHorizontally = (e) => {
   e.preventDefault();
 };
 
-document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally, false);
-document.getElementById('timeline').addEventListener("DOMMouseScroll", scrollHorizontally, false);
+document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);
+document.getElementById('timeline').addEventListener("DOMMouseScroll", scrollHorizontally);
 
 window.addEventListener("beforeunload", function (e) {
   (e || window.event).returnValue = rusure;

@@ -10,9 +10,6 @@
 </head>
 <body>
   <div id="speedFieldContainer">
-    <div id="speedFieldDiv">
-      <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable classBtn" onclick="speedClose()">
-      <span class="fieldDivTitle">SPEED</span>
       <select id="speeds" onchange="speedSelected(this)">
         <option value="1" selected>1x</option>
         <option value="2">2x</option>
@@ -20,14 +17,9 @@
         <option value="4">4x</option>
         <option value="5">5x</option>
       </select>
-    </div>
   </div>
   <div id="bpmFieldContainer">
-    <div id="bpmFieldDiv">
-      <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable classBtn" onclick="bpmClose()">
-      <span class="fieldDivTitle">BPM</span>
-      <input type="text" id="bpmTextField" class="textField" value="130" onchange="bpmChanged(this)">
-    </div>
+    <input type="text" id="bpmTextField" value="130" onchange="bpmChanged(this)">
   </div>
   <div id="topNav">
     <div id="topLeftNav">
