@@ -9,7 +9,7 @@ const config = require(__dirname + '/../../config/config.json');
 
 const app = express();
 app.locals.pretty = true;
-const port = 8080;
+const port = 1025;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/../../views');

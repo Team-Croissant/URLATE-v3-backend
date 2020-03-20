@@ -12,7 +12,7 @@ var i18n_1 = __importDefault(require("./i18n"));
 var config = require(__dirname + '/../../config/config.json');
 var app = express();
 app.locals.pretty = true;
-var port = 8080;
+var port = 1025;
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/../../views');
 app.use(express.static(__dirname + '/../../views'));
