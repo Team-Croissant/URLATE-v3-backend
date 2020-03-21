@@ -2,9 +2,3 @@
 config/config\.json
 
 node_modules/
-
-serverOn\.bat
-
-APIserverOn\.bat
-
-socketServerOn\.bat
