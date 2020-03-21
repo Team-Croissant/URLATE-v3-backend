@@ -12,7 +12,7 @@
   },
   "ingame" : {
     "brightness" : 25,
-    "blur" : 100,
+    "blur" : 60,
     "genEffect" : true,
     "comEffect" : true,
     "lightEffect" : true
