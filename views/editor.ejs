@@ -38,7 +38,7 @@
           <span id="songName">Select a song</span>
         </div>
         <div id="infoIconContainer">
-          <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable">
+          <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable" onclick="openInfo()">
         </div>
       </div>
       <div id="bpmContainer" class="clickable" onclick="bpmShow()">
@@ -87,6 +87,22 @@
     </div>
     <div id="settingsBottom">
       <span>Settings</span>
+    </div>
+  </div>
+  <div id="info">
+    <div id="infoTop">
+      <span>
+        <%= __('length_of_song:') %> <span id="lengthOfSong">0m 00s</span>
+        <br>
+        <%= __('number_of_note:') %> <span id="numOfNote">0</span>
+        <br>
+        <%= __('number_of_bullet:') %> <span id="numOfBullet">0</span>
+        <br>
+        <%= __('notes_average:') %> <span id="noteAverage">0.0노트</span>
+      </span>
+    </div>
+    <div id="infoBottom">
+      <span>Info</span>
     </div>
   </div>
   <div id="fileOpener" class="topLeftSmallMenu">

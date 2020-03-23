@@ -2,6 +2,7 @@ let isMenuOpened = false;
 let isFileOpenerOpened = false;
 let isOffsetOpened = false;
 let isSettingsOpened = false;
+let isInfoOpened = false;
 let isSpeedOpened = false;
 let isBpmOpened = false;
 let songName = 'Select a song';
@@ -159,12 +160,30 @@ const producerChanged = (e) => {
 };
 
 const openSettings = () => {
+  if(isInfoOpened) {
+    document.getElementById("info").style.display = 'none';
+    isInfoOpened = false;
+  }
   if(isSettingsOpened) {
     document.getElementById("settings").style.display = 'none';
     isSettingsOpened = false;
   } else {
     document.getElementById("settings").style.display = 'block';
     isSettingsOpened = true;
+  }
+};
+
+const openInfo = () => {
+  if(isSettingsOpened) {
+    document.getElementById("settings").style.display = 'none';
+    isSettingsOpened = false;
+  }
+  if(isInfoOpened) {
+    document.getElementById("info").style.display = 'none';
+    isInfoOpened = false;
+  } else {
+    document.getElementById("info").style.display = 'block';
+    isInfoOpened = true;
   }
 };
 
