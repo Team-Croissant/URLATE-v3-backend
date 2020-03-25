@@ -195,7 +195,7 @@ body {
   padding-left: 1vw;
 }
 
-#macroIcon {
+#triggerIcon {
   padding-right: 1vw;
 }
 
@@ -456,4 +456,114 @@ body {
   background-color: rgb(225,225,225);
   width: 100%;
   height: 5vh;
+}
+
+#speedTitle, #bpmTitle {
+  font-size: 1.7vh;
+}
+
+#triggerContainer {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  width: 28vw;
+  height: 93vh;
+  padding-right: 1vw;
+  padding-left: 1vw;
+  top: 7vh;
+  Right: 0;
+  background-color: rgb(240,240,240);
+  filter: drop-shadow(0 10px 3px rgba(0,0,0,0.1));
+  font-size: 2.5vh;
+  overflow-y: scroll;
+}
+
+#playbackrate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(225,225,225);
+  z-index: 2;
+  position: fixed;
+  width: 6vw;
+  height: 3vh;
+  bottom: 7vh;
+}
+
+#playIcon {
+  width: 1.2vw;
+}
+
+#stopIcon {
+  width: 1.1vw;
+}
+
+#playbackrateText {
+  font-size: 1vw;
+  margin-top: .2vh;
+  padding-left: .2vw;
+}
+
+.triggerElement {
+  margin-top: 1vh;
+  width: 100%;
+}
+
+.triggerElementLeft {
+  display: inline-block;
+  text-align: left;
+  width: 13vw;
+}
+
+.triggerElementRight {
+  text-align: right;
+  display: inline-block;
+  width: 13vw;
+  font-weight: bold;
+}
+
+#addTrigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5vh;
+  margin-left: 12.5vw;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
+  box-shadow:  6px 6px 12px #c8c8c8, 
+              -6px -6px 12px #ffffff;
+  width: 3vw;
+  height: 3vw;
+  font-size: 2vw;
+}
+
+#temposplit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(240,240,240);
+  z-index: 2;
+  position: fixed;
+  width: 6vw;
+  height: 3vh;
+  bottom: 7vh;
+  right: 0;
+}
+
+#temposplitText {
+  font-size: 1vw;
+  margin-top: .2vh;
+  padding-left: .2vw;
+}
+
+#tempoLeft {
+  width: 1.2vw;
+  transform: rotate(90deg);
+  margin-right: .7vw;
+}
+
+#tempoRight {
+  width: 1.2vw;
+  transform: rotate(-90deg);
+  margin-left: .9vw;
 }

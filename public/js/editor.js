@@ -5,6 +5,7 @@ let isSettingsOpened = false;
 let isInfoOpened = false;
 let isSpeedOpened = false;
 let isBpmOpened = false;
+let isTriggerOpened = false;
 let songName = 'Select a song';
 let producer = '';
 let offset = 0;
@@ -22,7 +23,8 @@ let pattern = {
     "speed": speed,
     "offset": offset
   },
-  "patterns" : []
+  "patterns" : [],
+  "triggers" : []
 };
 
 const settingApply = () => {
@@ -187,6 +189,16 @@ const openInfo = () => {
   }
 };
 
+const showTrigger = () => {
+  if(isTriggerOpened) {
+    document.getElementById("triggerContainer").style.display = 'none';
+    isTriggerOpened = false;
+  } else {
+    document.getElementById("triggerContainer").style.display = 'initial';
+    isTriggerOpened = true;
+  }
+};
+
 const musicSelected = (e) => {
   if(e.options[0].value == '-') {
     e.remove(0);
@@ -197,15 +209,19 @@ const musicSelected = (e) => {
     loop: false,
     onend: () => {}
   });
+  song.on('load', () => {
+    document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
+    document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
+  });
   musicInit(e.selectedIndex);
 };
 
 const musicInit = (index) => {
   songName = tracks[index].name;
-  document.getElementById("songName").innerText = tracks[index].name;
+  document.getElementById("songName").textContent = tracks[index].name + '(loading)';
   document.getElementById("titleField").value = tracks[index].name;
   document.getElementById("producerField").value = tracks[index].producer;
-  document.getElementById("bpmField").innerText = tracks[index].bpm;
+  document.getElementById("bpmField").textContent = tracks[index].bpm;
   document.getElementById("bpmTextField").value = tracks[index].bpm;
   document.getElementById("background").style.backgroundImage = `url('/images/album/${tracks[index].name}.png')`;
   bpm = tracks[index].bpm;

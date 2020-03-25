@@ -27,7 +27,7 @@
     </div>
     <div id="topCenterNav">
       <div id="speedContainer" class="clickable" onclick="speedShow()">
-        <span>SPEED</span>
+        <span id="speedTitle">SPEED</span>
         <span class="settingValue" id="speedField">1x</span>
       </div>
       <div id="songContainer">
@@ -42,12 +42,25 @@
         </div>
       </div>
       <div id="bpmContainer" class="clickable" onclick="bpmShow()">
-        <span>BPM</span>
+        <span id="bpmTitle">BPM</span>
         <span class="settingValue" id="bpmField">130</span>
       </div>
     </div>
     <div id="topRightNav">
-      <img src="https://img.icons8.com/ios/50/000000/circled-m.png" id="macroIcon" class="icon clickable">
+      <img src="https://img.icons8.com/material/24/000000/triggering.png" id="triggerIcon" class="icon clickable" onclick="showTrigger()">
+    </div>
+  </div>
+  <div id="triggerContainer">
+    <div class="triggerElement" id="trigger0">
+      <div class="triggerElementLeft">
+        0:00:00.00
+      </div>
+      <div class="triggerElementRight">
+        HI
+      </div>
+    </div>
+    <div id="addTrigger" onclick="addTrigger()" class="clickable">
+      +
     </div>
   </div>
   <div id="menu">
@@ -122,6 +135,16 @@
         <img src="/images/parts/elements/redTri.png" id="nowPlayingMark">
       </div>
     </div>
+  </div>
+  <div id="playbackrate">
+    <img src="https://img.icons8.com/material/24/000000/play--v1.png" onclick="playPattern()" id="playIcon" class="clickable">
+    <img src="https://img.icons8.com/ios-filled/50/000000/stop.png" onclick="stopPattern()" id="stopIcon" class="clickable">
+    <span id="playbackrateText" onclick="rateChange()" class="clickable">100%</span>
+  </div>
+  <div id="temposplit">
+    <img src="https://img.icons8.com/android/24/000000/expand-arrow.png" onclick="tempoLeft()" id="tempoLeft" class="clickable">
+    <span id="temposplitText">1/4</span>
+    <img src="https://img.icons8.com/android/24/000000/expand-arrow.png" onclick="tempoRight()" id="tempoRight" class="clickable">
   </div>
   <img src="images/parts/elements/wall.svg" id="wall_left" class="wall">
   <img src="images/parts/elements/wall.svg" id="wall_right" class="wall">
