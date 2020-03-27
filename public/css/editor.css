@@ -567,3 +567,21 @@ body {
   transform: rotate(-90deg);
   margin-left: .9vw;
 }
+
+#zoominout {
+  text-align: right;
+  height: 100%;
+  width: 2vw;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
+
+#zoomIn {
+  width: 1vw;
+}
+
+#zoomOut {
+  margin-top: -1vh;
+  width: 1vw;
+}
