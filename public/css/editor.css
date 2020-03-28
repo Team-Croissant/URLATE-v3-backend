@@ -236,11 +236,7 @@ body {
   overflow-y: hidden;
   overflow-x: scroll;
   scrollbar-color: rgb(100,100,100) rgb(230,230,230);
-  scrollbar-width: thin;
-}
-
-#timelineContent {
-  height: 100%;
+  scrollbar-width: 10px;
 }
 
 ::-webkit-scrollbar {
@@ -571,17 +567,16 @@ body {
 #zoominout {
   text-align: right;
   height: 100%;
-  width: 2vw;
   position: fixed;
   right: 0;
   bottom: 0;
 }
 
 #zoomIn {
-  width: 1vw;
+  height: 2vh;
 }
 
 #zoomOut {
   margin-top: -1vh;
-  width: 1vw;
+  height: 2vh;
 }

@@ -131,9 +131,8 @@
       <img src="/images/parts/elements/play/bullet.png" class="elementIcon unselectedIcon">
     </div>
     <div id="timeline">
-      <div id="timelineContent">
-        <img src="/images/parts/elements/redTri.png" id="nowPlayingMark">
-      </div>
+      <canvas width="100%" height="100%" id="timelineCanvas"></canvas>
+      <img src="/images/parts/elements/redTri.png" id="nowPlayingMark">
       <div id="zoominout">
         <img src="https://img.icons8.com/material-outlined/24/000000/zoom-in.png" id="zoomIn" class="clickable" onclick="zoomIn()">
         <img src="https://img.icons8.com/material-outlined/24/000000/zoom-out.png" id="zoomOut" class="clickable" onclick="zoomOut()">
@@ -156,6 +155,7 @@
   <div id="background"></div>
   <script>
     const rusure = "<%= __('RUSure') %>";
+    const initSure = "<%= __('InitSure') %>";
     const cdnUrl = "<%= cdnUrl %>";
     const url = "<%= url %>";
     const api = "<%= api %>";

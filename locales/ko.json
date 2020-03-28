@@ -60,5 +60,6 @@
 	"length_of_song:": "곡의 길이 : ",
 	"number_of_note:": "노트의 수 : ",
 	"number_of_bullet:": "총알의 수 : ",
-	"notes_average:": "초당 노트 : "
+	"notes_average:": "초당 노트 : ",
+	"InitSure": "정말 새 노래를 불러올까요? 진행하던 작업이 삭제될 수 있습니다."
 }

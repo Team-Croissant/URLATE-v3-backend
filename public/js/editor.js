@@ -6,6 +6,7 @@ let isInfoOpened = false;
 let isSpeedOpened = false;
 let isBpmOpened = false;
 let isTriggerOpened = false;
+let isTimelineEdited = false;
 let songName = 'Select a song';
 let producer = '';
 let offset = 0;
@@ -26,6 +27,8 @@ let pattern = {
   "patterns" : [],
   "triggers" : []
 };
+
+const timeline = document.getElementById("timelineCanvas").getContext("2d");
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -78,6 +81,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         option.innerHTML = tracks[i].name + '.mp3';
         option.value = tracks[i].name + '.mp3';
         document.getElementById("tracks").options.add(option);
+        document.getElementById("timelineCanvas").width  = document.getElementById("timeline").offsetWidth;
+        document.getElementById("timelineCanvas").height  = document.getElementById("timeline").offsetHeight - 10;
       }
     } else {
       alert('Failed to load song list.');
@@ -86,6 +91,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     alert(`Error occured.\n${error}`);
   });
 });
+
+const timelineInit = () => {
+  
+}
 
 const menu = () => {
   if(isMenuOpened) {
@@ -200,20 +209,41 @@ const showTrigger = () => {
 };
 
 const musicSelected = (e) => {
-  if(e.options[0].value == '-') {
-    e.remove(0);
+  if(isTimelineEdited) {
+    if(confirm(initSure)) {
+      if(e.options[0].value == '-') {
+        e.remove(0);
+      }
+      song = new Howl({
+        src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
+        autoplay: false,
+        loop: false,
+        onend: () => {}
+      });
+      song.on('load', () => {
+        document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
+        document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
+        timelineInit();
+      });
+      musicInit(e.selectedIndex);
+    }
+  } else {
+    if(e.options[0].value == '-') {
+      e.remove(0);
+    }
+    song = new Howl({
+      src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
+      autoplay: false,
+      loop: false,
+      onend: () => {}
+    });
+    song.on('load', () => {
+      document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
+      document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
+      timelineInit();
+    });
+    musicInit(e.selectedIndex);
   }
-  song = new Howl({
-    src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
-    autoplay: false,
-    loop: false,
-    onend: () => {}
-  });
-  song.on('load', () => {
-    document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
-    document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
-  });
-  musicInit(e.selectedIndex);
 };
 
 const musicInit = (index) => {
