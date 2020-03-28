@@ -15,6 +15,7 @@ let tracks;
 let song;
 let bpm = 130;
 let speed = 1;
+let zoom = 0.5;
 let pattern = {
   "information": {
     "version": "1.0",
@@ -28,7 +29,10 @@ let pattern = {
   "triggers" : []
 };
 
-const timeline = document.getElementById("timelineCanvas").getContext("2d");
+let loadedSongIndexes = [];
+
+const timeline = document.getElementById("timelineCanvas");
+const timelineCtx = timeline.getContext("2d");
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -81,8 +85,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         option.innerHTML = tracks[i].name + '.mp3';
         option.value = tracks[i].name + '.mp3';
         document.getElementById("tracks").options.add(option);
-        document.getElementById("timelineCanvas").width  = document.getElementById("timeline").offsetWidth;
-        document.getElementById("timelineCanvas").height  = document.getElementById("timeline").offsetHeight - 10;
+        timeline.width = document.getElementById("timeline").offsetWidth;
+        timeline.height = document.getElementById("timeline").offsetHeight - 10;
       }
     } else {
       alert('Failed to load song list.');
@@ -92,8 +96,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
-const timelineInit = () => {
-  
+const drawTimeline = () => {
+  const line = parseInt(song._duration / (60 / bpm));
+  const width = (zoom * bpm) * (line + 3) + (window.innerWidth / 100 * 90);
+  timeline.width = width;
+  document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (bpm / 2) - 6 + "px";
+  const height = timeline.height;
+  /*for(let i = 5; i < line + 5; i++) {
+    timelineCtx.strokeStyle = "#AAAAAA";
+    timelineCtx.moveTo(zoom * i * bpm, height / 5);
+    timelineCtx.lineTo(zoom * i * bpm, height - height / 5);
+    timelineCtx.stroke();
+  }*/
 }
 
 const menu = () => {
@@ -218,12 +232,13 @@ const musicSelected = (e) => {
         src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
         autoplay: false,
         loop: false,
-        onend: () => {}
-      });
-      song.on('load', () => {
-        document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
-        document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
-        timelineInit();
+        onend: () => {},
+        onload: () => {
+          loadedSongIndexes.push(e.selectedIndex);
+          document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
+          document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
+          drawTimeline();
+        }
       });
       musicInit(e.selectedIndex);
     }
@@ -235,12 +250,13 @@ const musicSelected = (e) => {
       src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
       autoplay: false,
       loop: false,
-      onend: () => {}
-    });
-    song.on('load', () => {
-      document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
-      document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
-      timelineInit();
+      onend: () => {},
+      onload: () => {
+        loadedSongIndexes.push(e.selectedIndex);
+        document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
+        document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
+        drawTimeline();
+      }
     });
     musicInit(e.selectedIndex);
   }

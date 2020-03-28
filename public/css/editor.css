@@ -383,6 +383,7 @@ body {
   font-size: 1.7vh;
   font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
   letter-spacing: -1px;
+  border: 1px solid black;
 }
 
 #speeds {
