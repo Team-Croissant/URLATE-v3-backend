@@ -28,8 +28,7 @@ let pattern = {
   "patterns" : [],
   "triggers" : []
 };
-
-let loadedSongIndexes = [];
+let prevScroll = 0;
 
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
@@ -97,18 +96,38 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const drawTimeline = () => {
-  const line = parseInt(song._duration / (60 / bpm));
-  const width = (zoom * bpm) * (line + 3) + (window.innerWidth / 100 * 90);
-  timeline.width = width;
-  document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (bpm / 2) - 6 + "px";
-  const height = timeline.height;
-  /*for(let i = 5; i < line + 5; i++) {
-    timelineCtx.strokeStyle = "#AAAAAA";
-    timelineCtx.moveTo(zoom * i * bpm, height / 5);
-    timelineCtx.lineTo(zoom * i * bpm, height - height / 5);
+  const lineNum = parseInt(song._duration / (60 / bpm));
+  const timelineWidth = (zoom * bpm) * (lineNum + 3) + (window.innerWidth / 100 * 90);
+  timeline.width = timelineWidth;
+  document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (bpm / 2) - 4 + "px";
+  const timelineHeight = timeline.height;
+  for(let n = 1; n < 5; n++) {
+    timelineCtx.beginPath();
+    timelineCtx.strokeStyle = "#ff6161";
+    timelineCtx.moveTo(zoom * n * bpm, timelineHeight / 5);
+    timelineCtx.lineTo(zoom * n * bpm, timelineHeight - (timelineHeight / 5));
     timelineCtx.stroke();
-  }*/
-}
+    timelineCtx.closePath();
+  }
+  for(let i = 5; i < lineNum + 5; i++) {
+    timelineCtx.beginPath();
+    timelineCtx.strokeStyle = "#555";
+    timelineCtx.moveTo(zoom * i * bpm, timelineHeight / 5);
+    timelineCtx.lineTo(zoom * i * bpm, timelineHeight - (timelineHeight / 5));
+    timelineCtx.stroke();
+    timelineCtx.closePath();
+  }
+};
+
+const timelineScrolled = (e) => {
+  console.log(prevScroll, e.scrollLeft, zoom * bpm);
+  if(prevScroll < e.scrollLeft) {
+    e.scrollLeft = prevScroll + (zoom * bpm);
+  } else if(prevScroll > e.scrollLeft) {
+    e.scrollLeft = prevScroll - (zoom * bpm);
+  }
+  prevScroll = e.scrollLeft;
+};
 
 const menu = () => {
   if(isMenuOpened) {
@@ -234,7 +253,6 @@ const musicSelected = (e) => {
         loop: false,
         onend: () => {},
         onload: () => {
-          loadedSongIndexes.push(e.selectedIndex);
           document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
           document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
           drawTimeline();
@@ -252,7 +270,6 @@ const musicSelected = (e) => {
       loop: false,
       onend: () => {},
       onload: () => {
-        loadedSongIndexes.push(e.selectedIndex);
         document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
         document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
         drawTimeline();
