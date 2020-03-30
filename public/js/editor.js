@@ -99,7 +99,7 @@ const drawTimeline = () => {
   const lineNum = parseInt(song._duration / (60 / bpm));
   const timelineWidth = (zoom * bpm) * (lineNum + 3) + (window.innerWidth / 100 * 90);
   timeline.width = timelineWidth;
-  document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (zoom * bpm) - (window.innerWidth / 400) + "px";
+  document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (zoom * bpm) - (window.innerWidth / 350) + "px";
   const timelineHeight = timeline.height;
   for(let n = 1; n < 5; n++) {
     timelineCtx.beginPath();
