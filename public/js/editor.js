@@ -29,7 +29,7 @@ let pattern = {
   "triggers" : []
 };
 let prevScroll = 0;
-let selectedTempo = 2;
+let selectedTempo = 0;
 
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
@@ -40,7 +40,7 @@ const settingApply = () => {
   sync = parseInt(settings.sound.offset);
 };
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
   fetch(`${api}/getStatus`, {
     method: 'GET',
     credentials: 'include'
