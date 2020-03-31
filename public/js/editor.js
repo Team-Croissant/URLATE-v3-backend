@@ -95,27 +95,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
+const zoomIn = () => {
+  zoom = zoom * 1.3;
+  drawTimeline();
+};
+
+const zoomOut = () => {
+  zoom = zoom / 1.3;
+  drawTimeline();
+}
+
 const drawTimeline = () => {
   const lineNum = parseInt(song._duration / (60 / bpm));
   const timelineWidth = (zoom * bpm) * (lineNum + 3) + (window.innerWidth / 100 * 90);
   timeline.width = timelineWidth;
   document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (zoom * bpm) - (window.innerWidth / 350) + "px";
   const timelineHeight = timeline.height;
-  for(let n = 1; n < 5; n++) {
-    timelineCtx.beginPath();
-    timelineCtx.strokeStyle = "#ff6161";
-    timelineCtx.moveTo(zoom * n * bpm, timelineHeight / 5);
-    timelineCtx.lineTo(zoom * n * bpm, timelineHeight - (timelineHeight / 5));
-    timelineCtx.stroke();
-    timelineCtx.closePath();
-  }
-  for(let i = 5; i < lineNum + 5; i++) {
-    timelineCtx.beginPath();
-    timelineCtx.strokeStyle = "#555";
-    timelineCtx.moveTo(zoom * i * bpm, timelineHeight / 5);
-    timelineCtx.lineTo(zoom * i * bpm, timelineHeight - (timelineHeight / 5));
-    timelineCtx.stroke();
-    timelineCtx.closePath();
+  const startPoint = document.getElementById("timeline").scrollLeft;
+  const renderLineNum = parseInt(window.innerWidth / (zoom * bpm));
+  for(let i = 1; i < renderLineNum; i++) {
+    if(startPoint + (zoom * i * bpm) <= (lineNum + 4) * zoom * bpm) {
+      timelineCtx.beginPath();
+      if(startPoint + (zoom * i * bpm) < zoom * 5 * bpm) {
+        timelineCtx.strokeStyle = "#ff6161";
+      } else {
+        timelineCtx.strokeStyle = "#555";
+      }
+      timelineCtx.moveTo(startPoint + (zoom * i * bpm), timelineHeight / 5);
+      timelineCtx.lineTo(startPoint + (zoom * i * bpm), timelineHeight - (timelineHeight / 5));
+      timelineCtx.stroke();
+      timelineCtx.closePath();
+    }
   }
 };
 
@@ -126,6 +136,7 @@ const timelineScrolled = (e) => {
     e.scrollLeft = prevScroll - (zoom * bpm);
   }
   prevScroll = e.scrollLeft;
+  drawTimeline();
 };
 
 const menu = () => {
