@@ -29,8 +29,9 @@ let pattern = {
   "triggers" : []
 };
 let prevScroll = 0;
-let tempo = ["1/2", "1/3", "1/4", "1/8", "1/16"];
+let selectedTempo = 2;
 
+const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
 
@@ -111,6 +112,24 @@ const zoomOut = () => {
   }
   drawTimeline();
 }
+
+const tempoLeft = () => {
+  selectedTempo -= 1;
+  if(selectedTempo <= 0) {
+    selectedTempo = 0;
+  }
+  document.getElementById("temposplitText").textContent = tempo[selectedTempo];
+  drawTimeline();
+};
+
+const tempoRight = () => {
+  selectedTempo += 1;
+  if(selectedTempo >= 6) {
+    selectedTempo = 6;
+  }
+  document.getElementById("temposplitText").textContent = tempo[selectedTempo];
+  drawTimeline();
+};
 
 const drawTimeline = () => {
   const lineNum = parseInt(song._duration / (60 / bpm));
