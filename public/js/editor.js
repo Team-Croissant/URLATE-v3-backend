@@ -29,6 +29,7 @@ let pattern = {
   "triggers" : []
 };
 let prevScroll = 0;
+let tempo = ["1/2", "1/3", "1/4", "1/8", "1/16"];
 
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
@@ -97,11 +98,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 const zoomIn = () => {
   zoom = zoom * 1.3;
+  if(zoom > 0.9) {
+    alert(zoomInWarn);
+  }
   drawTimeline();
 };
 
 const zoomOut = () => {
   zoom = zoom / 1.3;
+  if(zoom < 0.13) {
+    alert(zoomOutWarn);
+  }
   drawTimeline();
 }
 
