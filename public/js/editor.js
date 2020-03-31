@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const zoomIn = () => {
-  zoom = zoom * 1.3;
+  zoom = zoom * 1.1;
   if(zoom > 0.9) {
     alert(zoomInWarn);
   }
@@ -106,7 +106,7 @@ const zoomIn = () => {
 };
 
 const zoomOut = () => {
-  zoom = zoom / 1.3;
+  zoom = zoom / 1.1;
   if(zoom < 0.13) {
     alert(zoomOutWarn);
   }
