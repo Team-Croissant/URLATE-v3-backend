@@ -151,6 +151,14 @@ const drawTimeline = () => {
       timelineCtx.lineTo(startPoint + (zoom * i * bpm), timelineHeight - (timelineHeight / 5));
       timelineCtx.stroke();
       timelineCtx.closePath();
+      for(let j = 1; j < parseInt(tempo[selectedTempo].split("/")[1]); j++) {
+        timelineCtx.beginPath();
+        timelineCtx.strokeStyle = "#AAA";
+        timelineCtx.moveTo(startPoint + (zoom * i * bpm) + (j * ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]))), timelineHeight / 5);
+        timelineCtx.lineTo(startPoint + (zoom * i * bpm) + (j * ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]))), timelineHeight - (timelineHeight / 5));
+        timelineCtx.stroke();
+        timelineCtx.closePath();
+      }
     }
   }
 };
