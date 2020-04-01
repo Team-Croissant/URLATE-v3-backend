@@ -137,7 +137,10 @@ const drawTimeline = () => {
   timeline.width = timelineWidth;
   document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (zoom * bpm) - (window.innerWidth / 350) + "px";
   const timelineHeight = timeline.height;
-  const startPoint = document.getElementById("timeline").scrollLeft;
+  const startPoint = document.getElementById("timeline").scrollLeft - (document.getElementById("timeline").scrollLeft % (zoom * bpm));
+  console.log(timeline.scrollLeft);
+  console.log(zoom * bpm);
+  console.log(timeline.scrollLeft % (zoom * bpm));
   const renderLineNum = parseInt(window.innerWidth / (zoom * bpm));
   for(let i = 1; i < renderLineNum; i++) {
     if(startPoint + (zoom * i * bpm) <= (lineNum + 4) * zoom * bpm) {
@@ -165,9 +168,9 @@ const drawTimeline = () => {
 
 const timelineScrolled = (e) => {
   if(prevScroll < e.scrollLeft) {
-    e.scrollLeft = prevScroll + (zoom * bpm);
+    e.scrollLeft = prevScroll + (zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]);
   } else if(prevScroll > e.scrollLeft) {
-    e.scrollLeft = prevScroll - (zoom * bpm);
+    e.scrollLeft = prevScroll - (zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]);
   }
   prevScroll = e.scrollLeft;
   drawTimeline();
