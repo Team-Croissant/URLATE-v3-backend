@@ -116,8 +116,12 @@ const zoomOut = () => {
 
 const tempoLeft = () => {
   selectedTempo -= 1;
-  if(selectedTempo <= 0) {
+  if(selectedTempo < 0) {
     selectedTempo = 0;
+  } else {
+    nowScroll = (zoom * bpm) * parseInt(prevScroll / (zoom * bpm));
+    document.getElementById("timeline").scrollLeft = parseInt(nowScroll);
+    prevScroll = nowScroll;
   }
   document.getElementById("temposplitText").textContent = tempo[selectedTempo];
   drawTimeline();
@@ -125,8 +129,12 @@ const tempoLeft = () => {
 
 const tempoRight = () => {
   selectedTempo += 1;
-  if(selectedTempo >= 6) {
+  if(selectedTempo > 6) {
     selectedTempo = 6;
+  } else {
+    nowScroll = (zoom * bpm) * parseInt(prevScroll / (zoom * bpm));
+    document.getElementById("timeline").scrollLeft = parseInt(nowScroll);
+    prevScroll = nowScroll;
   }
   document.getElementById("temposplitText").textContent = tempo[selectedTempo];
   drawTimeline();
