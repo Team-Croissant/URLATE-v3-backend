@@ -31,10 +31,13 @@ let pattern = {
 let prevScroll = 0;
 let nowScroll = 0;
 let selectedTempo = 0;
+let nowMilis = 0;
 
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
+const editor = document.getElementById("editorCanvas");
+const editorCtx = timeline.getContext("2d");
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -346,6 +349,7 @@ const musicInit = (index) => {
   producer = tracks[index].producer;
   prevScroll = 0;
   nowScroll = 0;
+  nowMilis = 0;
   document.getElementById("timeline").scrollLeft = 0;
 };
 
@@ -377,6 +381,7 @@ const bpmShow = () => {
 const bpmChanged = (e) => {
   document.getElementById("bpmField").innerText = e.value;
   bpm = parseInt(e.value);
+  drawTimeline();
 };
 
 const scrollHorizontally = (e) => {
