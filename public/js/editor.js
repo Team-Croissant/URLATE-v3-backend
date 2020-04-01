@@ -183,6 +183,8 @@ const timelineScrolled = (e) => {
     nowScroll = prevScroll - ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
     e.scrollLeft = parseInt(nowScroll);
   }
+  nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
+  //song.seek(nowMilis / 1000);
   prevScroll = nowScroll;
   drawTimeline();
 };
