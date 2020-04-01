@@ -29,6 +29,7 @@ let pattern = {
   "triggers" : []
 };
 let prevScroll = 0;
+let nowScroll = 0;
 let selectedTempo = 0;
 
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
@@ -138,9 +139,6 @@ const drawTimeline = () => {
   document.getElementById("nowPlayingMark").style.left = document.getElementById("bottomLeftNav").offsetWidth + (zoom * bpm) - (window.innerWidth / 350) + "px";
   const timelineHeight = timeline.height;
   const startPoint = document.getElementById("timeline").scrollLeft - (document.getElementById("timeline").scrollLeft % (zoom * bpm));
-  console.log(timeline.scrollLeft);
-  console.log(zoom * bpm);
-  console.log(timeline.scrollLeft % (zoom * bpm));
   const renderLineNum = parseInt(window.innerWidth / (zoom * bpm));
   for(let i = 1; i < renderLineNum; i++) {
     if(startPoint + (zoom * i * bpm) <= (lineNum + 4) * zoom * bpm) {
@@ -167,12 +165,14 @@ const drawTimeline = () => {
 };
 
 const timelineScrolled = (e) => {
-  if(prevScroll < e.scrollLeft) {
-    e.scrollLeft = prevScroll + (zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]);
-  } else if(prevScroll > e.scrollLeft) {
-    e.scrollLeft = prevScroll - (zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]);
+  if(parseInt(prevScroll) < e.scrollLeft) {
+    nowScroll = prevScroll + ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
+    e.scrollLeft = parseInt(nowScroll);
+  } else if(parseInt(prevScroll) > e.scrollLeft) {
+    nowScroll = prevScroll - ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
+    e.scrollLeft = parseInt(nowScroll);
   }
-  prevScroll = e.scrollLeft;
+  prevScroll = nowScroll;
   drawTimeline();
 };
 
@@ -336,6 +336,9 @@ const musicInit = (index) => {
   document.getElementById("background").style.backgroundImage = `url('/images/album/${tracks[index].name}.png')`;
   bpm = tracks[index].bpm;
   producer = tracks[index].producer;
+  prevScroll = 0;
+  nowScroll = 0;
+  document.getElementById("timeline").scrollLeft = 0;
 };
 
 const speedShow = () => {
