@@ -395,7 +395,14 @@ const bpmShow = () => {
 const bpmChanged = (e) => {
   document.getElementById("bpmField").innerText = e.value;
   bpm = parseInt(e.value);
-  drawTimeline();
+  if(nowScroll != 0) {
+    prevScroll = 0;
+    nowScroll = 0;
+    nowMilis = 0;
+    document.getElementById("timeline").scrollLeft = 0;
+  } else {
+    drawTimeline();
+  }
 };
 
 const scrollHorizontally = (e) => {
