@@ -421,7 +421,7 @@ const playLoop = () => {
       isSongPlayed = true;
     }
     document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
-    song.seek(nowMilis / 1000);
+    song.seek(offset + nowMilis / 1000);
     setTimeout(playLoop, 60000 / bpm / playBackRate);
   }
 };
