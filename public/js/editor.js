@@ -437,7 +437,10 @@ const stopPattern = () => {
     isPatternPlaying = false;
     isSongPlayed = false;
   } else {
-    
+    prevScroll = 0;
+    nowScroll = 0;
+    nowMilis = 0;
+    document.getElementById("timeline").scrollLeft = 0;
   }
 };
 
