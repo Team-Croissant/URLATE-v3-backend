@@ -34,6 +34,7 @@ let selectedTempo = 0;
 let nowMilis = 0;
 let isPatternPlaying = false;
 let isSongPlayed = false;
+let playBackRate = 1.0;
 
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
@@ -425,8 +426,10 @@ const playLoop = () => {
 };
 
 const playPattern = () => {
-  isPatternPlaying = true;
-  playLoop();
+  if(isPatternPlaying == false) {
+    isPatternPlaying = true;
+    playLoop();
+  }
 };
 
 const stopPattern = () => {
