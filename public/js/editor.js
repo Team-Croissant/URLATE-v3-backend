@@ -350,6 +350,13 @@ const musicSelected = (e) => {
     });
     musicInit(e.selectedIndex);
   }
+  if(isPatternPlaying == true) {
+    if(isSongPlayed == true) {
+      song.stop();
+    }
+    isPatternPlaying = false;
+    isSongPlayed = false;
+  }
 };
 
 const musicInit = (index) => {
@@ -403,6 +410,13 @@ const bpmChanged = (e) => {
     document.getElementById("timeline").scrollLeft = 0;
   } else {
     drawTimeline();
+  }
+  if(isPatternPlaying == true) {
+    if(isSongPlayed == true) {
+      song.stop();
+    }
+    isPatternPlaying = false;
+    isSongPlayed = false;
   }
 };
 
