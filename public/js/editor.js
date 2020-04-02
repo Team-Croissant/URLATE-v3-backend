@@ -414,6 +414,7 @@ const scrollHorizontally = (e) => {
 };
 
 const playLoop = () => {
+  song.rate(playBackRate);
   if(isPatternPlaying == true) {
     if(nowMilis > 0 && isSongPlayed == false) {
       song.play();
@@ -421,7 +422,7 @@ const playLoop = () => {
     }
     document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
     song.seek(nowMilis / 1000);
-    setTimeout(playLoop, 60000 / bpm);
+    setTimeout(playLoop, 60000 / bpm / playBackRate);
   }
 };
 
@@ -445,6 +446,20 @@ const stopPattern = () => {
     nowMilis = 0;
     document.getElementById("timeline").scrollLeft = 0;
   }
+};
+
+const rateChange = () => {
+  console.log(playBackRate);
+  if(playBackRate == 1.0) {
+    playBackRate = 2.0;
+  } else if(playBackRate == 2.0) {
+    playBackRate = 0.5;
+  } else if(playBackRate == 0.5) {
+    playBackRate = 0.75;
+  } else if(playBackRate == 0.75) {
+    playBackRate = 1.0;
+  }
+  document.getElementById('playbackrateText').textContent = playBackRate * 100 + "%";
 };
 
 document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);
