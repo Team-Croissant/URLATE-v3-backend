@@ -32,6 +32,8 @@ let prevScroll = 0;
 let nowScroll = 0;
 let selectedTempo = 0;
 let nowMilis = 0;
+let isPatternPlaying = false;
+let isSongPlayed = false;
 
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
@@ -106,7 +108,12 @@ const zoomIn = () => {
   if(zoom > 0.9) {
     alert(zoomInWarn);
   }
-  drawTimeline();
+  nowScroll = (prevScroll / (zoom / 1.1 * bpm)) * (zoom * bpm);
+  prevScroll = nowScroll;
+  document.getElementById("timeline").scrollLeft = parseInt(nowScroll);
+  if(nowScroll == 0) {
+    drawTimeline();
+  }
 };
 
 const zoomOut = () => {
@@ -114,7 +121,12 @@ const zoomOut = () => {
   if(zoom < 0.13) {
     alert(zoomOutWarn);
   }
-  drawTimeline();
+  nowScroll = (prevScroll / (zoom * 1.1 * bpm)) * (zoom * bpm);
+  prevScroll = nowScroll;
+  document.getElementById("timeline").scrollLeft = parseInt(nowScroll);
+  if(nowScroll == 0) {
+    drawTimeline();
+  }
 }
 
 const tempoLeft = () => {
@@ -183,8 +195,8 @@ const timelineScrolled = (e) => {
     nowScroll = prevScroll - ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
     e.scrollLeft = parseInt(nowScroll);
   }
-  nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
-  //song.seek(nowMilis / 1000);
+  //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
+  nowMilis = (60000 * nowScroll / zoom / bpm - 240000) / bpm;
   prevScroll = nowScroll;
   drawTimeline();
 };
@@ -391,6 +403,35 @@ const scrollHorizontally = (e) => {
   var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
   document.getElementById('timeline').scrollLeft -= (delta*30);
   e.preventDefault();
+};
+
+const playLoop = () => {
+  if(isPatternPlaying == true) {
+    if(nowMilis > 0 && isSongPlayed == false) {
+      song.play();
+      isSongPlayed = true;
+    }
+    document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
+    song.seek(nowMilis / 1000);
+    setTimeout(playLoop, 60000 / bpm);
+  }
+};
+
+const playPattern = () => {
+  isPatternPlaying = true;
+  playLoop();
+};
+
+const stopPattern = () => {
+  if(isPatternPlaying == true) {
+    if(isSongPlayed == true) {
+      song.stop();
+    }
+    isPatternPlaying = false;
+    isSongPlayed = false;
+  } else {
+    
+  }
 };
 
 document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);
