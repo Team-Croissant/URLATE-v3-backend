@@ -422,7 +422,7 @@ const playLoop = () => {
     }
     document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
     song.seek(offset + nowMilis / 1000);
-    setTimeout(playLoop, 60000 / bpm / playBackRate);
+    setTimeout(playLoop, 60000 / bpm / playBackRate / parseInt(tempo[selectedTempo].split("/")[1]));
   }
 };
 
