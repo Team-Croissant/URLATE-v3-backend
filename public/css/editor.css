@@ -325,7 +325,7 @@ body {
   justify-content: center;
   flex-direction: column;
   width: calc(100% - 2vw);
-  height: 15vh;
+  height: 18vh;
 }
 
 .settingsText {
@@ -442,7 +442,7 @@ body {
   justify-content: center;
   flex-direction: column;
   width: calc(100% - 2vw);
-  height: 15vh;
+  height: 18vh;
   line-height: 3vh;
 }
 
@@ -588,4 +588,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+}
+
+#syncCheckbox {
+  margin: 0;
 }

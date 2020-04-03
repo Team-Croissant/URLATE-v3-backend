@@ -480,6 +480,10 @@ const rateChange = () => {
   song.rate(playBackRate);
 };
 
+const syncChanged = (e) => {
+  syncSwitch = e.checked;
+};
+
 document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);
 document.getElementById('timeline').addEventListener("DOMMouseScroll", scrollHorizontally);
 

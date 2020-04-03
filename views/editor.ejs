@@ -97,6 +97,12 @@
         </span>
         <input type="text" id="producerField" class="textField" onchange="producerChanged(this)">
       </span>
+      <span id="sync">
+        <span class="settingsText">
+          <%= __('sync:') %>
+        </span>
+        <input type="checkbox" id="syncCheckbox" onchange="syncChanged(this)" checked>
+      </span>
     </div>
     <div id="settingsBottom">
       <span>Settings</span>
