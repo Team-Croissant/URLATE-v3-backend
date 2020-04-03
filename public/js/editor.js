@@ -323,7 +323,7 @@ const musicSelected = (e) => {
         e.remove(0);
       }
       song = new Howl({
-        src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
+        src: [`${cdnUrl}/tracks/128kbps/${e.options[e.selectedIndex].value}`],
         autoplay: false,
         loop: false,
         onend: () => {},
@@ -340,7 +340,7 @@ const musicSelected = (e) => {
       e.remove(0);
     }
     song = new Howl({
-      src: [`${cdnUrl}/tracks/192kbps/${e.options[e.selectedIndex].value}`],
+      src: [`${cdnUrl}/tracks/128kbps/${e.options[e.selectedIndex].value}`],
       autoplay: false,
       loop: false,
       onend: () => {},
