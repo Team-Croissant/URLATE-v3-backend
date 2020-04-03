@@ -23,7 +23,8 @@ let pattern = {
     "producer": producer,
     "bpm": bpm,
     "speed": speed,
-    "offset": offset
+    "offset": offset,
+    "sync": true
   },
   "patterns" : [],
   "triggers" : []
@@ -35,6 +36,7 @@ let nowMilis = 0;
 let isPatternPlaying = false;
 let isSongPlayed = false;
 let playBackRate = 1.0;
+let syncSwitch = true;
 
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
@@ -435,7 +437,9 @@ const playLoop = () => {
       isSongPlayed = true;
     }
     document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
+    if(syncSwitch == true) {
       song.seek(offset + nowMilis / 1000);
+    }
     setTimeout(playLoop, 60000 / bpm / playBackRate / parseInt(tempo[selectedTempo].split("/")[1]));
   }
 };
