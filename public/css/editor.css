@@ -311,7 +311,7 @@ body {
   position: fixed;
   z-index: 3;
   width: 24vw;
-  height: 20vh;
+  height: 27vh;
   top: 7vh;
   left: 38vw;
   background-color: rgb(240,240,240);
@@ -325,7 +325,7 @@ body {
   justify-content: center;
   flex-direction: column;
   width: calc(100% - 2vw);
-  height: 18vh;
+  height: 22vh;
 }
 
 .settingsText {
@@ -442,7 +442,7 @@ body {
   justify-content: center;
   flex-direction: column;
   width: calc(100% - 2vw);
-  height: 18vh;
+  height: 15vh;
   line-height: 3vh;
 }
 
@@ -591,5 +591,9 @@ body {
 }
 
 #syncCheckbox {
+  margin: 0;
+}
+
+#beepCheckbox {
   margin: 0;
 }

@@ -37,7 +37,14 @@ let isPatternPlaying = false;
 let isSongPlayed = false;
 let playBackRate = 1.0;
 let syncSwitch = true;
+let beepSwitch = true;
+let selectedElement = 0; //0:circle, 1:diamond, 2: tricle
 
+const beep = new Howl({
+  src: [`/sounds/beep.mp3`],
+  autoplay: false,
+  loop: false
+});
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
@@ -440,6 +447,10 @@ const playLoop = () => {
     if(syncSwitch == true) {
       song.seek(offset + nowMilis / 1000);
     }
+    if(beepSwitch) {
+      beep.seek(0);
+      beep.play();
+    }
     setTimeout(playLoop, 60000 / bpm / playBackRate / parseInt(tempo[selectedTempo].split("/")[1]));
   }
 };
@@ -482,6 +493,10 @@ const rateChange = () => {
 
 const syncChanged = (e) => {
   syncSwitch = e.checked;
+};
+
+const beepChanged = (e) => {
+  beepSwitch = e.checked;
 };
 
 document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);
