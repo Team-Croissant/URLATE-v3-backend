@@ -32,7 +32,7 @@ let pattern = {
 let prevScroll = 0;
 let nowScroll = 0;
 let selectedTempo = 0;
-let nowMilis = 0;
+let nowMilis = -1;
 let isPatternPlaying = false;
 let isSongPlayed = false;
 let playBackRate = 1.0;
@@ -373,7 +373,7 @@ const musicInit = (index) => {
   producer = tracks[index].producer;
   prevScroll = 0;
   nowScroll = 0;
-  nowMilis = 0;
+  nowMilis = -1;
   document.getElementById("timeline").scrollLeft = 0;
 };
 
@@ -461,7 +461,7 @@ const stopPattern = () => {
   } else {
     prevScroll = 0;
     nowScroll = 0;
-    nowMilis = 0;
+    nowMilis = -1;
     document.getElementById("timeline").scrollLeft = 0;
   }
 };
