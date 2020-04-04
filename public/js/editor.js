@@ -23,8 +23,7 @@ let pattern = {
     "producer": producer,
     "bpm": bpm,
     "speed": speed,
-    "offset": offset,
-    "sync": true
+    "offset": offset
   },
   "patterns" : [],
   "triggers" : []
@@ -329,11 +328,20 @@ const musicSelected = (e) => {
       if(e.options[0].value == '-') {
         e.remove(0);
       }
+      if(isSongPlayed == true) {
+        song.stop();
+      }
+      isPatternPlaying = false;
+      isSongPlayed = false;
       song = new Howl({
         src: [`${cdnUrl}/tracks/128kbps/${e.options[e.selectedIndex].value}`],
         autoplay: false,
         loop: false,
-        onend: () => {},
+        onend: () => {
+          song.stop();
+          isPatternPlaying = false;
+          isSongPlayed = false;
+        },
         onload: () => {
           document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
           document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
@@ -346,11 +354,20 @@ const musicSelected = (e) => {
     if(e.options[0].value == '-') {
       e.remove(0);
     }
+    if(isSongPlayed == true) {
+      song.stop();
+    }
+    isPatternPlaying = false;
+    isSongPlayed = false;
     song = new Howl({
       src: [`${cdnUrl}/tracks/128kbps/${e.options[e.selectedIndex].value}`],
       autoplay: false,
       loop: false,
-      onend: () => {},
+      onend: () => {
+        song.stop();
+        isPatternPlaying = false;
+        isSongPlayed = false;
+      },
       onload: () => {
         document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
         document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
@@ -382,6 +399,9 @@ const musicInit = (index) => {
   nowScroll = 0;
   nowMilis = -1;
   document.getElementById("timeline").scrollLeft = 0;
+  playBackRate = 1.0;
+  document.getElementById('playbackrateText').textContent = playBackRate * 100 + "%";
+  song.rate(playBackRate);
 };
 
 const speedShow = () => {
@@ -492,6 +512,11 @@ const rateChange = () => {
 };
 
 const syncChanged = (e) => {
+  if(syncSwitch) {
+    document.getElementById("syncWarning").style.display = 'inline-block';
+  } else {
+    document.getElementById("syncWarning").style.display = 'none';
+  }
   syncSwitch = e.checked;
 };
 

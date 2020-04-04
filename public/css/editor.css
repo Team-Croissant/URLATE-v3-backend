@@ -325,7 +325,7 @@ body {
   justify-content: center;
   flex-direction: column;
   width: calc(100% - 2vw);
-  height: 22vh;
+  height: 25vh;
 }
 
 .settingsText {
@@ -346,7 +346,7 @@ body {
 .textField {
   background-color: rgb(240,240,240);
   height: 3vh;
-  width: 15vw;
+  width: 14.5vw;
   font-size: 1.7vh;
   font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
   letter-spacing: -1px;
@@ -379,7 +379,7 @@ body {
 #tracks {
   background-color: rgb(240,240,240);
   height: 3.5vh;
-  width: 15.3vw;
+  width: 14.85vw;
   font-size: 1.7vh;
   font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
   letter-spacing: -1px;
@@ -596,4 +596,11 @@ body {
 
 #beepCheckbox {
   margin: 0;
+}
+
+#syncWarning {
+  display: none;
+  color: red;
+  padding-right: 2vw;
+  font-size: 1vh;
 }

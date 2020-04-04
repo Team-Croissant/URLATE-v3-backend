@@ -10,13 +10,13 @@
 </head>
 <body>
   <div id="speedFieldContainer">
-      <select id="speeds" onchange="speedSelected(this)">
-        <option value="1" selected>1x</option>
-        <option value="2">2x</option>
-        <option value="3">3x</option>
-        <option value="4">4x</option>
-        <option value="5">5x</option>
-      </select>
+    <select id="speeds" onchange="speedSelected(this)">
+      <option value="1" selected>1x</option>
+      <option value="2">2x</option>
+      <option value="3">3x</option>
+      <option value="4">4x</option>
+      <option value="5">5x</option>
+    </select>
   </div>
   <div id="bpmFieldContainer">
     <input type="text" id="bpmTextField" value="130" onchange="bpmChanged(this)">
@@ -102,6 +102,7 @@
           <%= __('sync:') %>
         </span>
         <input type="checkbox" id="syncCheckbox" onchange="syncChanged(this)" checked>
+        <span id="syncWarning"><%= __('syncWarning') %></span>
       </span>
       <span id="beep">
         <span class="settingsText">
