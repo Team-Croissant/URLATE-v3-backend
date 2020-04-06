@@ -203,6 +203,9 @@ const timelineScrolled = (e) => {
     e.scrollLeft = parseInt(nowScroll);
   } else if(parseInt(prevScroll) > e.scrollLeft) {
     nowScroll = prevScroll - ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
+    if(nowScroll < 0) {
+      nowScroll = 0;
+    }
     e.scrollLeft = parseInt(nowScroll);
   }
   //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
