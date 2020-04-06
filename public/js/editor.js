@@ -38,6 +38,7 @@ let playBackRate = 1.0;
 let syncSwitch = true;
 let beepSwitch = true;
 let selectedElement = 0; //0:circle, 1:diamond, 2: tricle
+let loopCounter = 0;
 
 const beep = new Howl({
   src: [`/sounds/beep.mp3`],
@@ -459,15 +460,22 @@ const scrollHorizontally = (e) => {
 const playLoop = () => {
   if(isPatternPlaying == true) {
     if(nowMilis >= 0 && isSongPlayed == false) {
-      song.seek(offset + nowMilis / 1000);
+      song.seek((offset + nowMilis) / 1000);
       song.play();
       isSongPlayed = true;
     }
     document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
     if(syncSwitch == true) {
-      song.seek(offset + nowMilis / 1000);
+      song.seek((offset + nowMilis) / 1000);
+    } else {
+      loopCounter += 1;
+      if(loopCounter >= 16) {
+        song.seek((offset + nowMilis) / 1000);
+        loopCounter = 0;
+      }
     }
     if(beepSwitch) {
+      beep.stop();
       beep.seek(0);
       beep.play();
     }
