@@ -15,7 +15,7 @@ let tracks;
 let song;
 let bpm = 130;
 let speed = 1;
-let zoom = 0.5;
+let zoom = 0.35;
 let pattern = {
   "information": {
     "version": "1.0",
