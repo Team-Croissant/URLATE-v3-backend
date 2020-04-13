@@ -37,7 +37,6 @@
   "devDependencies": {
     "@types/node": "^13.7.7",
     "watch": "^1.0.2",
-    "signale": "^1.4.0",
-    "minimist": "^1.2.3"
+    "signale": "^1.4.0"
   }
 }
