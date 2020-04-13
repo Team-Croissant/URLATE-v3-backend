@@ -76,7 +76,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
 
 노래에 대한 정보기록 후에는 다음과 같은 형식의 명령어를 사용합니다.
 
-patterns : [{~}], triggers : [{~}]
+patterns : [{ here }], triggers : [{ here }]
 <br>
 { “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, “option” : {option} } }
 <br>
