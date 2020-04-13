@@ -33,6 +33,8 @@
   </tr>
 </table>
 
+[English](https://docs.google.com/document/d/1fdLmu9MksPkd7mX_BkppSZaGyWVya8OiO0FNyRgliv4/edit?usp=sharing) [日本語](https://docs.google.com/document/d/1VCP75DIeSmBQpBbVQzy8JxpW4wxe19Am2aYAdMgHRXE/edit?usp=sharing)
+
 ## 목차
 
 1. 개요
@@ -43,21 +45,22 @@
     1. 판정
     2. 각 판정에 대한 점수
 6. 수익 창출
-7. 수록곡
+7. 계열 서비스
+8. 수록곡
 
 ## 개요
 
-노래에 맞춰 날아오는 탄(Bullet)들을 피하며 노트(Note)를 클릭하는 리듬게임. 탄은 화면 양측에서 날아오며 벽에 부딪히거나 특정 명령어로 사라집니다.
+노래에 맞춰 날아오는 탄(Bullet)들을 피하며 노트(Note)를 클릭하는 리듬게임. 탄은 화면 양측 벽에서 날아오며 벽에 부딪히거나 특정 명령어로 트리거될 때 사라집니다.
 
 ## 규칙
 
-![Game](./public/images/readme/play.jpg)
-1. 총알은 벽에서 날아옵니다.
+![Game](./public/images/readme/play.png)
+1. 총알은 좌우의 벽에서 날아옵니다.
 2. 일반탄(원뿔형)은 좌우측 벽의 정해진 위치에서 생성되어 정해진 각도로 날아옵니다.
 3. 조준탄(사각형)은 좌우측 벽의 정해진 위치에서 생성되어 생성당시 플레이어의 방향으로 날아옵니다.
 4. 플레이어는 벽을 제외한 모든 영역을 마우스로 이동할 수 있습니다.
 5. 게임의 목적은 탄들을 피하며 노트를 클릭하는 게임으로, 노트를 놓치거나(MISS) 탄에 부딪히면 콤보가 깨집니다.
-6. 한 곡당 탄에 10번 부딪히면 게임이 중단되며 중단시점의 점수가 저장됩니다.
+6. 한 곡당 탄에 20번 부딪히면 게임이 중단되며 중단시점의 점수가 저장됩니다.
 7. Destroy 명령어로 총알을 벽에 닿는 판정 전에 파괴할 수 있습니다.
 
 ## 채보 파일(v1.0)
@@ -67,20 +70,22 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
 
 우선 채보파일의 최상단에는 다음과 같은 형식의 정보가 기록되어야 합니다.
 
-{ “version” : “n.n”, “tempo” : “n/n”, “bpm” : n, “speed” : n}
+“information” : { “version” : “n.n”, “track” : “s”, “producer” : “s”, “bpm” : n, “speed” : n, “offset” : n}
 <br>
-(형식버전 박자 BPM 속도)
+(형식버전 곡명 작곡가 BPM 속도 오프셋)
 
 노래에 대한 정보기록 후에는 다음과 같은 형식의 명령어를 사용합니다.
 
-{ “tempo” : “n/n”, “value” : “s”, “direction” : “s”, “option” : { option } }
+patterns : [{~}], triggers : [{~}]
 <br>
-(박자 고유값 L/R 위치 { 고유정보 })
+{ “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, “option” : {option} } }
+<br>
+(ms 고유값 L/R 위치 { 고유정보 })
 
 <table>
   <tr>
     <th>명칭</th>
-    <th>박자</th>
+    <th>ms</th>
     <th>고유값</th>
     <th>L/R</th>
     <th>위치</th>
@@ -89,7 +94,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
   </tr>
   <tr>
     <td>일반노트</td>
-    <td>n/n</td>
+    <td>n</td>
     <td>n0</td>
     <td>-</td>
     <td>-</td>
@@ -98,7 +103,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
   </tr>
   <tr>
     <td>일반탄</td>
-    <td>n/n</td>
+    <td>n</td>
     <td>b0</td>
     <td>L/R</td>
     <td>-100~100</td>
@@ -107,7 +112,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
   </tr>
   <tr>
     <td>조준탄</td>
-    <td>n/n</td>
+    <td>n</td>
     <td>b1</td>
     <td>L/R</td>
     <td>-100~100</td>
@@ -116,7 +121,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
   </tr>
   <tr>
     <td>Destroy</td>
-    <td>n/n</td>
+    <td>n</td>
     <td>0</td>
     <td>-</td>
     <td>-</td>
@@ -125,7 +130,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
   </tr>
   <tr>
     <td>Destroy All</td>
-    <td>n/n</td>
+    <td>n</td>
     <td>1</td>
     <td>-</td>
     <td>-</td>
@@ -133,31 +138,22 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
     <td>모든 Bullet을 Destroy시킬 수 있습니다.</td>
   </tr>
   <tr>
-    <td>BPM<br>(Hard)</td>
-    <td>n/n</td>
+    <td>BPM</td>
+    <td>n</td>
     <td>2</td>
     <td>-</td>
     <td>-</td>
     <td>{BPM}</td>
-    <td>특정 박자부터 채보의 BPM을 갑자기 바꾸는 명령어입니다.<br>BPM : n</td>
-  </tr>
-  <tr>
-    <td>BPM<br>(Smooth)</td>
-    <td>n/n</td>
-    <td>3</td>
-    <td>-</td>
-    <td>-</td>
-    <td>{BPM, time}</td>
-    <td>특정 박자부터 지정된 박자까지 채보의 BPM을 서서히 바꾸는 명령어입니다.<br>BPM : n, time : n/n</td>
+    <td>특정 시점부터 채보의 BPM을 바꾸는 명령어입니다.<br>BPM : n</td>
   </tr>
   <tr>
     <td>Opacity</td>
-    <td>n/n</td>
-    <td>4</td>
+    <td>n</td>
+    <td>3</td>
     <td>-</td>
     <td>-</td>
-    <td>{time, opacity}</td>
-    <td>특정 박자부터 일정 시간동안 채보 전체의 투명도를 조절하는 명령어입니다.<br>time: ms, opacity: 0~1</td>
+    <td>{opacity}</td>
+    <td>채보 전체의 투명도를 조절하는 명령어입니다.<br>opacity: 0~1</td>
   </tr>
 </table>
 
@@ -167,9 +163,9 @@ MyRhy는 플레이의 다시보기를 지원합니다. 다시보기 파일의 �
 
 우선 파일의 최상단에는 노래의 이름과 사용자 설정 속도, 난이도가 기록되어야 합니다.
 
-{ “song” : “s”, “speed” : n, “difficulty” : n}
+{ “track” : “s”, “producer” : “s”, “speed” : n, “difficulty” : n}
 <br>
-(곡명 속도 난이도)
+(곡명 작곡가 속도 난이도)
 
 위의 기록이 끝난 후에는 0.5초간격의 커서의 좌표를 기록합니다.
 
@@ -225,7 +221,7 @@ MyRhy Advanced 멤버십을 통해 없앨 수 있습니다.
 
 **MyRhy Advanced**
 <br>
-MyRhy의 하드유저를 위한 멤버십으로, 월 1,000-8,000원 또는 년 10,000-100,000원의 자유요금으로 이용할 수 있습니다.
+MyRhy의 하드유저를 위한 멤버십으로, 월 5,000-20,000원 또는 년 50,000-200,000원의 자유요금으로 이용할 수 있습니다.
 
 제공되는 전용 기능
 - 커뮤니티 광고 제거
