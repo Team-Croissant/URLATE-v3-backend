@@ -51,16 +51,17 @@
     </div>
   </div>
   <div id="triggerContainer">
-    <div class="triggerElement" id="trigger0">
-      <div class="triggerElementLeft">
-        0:00:00.00
-      </div>
-      <div class="triggerElementRight">
-        HI
-      </div>
-    </div>
     <div id="addTrigger" onclick="addTrigger()" class="clickable">
       +
+    </div>
+    <div id="selectTrigger">
+      <select id="triggers" onchange="generateTriggerElement(this)">
+        <option selected>Select Trigger</option>
+        <option value="1">Destroy ALL</option>
+        <option value="0">Destroy</option>
+        <option value="2">BPM</option>
+        <option value="3">Opacity</option>
+      </select>
     </div>
   </div>
   <div id="menu">

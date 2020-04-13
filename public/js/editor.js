@@ -39,6 +39,7 @@ let syncSwitch = true;
 let beepSwitch = true;
 let selectedElement = 0; //0:circle, 1:diamond, 2: tricle
 let loopCounter = 0;
+let selectedTrigger = -1;
 
 const beep = new Howl({
   src: [`/sounds/beep.mp3`],
@@ -115,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const zoomIn = () => {
   zoom = zoom * 1.1;
-  if(zoom > 0.9) {
+  if(zoom > 0.7) {
     alert(zoomInWarn);
   }
   nowScroll = (prevScroll / (zoom / 1.1 * bpm)) * (zoom * bpm);
@@ -128,7 +129,7 @@ const zoomIn = () => {
 
 const zoomOut = () => {
   zoom = zoom / 1.1;
-  if(zoom < 0.13) {
+  if(zoom < 0.3) {
     alert(zoomOutWarn);
   }
   nowScroll = (prevScroll / (zoom * 1.1 * bpm)) * (zoom * bpm);
@@ -533,6 +534,53 @@ const syncChanged = (e) => {
 
 const beepChanged = (e) => {
   beepSwitch = e.checked;
+};
+
+const editTrigger = (n) => {
+  console.log(n);
+  console.log(selectedTrigger);
+  console.log(selectedTrigger == n);
+  if(selectedTrigger != -1 || selectedTrigger == n) {
+    document.getElementById(`triggerBottom${n}`).style.display = 'none';
+    document.getElementById(`trigger${selectedTrigger}`).style.border = 'none';
+    if(selectedTrigger == n) {
+      selectedTrigger = -1;
+      return;
+    }
+  }
+  document.getElementById(`trigger${n}`).style.border = '1px solid black';
+  document.getElementById(`triggerBottom${n}`).style.display = 'inline-block';
+  selectedTrigger = n;
+};
+
+const generateTriggerElement = (e) => {
+  if(e.options[e.selectedIndex].value) {
+    if(e.options[e.selectedIndex].value != 1) {
+      pattern.triggers.push(`{"ms" : ${nowMilis}, "value" : "${e.options[e.selectedIndex].value}", option: {}`);
+    } else {
+      pattern.triggers.push(`{"ms" : ${nowMilis}, "value" : "${e.options[e.selectedIndex].value}"`);
+    }
+  }
+  renderTriggers();
+  /*const minutes = parseInt(nowMilis / 60000);
+  const seconds = parseInt(nowMilis / 1000);
+  const milis = (nowMilis - (1000 * seconds)).toFixed(2);
+  return `<div class="triggerElement" id="trigger${n}" onclick="editTrigger(${n})">
+            <div class="triggerElementLeft">
+              <input type="text" class="triggerTimeField" value="${minutes}:${seconds}:${milis}" onchange="triggerTimeChanged(${n}, this)">
+            </div>
+            <div class="triggerElementRight">
+              BPM
+            </div>
+            <div id="triggerBottom${n}" class="triggerElementBottomContainer">
+              <div class="triggerElementBottomLeft">
+                <input type="text" class="triggerTextField" value="ALL" onchange="triggerValueChanged(${n}, this)">
+              </div>
+              <div class="triggerElementBottomRight">
+                <img src="https://img.icons8.com/material-outlined/24/000000/trash.png" class="clickable" id="triggerDelete" onclick="deleteTrigger(${n})">
+              </div>
+            </div>
+          </div>`;*/
 };
 
 document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);

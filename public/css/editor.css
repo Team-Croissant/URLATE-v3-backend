@@ -502,8 +502,10 @@ body {
 }
 
 .triggerElement {
+  padding: 0.5vh;
+  border-radius: 5px;
   margin-top: 1vh;
-  width: 100%;
+  width: 98%;
 }
 
 .triggerElementLeft {
@@ -512,11 +514,38 @@ body {
   width: 13vw;
 }
 
+.triggerTimeField {
+  border: none;
+  background: none;
+  font-size: 1.5vw;
+  width: 8vw;
+}
+
+.triggerTextField {
+  border: 1px solid black;
+  background: none;
+  font-size: 1.5vw;
+  width: 90%;
+}
+
 .triggerElementRight {
   text-align: right;
   display: inline-block;
   width: 13vw;
   font-weight: bold;
+  font-size: 1.5vw;
+}
+
+.triggerElementBottomLeft {
+  display: inline-block;
+  text-align: left;
+  width: 13vw;
+}
+
+.triggerElementBottomRight {
+  text-align: right;
+  display: inline-block;
+  width: 13vw;
 }
 
 #addTrigger {
@@ -524,7 +553,7 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 5vh;
-  margin-left: 12.5vw;
+  margin-left: 12.2vw;
   border-radius: 50%;
   background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
   box-shadow:  6px 6px 12px #c8c8c8, 
@@ -603,4 +632,25 @@ body {
   color: red;
   padding-right: 2vw;
   font-size: 1vh;
+}
+
+#triggerDelete {
+  filter: invert(57%) sepia(36%) saturate(6516%) hue-rotate(327deg) brightness(103%) contrast(115%);
+}
+
+.triggerElementBottomContainer {
+  display: none;
+}
+
+#triggers {
+  background-color: rgb(240,240,240);
+  height: 3.5vh;
+  width: 80%;
+  font-size: 1.7vh;
+  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  letter-spacing: -1px;
+}
+
+#selectTrigger {
+  margin-top: 3vh;
 }
