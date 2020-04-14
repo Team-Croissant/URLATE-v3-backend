@@ -213,9 +213,10 @@ const timelineScrolled = (e) => {
   }
   //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
   nowMilis = (60000 * nowScroll / zoom / bpm - 240000) / bpm;
-  const minutes = parseInt(nowMilis / 60000);
-  const seconds = parseInt(nowMilis / 1000);
-  const milis = nowMilis - (1000 * seconds);
+  let offsetMilis = nowMilis + offset;
+  const minutes = parseInt(offsetMilis / 60000);
+  const seconds = parseInt(offsetMilis / 1000);
+  const milis = offsetMilis - (1000 * seconds);
   document.getElementById("duration").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}`;
   prevScroll = nowScroll;
   drawTimeline();
@@ -564,9 +565,9 @@ const generateTriggerElement = (e) => {
     if(e.options[e.selectedIndex].value) {
       isTimelineEdited = true;
       if(e.options[e.selectedIndex].value != 1) {
-        pattern.triggers.push({"ms" : nowMilis, "value" : e.options[e.selectedIndex].value, "option" : []});
+        pattern.triggers.push({"ms" : nowMilis + offset, "value" : e.options[e.selectedIndex].value, "option" : []});
       } else {
-        pattern.triggers.push({"ms" : nowMilis, "value" : e.options[e.selectedIndex].value});
+        pattern.triggers.push({"ms" : nowMilis + offset, "value" : e.options[e.selectedIndex].value});
       }
     }
   } else {
