@@ -549,18 +549,20 @@ body {
 }
 
 #addTrigger {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 5vh;
   margin-left: 12.2vw;
   border-radius: 50%;
-  background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
-  box-shadow:  6px 6px 12px #c8c8c8, 
-              -6px -6px 12px #ffffff;
+  background: #ffffff;
+  box-shadow:  20px 20px 60px #d9d9d9, 
+              -20px -20px 60px #ffffff;
   width: 3vw;
   height: 3vw;
   font-size: 2vw;
+  z-index: 5;
 }
 
 #temposplit {
@@ -643,7 +645,7 @@ body {
 }
 
 #triggers {
-  background-color: rgb(240,240,240);
+  background-color: #fff;
   height: 3.5vh;
   width: 80%;
   font-size: 1.7vh;
@@ -652,6 +654,21 @@ body {
 }
 
 #selectTrigger {
+  position: absolute;
+  display: none;
+  z-index: 0;
+  border-radius: 50px;
+  background: #ffffff;
+  box-shadow:  20px 20px 60px #d9d9d9, 
+              -20px -20px 60px #ffffff;
+  margin-top: calc(8vh);
+  margin-left: 3.7vw;
+  width: 20vw;
+  height: 8vh;
+  align-items: center;
+  justify-content: center;
+}
+
 #duration {
   font-weight: 500;
   font-size: 1.5vh;

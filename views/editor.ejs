@@ -52,8 +52,7 @@
     </div>
   </div>
   <div id="triggerContainer">
-    <div id="addTrigger" onclick="addTrigger()" class="clickable">
-      +
+    <div id="triggerElementContainer">
     </div>
     <div id="selectTrigger">
       <select id="triggers" onchange="generateTriggerElement(this)">
@@ -63,6 +62,9 @@
         <option value="2">BPM</option>
         <option value="3">Opacity</option>
       </select>
+    </div>
+    <div id="addTrigger" onclick="addTrigger()" class="clickable">
+      +
     </div>
   </div>
   <div id="menu">
@@ -172,6 +174,7 @@
   <script>
     const rusure = "<%= __('RUSure') %>";
     const initSure = "<%= __('InitSure') %>";
+    const wrongTrigger = "<%= __('WrongTrigger') %>";
     const zoomOutWarn = "<%= __('zoomOutWarn') %>";
     const zoomInWarn = "<%= __('zoomInWarn') %>";
     const cdnUrl = "<%= cdnUrl %>";

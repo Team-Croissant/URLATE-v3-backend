@@ -15,7 +15,7 @@ let tracks;
 let song;
 let bpm = 130;
 let speed = 1;
-let zoom = 0.35;
+let zoom = 0.36;
 let pattern = {
   "information": {
     "version": "1.0",
@@ -40,12 +40,14 @@ let beepSwitch = true;
 let selectedElement = 0; //0:circle, 1:diamond, 2: tricle
 let loopCounter = 0;
 let selectedTrigger = -1;
+let isTriggerSelectionOpen = false;
 
 const beep = new Howl({
   src: [`/sounds/beep.mp3`],
   autoplay: false,
   loop: false
 });
+const triggers = ["Destroy", "Destroy All", "BPM", "Opacity"]
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
@@ -411,6 +413,9 @@ const musicInit = (index) => {
   playBackRate = 1.0;
   document.getElementById('playbackrateText').textContent = playBackRate * 100 + "%";
   song.rate(playBackRate);
+  pattern.triggers = [];
+  pattern.patterns = [];
+  renderTriggers();
 };
 
 const speedShow = () => {
@@ -541,11 +546,8 @@ const beepChanged = (e) => {
 };
 
 const editTrigger = (n) => {
-  console.log(n);
-  console.log(selectedTrigger);
-  console.log(selectedTrigger == n);
-  if(selectedTrigger != -1 || selectedTrigger == n) {
-    document.getElementById(`triggerBottom${n}`).style.display = 'none';
+  if(selectedTrigger != -1) {
+    document.getElementById(`triggerBottom${selectedTrigger}`).style.display = 'none';
     document.getElementById(`trigger${selectedTrigger}`).style.border = 'none';
     if(selectedTrigger == n) {
       selectedTrigger = -1;
@@ -558,33 +560,81 @@ const editTrigger = (n) => {
 };
 
 const generateTriggerElement = (e) => {
-  if(e.options[e.selectedIndex].value) {
-    if(e.options[e.selectedIndex].value != 1) {
-      pattern.triggers.push(`{"ms" : ${nowMilis}, "value" : "${e.options[e.selectedIndex].value}", option: {}`);
+  if(nowMilis >= 0) {
+    if(e.options[e.selectedIndex].value) {
+      isTimelineEdited = true;
+      if(e.options[e.selectedIndex].value != 1) {
+        pattern.triggers.push({"ms" : nowMilis, "value" : e.options[e.selectedIndex].value, "option" : []});
+      } else {
+        pattern.triggers.push({"ms" : nowMilis, "value" : e.options[e.selectedIndex].value});
+      }
+    }
+  } else {
+    alert(wrongTrigger);
+  }
+  document.getElementById("triggers").selectedIndex = 0;
+  document.getElementById('selectTrigger').style.display = 'none';
+  isTriggerSelectionOpen = false;
+  renderTriggers();
+};
+
+const deleteTrigger = (n) => {
+  pattern.triggers.splice(n, n);
+  selectedTrigger = -1;
+  renderTriggers();
+}
+
+const renderTriggers = () => {
+  document.getElementById('triggerElementContainer').innerHTML = '';
+  for(let i = 0; i < pattern.triggers.length; i++) {
+    const minutes = parseInt(pattern.triggers[i].ms / 60000);
+    const seconds = parseInt(pattern.triggers[i].ms / 1000);
+    const milis = pattern.triggers[i].ms - (1000 * seconds);
+    if(pattern.triggers[i].value != 1) {
+      document.getElementById('triggerElementContainer').innerHTML += `<div class="triggerElement" id="trigger${i}" onclick="editTrigger(${i})">
+                                                                        <div class="triggerElementLeft">
+                                                                            <input type="text" class="triggerTimeField" value="${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}" onchange="triggerTimeChanged(${i}, this)">
+                                                                        </div>
+                                                                        <div class="triggerElementRight">
+                                                                          ${triggers[pattern.triggers[i].value]}
+                                                                        </div>
+                                                                        <div id="triggerBottom${i}" class="triggerElementBottomContainer">
+                                                                          <div class="triggerElementBottomLeft">
+                                                                            <input type="text" class="triggerTextField" value="" onchange="triggerValueChanged(${i}, this)">
+                                                                          </div>
+                                                                          <div class="triggerElementBottomRight">
+                                                                            <img src="https://img.icons8.com/material-outlined/24/000000/trash.png" class="clickable" id="triggerDelete" onclick="deleteTrigger(${i})">
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>`;
     } else {
-      pattern.triggers.push(`{"ms" : ${nowMilis}, "value" : "${e.options[e.selectedIndex].value}"`);
+      document.getElementById('triggerElementContainer').innerHTML += `<div class="triggerElement" id="trigger${i}" onclick="editTrigger(${i})">
+                                                                        <div class="triggerElementLeft">
+                                                                            <input type="text" class="triggerTimeField" value="${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}" onchange="triggerTimeChanged(${i}, this)">
+                                                                        </div>
+                                                                        <div class="triggerElementRight">
+                                                                          ${triggers[pattern.triggers[i].value]}
+                                                                        </div>
+                                                                        <div id="triggerBottom${i}" class="triggerElementBottomContainer">
+                                                                          <div class="triggerElementBottomLeft">
+                                                                          </div>
+                                                                          <div class="triggerElementBottomRight">
+                                                                            <img src="https://img.icons8.com/material-outlined/24/000000/trash.png" class="clickable" id="triggerDelete" onclick="deleteTrigger(${i})">
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>`;
     }
   }
-  renderTriggers();
-  /*const minutes = parseInt(nowMilis / 60000);
-  const seconds = parseInt(nowMilis / 1000);
-  const milis = (nowMilis - (1000 * seconds)).toFixed(2);
-  return `<div class="triggerElement" id="trigger${n}" onclick="editTrigger(${n})">
-            <div class="triggerElementLeft">
-              <input type="text" class="triggerTimeField" value="${minutes}:${seconds}:${milis}" onchange="triggerTimeChanged(${n}, this)">
-            </div>
-            <div class="triggerElementRight">
-              BPM
-            </div>
-            <div id="triggerBottom${n}" class="triggerElementBottomContainer">
-              <div class="triggerElementBottomLeft">
-                <input type="text" class="triggerTextField" value="ALL" onchange="triggerValueChanged(${n}, this)">
-              </div>
-              <div class="triggerElementBottomRight">
-                <img src="https://img.icons8.com/material-outlined/24/000000/trash.png" class="clickable" id="triggerDelete" onclick="deleteTrigger(${n})">
-              </div>
-            </div>
-          </div>`;*/
+};
+
+const addTrigger = () => {
+  if(!isTriggerSelectionOpen) {
+    document.getElementById('selectTrigger').style.display = 'flex';
+    isTriggerSelectionOpen = true;
+  } else {
+    document.getElementById('selectTrigger').style.display = 'none';
+    isTriggerSelectionOpen = false;
+  }
 };
 
 document.getElementById('timeline').addEventListener("mousewheel", scrollHorizontally);
