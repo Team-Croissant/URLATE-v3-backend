@@ -580,13 +580,16 @@ const generateTriggerElement = (e) => {
 };
 
 const deleteTrigger = (n) => {
-  pattern.triggers.splice(n, n);
+  pattern.triggers.splice(n, 1);
   selectedTrigger = -1;
   renderTriggers();
 }
 
 const renderTriggers = () => {
   document.getElementById('triggerElementContainer').innerHTML = '';
+  pattern.triggers.sort(function(a, b) {
+    return a['ms'] - b['ms'];
+  });
   for(let i = 0; i < pattern.triggers.length; i++) {
     const minutes = parseInt(pattern.triggers[i].ms / 60000);
     const seconds = parseInt(pattern.triggers[i].ms / 1000);
