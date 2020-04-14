@@ -652,5 +652,7 @@ body {
 }
 
 #selectTrigger {
-  margin-top: 3vh;
+#duration {
+  font-weight: 500;
+  font-size: 1.5vh;
 }

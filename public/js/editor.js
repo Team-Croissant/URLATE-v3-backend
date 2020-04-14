@@ -211,6 +211,10 @@ const timelineScrolled = (e) => {
   }
   //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
   nowMilis = (60000 * nowScroll / zoom / bpm - 240000) / bpm;
+  const minutes = parseInt(nowMilis / 60000);
+  const seconds = parseInt(nowMilis / 1000);
+  const milis = nowMilis - (1000 * seconds);
+  document.getElementById("duration").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}`;
   prevScroll = nowScroll;
   drawTimeline();
 };
@@ -261,7 +265,7 @@ const save = () => {
     "bpm": bpm,
     "speed": speed,
     "offset": offset
-  }
+  };
   let a = document.createElement("a");
   let file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
   a.href = URL.createObjectURL(file);
