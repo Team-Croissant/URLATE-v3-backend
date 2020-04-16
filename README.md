@@ -76,7 +76,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
 
 노래에 대한 정보기록 후에는 다음과 같은 형식의 명령어를 사용합니다.
 
-patterns : [{ here }], triggers : [{ here }]
+patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
 <br>
 { “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, “option” : {option} } }
 <br>
@@ -95,7 +95,7 @@ patterns : [{ here }], triggers : [{ here }]
   <tr>
     <td>일반노트</td>
     <td>n</td>
-    <td>n0</td>
+    <td>0</td>
     <td>-</td>
     <td>-</td>
     <td>{x,y}</td>
@@ -104,7 +104,7 @@ patterns : [{ here }], triggers : [{ here }]
   <tr>
     <td>일반탄</td>
     <td>n</td>
-    <td>b0</td>
+    <td>0</td>
     <td>L/R</td>
     <td>-100~100</td>
     <td>{angle, speed}</td>
@@ -113,7 +113,7 @@ patterns : [{ here }], triggers : [{ here }]
   <tr>
     <td>조준탄</td>
     <td>n</td>
-    <td>b1</td>
+    <td>1</td>
     <td>L/R</td>
     <td>-100~100</td>
     <td>{speed}</td>
