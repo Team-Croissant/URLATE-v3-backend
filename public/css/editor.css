@@ -525,7 +525,7 @@ body {
   border: 1px solid black;
   background: none;
   font-size: 1.5vw;
-  width: 90%;
+  width: 50%;
 }
 
 .triggerElementRight {
@@ -539,13 +539,13 @@ body {
 .triggerElementBottomLeft {
   display: inline-block;
   text-align: left;
-  width: 13vw;
+  width: 24vw;
 }
 
 .triggerElementBottomRight {
   text-align: right;
   display: inline-block;
-  width: 13vw;
+  width: 2vw;
 }
 
 #addTrigger {
@@ -672,4 +672,9 @@ body {
 #duration {
   font-weight: 500;
   font-size: 1.5vh;
+}
+
+.triggerError {
+  font-size: 1vh;
+  color: red;
 }

@@ -7,7 +7,6 @@ let isSpeedOpened = false;
 let isBpmOpened = false;
 let isTriggerOpened = false;
 let isTimelineEdited = false;
-let songName = 'Select a song';
 let producer = '';
 let offset = 0;
 let sync = 0;
@@ -19,13 +18,14 @@ let zoom = 0.36;
 let pattern = {
   "information": {
     "version": "1.0",
-    "track": songName,
+    "track": songName.innerText,
     "producer": producer,
     "bpm": bpm,
     "speed": speed,
     "offset": offset
   },
   "patterns" : [],
+  "bullets" : [],
   "triggers" : []
 };
 let prevScroll = 0;
@@ -49,6 +49,7 @@ const beep = new Howl({
 });
 const triggers = ["Destroy", "Destroy All", "BPM", "Opacity"]
 const tempo = ["1/1", "1/2", "1/3", "1/4", "1/6", "1/8", "1/16"];
+const regex = [/^\d+$/, /^\d+:[0-5]\d:\d\d$/, /^\d+$/, /^0\.\d+|1\.0+$/]; //regex[1] is for time form
 const timeline = document.getElementById("timelineCanvas");
 const timelineCtx = timeline.getContext("2d");
 const editor = document.getElementById("editorCanvas");
@@ -263,7 +264,7 @@ const fileUploaded = (patternFile) => {
 const save = () => {
   pattern.information = {
     "version": "1.0",
-    "track": songName,
+    "track": songName.innerText,
     "producer": producer,
     "bpm": bpm,
     "speed": speed,
@@ -272,7 +273,7 @@ const save = () => {
   let a = document.createElement("a");
   let file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
   a.href = URL.createObjectURL(file);
-  a.download = `${songName}.json`;
+  a.download = `${songName.innerText}.json`;
   a.click();
 };
 
@@ -288,8 +289,7 @@ const offsetChanged = (e) => {
 };
 
 const titleChanged = (e) => {
-  document.getElementById("songName").innerText = e.value;
-  songName = e.value;
+  songName.innerText = e.value;
 };
 
 const producerChanged = (e) => {
@@ -356,7 +356,7 @@ const musicSelected = (e) => {
         },
         onload: () => {
           document.getElementById("lengthOfSong").textContent = `${parseInt(song._duration / 60)}m ${parseInt(song._duration % 60)}s`;
-          document.getElementById("songName").textContent = tracks[e.selectedIndex].name;
+          songName.innerText = tracks[e.selectedIndex].name;
           drawTimeline();
         }
       });
@@ -398,7 +398,6 @@ const musicSelected = (e) => {
 };
 
 const musicInit = (index) => {
-  songName = tracks[index].name;
   document.getElementById("songName").textContent = tracks[index].name + '(loading)';
   document.getElementById("titleField").value = tracks[index].name;
   document.getElementById("producerField").value = tracks[index].producer;
@@ -550,10 +549,6 @@ const editTrigger = (n) => {
   if(selectedTrigger != -1) {
     document.getElementById(`triggerBottom${selectedTrigger}`).style.display = 'none';
     document.getElementById(`trigger${selectedTrigger}`).style.border = 'none';
-    if(selectedTrigger == n) {
-      selectedTrigger = -1;
-      return;
-    }
   }
   document.getElementById(`trigger${n}`).style.border = '1px solid black';
   document.getElementById(`triggerBottom${n}`).style.display = 'inline-block';
@@ -565,7 +560,7 @@ const generateTriggerElement = (e) => {
     if(e.options[e.selectedIndex].value) {
       isTimelineEdited = true;
       if(e.options[e.selectedIndex].value != 1) {
-        pattern.triggers.push({"ms" : nowMilis + offset, "value" : e.options[e.selectedIndex].value, "option" : []});
+        pattern.triggers.push({"ms" : nowMilis + offset, "value" : e.options[e.selectedIndex].value, "option" : ['']});
       } else {
         pattern.triggers.push({"ms" : nowMilis + offset, "value" : e.options[e.selectedIndex].value});
       }
@@ -583,38 +578,80 @@ const deleteTrigger = (n) => {
   pattern.triggers.splice(n, 1);
   selectedTrigger = -1;
   renderTriggers();
-}
+};
 
-const renderTriggers = () => {
+const triggerValueChanged = (n,e) => {
+  let i = parseInt(pattern.triggers[n].value);
+  document.getElementById(`triggerError${n}`).textContent = '';
+  document.getElementById(`triggerTextField${n}`).style.border = '1px solid black';
+  if(regex[i].test(e.value)) {
+    if(i == 0) {
+      if(parseInt(e.value) < pattern.bullets.length) {
+        pattern.triggers[n].option[0] = parseInt(e.value);
+      } else {
+        document.getElementById(`triggerError${n}`).textContent = `Bullet${parseInt(e.value)} doesn't exist.`;
+        document.getElementById(`triggerTextField${n}`).style.border = '1px solid red';
+      }
+    } else {
+      pattern.triggers[n].option[0] = parseFloat(e.value);
+    }
+  } else {
+    if(i == 3) {
+      document.getElementById(`triggerError${n}`).textContent = 'Number(0.0~1.0) Expected.';
+    } else {
+      document.getElementById(`triggerError${n}`).textContent = 'Number Expected.';
+    }
+    document.getElementById(`triggerTextField${n}`).style.border = '1px solid red';
+  }
+};
+
+const triggerTimeChanged = (n, e) => {
+  document.getElementById(`triggerTimeField${n}`).style.border = 'none';
+  if(regex[1].test(e.value)) {
+    e = e.value.split(':').map((i) => parseInt(i));
+    console.log(e);
+    pattern.triggers[n].ms = (e[0] * 60000) + (e[1] * 1000) + (e[2] * 10);
+    renderTriggers(true);
+  } else {
+    document.getElementById(`triggerTimeField${n}`).style.border = '1px solid red';
+  }
+};
+
+const renderTriggers = (isCalledByCode) => {  
   document.getElementById('triggerElementContainer').innerHTML = '';
   pattern.triggers.sort(function(a, b) {
     return a['ms'] - b['ms'];
   });
   for(let i = 0; i < pattern.triggers.length; i++) {
     const minutes = parseInt(pattern.triggers[i].ms / 60000);
-    const seconds = parseInt(pattern.triggers[i].ms / 1000);
-    const milis = pattern.triggers[i].ms - (1000 * seconds);
+    const seconds = parseInt(pattern.triggers[i].ms % 60000 / 1000);
+    const milis = pattern.triggers[i].ms % 1000;
     if(pattern.triggers[i].value != 1) {
       document.getElementById('triggerElementContainer').innerHTML += `<div class="triggerElement" id="trigger${i}" onclick="editTrigger(${i})">
                                                                         <div class="triggerElementLeft">
-                                                                            <input type="text" class="triggerTimeField" value="${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}" onchange="triggerTimeChanged(${i}, this)">
+                                                                            <input type="text" class="triggerTimeField" id="triggerTimeField${i}" value="${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}" onchange="triggerTimeChanged(${i}, this)">
                                                                         </div>
                                                                         <div class="triggerElementRight">
                                                                           ${triggers[pattern.triggers[i].value]}
                                                                         </div>
                                                                         <div id="triggerBottom${i}" class="triggerElementBottomContainer">
                                                                           <div class="triggerElementBottomLeft">
-                                                                            <input type="text" class="triggerTextField" value="" onchange="triggerValueChanged(${i}, this)">
+                                                                            <input type="text" id="triggerTextField${i}" class="triggerTextField" value="${pattern.triggers[i].option[0]}" onchange="triggerValueChanged(${i}, this)">
+                                                                            <span id="triggerError${i}" class="triggerError"></span>
                                                                           </div>
                                                                           <div class="triggerElementBottomRight">
                                                                             <img src="https://img.icons8.com/material-outlined/24/000000/trash.png" class="clickable" id="triggerDelete" onclick="deleteTrigger(${i})">
                                                                           </div>
                                                                         </div>
                                                                       </div>`;
+        if(pattern.triggers[i].option[0] == '') {
+          document.getElementById(`triggerError${i}`).textContent = 'Empty value.';
+          document.getElementById(`triggerTextField${i}`).style.border = '1px solid red';
+        }
     } else {
       document.getElementById('triggerElementContainer').innerHTML += `<div class="triggerElement" id="trigger${i}" onclick="editTrigger(${i})">
                                                                         <div class="triggerElementLeft">
-                                                                            <input type="text" class="triggerTimeField" value="${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}" onchange="triggerTimeChanged(${i}, this)">
+                                                                            <input type="text" class="triggerTimeField" id="triggerTimeField${i}" value="${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}" onchange="triggerTimeChanged(${i}, this)">
                                                                         </div>
                                                                         <div class="triggerElementRight">
                                                                           ${triggers[pattern.triggers[i].value]}
@@ -628,6 +665,11 @@ const renderTriggers = () => {
                                                                         </div>
                                                                       </div>`;
     }
+  }
+  if(isCalledByCode) {
+    editTrigger(selectedTrigger);
+  } else {
+    editTrigger(pattern.triggers.length - 1);
   }
 };
 
