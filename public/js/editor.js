@@ -215,11 +215,21 @@ const timelineScrolled = (e) => {
   //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
   nowMilis = (60000 * nowScroll / zoom / bpm - 240000) / bpm;
   let offsetMilis = nowMilis + offset;
+  console.log(nowMilis, offsetMilis);
   const minutes = parseInt(offsetMilis / 60000);
   const seconds = parseInt(offsetMilis / 1000);
   const milis = offsetMilis - (1000 * seconds);
-  document.getElementById("duration").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}`;
+  document.getElementById("duration").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')} / ${song.seek().toString().slice(0,4)}`;
   prevScroll = nowScroll;
+  if(syncSwitch == true) {
+    song.seek((offset + nowMilis) / 1000);
+  } else {
+    loopCounter += 1;
+    if(loopCounter >= 16) {
+      song.seek((offset + nowMilis) / 1000);
+      loopCounter = 0;
+    }
+  }
   drawTimeline();
 };
 
@@ -478,15 +488,6 @@ const playLoop = () => {
       isSongPlayed = true;
     }
     document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
-    if(syncSwitch == true) {
-      song.seek((offset + nowMilis) / 1000);
-    } else {
-      loopCounter += 1;
-      if(loopCounter >= 16) {
-        song.seek((offset + nowMilis) / 1000);
-        loopCounter = 0;
-      }
-    }
     if(beepSwitch) {
       beep.stop();
       beep.seek(0);
