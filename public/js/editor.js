@@ -215,7 +215,6 @@ const timelineScrolled = (e) => {
   //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
   nowMilis = (60000 * nowScroll / zoom / bpm - 240000) / bpm;
   let offsetMilis = nowMilis + offset;
-  console.log(nowMilis, offsetMilis);
   const minutes = parseInt(offsetMilis / 60000);
   const seconds = parseInt(offsetMilis / 1000);
   const milis = offsetMilis - (1000 * seconds);
@@ -419,6 +418,8 @@ const musicInit = (index) => {
   prevScroll = 0;
   nowScroll = 0;
   nowMilis = -1;
+  offset = 0;
+  document.getElementById("offsetField").value = 0;
   document.getElementById("timeline").scrollLeft = 0;
   playBackRate = 1.0;
   document.getElementById('playbackrateText').textContent = playBackRate * 100 + "%";
@@ -480,18 +481,23 @@ const scrollHorizontally = (e) => {
   e.preventDefault();
 };
 
-const playLoop = () => {
+const playLoop = (isFirstLoop) => {
   if(isPatternPlaying == true) {
-    if(nowMilis >= 0 && isSongPlayed == false) {
+    console.log(parseInt(offset + nowMilis + (60000 / bpm)));
+    if(parseInt(offset + nowMilis + (60000 / bpm)) >= 0 && isSongPlayed == false && document.getElementById('timeline').scrollLeft != 0) {
       song.seek((offset + nowMilis) / 1000);
       song.play();
       isSongPlayed = true;
     }
-    document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
     if(beepSwitch) {
       beep.stop();
       beep.seek(0);
       beep.play();
+    }
+    if(isFirstLoop) {
+      document.getElementById('timeline').scrollLeft = 0;
+    } else {
+      document.getElementById('timeline').scrollLeft = parseInt(prevScroll + (zoom * bpm));
     }
     setTimeout(playLoop, 60000 / bpm / playBackRate / parseInt(tempo[selectedTempo].split("/")[1]));
   }
@@ -500,7 +506,7 @@ const playLoop = () => {
 const playPattern = () => {
   if(isPatternPlaying == false) {
     isPatternPlaying = true;
-    playLoop();
+    playLoop(true);
   }
 };
 
