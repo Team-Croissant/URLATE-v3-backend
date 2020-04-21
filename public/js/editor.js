@@ -204,20 +204,21 @@ const drawTimeline = () => {
 const timelineScrolled = (e) => {
   if(parseInt(prevScroll) < e.scrollLeft) {
     nowScroll = prevScroll + ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
-    e.scrollLeft = parseInt(nowScroll);
+    e.scrollLeft = Math.floor(nowScroll);
   } else if(parseInt(prevScroll) > e.scrollLeft) {
-    nowScroll = prevScroll - ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1]));
+    nowScroll = prevScroll - ((zoom * bpm) / parseInt(tempo[selectedTempo].split("/")[1])); 
     if(nowScroll < 0) {
       nowScroll = 0;
     }
-    e.scrollLeft = parseInt(nowScroll);
+    e.scrollLeft = Math.floor(nowScroll);
   }
+  console.log(nowScroll, Math.round(nowScroll));
   //nowMilis = (60 / bpm) * ((nowScroll - (4 * (zoom * bpm))) / (zoom * bpm)) * 1000;
-  nowMilis = (60000 * nowScroll / zoom / bpm - 240000) / bpm;
+  nowMilis = Math.round((60000 * nowScroll / zoom / bpm - 240000) / bpm);
   let offsetMilis = nowMilis + offset;
   const minutes = parseInt(offsetMilis / 60000);
-  const seconds = parseInt(offsetMilis / 1000);
-  const milis = offsetMilis - (1000 * seconds);
+  const seconds = parseInt(offsetMilis / 1000) - (60 * parseInt(offsetMilis / 60000));
+  const milis = parseInt(offsetMilis - (1000 * parseInt(offsetMilis / 1000)));
   document.getElementById("duration").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milis.toString().slice(0,2).padStart(2, '0')}`;
   prevScroll = nowScroll;
   if(syncSwitch == true) {
