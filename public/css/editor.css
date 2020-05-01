@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo:100,300,400,700&display=swap');
+@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+
+body {
+  background: #eee url('/images/backgrounds/editor.png');
+  background-size: 130vw;
+  background-repeat: repeat;
+  width: 100vw;
+  height: 100vh;
+  cursor: url('/images/parts/cursor/blueCursor.cur'), default;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  letter-spacing: -1px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#navbar {
+  font-size: 2.3vh;
+  color: white;
+  display: flex;
+  width: 100vw;
+  height: 6vh;
+  background-color: #2B2E33;
+}
+
+.navbarElements {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+#topLeftBar {
+  padding-left: 2vw;
+  text-align: left;
+  justify-content: flex-start;
+  width: 30%;
+}
+
+#topCenterBar {
+  font-weight: 300;
+  text-align: center;
+  justify-content: center;
+  width: 40%;
+}
+
+#topRightBar {
+  padding-right: 2vw;
+  text-align: right;
+  justify-content: flex-end;
+  width: 30%;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+#backText {
+  cursor: url('/images/parts/cursor/blueSelect.cur'), default;
+  font-size: 1.8vh;
+}
+
+#bodyEmptySpace {
+  width: 100vw;
+  height: 5vh;
+}
+
+#windowsContainer {
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 75vh;
+}
+
+#editWindow {
+  display: flex;
+  flex-direction: column;
+  width: 13vw;
+  margin-right: 1vw;
+}
+
+#componentView {
+  width: 65vw;
+}
+
+#triggersContainer {
+  width: 15vw;
+}
+
+.windowsTitle {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #555;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.editWindowElements {
+  color: #dedede;
+  text-align: center;
+  line-height: 5vh;
+  vertical-align: center;
+  background-color: #888;
+  width: 85%;
+  height: 5vh;
+  font-size: 1.3em;
+  margin-bottom: 2vh;
+}
+
+.selectedElements {
+  background-color: #fff;
+  color: #555;
+}
+
+.clickable {
+  cursor: url('/images/parts/cursor/blueSelect.cur'), pointer;
+}
+
+#canvasContainer {
+  background-color: #fff;
+  border: 1px solid #AAA;
+  width: 100%;
+  height: 100%;
+}
+
+#triggerElementsContainer {
+  background-color: #fff;
+  border: 1px solid #AAA;
+  width: 100%;
+  height: 100%;
+}
+
+#informationText {
+  font-size: 1.1em;
+  font-weight: 300;
+}

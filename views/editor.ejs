@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="<%= __('lang') %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Editor</title>
+  <link rel="stylesheet" href="css/editor.css">
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <script src="js/pace.js"></script>
+</head>
+<body>
+  <div id="navbar">
+    <div id="topLeftBar" class="navbarElements">
+      <span id="backText"><span class="pr-5">&#xE000;</span><%= __('editor_main') %></span>
+    </div>
+    <div id="topCenterBar" class="navbarElements">
+      <span id="songName"><%= __('select_a_song') %></span>
+    </div>
+    <div id="topRightBar" class="navbarElements"></div>
+  </div>
+  <div id="bodyEmptySpace">
+
+  </div>
+  <div id="windowsContainer">
+    <div id="editWindow">
+      <span class="windowsTitle">EDIT WINDOW</span>
+      <span class="editWindowElements selectedElements clickable"><span class="bold">T</span>&nbsp;&nbsp;TRIGGER</span>
+      <span class="editWindowElements clickable"><span class="bold">E</span>&nbsp;&nbsp;EFFECT</span>
+      <span class="editWindowElements clickable"><span class="bold">L</span>&nbsp;&nbsp;TIMELINE</span>
+    </div>
+    <div id="componentView">
+      <span class="windowsTitle">COMPONENT VIEW</span>
+      <div id="canvasContainer">
+        <canvas id="componentCanvas" width="100%" height="100%">
+        </canvas>
+      </div>
+      <span id="informationText">BPM: <span id="informationBpmText">130</span>&nbsp;&nbsp;BULLET AMOUNT: <span id="informationBulletText">0</span></span>
+    </div>
+    <div id="triggersContainer">
+      <span class="windowsTitle">TRIGGER</span>
+      <div id="triggerElementsContainer">
+
+      </div>
+    </div>
+  </div>
+  <script>
+    const cdnUrl = "<%= cdnUrl %>";
+    const url = "<%= url %>";
+    const api = "<%= api %>";
+  </script>
+  <script src="js/editor.js"></script>
+</body>
+</html>
