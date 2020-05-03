@@ -140,3 +140,8 @@ body {
   font-size: 1.1em;
   font-weight: 300;
 }
+
+#componentCanvas {
+  width: 65vw;
+  height: 75vh;
+}

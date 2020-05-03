@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }).catch((error) => {
       alert(`Error occured.\n${error}`);
     });
-  });
+});
 
 const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
 const passReg = /^[0-9]{4,6}$/;
