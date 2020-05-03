@@ -54,8 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
   });
-  cntCanvas.width = window.innerWidth * 0.65;
-  cntCanvas.height = window.innerHeight * 0.75;
+  initialize();
 });
 
 const drawNote = (p, x, y) => {
@@ -77,3 +76,10 @@ const drawNote = (p, x, y) => {
   cntCtx.fill();
   cntCtx.closePath();
 };
+
+const initialize = () => {
+  cntCanvas.width = window.innerWidth * 0.65;
+  cntCanvas.height = window.innerHeight * 0.75;
+};
+
+window.addEventListener("resize", initialize);
