@@ -70,12 +70,39 @@ const drawNote = (p, x, y) => {
   cntCtx.beginPath();
   cntCtx.arc(x, y, w, 0, 2 * Math.PI);
   cntCtx.stroke();
-  cntCtx.closePath();
   cntCtx.beginPath();
   cntCtx.arc(x, y, w / 100 * p, 0, 2 * Math.PI);
   cntCtx.fill();
-  cntCtx.closePath();
 };
+
+const drawBullet = (n, x, y, a) => {
+  x = cntCanvas.width / 200 * x;
+  y = cntCanvas.height / 200 * y;
+  let w = cntCanvas.width / 70;
+  cntCtx.fillStyle = "#555";
+  cntCtx.strokeStyle = "#555";
+  cntCtx.beginPath();
+  switch(n) {
+    case 0:
+      a = Math.PI * (a / 180 + 0.5);
+      cntCtx.arc(x, y, w, a, a + Math.PI);
+      cntCtx.fill();
+      cntCtx.beginPath();
+      a = a - (0.5 * Math.PI);
+      cntCtx.moveTo(x - (w * Math.sin(a)), y + (w * Math.cos(a)));
+      cntCtx.lineTo(x + (w * 2 * Math.cos(a)), y + (w * 2 * Math.sin(a)));
+      cntCtx.lineTo(x + (w * Math.sin(a)), y - (w * Math.cos(a)));
+      cntCtx.fill();
+      break;
+    case 1:
+    default:
+      alert("Wrong draw access.");
+  }
+};
+
+const eraseCanvas = () => {
+  cntCtx.clearRect(0, 0, cntCanvas.width, cntCanvas.height);
+}
 
 const initialize = () => {
   cntCanvas.width = window.innerWidth * 0.65;
