@@ -86,8 +86,6 @@ const drawBullet = (n, x, y, a) => {
     case 0:
       a = Math.PI * (a / 180 + 0.5);
       cntCtx.arc(x, y, w, a, a + Math.PI);
-      cntCtx.fill();
-      cntCtx.beginPath();
       a = a - (0.5 * Math.PI);
       cntCtx.moveTo(x - (w * Math.sin(a)), y + (w * Math.cos(a)));
       cntCtx.lineTo(x + (w * 2 * Math.cos(a)), y + (w * 2 * Math.sin(a)));
