@@ -95,6 +95,9 @@ const drawBullet = (n, x, y, a) => {
       cntCtx.fill();
       break;
     case 1:
+      cntCtx.arc(x, y, w, 0, Math.PI * 2);
+      cntCtx.fill();
+      break;
     default:
       alert("Wrong draw access.");
   }
