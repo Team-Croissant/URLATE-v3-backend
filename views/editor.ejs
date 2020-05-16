@@ -19,9 +19,7 @@
     </div>
     <div id="topRightBar" class="navbarElements"></div>
   </div>
-  <div id="bodyEmptySpace">
-
-  </div>
+  <div id="bodyEmptySpace"></div>
   <div id="windowsContainer">
     <div id="editWindow">
       <span class="windowsTitle">EDIT WINDOW</span>
@@ -44,7 +42,14 @@
       </div>
     </div>
   </div>
+  <div id="timelineContainer">
+    <div id="timelineInner"></div>
+    <canvas id="timelineCanvas" width="100%" height="100%">
+
+    </canvas>
+  </div>
   <script>
+    const rusure = "<%= __('RUSure') %>";
     const cdnUrl = "<%= cdnUrl %>";
     const url = "<%= url %>";
     const api = "<%= api %>";

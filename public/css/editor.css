@@ -145,3 +145,50 @@ body {
   width: 65vw;
   height: 75vh;
 }
+
+#timelineContainer {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  position: fixed;
+  z-index: 2;
+  border: 1px solid #555;
+  background-color: #FFF;
+  width: 94vw;
+  height: 6vh;
+  left: 3vw;
+  bottom: 1.5vh;
+  scrollbar-width: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EEE; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+#timelineInner {
+  pointer-events: none;
+  height: 100%;
+  width: 200%;
+}
+
+#timelineCanvas {
+  pointer-events: none;
+  left: 0;
+  position: fixed;
+  width: 94vw;
+  height: 6vh;
+  left: 3vw;
+  bottom: 1.5vh;
+}

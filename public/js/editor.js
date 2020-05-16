@@ -78,7 +78,7 @@ const drawNote = (p, x, y) => {
 const drawBullet = (n, x, y, a) => {
   x = cntCanvas.width / 200 * x;
   y = cntCanvas.height / 200 * y;
-  let w = cntCanvas.width / 70;
+  let w = cntCanvas.width / 80;
   cntCtx.fillStyle = "#555";
   cntCtx.strokeStyle = "#555";
   cntCtx.beginPath();
@@ -110,4 +110,19 @@ const initialize = () => {
   cntCanvas.height = window.innerHeight * 0.75;
 };
 
+const scrollHorizontally = (e) => {
+  e = window.event || e;
+  console.log(Math.min(1, (e.wheelDelta || -e.detail)));
+  let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+  document.getElementById('timelineContainer').scrollLeft -= (delta * 30);
+  e.preventDefault();
+};
+
+document.getElementById('timelineContainer').addEventListener("mousewheel", scrollHorizontally);
+document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollHorizontally);
 window.addEventListener("resize", initialize);
+
+window.addEventListener("beforeunload", function (e) {
+  (e || window.event).returnValue = rusure;
+  return rusure;
+}); 
