@@ -12,33 +12,76 @@
 <body>
   <div id="navbar">
     <div id="topLeftBar" class="navbarElements">
-      <span id="backText"><span class="pr-5">&#xE000;</span><%= __('editor_main') %></span>
+      <span id="backText"><span class="backIcon">&#xE000;</span><%= __('editor_main') %></span>
     </div>
     <div id="topCenterBar" class="navbarElements">
-      <span id="songName"><%= __('select_a_song') %></span>
+      <span id="songName" class="metropolis"><!--<%= __('select_a_song') %>-->Midnight Train</span>
     </div>
-    <div id="topRightBar" class="navbarElements"></div>
+    <div id="topRightBar" class="navbarElements">
+      <img src="https://img.icons8.com/material-rounded/48/000000/horizontal-settings-mixer.png" class="icon clickable">
+    </div>
   </div>
-  <div id="bodyEmptySpace"></div>
-  <div id="windowsContainer">
-    <div id="editWindow">
-      <span class="windowsTitle">EDIT WINDOW</span>
-      <span class="editWindowElements selectedElements clickable"><span class="bold">T</span>&nbsp;&nbsp;TRIGGER</span>
-      <span class="editWindowElements clickable"><span class="bold">E</span>&nbsp;&nbsp;EFFECT</span>
-      <span class="editWindowElements clickable"><span class="bold">L</span>&nbsp;&nbsp;TIMELINE</span>
-    </div>
-    <div id="componentView">
-      <span class="windowsTitle">COMPONENT VIEW</span>
-      <div id="canvasContainer">
-        <canvas id="componentCanvas" width="100%" height="100%">
-        </canvas>
+  <div id="workingSpaceContainer">
+    <div id="workingContainer">
+      <div id="menuContainer">
+        <img src="https://img.icons8.com/ios-filled/52/000000/resize-four-directions.png" class="menuIcon clickable menuSelected">
+        <img src="https://img.icons8.com/ios-glyphs/48/000000/edit.png" class="menuIcon clickable">
+        <div id="horizontalLine" class="menuIcon"></div>
+        <img src="https://img.icons8.com/ios-glyphs/60/000000/search.png" class="menuIcon clickable">
       </div>
-      <span id="informationText">BPM: <span id="informationBpmText">130</span>&nbsp;&nbsp;BULLET AMOUNT: <span id="informationBulletText">0</span></span>
+      <div id="componentView">
+        <div id="canvasContainer">
+          <div id="canvasBackgroundImage"></div>
+          <canvas id="componentCanvas" width="100%" height="100%">
+          </canvas>
+        </div>
+      </div>
     </div>
-    <div id="triggersContainer">
-      <span class="windowsTitle">TRIGGER</span>
-      <div id="triggerElementsContainer">
-
+    <div id="settingsContainer">
+      <div id="settingsName">
+        <span id="dot">·</span>
+        <span id="settingsNameSpace">Bullet_0</span>
+      </div>
+      <div id="settingsProperties" class="metropolis">
+        <div id="settingsPropertiesContainer">
+          <p class="settingsSemiTitle">POSITION</p>
+          <div class="settingsPropertiesIndividual">
+            <span class="settingsPropertiesTitle">StartPosX</span>
+            <input type="text" class="settingsPropertiesTextbox metropolis">
+          </div>
+          <div class="settingsPropertiesIndividual">
+            <span class="settingsPropertiesTitle">StartPosY</span>
+            <input type="text" class="settingsPropertiesTextbox metropolis">
+          </div>
+          <div class="settingsPropertiesIndividual">
+            <span class="settingsPropertiesTitle">Angle</span>
+            <input type="text" class="settingsPropertiesTextbox metropolis">
+          </div>
+          <div class="settingsPropertiesIndividual">
+            <span class="settingsPropertiesTitle">Scale</span>
+            <input type="text" class="settingsPropertiesTextbox metropolis">
+          </div>
+        </div>
+        <div id="settingsPropertiesContainer">
+          <p class="settingsSemiTitle">PROPERTY</p>
+          <div class="settingsPropertiesIndividual">
+            <span class="settingsPropertiesTitle">Delay</span>
+            <input type="text" class="settingsPropertiesTextbox metropolis">
+          </div>
+          <div class="settingsPropertiesIndividual">
+            <span class="settingsPropertiesTitle">Speed</span>
+            <input type="text" class="settingsPropertiesTextbox metropolis">
+          </div>
+        </div>
+        <div id="settingsButtonsContainer">
+          <p class="settingsSemiTitle">EASING</p>
+          <div class="settingsPropertiesButtons">
+            <input type="button" class="settingsButtons selectedButton" value="L">
+            <input type="button" class="settingsButtons" value="I">
+            <input type="button" class="settingsButtons" value="O">
+          </div>
+          <p id="settingsButtonsText">Linear Path</p>
+        </div>
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:100,300,400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
+@import url('https://cdn.rhyga.me/fonts/Metropolis/style.css');
 @import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
 
 body {
@@ -20,11 +21,13 @@ body {
 
 #navbar {
   font-size: 2.3vh;
-  color: white;
+  color: #555;
   display: flex;
   width: 100vw;
-  height: 6vh;
-  background-color: #2B2E33;
+  height: 8vh;
+  background-color: #FFF;
+  border-bottom: 1px solid #DDD;
+  filter: drop-shadow(0 0px 5px rgba(65, 65, 65, 0.1));
 }
 
 .navbarElements {
@@ -34,14 +37,19 @@ body {
 }
 
 #topLeftBar {
+  font-weight: 600;
   padding-left: 2vw;
   text-align: left;
   justify-content: flex-start;
   width: 30%;
 }
 
+.metropolis {
+  font-family: 'Metropolis', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+}
+
 #topCenterBar {
-  font-weight: 300;
+  font-weight: 3d00;
   text-align: center;
   justify-content: center;
   width: 40%;
@@ -54,68 +62,67 @@ body {
   width: 30%;
 }
 
-.pr-5 {
-  padding-right: 5px;
-}
-
 #backText {
-  cursor: url('/images/parts/cursor/blueSelect.cur'), default;
-  font-size: 1.8vh;
+  font-size: 0.7em;
 }
 
-#bodyEmptySpace {
-  width: 100vw;
-  height: 5vh;
+.icon {
+  filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%) contrast(96%);
+  width: 1vw;
 }
 
-#windowsContainer {
-  text-align: left;
+.menuIcon {
+  filter: invert(70%) sepia(53%) saturate(0%) hue-rotate(222deg) brightness(100%) contrast(95%);
+  width: 1.3vw;
+  margin-top: 3vh;
+}
+
+.menuSelected {
+  filter: invert(25%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%) contrast(96%);
+}
+
+.backIcon {
+  padding-right: 10px;
+}
+
+#horizontalLine {
+  filter: invert(83%) sepia(53%) saturate(0%) hue-rotate(222deg) brightness(100%) contrast(95%);
+  width: 2vw;
+  height: 2px;
+  background-color: #000;
+}
+
+#workingSpaceContainer {
   display: flex;
-  justify-content: center;
   width: 100vw;
-  height: 75vh;
+  height: 65vh;
 }
 
-#editWindow {
+#menuContainer {
   display: flex;
   flex-direction: column;
-  width: 13vw;
-  margin-right: 1vw;
+  align-items: center;
+  background-color: #FFF;
+  filter: drop-shadow(0 0 5px rgba(65, 65, 65, 0.1));
+  width: 5vw;
+  height: 100%;
+}
+
+#workingContainer {
+  text-align: left;
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
 #componentView {
-  width: 65vw;
-}
-
-#triggersContainer {
-  width: 15vw;
-}
-
-.windowsTitle {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: #555;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .bold {
   font-weight: 700;
-}
-
-.editWindowElements {
-  color: #dedede;
-  text-align: center;
-  line-height: 5vh;
-  vertical-align: center;
-  background-color: #888;
-  width: 85%;
-  height: 5vh;
-  font-size: 1.3em;
-  margin-bottom: 2vh;
-}
-
-.selectedElements {
-  background-color: #fff;
-  color: #555;
 }
 
 .clickable {
@@ -123,46 +130,47 @@ body {
 }
 
 #canvasContainer {
+  position: initial;
+  z-index: -1;
   background-color: #fff;
-  border: 1px solid #AAA;
-  width: 100%;
+  width: 60vw;
   height: 100%;
 }
 
-#triggerElementsContainer {
-  background-color: #fff;
-  border: 1px solid #AAA;
-  width: 100%;
-  height: 100%;
-}
-
-#informationText {
-  font-size: 1.1em;
-  font-weight: 300;
+#canvasBackgroundImage {
+  position: fixed;
+  z-index: -1;
+  width: 60%;
+  height: 65%;
+  background-image: url("/images/album/Midnight Train.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: grayscale(30%) opacity(10%);
 }
 
 #componentCanvas {
-  width: 65vw;
-  height: 75vh;
+  width: 100%;
+  height: 100%;
 }
 
 #timelineContainer {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  z-index: 2;
   overflow-y: hidden;
   overflow-x: scroll;
-  position: fixed;
-  z-index: 2;
-  border: 1px solid #555;
   background-color: #FFF;
-  width: 94vw;
-  height: 6vh;
-  left: 3vw;
-  bottom: 1.5vh;
-  scrollbar-width: 10px;
+  width: 100vw;
+  height: 27vh;
+  scrollbar-width: 1vh;
+  filter: drop-shadow(0 0px 5px rgba(65, 65, 65, 0.1));
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 1vh;
+  height: 1vh;
 }
 
 ::-webkit-scrollbar-track {
@@ -177,6 +185,19 @@ body {
   background: #777;
 }
 
+#settingsContainer {
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: static;
+  z-index: 5;
+  width: 25vw;
+  height: 100vh;
+  background-color: #FFF;
+  filter: drop-shadow(0 0px 5px rgba(65, 65, 65, 0.1));
+}
+
 #timelineInner {
   pointer-events: none;
   height: 100%;
@@ -185,10 +206,107 @@ body {
 
 #timelineCanvas {
   pointer-events: none;
-  left: 0;
   position: fixed;
-  width: 94vw;
-  height: 6vh;
-  left: 3vw;
-  bottom: 1.5vh;
+  width: 100vw;
+  height: 26vh;
+  left: 0;
+  bottom: 0;
+}
+
+#settingsName {
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 8%;
+  border-bottom: 1px solid #DEDEDE;
+}
+
+#dot {
+  margin-bottom: -6px;
+  margin-right: 3px;
+  font-size: 5em;
+  color: rgb(84, 203, 240);
+}
+
+#settingsNameSpace {
+  font-weight: 500;
+  font-size: 2.5vh;
+  margin-right: 1em;
+}
+
+#settingsProperties {
+  color: #777;
+  text-align: left;
+  width: 80%;
+  height: 80%;
+}
+
+#settingsPropertiesContainer {
+  width: 60%;
+}
+
+#settingsButtonsContainer {
+  width: 70%;
+}
+
+.settingsSemiTitle {
+  margin-top: 3vh;
+  margin-bottom: 0vh;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 1.7vh;
+}
+
+.settingsPropertiesTitle {
+  letter-spacing: 0px;
+  margin-left: 1.5vw;
+  font-size: 1.5vh;
+}
+
+.settingsPropertiesTextbox {
+  text-align: center;
+  margin-left: 0.5vw;
+  width: 100%;
+  height: 2vh;
+  border-radius: 2px;
+  border: 1px solid #BBB;
+  color: #999;
+  font-weight: 500;
+}
+
+.settingsPropertiesIndividual {
+  margin-top: 1vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.settingsPropertiesButtons {
+  padding-left: 1.5vw;
+  margin-top: 1vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.settingsButtons {
+  width: 100%;
+  margin: 0.1vw;
+  border: none;
+  background-color: #DEDEDE;
+  border-radius: 3px;
+  height: 2.5vh;
+}
+
+.selectedButton {
+  background-color: #BBB;
+}
+
+#settingsButtonsText {
+  color: #BBB;
+  letter-spacing: 0px;
+  margin-top: 1vh;
+  margin-left: 1.5vw;
 }

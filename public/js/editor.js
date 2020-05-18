@@ -1,5 +1,7 @@
 const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
+const tmlCanvas = document.getElementById('timelineCanvas');
+const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks;
 
 const settingApply = () => {
@@ -106,8 +108,10 @@ const eraseCanvas = () => {
 }
 
 const initialize = () => {
-  cntCanvas.width = window.innerWidth * 0.65;
-  cntCanvas.height = window.innerHeight * 0.75;
+  cntCanvas.width = window.innerWidth * 0.6;
+  cntCanvas.height = window.innerHeight * 0.65;
+  tmlCanvas.width = window.innerWidth;
+  tmlCanvas.height = window.innerHeight * 0.27;
 };
 
 const scrollHorizontally = (e) => {
