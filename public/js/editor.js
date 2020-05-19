@@ -2,7 +2,7 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks;
+let settings, tracks, song;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
 
@@ -52,6 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
   .then((data) => {
     if(data.result == 'success') {
       tracks = data.tracks;
+      for(let i = 0; tracks.length > i; i++) {
+        let option = document.createElement("option");
+        option.innerHTML = tracks[i].name;
+        option.value = tracks[i].name;
+        document.getElementById("songSelectBox").options.add(option);
+      }
     } else {
       alert('Failed to load song list.');
     }
@@ -60,6 +66,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   initialize();
 });
+
+const newEditor = () => {
+  document.getElementById('songSelectionContainer').style.display = 'flex';
+};
+
+const songSelected = () => {
+  song = new Howl({
+    src: [`${cdnUrl}/tracks/128kbps/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+    autoplay: false,
+    loop: false,
+    onend: () => {
+      song.stop();
+    },
+    onload: () => {
+    }
+  });
+  document.getElementById('songSelectionContainer').style.display = 'none';
+  document.getElementById('initialScreenContainer').style.display = 'none';
+  document.getElementById('editorMainContainer').style.display = 'initial';
+};
 
 const toggleSettings = () => {
   if(isSettingsOpened) {
