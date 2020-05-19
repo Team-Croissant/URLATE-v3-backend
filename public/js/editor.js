@@ -3,6 +3,8 @@ const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks;
+let mode = 0; //0: move tool, 1: edit tool
+let isSettingsOpened = false;
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -58,6 +60,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   initialize();
 });
+
+const toggleSettings = () => {
+  if(isSettingsOpened) {
+    document.getElementById('settingsContainer').style.display = 'none';
+  } else {
+    document.getElementById('settingsContainer').style.display = 'flex';
+  }
+  isSettingsOpened = !isSettingsOpened;
+};
+
+const changeMode = (n) => {
+  document.getElementsByClassName('menuIcon')[n].classList.toggle('menuSelected');
+  document.getElementsByClassName('menuIcon')[mode].classList.toggle('menuSelected');
+  document.getElementsByClassName('menuIcon')[n].classList.toggle('clickable');
+  document.getElementsByClassName('menuIcon')[mode].classList.toggle('clickable');
+  mode = n;
+}
 
 const drawNote = (p, x, y) => {
   x = cntCanvas.width / 200 * x;

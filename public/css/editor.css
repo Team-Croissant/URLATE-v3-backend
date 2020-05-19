@@ -63,7 +63,7 @@ body {
 }
 
 #backText {
-  font-size: 0.7em;
+  font-size: 1.8vh;
 }
 
 .icon {
@@ -186,8 +186,8 @@ body {
 }
 
 #settingsContainer {
+  display: none;
   color: #555;
-  display: flex;
   flex-direction: column;
   align-items: center;
   position: static;
@@ -227,12 +227,12 @@ body {
   margin-bottom: -6px;
   margin-right: 3px;
   font-size: 5em;
-  color: rgb(84, 203, 240);
+  color: rgb(117, 45, 150);
 }
 
 #settingsNameSpace {
   font-weight: 500;
-  font-size: 2.5vh;
+  font-size: 2.3vh;
   margin-right: 1em;
 }
 
@@ -244,11 +244,11 @@ body {
 }
 
 #settingsPropertiesContainer {
-  width: 60%;
+  width: 70%;
 }
 
-#settingsButtonsContainer {
-  width: 70%;
+#settingsTracksContainer {
+  width: 80%;
 }
 
 .settingsSemiTitle {
@@ -256,7 +256,7 @@ body {
   margin-bottom: 0vh;
   font-weight: 600;
   letter-spacing: 1px;
-  font-size: 1.7vh;
+  font-size: 1.8vh;
 }
 
 .settingsPropertiesTitle {
@@ -268,7 +268,7 @@ body {
 .settingsPropertiesTextbox {
   text-align: center;
   margin-left: 0.5vw;
-  width: 100%;
+  width: 50%;
   height: 2vh;
   border-radius: 2px;
   border: 1px solid #BBB;
@@ -281,6 +281,7 @@ body {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .settingsPropertiesButtons {
@@ -292,7 +293,7 @@ body {
 }
 
 .settingsButtons {
-  width: 100%;
+  width: 25%;
   margin: 0.1vw;
   border: none;
   background-color: #DEDEDE;
@@ -309,4 +310,8 @@ body {
   letter-spacing: 0px;
   margin-top: 1vh;
   margin-left: 1.5vw;
+}
+
+#elementsSettings {
+  display: none;
 }

@@ -18,14 +18,14 @@
       <span id="songName" class="metropolis"><!--<%= __('select_a_song') %>-->Midnight Train</span>
     </div>
     <div id="topRightBar" class="navbarElements">
-      <img src="https://img.icons8.com/material-rounded/48/000000/horizontal-settings-mixer.png" class="icon clickable">
+      <img src="https://img.icons8.com/material-rounded/48/000000/horizontal-settings-mixer.png" class="icon clickable" onclick="toggleSettings()">
     </div>
   </div>
   <div id="workingSpaceContainer">
     <div id="workingContainer">
       <div id="menuContainer">
-        <img src="https://img.icons8.com/ios-filled/52/000000/resize-four-directions.png" class="menuIcon clickable menuSelected">
-        <img src="https://img.icons8.com/ios-glyphs/48/000000/edit.png" class="menuIcon clickable">
+        <img src="https://img.icons8.com/ios-filled/52/000000/resize-four-directions.png" class="menuIcon menuSelected" onclick="changeMode(0)">
+        <img src="https://img.icons8.com/ios-glyphs/48/000000/edit.png" class="menuIcon clickable" onclick="changeMode(1)">
         <div id="horizontalLine" class="menuIcon"></div>
         <img src="https://img.icons8.com/ios-glyphs/60/000000/search.png" class="menuIcon clickable">
       </div>
@@ -40,47 +40,81 @@
     <div id="settingsContainer">
       <div id="settingsName">
         <span id="dot">·</span>
-        <span id="settingsNameSpace">Bullet_0</span>
+        <span id="settingsNameSpace">Settings</span>
       </div>
       <div id="settingsProperties" class="metropolis">
-        <div id="settingsPropertiesContainer">
-          <p class="settingsSemiTitle">POSITION</p>
-          <div class="settingsPropertiesIndividual">
-            <span class="settingsPropertiesTitle">StartPosX</span>
-            <input type="text" class="settingsPropertiesTextbox metropolis">
+        <div id="elementsSettings">
+          <div id="settingsPropertiesContainer">
+            <p class="settingsSemiTitle">POSITION</p>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Side</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis">
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">StartPosY</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis">
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Angle</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis">
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Scale</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis">
+            </div>
           </div>
-          <div class="settingsPropertiesIndividual">
-            <span class="settingsPropertiesTitle">StartPosY</span>
-            <input type="text" class="settingsPropertiesTextbox metropolis">
+          <div id="settingsPropertiesContainer">
+            <p class="settingsSemiTitle">PROPERTY</p>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Delay</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis">
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Speed</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis">
+            </div>
           </div>
-          <div class="settingsPropertiesIndividual">
-            <span class="settingsPropertiesTitle">Angle</span>
-            <input type="text" class="settingsPropertiesTextbox metropolis">
-          </div>
-          <div class="settingsPropertiesIndividual">
-            <span class="settingsPropertiesTitle">Scale</span>
-            <input type="text" class="settingsPropertiesTextbox metropolis">
+          <div id="settingsButtonsContainer">
+            <p class="settingsSemiTitle">EASING</p>
+            <div class="settingsPropertiesButtons">
+              <input type="button" class="settingsButtons selectedButton" value="L">
+              <input type="button" class="settingsButtons" value="I">
+              <input type="button" class="settingsButtons" value="O">
+            </div>
+            <p id="settingsButtonsText">Linear Path</p>
           </div>
         </div>
-        <div id="settingsPropertiesContainer">
-          <p class="settingsSemiTitle">PROPERTY</p>
-          <div class="settingsPropertiesIndividual">
-            <span class="settingsPropertiesTitle">Delay</span>
-            <input type="text" class="settingsPropertiesTextbox metropolis">
+        <div id="trackSettings">
+          <div id="settingsPropertiesContainer">
+            <p class="settingsSemiTitle">INFORMATION</p>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Track</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis" value="Midnight Train" readonly>
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Producer</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis" value="Sereno" readonly>
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Author</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis" value="Coupy">
+            </div>
           </div>
-          <div class="settingsPropertiesIndividual">
-            <span class="settingsPropertiesTitle">Speed</span>
-            <input type="text" class="settingsPropertiesTextbox metropolis">
+          <div id="settingsPropertiesContainer">
+            <p class="settingsSemiTitle">PROPERTY</p>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">BPM</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis" value="128">
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Speed</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis" value="2">
+            </div>
+            <div class="settingsPropertiesIndividual">
+              <span class="settingsPropertiesTitle">Offset</span>
+              <input type="text" class="settingsPropertiesTextbox metropolis" value="0">
+            </div>
           </div>
-        </div>
-        <div id="settingsButtonsContainer">
-          <p class="settingsSemiTitle">EASING</p>
-          <div class="settingsPropertiesButtons">
-            <input type="button" class="settingsButtons selectedButton" value="L">
-            <input type="button" class="settingsButtons" value="I">
-            <input type="button" class="settingsButtons" value="O">
-          </div>
-          <p id="settingsButtonsText">Linear Path</p>
         </div>
       </div>
     </div>
