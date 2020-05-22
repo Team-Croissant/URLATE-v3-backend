@@ -6,7 +6,7 @@
     "communityUrl": "https://community.example.com",
     "miraiUrl": "https://mirai.example.com"
   },
-  "maria" : {
+  "database" : {
     "db": "ExampleDB",
     "host": "localhost",
     "port": 3306,
@@ -17,7 +17,7 @@
     "key": "SESSION KEY",
     "secret": "SESSION SECRET",
     "resave": false,
-    "saveUninitialized": true
+    "saveUninitialized": false
   },
   "google" : {
     "clientId" : "GOOGLE CLIENT ID",

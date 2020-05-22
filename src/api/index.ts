@@ -22,19 +22,19 @@ app.locals.pretty = true;
 const knex = require('knex')({
   client: 'mysql',
   connection: {
-    host: config.maria.host,
-    user: config.maria.user,
-    password: config.maria.password,
-    database: config.maria.db
+    host: config.database.host,
+    user: config.database.user,
+    password: config.database.password,
+    database: config.database.db
   }
 });
 
 const sessionStore = new MySQLStore({
-  host: config.maria.host,
-  port: config.maria.port,
-  user: config.maria.user,
-  password: config.maria.password,
-  database: config.maria.db
+  host: config.database.host,
+  port: config.database.port,
+  user: config.database.user,
+  password: config.database.password,
+  database: config.database.db
 });
 
 app.use(session({
@@ -129,7 +129,7 @@ app.post("/join", (req, res) => {
       date: new Date(),
       email: req.session.tempEmail,
       settings: JSON.stringify(settingsConfig)
-    })
+    });
 
     delete req.session.tempName;
     delete req.session.tempEmail;
@@ -141,7 +141,7 @@ app.post("/join", (req, res) => {
 
 const passwordPattern = /^[0-9]{4,6}$/;
 app.post("/authorize", async (req, res) => {
-  if (!passwordPattern.test(req.body.secondaryPassword)) { 
+  if (!passwordPattern.test(req.body.secondaryPassword)) {
     res.status(400).json(createErrorResponse('failed', 'Wrong Format', 'Wrong password format.'));
     return;
   }
@@ -157,7 +157,9 @@ app.post("/authorize", async (req, res) => {
     }
 
     req.session.authorized = true;
-    res.status(200).json(createSuccessResponse('success'));
+    req.session.save(() => {
+      res.status(200).json(createSuccessResponse('success'));
+    });
   });
 });
 

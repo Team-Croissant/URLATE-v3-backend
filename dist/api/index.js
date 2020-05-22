@@ -55,18 +55,18 @@ app.locals.pretty = true;
 var knex = require('knex')({
     client: 'mysql',
     connection: {
-        host: config.maria.host,
-        user: config.maria.user,
-        password: config.maria.password,
-        database: config.maria.db
+        host: config.database.host,
+        user: config.database.user,
+        password: config.database.password,
+        database: config.database.db
     }
 });
 var sessionStore = new MySQLStore({
-    host: config.maria.host,
-    port: config.maria.port,
-    user: config.maria.user,
-    password: config.maria.password,
-    database: config.maria.db
+    host: config.database.host,
+    port: config.database.port,
+    user: config.database.user,
+    password: config.database.password,
+    database: config.database.db
 });
 app.use(session({
     key: config.session.key,
@@ -193,7 +193,9 @@ app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, vo
                         return;
                     }
                     req.session.authorized = true;
-                    res.status(200).json(api_response_1.createSuccessResponse('success'));
+                    req.session.save(function () {
+                        res.status(200).json(api_response_1.createSuccessResponse('success'));
+                    });
                 });
                 return [2 /*return*/];
         }

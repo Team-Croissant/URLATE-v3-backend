@@ -73,7 +73,7 @@ const newEditor = () => {
 
 const songSelected = () => {
   song = new Howl({
-    src: [`${cdnUrl}/tracks/128kbps/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+    src: [`${cdnUrl}/tracks/128kbps/${tracks[songSelectBox.selectedIndex].fileName}`],
     autoplay: false,
     loop: false,
     onend: () => {
