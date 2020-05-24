@@ -167,6 +167,14 @@ const initialize = () => {
   tmlCanvas.height = window.innerHeight * 0.27;
 };
 
+const gotoMain = () => {
+  document.getElementById('initialScreenContainer').style.display = 'initial';
+  document.getElementById('songSelectionContainer').style.display = 'none';
+  document.getElementsByClassName
+  songSelectBox.selectedIndex = 0;
+  document.getElementById('editorMainContainer').style.display = 'none';
+};
+
 const scrollHorizontally = (e) => {
   e = window.event || e;
   console.log(Math.min(1, (e.wheelDelta || -e.detail)));
