@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
 @import url('https://cdn.rhyga.me/fonts/Metropolis/style.css');
-@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 body {
   background: #eee url('/images/backgrounds/editor.png');
@@ -12,7 +12,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  font-family: 'Heebo', 'Noto Sans KR', '나눔바른고딕', arial;
   letter-spacing: -1px;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -45,11 +45,11 @@ body {
 }
 
 .metropolis {
-  font-family: 'Metropolis', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
 }
 
 #topCenterBar {
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
   justify-content: center;
   width: 40%;
@@ -82,7 +82,9 @@ body {
 }
 
 .backIcon {
-  padding-right: 10px;
+  margin-bottom: -0.1vh;
+  padding-right: 5px;
+  height: 1.5vh
 }
 
 #horizontalLine {
@@ -142,7 +144,6 @@ body {
   z-index: -1;
   width: 60%;
   height: 65%;
-  background-image: url("/images/album/Midnight Train.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

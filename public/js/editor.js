@@ -5,6 +5,7 @@ const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks, song;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
+let userName = '';
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -32,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then((data) => {
         if(data.result == 'success') {
+          userName = data.nickname;
           settings = JSON.parse(data.settings);
           settingApply();
         } else {
@@ -73,7 +75,7 @@ const newEditor = () => {
 
 const songSelected = () => {
   song = new Howl({
-    src: [`${cdnUrl}/tracks/128kbps/${tracks[songSelectBox.selectedIndex].fileName}`],
+    src: [`${cdnUrl}/tracks/128kbps/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
     autoplay: false,
     loop: false,
     onend: () => {
@@ -82,6 +84,12 @@ const songSelected = () => {
     onload: () => {
     }
   });
+  songName.innerText = tracks[songSelectBox.selectedIndex].name;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = songName.innerText;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = tracks[songSelectBox.selectedIndex].producer;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = tracks[songSelectBox.selectedIndex].bpm;
+  document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdnUrl}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';
