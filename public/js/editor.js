@@ -189,6 +189,24 @@ const gotoMain = () => {
   document.getElementById('editorMainContainer').style.display = 'none';
 };
 
+const save = () => {
+  let trackSettingsForm = trackSettings.getElementsByClassName('settingsPropertiesTextbox');
+  pattern.information = {
+    "version": "1.0",
+    "track": trackSettingsForm[0].value,
+    "producer": trackSettingsForm[1].value,
+    "author": trackSettingsForm[2].value,
+    "bpm": trackSettingsForm[3].value,
+    "speed": trackSettingsForm[4].value,
+    "offset": trackSettingsForm[5].value
+  };
+  let a = document.createElement("a");
+  let file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
+  a.href = URL.createObjectURL(file);
+  a.download = `${songName.innerText}.json`;
+  a.click();
+};
+
 const scrollHorizontally = (e) => {
   e = window.event || e;
   console.log(Math.min(1, (e.wheelDelta || -e.detail)));
