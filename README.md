@@ -1,6 +1,6 @@
 # MyRhy
 이 페이지는 업데이트가 늦습니다!
-<br>최신버전은 [여기](https://shd.one/myrhykr)에서 확인 가능합니다.
+<br>최신버전은 [여기](https://docs.google.com/document/d/1J2CWGoCVBbDc3XycSZsdcN0wxR0i1NJUHGb46083I9A/edit?usp=sharing)에서 확인 가능합니다.
 ![MyRhyLogo](./public/images/others/bigImage.png)
 
 > Avoid & Get on the tempo, MyRhy.
