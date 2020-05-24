@@ -70,9 +70,9 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
 
 우선 채보파일의 최상단에는 다음과 같은 형식의 정보가 기록되어야 합니다.
 
-“information” : { “version” : “n.n”, “track” : “s”, “producer” : “s”, “bpm” : n, “speed” : n, “offset” : n}
+“information” : { “version” : “n.n”, “track” : “s”, “producer” : “s”, “author” : “s”,  “bpm” : n, “speed” : n, “offset” : n}
 <br>
-(형식 : 버전 / 곡명 / 작곡가 / BPM / 속도 / 오프셋)
+(형식 : 버전 / 곡명 / 작곡가 / 채보제작자 / BPM / 속도 / 오프셋)
 
 노래에 대한 정보기록 후에는 다음과 같은 형식의 명령어를 사용합니다.
 
@@ -80,7 +80,7 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
 <br>
 { “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, “option” : {option} } }
 <br>
-(ms 고유값 L/R 위치 { 고유정보 })
+(형식 : ms / 고유값 / L/R / 위치 / { 고유정보 })
 
 <table>
   <tr>
@@ -165,19 +165,19 @@ MyRhy는 플레이의 다시보기를 지원합니다. 다시보기 파일의 �
 
 { “track” : “s”, “producer” : “s”, “speed” : n, “difficulty” : n}
 <br>
-(곡명 / 작곡가 / 속도 / 난이도)
+(형식 : 곡명 / 작곡가 / 속도 / 난이도)
 
 위의 기록이 끝난 후에는 0.5초간격의 커서의 좌표를 기록합니다.
 
 { “x” : n, “y” : n }
 <br>
-(x y)
+(형식 : x / y)
 
 위의 기록과 상관없이, 파일의 아무 위치에서 밀리초 기반의 클릭이벤트를 기록합니다.
 
 { “event” : “click”, “milis” : n }
 <br>
-(이벤트명 밀리초)
+(형식 : 이벤트명 / 밀리초)
 
 ## 점수 산출 방식
 
@@ -329,5 +329,10 @@ MyRhy의 하드유저를 위한 멤버십으로, 월 5,000-20,000원 또는 년 
     </tr>
     <tr>
       <td>Fantasy</td>
+    </tr>
+    <tr>
+      <td>Greenstar</td>
+      <td>Bittersweet Adventure</td>
+      <td>-</td>
     </tr>
 </table>
