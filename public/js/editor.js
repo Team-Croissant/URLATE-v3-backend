@@ -6,6 +6,20 @@ let settings, tracks, song;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
 let userName = '';
+let pattern = {
+  "information": {
+    "version": "1.0",
+    "track": "",
+    "producer": "",
+    "author": "",
+    "bpm": "",
+    "speed": "",
+    "offset": ""
+  },
+  "patterns" : [],
+  "bullets" : [],
+  "triggers" : []
+};
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -190,4 +204,4 @@ window.addEventListener("resize", initialize);
 window.addEventListener("beforeunload", function (e) {
   (e || window.event).returnValue = rusure;
   return rusure;
-}); 
+});
