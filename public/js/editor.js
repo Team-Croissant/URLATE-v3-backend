@@ -182,11 +182,27 @@ const initialize = () => {
 };
 
 const gotoMain = () => {
-  document.getElementById('initialScreenContainer').style.display = 'initial';
-  document.getElementById('songSelectionContainer').style.display = 'none';
-  document.getElementsByClassName
-  songSelectBox.selectedIndex = 0;
-  document.getElementById('editorMainContainer').style.display = 'none';
+  if(confirm(rusure)) {
+    document.getElementById('initialScreenContainer').style.display = 'initial';
+    document.getElementById('songSelectionContainer').style.display = 'none';
+    document.getElementsByClassName
+    songSelectBox.selectedIndex = 0;
+    document.getElementById('editorMainContainer').style.display = 'none';
+    pattern = {
+      "information": {
+        "version": "1.0",
+        "track": "",
+        "producer": "",
+        "author": "",
+        "bpm": "",
+        "speed": "",
+        "offset": ""
+      },
+      "patterns" : [],
+      "bullets" : [],
+      "triggers" : []
+    };
+  }
 };
 
 const save = () => {
