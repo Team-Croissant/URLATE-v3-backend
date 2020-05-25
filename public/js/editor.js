@@ -162,6 +162,8 @@ const changeMode = (n) => {
 }
 
 const drawNote = (p, x, y) => {
+  x += 100;
+  y += 100;
   x = cntCanvas.width / 200 * x;
   y = cntCanvas.height / 200 * y;
   let w = cntCanvas.width / 40;
