@@ -78,7 +78,7 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
 
 patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
 <br>
-{ “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, “option” : {option} } }
+{ “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, option } }
 <br>
 (형식 : ms / 고유값 / L/R / 위치 / { 고유정보 })
 
