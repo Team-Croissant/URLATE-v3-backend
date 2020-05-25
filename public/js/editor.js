@@ -2,7 +2,6 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let isSongPlaying = false;
 let settings, tracks, song;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
@@ -214,13 +213,7 @@ const gotoMain = () => {
 
 const songControl = () => {
   if(document.getElementById('editorMainContainer').style.display == 'initial') {
-    if(isSongPlaying) {
-      song.stop();
-      isSongPlaying = false;
-    } else {
-      song.play();
-      isSongPlaying = true;
-    }
+    return song.playing() ? song.pause() : song.play();
   }
 }
 
@@ -261,6 +254,6 @@ window.addEventListener("beforeunload", function (e) {
 
 document.onkeypress = e => {
   if(e.keyCode == 32) {
-    console.log('yo');
+    songControl();
   }
 };
