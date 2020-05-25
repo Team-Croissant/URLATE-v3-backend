@@ -211,7 +211,7 @@ body {
   width: 100vw;
   height: 26vh;
   left: 0;
-  bottom: 0;
+  bottom: 1vh;
 }
 
 #settingsName {
