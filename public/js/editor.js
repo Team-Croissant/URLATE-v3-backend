@@ -113,8 +113,14 @@ const songSelected = () => {
 const toggleSettings = () => {
   if(isSettingsOpened) {
     document.getElementById('settingsContainer').style.display = 'none';
+    document.getElementById('timelineContainer').style.width = '100vw';
+    tmlCanvas.style.width = '100vw';
+    tmlCanvas.width = window.innerWidth;
   } else {
     document.getElementById('settingsContainer').style.display = 'flex';
+    document.getElementById('timelineContainer').style.width = '80vw';
+    tmlCanvas.style.width = '80vw';
+    tmlCanvas.width = window.innerWidth * 0.80;
   }
   isSettingsOpened = !isSettingsOpened;
 };
