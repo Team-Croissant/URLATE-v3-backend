@@ -2,7 +2,7 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks, song;
+let settings, tracks, song, bpm = 130, speed = 2, offset = 0;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
 let userName = '';
@@ -89,7 +89,7 @@ const newEditor = () => {
 
 const songSelected = () => {
   song = new Howl({
-    src: [`${cdnUrl}/tracks/128kbps/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+    src: [`${cdnUrl}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
     autoplay: false,
     loop: false,
     onend: () => {
@@ -103,6 +103,11 @@ const songSelected = () => {
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = tracks[songSelectBox.selectedIndex].producer;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = tracks[songSelectBox.selectedIndex].bpm;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = 2;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = 0;
+  bpm = tracks[songSelectBox.selectedIndex].bpm;
+  offset = 0;
+  speed = 2;
   document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdnUrl}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
@@ -217,6 +222,18 @@ const songControl = () => {
   }
 }
 
+const setBPM = (e) => {
+  bpm = Number(e.value);
+};
+
+const setSpeed = (e) => {
+  speed = Number(e.value);
+};
+
+const setOffset = (e) => {
+  offset = Number(e.value);
+};
+
 const save = () => {
   let trackSettingsForm = trackSettings.getElementsByClassName('settingsPropertiesTextbox');
   pattern.information = {
@@ -224,9 +241,9 @@ const save = () => {
     "track": trackSettingsForm[0].value,
     "producer": trackSettingsForm[1].value,
     "author": trackSettingsForm[2].value,
-    "bpm": trackSettingsForm[3].value,
-    "speed": trackSettingsForm[4].value,
-    "offset": trackSettingsForm[5].value
+    "bpm": bpm,
+    "speed": speed,
+    "offset": offset
   };
   let a = document.createElement("a");
   let file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
