@@ -2,7 +2,7 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks, song, bpm = 130, speed = 2, offset = 0;
+let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
 let userName = '';
@@ -43,6 +43,7 @@ let pattern = {
   "bullets" : [],
   "triggers" : []
 };
+let miliseconds = [];
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -136,6 +137,7 @@ const songSelected = () => {
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';
+  window.requestAnimationFrame(cntRender);
 };
 
 const toggleSettings = () => {
@@ -243,6 +245,18 @@ const gotoMain = (isCalledByMain) => {
   }
 };
 
+const cntRender = (e) => {
+  const start = lowerBound(pattern.patterns, song.seek() * 1000/*  - (bpm * 7 / speed)*/); //disable for now
+  const end = upperBound(pattern.patterns, song.seek() * 1000 + (bpm * 7 / speed));
+  const renderNotes = pattern.patterns.slice(start, end);
+  eraseCanvas();
+  for(let i = 0; i < renderNotes.length; i++) {
+    let p = ((bpm * 7 / speed) - (renderNotes[i].ms - (song.seek() * 1000))) / (bpm * 7 / speed) * 100;
+    drawNote(p, renderNotes[i].x, renderNotes[i].y);
+  }
+  window.requestAnimationFrame(cntRender);
+};
+
 const songControl = () => {
   if(document.getElementById('editorMainContainer').style.display == 'initial') {
     if(song.playing()){
@@ -252,7 +266,34 @@ const songControl = () => {
     }
   }
 };
+
+const lowerBound = (array, value) => {
+  if(value < 0) value = 0;
+  let low = 0;
+  let high = array.length;
+  while (low < high) {
+    const mid = Math.floor(low + (high - low) / 2);
+    if (value <= array[mid].ms) {
+      high = mid;
+    } else {
+      low = mid + 1;
+    }
   }
+  return low;
+};
+
+const upperBound = (array, value) => {
+  let low = 0;
+  let high = array.length;
+  while (low < high) {
+    const mid = Math.floor(low + (high - low) / 2);
+    if (value >= array[mid].ms) {
+      low = mid + 1;
+    } else {
+      high = mid;
+    }
+  }
+  return low;
 }
 
 const save = () => {
