@@ -245,7 +245,13 @@ const gotoMain = (isCalledByMain) => {
 
 const songControl = () => {
   if(document.getElementById('editorMainContainer').style.display == 'initial') {
-    return song.playing() ? song.pause() : song.play();
+    if(song.playing()){
+      song.pause();
+    } else {
+      song.play();
+    }
+  }
+};
   }
 }
 
