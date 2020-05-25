@@ -14,11 +14,13 @@
     <br><br>
     <h2>Editor</h2>
     <div id="initialButtonsContainer">
+      <span id="gotoGame" class="backText clickable" onclick="window.location.href = '<%= url %>'"><img src="https://img.icons8.com/ios-filled/24/000000/back.png" class="backIcon"><%= __('goto_game') %></span>
       <span class="initialButtons clickable" onclick="newEditor()"><img src="https://img.icons8.com/ios/96/000000/edit.png" class="initialIcon clickable"><br>New</span>
       <span class="initialButtons clickable" onclick="loadEditor()"><img src="https://img.icons8.com/ios/96/000000/circled-right-2.png" class="initialIcon clickable"><br>Load</span>
     </div>
     <div id="songSelectionContainer">
       <div id="songSelection">
+        <span id="gotoGame" class="backText clickable" onclick="gotoMain(true)"><img src="https://img.icons8.com/ios-filled/24/000000/back.png" class="backIcon"><%= __('cancel') %></span>
         <h2>Select Song</h2>
         <select id="songSelectBox" class="clickable">
         </select>
@@ -29,7 +31,7 @@
   <div id="editorMainContainer">
     <div id="navbar">
       <div id="topLeftBar" class="navbarElements">
-        <span id="backText" class="clickable" onclick="gotoMain()"><img src="https://img.icons8.com/ios-filled/24/000000/back.png" class="backIcon"><%= __('editor_main') %></span>
+        <span class="backText clickable" onclick="gotoMain()"><img src="https://img.icons8.com/ios-filled/24/000000/back.png" class="backIcon"><%= __('editor_main') %></span>
       </div>
       <div id="topCenterBar" class="navbarElements">
         <span id="songName" class="metropolis"><!--<%= __('select_a_song') %>-->Midnight Train</span>
@@ -121,15 +123,15 @@
               <p class="settingsSemiTitle">PROPERTY</p>
               <div class="settingsPropertiesIndividual">
                 <span class="settingsPropertiesTitle">BPM</span>
-                <input type="text" class="settingsPropertiesTextbox metropolis" onkeydown="setBPM(this)" value="128">
+                <input type="text" class="settingsPropertiesTextbox metropolis" onkeydown="bpm = Number(e.value)" value="128">
               </div>
               <div class="settingsPropertiesIndividual">
                 <span class="settingsPropertiesTitle">Speed</span>
-                <input type="text" class="settingsPropertiesTextbox metropolis" onkeydown="setSpeed(this)" value="2">
+                <input type="text" class="settingsPropertiesTextbox metropolis" onkeydown="speed = Number(e.value)" value="2">
               </div>
               <div class="settingsPropertiesIndividual">
                 <span class="settingsPropertiesTitle">Offset</span>
-                <input type="text" class="settingsPropertiesTextbox metropolis" onkeydown="setOffset(this)" value="0">
+                <input type="text" class="settingsPropertiesTextbox metropolis" onkeydown="offset = Number(e.value)" value="0">
               </div>
             </div>
           </div>

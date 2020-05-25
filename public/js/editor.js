@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const newEditor = () => {
+  document.getElementById('initialButtonsContainer').style.display = 'none';
   document.getElementById('songSelectionContainer').style.display = 'flex';
 };
 
@@ -192,9 +193,10 @@ const initialize = () => {
   tmlCanvas.height = window.innerHeight * 0.27;
 };
 
-const gotoMain = () => {
-  if(confirm(rusure)) {
-    document.getElementById('initialScreenContainer').style.display = 'initial';
+const gotoMain = (isCalledByMain) => {
+  if(isCalledByMain || confirm(rusure)) {
+    document.getElementById('initialScreenContainer').style.display = 'block';
+    document.getElementById('initialButtonsContainer').style.display = 'flex';
     document.getElementById('songSelectionContainer').style.display = 'none';
     document.getElementsByClassName
     songSelectBox.selectedIndex = 0;
@@ -221,18 +223,6 @@ const songControl = () => {
     return song.playing() ? song.pause() : song.play();
   }
 }
-
-const setBPM = (e) => {
-  bpm = Number(e.value);
-};
-
-const setSpeed = (e) => {
-  speed = Number(e.value);
-};
-
-const setOffset = (e) => {
-  offset = Number(e.value);
-};
 
 const save = () => {
   let trackSettingsForm = trackSettings.getElementsByClassName('settingsPropertiesTextbox');

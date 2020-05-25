@@ -62,7 +62,7 @@ body {
   width: 30%;
 }
 
-#backText {
+.backText {
   font-size: 1.8vh;
 }
 
@@ -394,4 +394,10 @@ body {
   border: 1px solid #BBB;
   margin-top: 2vh;
   background-color: white;
+}
+
+#gotoGame {
+  position: fixed;
+  left: 3vw;
+  top: 4.5vh;
 }
