@@ -168,30 +168,26 @@ const changeMode = (n) => {
 } 
 
 const drawNote = (p, x, y) => {
-  try {
-    x = cntCanvas.width / 200 * (x + 100);
-    y = cntCanvas.height / 200 * (y + 100);
-    let w = cntCanvas.width / 40;
-    let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
-    let opacity = 1;
-    if(p > 100) {
-      opacity = (150 - p) / 150;
-    }
-    grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
-    grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
-    cntCtx.strokeStyle = grd;
-    cntCtx.fillStyle = grd;
-    cntCtx.lineWidth = Math.round(cntCanvas.width / 500);
-    cntCtx.beginPath();
-    cntCtx.arc(x, y, w, 0, p / 50 * Math.PI);
-    cntCtx.stroke();
-    cntCtx.beginPath();
-    cntCtx.arc(x, y, w / 100 * p, 0, 2 * Math.PI);
-    cntCtx.fill();
+  p = Math.max(p, 0);
+  x = cntCanvas.width / 200 * (x + 100);
+  y = cntCanvas.height / 200 * (y + 100);
+  let w = cntCanvas.width / 40;
+  let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+  let opacity = 1;
+  if(p > 100) {
+    opacity = (150 - p) / 150;
   }
-  catch(err) {
-    console.log(`Error: ${err}`);
-  }
+  grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
+  grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
+  cntCtx.strokeStyle = grd;
+  cntCtx.fillStyle = grd;
+  cntCtx.lineWidth = Math.round(cntCanvas.width / 500);
+  cntCtx.beginPath();
+  cntCtx.arc(x, y, w, 0, p / 50 * Math.PI);
+  cntCtx.stroke();
+  cntCtx.beginPath();
+  cntCtx.arc(x, y, w / 100 * p, 0, 2 * Math.PI);
+  cntCtx.fill();
 };
 
 const drawBullet = (n, x, y, a) => {
