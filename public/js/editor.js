@@ -165,7 +165,7 @@ const changeMode = (n) => {
   document.getElementsByClassName('menuIcon')[n].classList.toggle('clickable');
   document.getElementsByClassName('menuIcon')[mode].classList.toggle('clickable');
   mode = n;
-}
+} 
 
 const drawNote = (p, x, y) => {
   try {
@@ -176,9 +176,7 @@ const drawNote = (p, x, y) => {
     let opacity = 1;
     if(p > 100) {
       opacity = (150 - p) / 150;
-      p = 100;
     }
-    console.log(opacity);
     grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
     grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
     cntCtx.strokeStyle = grd;
@@ -259,12 +257,13 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const cntRender = (e) => {
-  const start = lowerBound(pattern.patterns, song.seek() * 1000 - (bpm * 3.5 / speed));
-  const end = upperBound(pattern.patterns, song.seek() * 1000 + (bpm * 7 / speed));
+  const seek = song.seek() - (offset + sync) / 1000;
+  const start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 3.5 / speed));
+  const end = upperBound(pattern.patterns, seek * 1000 + (bpm * 7 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
   eraseCanvas();
   for(let i = 0; i < renderNotes.length; i++) {
-    let p = ((bpm * 7 / speed) - (renderNotes[i].ms - (song.seek() * 1000))) / (bpm * 7 / speed) * 100;
+    let p = ((bpm * 7 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 7 / speed) * 100;
     drawNote(p, renderNotes[i].x, renderNotes[i].y);
   }
   window.requestAnimationFrame(cntRender);
@@ -275,6 +274,8 @@ const songControl = () => {
     if(song.playing()){
       song.pause();
     } else {
+      console.log(song.seek() + (offset + sync) / 1000);
+      song.seek(song.seek() + (offset + sync) / 1000);
       song.play();
     }
   }
@@ -347,7 +348,6 @@ const changeOffset = () => {
 
 const scrollHorizontally = (e) => {
   e = window.event || e;
-  console.log(Math.min(1, (e.wheelDelta || -e.detail)));
   let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
   document.getElementById('timelineContainer').scrollLeft -= (delta * 30);
   e.preventDefault();
