@@ -44,7 +44,14 @@ let pattern = {
     {"ms": 6/18*41000, "value": 0, "x": 50, "y" : 50},
     {"ms": 6/18*42000, "value": 0, "x": 0, "y" : 0},
   ],
-  "bullets" : [],
+  "bullets" : [
+    {"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
+    {"ms": 6/18*1000, "value": 0, "direction": "R", "location": 0, "angle": 0, "speed": 2},
+    {"ms": 6/18*3000, "value": 0, "direction": "L", "location": 0, "angle": 45, "speed": 3},
+    {"ms": 6/18*3000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 3},
+    {"ms": 6/18*5000, "value": 0, "direction": "L", "location": 0, "angle": 90, "speed": 4},
+    {"ms": 6/18*5000, "value": 0, "direction": "R", "location": 0, "angle": 90, "speed": 4},
+  ],
   "triggers" : []
 };
 let miliseconds = [];

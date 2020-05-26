@@ -78,17 +78,15 @@ mry파일은 게임의 채보파일을 담은 파일입니다. 확장자는 .jso
 
 patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
 <br>
-{ “ms” : n, “value” : “s”, “direction” : “s”, “location” : n, option }
+{ “ms” : n, “value” : “s”, option }
 <br>
-(형식 : ms / 고유값 / L/R / 위치 / { 고유정보 })
+(형식 : ms / 고유값 / { 고유정보 })
 
 <table>
   <tr>
     <th>명칭</th>
     <th>ms</th>
     <th>고유값</th>
-    <th>L/R</th>
-    <th>위치</th>
     <th>고유정보</th>
     <th>상세설명</th>
   </tr>
@@ -96,8 +94,6 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>일반노트</td>
     <td>n</td>
     <td>0</td>
-    <td>-</td>
-    <td>-</td>
     <td>{x,y}</td>
     <td>x : 노트의 x좌표(-100~100)<br>y : 노트의 y좌표(-100~100)</td>
   </tr>
@@ -105,26 +101,20 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>일반탄</td>
     <td>n</td>
     <td>0</td>
-    <td>L/R</td>
-    <td>-100~100</td>
-    <td>{angle, speed}</td>
-    <td>angle : -90~90<br>speed : 1~5</td>
+    <td>{direction, location, angle, speed}</td>
+    <td>direction : L/R<br>location : -100~100<br>angle : 0~360<br>speed : 1~5</td>
   </tr>
   <tr>
     <td>조준탄</td>
     <td>n</td>
     <td>1</td>
-    <td>L/R</td>
-    <td>-100~100</td>
-    <td>{speed}</td>
-    <td>speed : 1~5</td>
+    <td>{direction, location, speed}</td>
+    <td>direction : L/R<br>location : -100~100<br>speed : 1~5</td>
   </tr>
   <tr>
     <td>Destroy</td>
     <td>n</td>
     <td>0</td>
-    <td>-</td>
-    <td>-</td>
     <td>{num}</td>
     <td>아직 Destroy처리 되지 않은 Bullet을 Destroy시킬 수 있습니다.<br>num : n번째 Bullet의 번호 n</td>
   </tr>
@@ -133,16 +123,12 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>n</td>
     <td>1</td>
     <td>-</td>
-    <td>-</td>
-    <td>-</td>
     <td>모든 Bullet을 Destroy시킬 수 있습니다.</td>
   </tr>
   <tr>
     <td>BPM</td>
     <td>n</td>
     <td>2</td>
-    <td>-</td>
-    <td>-</td>
     <td>{BPM}</td>
     <td>특정 시점부터 채보의 BPM을 바꾸는 명령어입니다.<br>BPM : n</td>
   </tr>
@@ -150,8 +136,6 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>Opacity</td>
     <td>n</td>
     <td>3</td>
-    <td>-</td>
-    <td>-</td>
     <td>{opacity}</td>
     <td>채보 전체의 투명도를 조절하는 명령어입니다.<br>opacity: 0~1</td>
   </tr>
