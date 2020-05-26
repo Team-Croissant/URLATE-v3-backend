@@ -318,6 +318,24 @@ const save = () => {
   a.click();
 };
 
+const changeBPM = () => {
+  window.requestAnimationFrame(() => {
+    bpm = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value);
+  });
+};
+
+const changeSpeed = () => {
+  window.requestAnimationFrame(() => {
+    speed = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value);
+  });
+};
+
+const changeOffset = () => {
+  window.requestAnimationFrame(() => {
+    offset = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value);
+  });
+};
+
 const scrollHorizontally = (e) => {
   e = window.event || e;
   console.log(Math.min(1, (e.wheelDelta || -e.detail)));
