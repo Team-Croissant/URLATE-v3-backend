@@ -52,5 +52,7 @@
 	"editor_main": "editor_main",
 	"select_a_song": "select_a_song",
 	"RUsure": "RUsure",
-	"RUSure": "RUSure"
+	"RUSure": "RUSure",
+	"goto_game": "goto_game",
+	"cancel": "cancel"
 }

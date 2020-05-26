@@ -168,23 +168,32 @@ const changeMode = (n) => {
 }
 
 const drawNote = (p, x, y) => {
-  x += 100;
-  y += 100;
-  x = cntCanvas.width / 200 * x;
-  y = cntCanvas.height / 200 * y;
-  let w = cntCanvas.width / 40;
-  let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
-  grd.addColorStop(0, "#fb4934");
-  grd.addColorStop(1, "#ebd934");
-  cntCtx.strokeStyle = grd;
-  cntCtx.fillStyle = grd;
-  cntCtx.lineWidth = Math.round(cntCanvas.width / 500);
-  cntCtx.beginPath();
-  cntCtx.arc(x, y, w, 0, 2 * Math.PI);
-  cntCtx.stroke();
-  cntCtx.beginPath();
-  cntCtx.arc(x, y, w / 100 * p, 0, 2 * Math.PI);
-  cntCtx.fill();
+  try {
+    x = cntCanvas.width / 200 * (x + 100);
+    y = cntCanvas.height / 200 * (y + 100);
+    let w = cntCanvas.width / 40;
+    let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+    let opacity = 1;
+    if(p > 100) {
+      opacity = (150 - p) / 150;
+      p = 100;
+    }
+    console.log(opacity);
+    grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
+    grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
+    cntCtx.strokeStyle = grd;
+    cntCtx.fillStyle = grd;
+    cntCtx.lineWidth = Math.round(cntCanvas.width / 500);
+    cntCtx.beginPath();
+    cntCtx.arc(x, y, w, 0, p / 50 * Math.PI);
+    cntCtx.stroke();
+    cntCtx.beginPath();
+    cntCtx.arc(x, y, w / 100 * p, 0, 2 * Math.PI);
+    cntCtx.fill();
+  }
+  catch(err) {
+    console.log(`Error: ${err}`);
+  }
 };
 
 const drawBullet = (n, x, y, a) => {
@@ -250,7 +259,7 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const cntRender = (e) => {
-  const start = lowerBound(pattern.patterns, song.seek() * 1000/*  - (bpm * 7 / speed)*/); //disable for now
+  const start = lowerBound(pattern.patterns, song.seek() * 1000 - (bpm * 3.5 / speed));
   const end = upperBound(pattern.patterns, song.seek() * 1000 + (bpm * 7 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
   eraseCanvas();
