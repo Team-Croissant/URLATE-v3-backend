@@ -3,6 +3,7 @@ const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
+let mouseX = 0, mouseY = 0;
 let mode = 0; //0: move tool, 1: edit tool
 let isSettingsOpened = false;
 let userName = '';
@@ -289,24 +290,28 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const cntRender = (e) => {
+  window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
   let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 7 / speed));
   let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
-  start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
-  end = upperBound(pattern.bullets, seek * 1000);
-  const renderBullets = pattern.bullets.slice(start, end);
   eraseCanvas();
   for(let i = 0; i < renderNotes.length; i++) {
     const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
     drawNote(p, renderNotes[i].x, renderNotes[i].y);
   }
+  start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
+  end = upperBound(pattern.bullets, seek * 1000);
+  const renderBullets = pattern.bullets.slice(start, end);
   for(let i = 0; i < renderBullets.length; i++) {
     const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
     const left = renderBullets[i].direction == 'L';
-    drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1), renderBullets[i].angle + (left ? 0 : 180));
+    if(renderBullets[i].value == 0) {
+      drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1), renderBullets[i].angle + (left ? 0 : 180));
+    } else {
+      //drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), 0);
+    }
   }
-  window.requestAnimationFrame(cntRender);
 };
 
 const songControl = () => {
@@ -385,7 +390,18 @@ const changeOffset = () => {
   });
 };
 
-const scrollHorizontally = (e) => {
+const trackMousePos = (event) => {
+  const width = parseInt((componentView.offsetWidth - canvasContainer.offsetWidth) / 2 + menuContainer.offsetWidth);
+  const height = navbar.offsetHeight;
+  const x = (event.clientX - width) / canvasContainer.offsetWidth * 200 - 100;
+  const y = (event.clientY - height) / canvasContainer.offsetHeight * 200 - 100;
+  if(!(x < -100 || y < -100 || x > 100 || y > 100)) {
+    mouseX = x;
+    mouseY = y;
+  }
+}
+
+const scrollHorizontally = e => {
   e = window.event || e;
   let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
   document.getElementById('timelineContainer').scrollLeft -= (delta * 30);
@@ -396,7 +412,7 @@ document.getElementById('timelineContainer').addEventListener("mousewheel", scro
 document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollHorizontally);
 window.addEventListener("resize", initialize);
 
-window.addEventListener("beforeunload", function (e) {
+window.addEventListener("beforeunload", e => {
   (e || window.event).returnValue = rusure;
   return rusure;
 });
