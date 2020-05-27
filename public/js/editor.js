@@ -278,16 +278,13 @@ const cntRender = (e) => {
   const renderBullets = pattern.bullets.slice(start, end);
   eraseCanvas();
   for(let i = 0; i < renderNotes.length; i++) {
-    let p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+    const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
     drawNote(p, renderNotes[i].x, renderNotes[i].y);
   }
   for(let i = 0; i < renderBullets.length; i++) {
-    let p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
-    if(renderBullets[i].direction == 'L') {
-      drawBullet(renderBullets[i].value, -100 + p, renderBullets[i].location + p * getTan(renderBullets[i].angle), renderBullets[i].angle);
-    } else {
-      drawBullet(renderBullets[i].value, 100 + -1 * p, renderBullets[i].location + p * getTan(renderBullets[i].angle) * -1, renderBullets[i].angle + 180);
-    }
+    const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
+    const left = renderBullets[i].direction == 'L';
+    drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1), renderBullets[i].angle + (left ? 0 : 180));
   }
   window.requestAnimationFrame(cntRender);
 };
