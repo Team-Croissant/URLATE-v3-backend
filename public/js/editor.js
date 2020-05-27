@@ -47,11 +47,23 @@ let pattern = {
   "bullets" : [
     {"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
     {"ms": 6/18*1000, "value": 0, "direction": "R", "location": 0, "angle": 0, "speed": 2},
+    {"ms": 6/18*3000, "value": 0, "direction": "L", "location": 0, "angle": 30, "speed": 2},
+    {"ms": 6/18*3000, "value": 0, "direction": "R", "location": 0, "angle": 30, "speed": 2},
+    {"ms": 6/18*5000, "value": 0, "direction": "L", "location": 0, "angle": 45, "speed": 2},
+    {"ms": 6/18*5000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 2},
+    {"ms": 6/18*7000, "value": 0, "direction": "L", "location": 0, "angle": 60, "speed": 2},
+    {"ms": 6/18*7000, "value": 0, "direction": "R", "location": 0, "angle": 60, "speed": 2},
+    {"ms": 6/18*9000, "value": 0, "direction": "L", "location": 0, "angle": 75, "speed": 1},
     {"ms": 6/18*9000, "value": 0, "direction": "R", "location": 0, "angle": 75, "speed": 1},
   ],
   "triggers" : []
 };
 let miliseconds = [];
+
+const getTan = deg => {
+  let rad = deg * Math.PI / 180;
+  return Math.tan(rad);
+};
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
@@ -195,8 +207,8 @@ const drawNote = (p, x, y) => {
 };
 
 const drawBullet = (n, x, y, a) => {
-  x = cntCanvas.width / 200 * x;
-  y = cntCanvas.height / 200 * y;
+  x = cntCanvas.width / 200 * (x + 100);
+  y = cntCanvas.height / 200 * (y + 100);
   let w = cntCanvas.width / 80;
   cntCtx.fillStyle = "#555";
   cntCtx.strokeStyle = "#555";
@@ -258,13 +270,24 @@ const gotoMain = (isCalledByMain) => {
 
 const cntRender = (e) => {
   const seek = song.seek() - (offset + sync) / 1000;
-  const start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 3.5 / speed));
-  const end = upperBound(pattern.patterns, seek * 1000 + (bpm * 7 / speed));
+  let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 7 / speed));
+  let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
+  start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 20));
+  end = upperBound(pattern.bullets, seek * 1000);
+  const renderBullets = pattern.bullets.slice(start, end);
   eraseCanvas();
   for(let i = 0; i < renderNotes.length; i++) {
-    let p = ((bpm * 7 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 7 / speed) * 100;
+    let p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
     drawNote(p, renderNotes[i].x, renderNotes[i].y);
+  }
+  for(let i = 0; i < renderBullets.length; i++) {
+    let p = (seek * 1000 - renderBullets[i].ms) / (bpm * 20 / speed / renderBullets[i].speed) * 100;
+    if(renderBullets[i].direction == 'L') {
+      drawBullet(renderBullets[i].value, -100 + p, renderBullets[i].location + p * getTan(renderBullets[i].angle), renderBullets[i].angle);
+    } else {
+      drawBullet(renderBullets[i].value, 100 + -1 * p, renderBullets[i].location + p * getTan(renderBullets[i].angle) * -1, renderBullets[i].angle + 180);
+    }
   }
   window.requestAnimationFrame(cntRender);
 };
@@ -274,7 +297,6 @@ const songControl = () => {
     if(song.playing()){
       song.pause();
     } else {
-      console.log(song.seek() + (offset + sync) / 1000);
       song.seek(song.seek() + (offset + sync) / 1000);
       song.play();
     }
