@@ -47,10 +47,7 @@ let pattern = {
   "bullets" : [
     {"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
     {"ms": 6/18*1000, "value": 0, "direction": "R", "location": 0, "angle": 0, "speed": 2},
-    {"ms": 6/18*3000, "value": 0, "direction": "L", "location": 0, "angle": 45, "speed": 3},
-    {"ms": 6/18*3000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 3},
-    {"ms": 6/18*5000, "value": 0, "direction": "L", "location": 0, "angle": 90, "speed": 4},
-    {"ms": 6/18*5000, "value": 0, "direction": "R", "location": 0, "angle": 90, "speed": 4},
+    {"ms": 6/18*9000, "value": 0, "direction": "R", "location": 0, "angle": 75, "speed": 1},
   ],
   "triggers" : []
 };
