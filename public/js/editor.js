@@ -273,7 +273,7 @@ const cntRender = (e) => {
   let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 7 / speed));
   let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
-  start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 20));
+  start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
   end = upperBound(pattern.bullets, seek * 1000);
   const renderBullets = pattern.bullets.slice(start, end);
   eraseCanvas();
@@ -282,7 +282,7 @@ const cntRender = (e) => {
     drawNote(p, renderNotes[i].x, renderNotes[i].y);
   }
   for(let i = 0; i < renderBullets.length; i++) {
-    let p = (seek * 1000 - renderBullets[i].ms) / (bpm * 20 / speed / renderBullets[i].speed) * 100;
+    let p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
     if(renderBullets[i].direction == 'L') {
       drawBullet(renderBullets[i].value, -100 + p, renderBullets[i].location + p * getTan(renderBullets[i].angle), renderBullets[i].angle);
     } else {
