@@ -79,6 +79,7 @@ let pattern = {
   ],
   "triggers" : []
 };
+let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
 
 const calcAngleDegrees = (x, y) => {
@@ -293,7 +294,12 @@ const gotoMain = (isCalledByMain) => {
   }
 };
 
+const trackMouseSelection = (i, v1, v2, x, y) => {
+
+};
+
 const cntRender = (e) => {
+  selectedCntElement = {"v1": '', "v2": '', "i": ''};
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
   let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
@@ -303,6 +309,7 @@ const cntRender = (e) => {
   for(let i = 0; i < renderNotes.length; i++) {
     const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
     drawNote(p, renderNotes[i].x, renderNotes[i].y);
+    trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
   }
   start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
   end = upperBound(pattern.bullets, seek * 1000);
@@ -310,12 +317,17 @@ const cntRender = (e) => {
   for(let i = 0; i < renderBullets.length; i++) {
     const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
     const left = renderBullets[i].direction == 'L';
+    let x = (left ? -1 : 1) * (100 - p);
+    let y = 0;
     if(renderBullets[i].value == 0) {
-      drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1), renderBullets[i].angle + (left ? 0 : 180));
+      y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
+      drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180));
     } else {
       if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
-      drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1));
+      y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
+      drawBullet(renderBullets[i].value, x, y);
     }
+    trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
   }
 };
 
