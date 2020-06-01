@@ -79,7 +79,11 @@ let pattern = {
   ],
   "triggers" : []
 };
-let miliseconds = [];
+let circleBulletAngles = [];
+
+const calcAngleDegrees = (x, y) => {
+  return Math.atan2(y, x) * 180 / Math.PI;
+};
 
 const getTan = deg => {
   let rad = deg * Math.PI / 180;
@@ -309,7 +313,8 @@ const cntRender = (e) => {
     if(renderBullets[i].value == 0) {
       drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1), renderBullets[i].angle + (left ? 0 : 180));
     } else {
-      //drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), 0);
+      if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
+      drawBullet(renderBullets[i].value, (left ? -1 : 1) * (100 - p), renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1));
     }
   }
 };
@@ -319,6 +324,7 @@ const songControl = () => {
     if(song.playing()){
       song.pause();
     } else {
+      circleBulletAngles = [];
       song.seek(song.seek() + (offset + sync) / 1000);
       song.play();
     }
@@ -399,6 +405,10 @@ const trackMousePos = (event) => {
     mouseX = x;
     mouseY = y;
   }
+}
+
+const compClicked = () => {
+  alert(mouseX + ',' +  mouseY);
 }
 
 const scrollHorizontally = e => {
