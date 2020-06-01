@@ -324,6 +324,14 @@ const cntRender = (e) => {
       drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180));
     } else {
       if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
+      if(!left) console.log(circleBulletAngles[start+i]);
+      if(left) {
+        if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
+        else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
+      } else {
+        if(70 < circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 70;
+        else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
+      }
       y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
       drawBullet(renderBullets[i].value, x, y);
     }
