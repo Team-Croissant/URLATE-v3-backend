@@ -216,7 +216,7 @@ const drawNote = (p, x, y) => {
   let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
   let opacity = 1;
   if(p > 100) {
-    opacity = (150 - p) / 150;
+    opacity = (130 - p) / 130;
   }
   grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
   grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
@@ -296,7 +296,7 @@ const gotoMain = (isCalledByMain) => {
 const cntRender = (e) => {
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
-  let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 7 / speed));
+  let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
   let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
   eraseCanvas();
@@ -408,7 +408,7 @@ const trackMousePos = (event) => {
 }
 
 const compClicked = () => {
-  alert(mouseX + ',' +  mouseY);
+  console.log(mouseX + ',' +  mouseY);
 }
 
 const scrollHorizontally = e => {
