@@ -473,7 +473,7 @@ const compClicked = () => {
         selectedElement = pattern.patterns[selectedCntElement.i];
         break;
       case 1:
-        selectedElement = pattern.patterns[selectedCntElement.i];
+        selectedElement = pattern.bullets[selectedCntElement.i];
         break;
       default:
         console.log("compClicked:Error");
