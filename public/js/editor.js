@@ -79,6 +79,7 @@ let pattern = {
   ],
   "triggers" : []
 };
+let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
 
@@ -196,7 +197,7 @@ const toggleSettings = () => {
     document.getElementById('settingsContainer').style.display = 'flex';
     document.getElementById('timelineContainer').style.width = '80vw';
     tmlCanvas.style.width = '80vw';
-    tmlCanvas.width = window.innerWidth * 0.80;
+    tmlCanvas.width = window.innerWidth * 0.8;
   }
   isSettingsOpened = !isSettingsOpened;
 };
@@ -308,7 +309,7 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   switch(v1) {
     case 0:
       if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 120) {
-        selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+        pointingCntElement = {"v1": v1, "v2": v2, "i": i};
       }
       break;
     case 1:
@@ -316,22 +317,22 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
         case 0:
           if(song.playing()) {
             if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
-              selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
             }
           } else {
             if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
-              selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
             }
           }
           break;
         case 1:
           if(song.playing()) {
-            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
-              selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 300) {
+              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
             }
           } else {
-            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
-              selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
+              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
             }
           }
           break;
@@ -344,8 +345,12 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   }
 };
 
+const selectedCheck = (n, i) => {
+  return pointingCntElement.v1 === n && pointingCntElement.i == i || selectedCntElement.v1 === n && selectedCntElement.i == i;
+};
+
 const cntRender = (e) => {
-  selectedCntElement = {"v1": '', "v2": '', "i": ''};
+  pointingCntElement = {"v1": '', "v2": '', "i": ''};
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
   let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
@@ -355,7 +360,7 @@ const cntRender = (e) => {
   for(let i = 0; i < renderNotes.length; i++) {
     const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
     trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
-    drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCntElement.v1 === 0 && selectedCntElement.i == start + i);
+    drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCheck(0, start + i));
   }
   start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
   end = upperBound(pattern.bullets, seek * 1000);
@@ -368,7 +373,7 @@ const cntRender = (e) => {
     if(renderBullets[i].value == 0) {
       y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
       trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-      drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
+      drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
     } else {
       if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
       if(left) {
@@ -379,11 +384,11 @@ const cntRender = (e) => {
         else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
       }
       y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
-      trackMouseSelection(start + i, 1, renderBullets[i].value, x, y, selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
-      drawBullet(renderBullets[i].value, x, y, '', selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
+      trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+      drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
     }
   }
-  if(selectedCntElement.i === '') {
+  if(pointingCntElement.i === '') {
     componentView.style.cursor = "";
   } else {
     componentView.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
@@ -478,19 +483,27 @@ const trackMousePos = (event) => {
 }
 
 const compClicked = () => {
-  if(selectedCntElement.v1 !== '') {
+  if(pointingCntElement.v1 !== '') {
     let selectedElement;
-    switch(selectedCntElement.v1) {
+    switch(pointingCntElement.v1) {
       case 0:
-        selectedElement = pattern.patterns[selectedCntElement.i];
+        selectedElement = pattern.patterns[pointingCntElement.i];
         break;
       case 1:
-        selectedElement = pattern.bullets[selectedCntElement.i];
+        selectedElement = pattern.bullets[pointingCntElement.i];
         break;
       default:
         console.log("compClicked:Error");
     }
-    console.log(selectedElement);
+    trackSettings.style.display = 'none';
+    elementsSettings.style.display = 'block';
+    if(!isSettingsOpened) toggleSettings();
+    selectedCntElement = pointingCntElement;
+  } else {
+    trackSettings.style.display = 'block';
+    elementsSettings.style.display = 'none';
+    if(isSettingsOpened) toggleSettings();
+    selectedCntElement = {"v1": '', "v2": '', "i": ''};
   }
 }
 
