@@ -209,7 +209,7 @@ const changeMode = (n) => {
   mode = n;
 } 
 
-const drawNote = (p, x, y) => {
+const drawNote = (p, x, y, s) => {
   p = Math.max(p, 0);
   x = cntCanvas.width / 200 * (x + 100);
   y = cntCanvas.height / 200 * (y + 100);
@@ -219,8 +219,13 @@ const drawNote = (p, x, y) => {
   if(p > 100) {
     opacity = (130 - p) / 130;
   }
-  grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
-  grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
+  if(s == true) {
+    grd.addColorStop(0, `rgba(235, 213, 52, ${opacity})`);
+    grd.addColorStop(1, `rgba(235, 213, 52, ${opacity})`);
+  } else {
+    grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
+    grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
+  }
   cntCtx.strokeStyle = grd;
   cntCtx.fillStyle = grd;
   cntCtx.lineWidth = Math.round(cntCanvas.width / 500);
@@ -232,12 +237,17 @@ const drawNote = (p, x, y) => {
   cntCtx.fill();
 };
 
-const drawBullet = (n, x, y, a) => {
+const drawBullet = (n, x, y, a, s) => {
   x = cntCanvas.width / 200 * (x + 100);
   y = cntCanvas.height / 200 * (y + 100);
   let w = cntCanvas.width / 80;
-  cntCtx.fillStyle = "#555";
-  cntCtx.strokeStyle = "#555";
+  if(s == true) {
+    cntCtx.fillStyle = "#ebd534";
+    cntCtx.strokeStyle = "#ebd534";
+  } else {
+    cntCtx.fillStyle = "#555";
+    cntCtx.strokeStyle = "#555";
+  }
   cntCtx.beginPath();
   switch(n) {
     case 0:
@@ -295,7 +305,17 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-
+  switch(v1) {
+    case 0:
+      if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 80) {
+        selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+      }
+      break;
+    case 1:
+      break;
+    default:
+      alert("trackMouseSelection:Error");
+  }
 };
 
 const cntRender = (e) => {
@@ -308,8 +328,8 @@ const cntRender = (e) => {
   eraseCanvas();
   for(let i = 0; i < renderNotes.length; i++) {
     const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
-    drawNote(p, renderNotes[i].x, renderNotes[i].y);
     trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
+    drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCntElement.v1 === 0 && selectedCntElement.i == start + i);
   }
   start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
   end = upperBound(pattern.bullets, seek * 1000);
@@ -321,10 +341,10 @@ const cntRender = (e) => {
     let y = 0;
     if(renderBullets[i].value == 0) {
       y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
-      drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180));
+      trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+      drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
     } else {
       if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
-      if(!left) console.log(circleBulletAngles[start+i]);
       if(left) {
         if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
         else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
@@ -333,9 +353,14 @@ const cntRender = (e) => {
         else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
       }
       y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
+      trackMouseSelection(start + i, 1, renderBullets[i].value, x, y, selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
       drawBullet(renderBullets[i].value, x, y);
     }
-    trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+  }
+  if(selectedCntElement.i === '') {
+    componentView.style.cursor = "";
+  } else {
+    componentView.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
   }
 };
 
