@@ -466,7 +466,20 @@ const trackMousePos = (event) => {
 }
 
 const compClicked = () => {
-  console.log(mouseX + ',' +  mouseY);
+  if(selectedCntElement.v1 !== '') {
+    let selectedElement;
+    switch(selectedCntElement.v1) {
+      case 0:
+        selectedElement = pattern.patterns[selectedCntElement.i];
+        break;
+      case 1:
+        selectedElement = pattern.patterns[selectedCntElement.i];
+        break;
+      default:
+        console.log("compClicked:Error");
+    }
+    console.log(selectedElement);
+  }
 }
 
 const scrollHorizontally = e => {
