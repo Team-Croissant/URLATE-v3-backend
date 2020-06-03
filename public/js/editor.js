@@ -315,17 +315,17 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
       switch(v2) {
         case 0:
           if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
-        selectedCntElement = {"v1": v1, "v2": v2, "i": i};
-      }
-      break;
-    case 1:
+            selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+          }
+          break;
+        case 1:
           if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 230) {
             selectedCntElement = {"v1": v1, "v2": v2, "i": i};
           }
-      break;
-    default:
-      alert("trackMouseSelection:Error");
-  }
+          break;
+        default:
+          alert("trackMouseSelection:Error");
+      }
       break;
     default:
       alert("trackMouseSelection:Error");
@@ -378,13 +378,12 @@ const cntRender = (e) => {
   }
 };
 
-const songControl = () => {
+const songPlayPause = () => {
   if(document.getElementById('editorMainContainer').style.display == 'initial') {
     if(song.playing()){
       song.pause();
     } else {
       circleBulletAngles = [];
-      song.seek(song.seek() + (offset + sync) / 1000);
       song.play();
     }
   }
@@ -488,6 +487,6 @@ window.addEventListener("beforeunload", e => {
 
 document.onkeypress = e => {
   if(e.keyCode == 32) {
-    songControl();
+    songPlayPause();
   }
 };
