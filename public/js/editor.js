@@ -307,11 +307,25 @@ const gotoMain = (isCalledByMain) => {
 const trackMouseSelection = (i, v1, v2, x, y) => {
   switch(v1) {
     case 0:
-      if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 80) {
+      if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 120) {
         selectedCntElement = {"v1": v1, "v2": v2, "i": i};
       }
       break;
     case 1:
+      switch(v2) {
+        case 0:
+          if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
+        selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+      }
+      break;
+    case 1:
+          if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 230) {
+            selectedCntElement = {"v1": v1, "v2": v2, "i": i};
+          }
+      break;
+    default:
+      alert("trackMouseSelection:Error");
+  }
       break;
     default:
       alert("trackMouseSelection:Error");
@@ -354,7 +368,7 @@ const cntRender = (e) => {
       }
       y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
       trackMouseSelection(start + i, 1, renderBullets[i].value, x, y, selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
-      drawBullet(renderBullets[i].value, x, y);
+      drawBullet(renderBullets[i].value, x, y, '', selectedCntElement.v1 === 1 && selectedCntElement.i == start + i);
     }
   }
   if(selectedCntElement.i === '') {
