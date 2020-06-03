@@ -484,21 +484,28 @@ const trackMousePos = (event) => {
 
 const compClicked = () => {
   if(pointingCntElement.v1 !== '') {
-    let selectedElement;
-    switch(pointingCntElement.v1) {
-      case 0:
-        selectedElement = pattern.patterns[pointingCntElement.i];
-        break;
-      case 1:
-        selectedElement = pattern.bullets[pointingCntElement.i];
-        break;
-      default:
-        console.log("compClicked:Error");
+    if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
+      trackSettings.style.display = 'block';
+      elementsSettings.style.display = 'none';
+      if(isSettingsOpened) toggleSettings();
+      selectedCntElement = {"v1": '', "v2": '', "i": ''};
+    } else {
+      let selectedElement;
+      switch(pointingCntElement.v1) {
+        case 0:
+          selectedElement = pattern.patterns[pointingCntElement.i];
+          break;
+        case 1:
+          selectedElement = pattern.bullets[pointingCntElement.i];
+          break;
+        default:
+          console.log("compClicked:Error");
+      }
+      trackSettings.style.display = 'none';
+      elementsSettings.style.display = 'block';
+      if(!isSettingsOpened) toggleSettings();
+      selectedCntElement = pointingCntElement;
     }
-    trackSettings.style.display = 'none';
-    elementsSettings.style.display = 'block';
-    if(!isSettingsOpened) toggleSettings();
-    selectedCntElement = pointingCntElement;
   } else {
     trackSettings.style.display = 'block';
     elementsSettings.style.display = 'none';
