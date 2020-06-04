@@ -320,18 +320,18 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
         switch(v2) {
           case 0:
             if(song.playing()) {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
                 pointingCntElement = {"v1": v1, "v2": v2, "i": i};
               }
             } else {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
                 pointingCntElement = {"v1": v1, "v2": v2, "i": i};
               }
             }
             break;
           case 1:
             if(song.playing()) {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 400) {
                 pointingCntElement = {"v1": v1, "v2": v2, "i": i};
               }
             } else {
