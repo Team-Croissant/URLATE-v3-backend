@@ -535,14 +535,22 @@ const changeSettingsMode = (v1, v2, i) => {
       document.getElementById("elementsSettings").style.display = 'block';
       document.getElementById("noteSettingsContainer").style.display = 'block';
       document.getElementById("bulletSettingsContainer").style.display = 'none';
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.patterns[i].x;
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.patterns[i].y;
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.patterns[i].ms;
       break;
     case 1:
       document.getElementById("noteSettingsContainer").style.display = 'none';
       document.getElementById("bulletSettingsContainer").style.display = 'block';
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.bullets[i].direction;
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.bullets[i].location;
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[3].value = pattern.bullets[i].ms;
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[4].value = pattern.bullets[i].speed;
       switch(v2) {
         case 0:
           document.getElementById("dot").style.color = '#6fdef7';
           bulletSettingsContainer.getElementsByClassName("settingsPropertiesIndividual")[2].style.display = 'flex';
+          bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.bullets[i].angle;
           break;
         case 1:
           document.getElementById("dot").style.color = '#575cf2';
