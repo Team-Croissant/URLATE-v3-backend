@@ -281,6 +281,7 @@ const initialize = () => {
 };
 
 const gotoMain = (isCalledByMain) => {
+  song.stop();
   if(isCalledByMain || confirm(rusure)) {
     document.getElementById('initialScreenContainer').style.display = 'block';
     document.getElementById('initialButtonsContainer').style.display = 'flex';
