@@ -307,9 +307,11 @@ const gotoMain = (isCalledByMain) => {
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
   if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
+    const seek = song.seek() - (offset + sync) / 1000;
     switch(v1) {
       case 0:
-        if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 150) {
+        const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+        if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 150 && p <= 100) {
           pointingCntElement = {"v1": v1, "v2": v2, "i": i};
         }
         break;
