@@ -535,7 +535,13 @@ window.addEventListener("beforeunload", e => {
 });
 
 document.onkeypress = e => {
-  if(e.keyCode == 32) {
+  if(e.keyCode == 32 || e.keyCode == 13) {
     songPlayPause();
+  } else if(e.keyCode == 27) {
+    if(song.playing()){
+      songPlayPause();
+    } else {
+      song.stop();
+    }
   }
 };
