@@ -306,42 +306,44 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  switch(v1) {
-    case 0:
-      if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 120) {
-        pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-      }
-      break;
-    case 1:
-      switch(v2) {
-        case 0:
-          if(song.playing()) {
-            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
-              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+  if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
+    switch(v1) {
+      case 0:
+        if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 150) {
+          pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+        }
+        break;
+      case 1:
+        switch(v2) {
+          case 0:
+            if(song.playing()) {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
+                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+              }
+            } else {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
+                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+              }
             }
-          } else {
-            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 200) {
-              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+            break;
+          case 1:
+            if(song.playing()) {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
+                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+              }
+            } else {
+              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 300) {
+                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+              }
             }
-          }
-          break;
-        case 1:
-          if(song.playing()) {
-            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
-              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-            }
-          } else {
-            if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 300) {
-              pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-            }
-          }
-          break;
-        default:
-          alert("trackMouseSelection:Error");
-      }
-      break;
-    default:
-      alert("trackMouseSelection:Error");
+            break;
+          default:
+            alert("trackMouseSelection:Error");
+        }
+        break;
+      default:
+        alert("trackMouseSelection:Error");
+    }
   }
 };
 
