@@ -490,8 +490,7 @@ const trackMousePos = (event) => {
 const compClicked = () => {
   if(pointingCntElement.v1 !== '') {
     if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
-      trackSettings.style.display = 'block';
-      elementsSettings.style.display = 'none';
+      changeSettingsMode(-1);
       if(isSettingsOpened) toggleSettings();
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
     } else {
@@ -506,16 +505,60 @@ const compClicked = () => {
         default:
           console.log("compClicked:Error");
       }
-      trackSettings.style.display = 'none';
-      elementsSettings.style.display = 'block';
+      changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
       if(!isSettingsOpened) toggleSettings();
       selectedCntElement = pointingCntElement;
     }
   } else {
-    trackSettings.style.display = 'block';
-    elementsSettings.style.display = 'none';
+    changeSettingsMode(-1);
     if(isSettingsOpened) toggleSettings();
     selectedCntElement = {"v1": '', "v2": '', "i": ''};
+  }
+}
+
+const changeSettingsMode = (v1, v2, i) => {
+  trackSettings.style.display = 'none';
+  elementsSettings.style.display = 'block';
+  switch(v1) {
+    case -1:
+      trackSettings.style.display = 'block';
+      elementsSettings.style.display = 'none';
+      document.getElementById("dot").style.color = '#9d4ec2';
+      document.getElementById("settingsNameSpace").innerText = 'Settings';
+      document.getElementById("trackSettings").style.display = 'block';
+      document.getElementById("elementsSettings").style.display = 'none';
+      break;
+    case 0:
+      document.getElementById("dot").style.color = '#f59b42';
+      document.getElementById("settingsNameSpace").innerText = `Note_${i}`;
+      document.getElementById("trackSettings").style.display = 'none';
+      document.getElementById("elementsSettings").style.display = 'block';
+      document.getElementById("noteSettingsContainer").style.display = 'block';
+      document.getElementById("bulletSettingsContainer").style.display = 'none';
+      break;
+    case 1:
+      document.getElementById("noteSettingsContainer").style.display = 'none';
+      document.getElementById("bulletSettingsContainer").style.display = 'block';
+      switch(v2) {
+        case 0:
+          document.getElementById("dot").style.color = '#6fdef7';
+          bulletSettingsContainer.getElementsByClassName("settingsPropertiesIndividual")[2].style.display = 'flex';
+          break;
+        case 1:
+          document.getElementById("dot").style.color = '#575cf2';
+          bulletSettingsContainer.getElementsByClassName("settingsPropertiesIndividual")[2].style.display = 'none';
+          break;
+        default:
+          alert("changeSettingsMode:Error");
+      }
+      document.getElementById("settingsNameSpace").innerText = `Bullet_${i}`;
+      break;
+    case 2:
+      document.getElementById("settingsNameSpace").innerText = `Trigger_${i}`;
+      document.getElementById("dot").style.color = '#36bf24';
+      break;
+    default:
+      alert("changeSettingsMode:Error");
   }
 }
 
