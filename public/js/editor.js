@@ -698,10 +698,14 @@ document.onkeydown = e => {
   if(e.keyCode == 32 || e.keyCode == 13) {
     songPlayPause();
   } else if(e.keyCode == 27) {
-    if(song.playing()){
-      songPlayPause();
+    if(isSettingsOpened) {
+      toggleSettings();
     } else {
-      song.stop();
+      if(song.playing()){
+        songPlayPause();
+      } else {
+        song.stop();
+      }
     }
   }
 };
