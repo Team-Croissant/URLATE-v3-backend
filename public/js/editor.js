@@ -282,7 +282,7 @@ const initialize = () => {
 
 const gotoMain = (isCalledByMain) => {
   if(isCalledByMain || confirm(rusure)) {
-    if(isCalledByMain) song.stop();
+    if(!isCalledByMain) song.stop();
     changeSettingsMode(-1);
     if(isSettingsOpened) toggleSettings();
     selectedCntElement = {"v1": '', "v2": '', "i": ''};
