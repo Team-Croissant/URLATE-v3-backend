@@ -83,6 +83,11 @@ let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
 
+const sortAsTiming = (a, b) => {
+  if(a.ms == b.ms) return 0;
+  return a.ms > b.ms ? 1 : -1;
+};
+
 const calcAngleDegrees = (x, y) => {
   return Math.atan2(y, x) * 180 / Math.PI;
 };
@@ -566,6 +571,9 @@ const settingsInput = (v, e) => {
     default:
       alert("settingsInput:Error");
   }
+  pattern.patterns.sort(sortAsTiming);
+  pattern.bullets.sort(sortAsTiming);
+  pattern.triggers.sort(sortAsTiming);
 };
 
 const changeBPM = (e) => {
