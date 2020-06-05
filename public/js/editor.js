@@ -476,7 +476,7 @@ const settingsInput = (v, e) => {
         pattern.patterns[selectedCntElement.i][v] = Number(e.value);
         return;
       }
-      e.value = pattern.patterns[selectedCntElement.i][v]
+      e.value = pattern.patterns[selectedCntElement.i][v];
       break;
     case 'Timing':
       if(isNaN(Number(e.value))) {
@@ -490,8 +490,28 @@ const settingsInput = (v, e) => {
           pattern.bullets[selectedCntElement.i].ms = Number(e.value);
         }
       }
+      if(selectedCntElement.v1 == 0) {
+        e.value = pattern.patterns[selectedCntElement.i].ms;
+      } else {
+        e.value = pattern.bullets[selectedCntElement.i].ms;
+      }
       break;
     case 'Side':
+      if(e.value.toUpperCase() == 'L' || e.value.toUpperCase() == 'LEFT') {
+        pattern.bullets[selectedCntElement.i].direction = 'L';
+      } else if(e.value.toUpperCase() == 'R' || e.value.toUpperCase() == 'RIGHT') {
+        pattern.bullets[selectedCntElement.i].direction = 'R';
+      } else if(e.value == '') {
+        if(pattern.bullets[selectedCntElement.i].direction == 'L') {
+          pattern.bullets[selectedCntElement.i].direction = 'R';
+        } else {
+          pattern.bullets[selectedCntElement.i].direction = 'L';
+        }
+      } else {
+        pattern.bullets[selectedCntElement.i].direction = 'L';
+        alert("Input is wrong value.");
+      }
+      e.value = pattern.bullets[selectedCntElement.i].direction;
       break;
     case 'Location':
       break;
