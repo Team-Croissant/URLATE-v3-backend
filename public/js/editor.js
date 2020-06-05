@@ -458,6 +458,41 @@ const save = () => {
   a.click();
 };
 
+const settingsInput = (v, e) => {
+  switch(v) {
+    case 'x':
+    case 'y':
+      if(isNaN(Number(e.value))) {
+        if(e.value == '-') {
+          pattern.patterns[selectedCntElement.i][v] = '0';
+        } else {
+          alert("Input value is not number.");
+        }
+      } else if(Number(e.value) > 100) {
+        alert("Input value is too big.");
+      } else if(Number(e.value) < -100) {
+        alert("Input value is too small.");
+      } else {
+        pattern.patterns[selectedCntElement.i][v] = Number(e.value);
+        return;
+      }
+      e.value = pattern.patterns[selectedCntElement.i][v]
+      break;
+    case 'Timing':
+      break;
+    case 'Side':
+      break;
+    case 'Location':
+      break;
+    case 'Angle':
+      break;
+    case 'Speed':
+      break;
+    default:
+      alert("");
+  }
+};
+
 const changeBPM = () => {
   window.requestAnimationFrame(() => {
     bpm = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value);
