@@ -489,9 +489,9 @@ const settingsInput = (v, e) => {
         }
       }
       if(selectedCntElement.v1 == 0) {
-        e.value = pattern.patterns[selectedCntElement.i].ms;
+        e.value = pattern.patterns[selectedCntElement.i].ms.toFixed(2);
       } else {
-        e.value = pattern.bullets[selectedCntElement.i].ms;
+        e.value = pattern.bullets[selectedCntElement.i].ms.toFixed(2);
       }
       break;
     case 'Side':
@@ -644,14 +644,14 @@ const changeSettingsMode = (v1, v2, i) => {
       document.getElementById("bulletSettingsContainer").style.display = 'none';
       noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.patterns[i].x;
       noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.patterns[i].y;
-      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.patterns[i].ms;
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.patterns[i].ms.toFixed(2);
       break;
     case 1:
       document.getElementById("noteSettingsContainer").style.display = 'none';
       document.getElementById("bulletSettingsContainer").style.display = 'block';
       bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.bullets[i].direction;
       bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.bullets[i].location;
-      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[3].value = pattern.bullets[i].ms;
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[3].value = pattern.bullets[i].ms.toFixed(2);
       bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[4].value = pattern.bullets[i].speed;
       switch(v2) {
         case 0:
@@ -699,6 +699,7 @@ document.onkeydown = e => {
     songPlayPause();
   } else if(e.keyCode == 27) {
     if(isSettingsOpened) {
+      selectedCntElement = {"v1": '', "v2": '', "i": ''};
       toggleSettings();
     } else {
       if(song.playing()){
