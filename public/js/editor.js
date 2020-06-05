@@ -463,9 +463,7 @@ const settingsInput = (v, e) => {
     case 'x':
     case 'y':
       if(isNaN(Number(e.value))) {
-        if(e.value == '-') {
-          pattern.patterns[selectedCntElement.i][v] = '0';
-        } else {
+        if(e.value != '-') {
           alert("Input value is not number.");
         }
       } else if(Number(e.value) > 100) {
@@ -514,6 +512,27 @@ const settingsInput = (v, e) => {
       e.value = pattern.bullets[selectedCntElement.i].direction;
       break;
     case 'Location':
+      let element;
+      if(selectedCntElement.v1 == 0) {
+        element = pattern.patterns[selectedCntElement.i];
+      } else if(selectedCntElement.v1 == 1) {
+        element = pattern.bullets[selectedCntElement.i];
+      } else {
+        alert("Location:Wrong Element");
+      }
+      if(isNaN(Number(e.value))) {
+        if(e.value != '-') {
+          alert("Input value is not number.");
+        }
+      } else if(Number(e.value) > 100) {
+        alert("Input value is too big.");
+      } else if(Number(e.value) < -100) {
+        alert("Input value is too small.");
+      } else {
+        element.location = Number(e.value);
+        return;
+      }
+      e.value = element.location;
       break;
     case 'Angle':
       break;
