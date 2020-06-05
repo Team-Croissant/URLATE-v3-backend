@@ -538,6 +538,27 @@ const settingsInput = (v, e) => {
       e.value = pattern.bullets[selectedCntElement.i].angle;
       break;
     case 'Speed':
+      let element;
+      if(selectedCntElement.v1 == 0) {
+        element = pattern.patterns[selectedCntElement.i];
+      } else if(selectedCntElement.v1 == 1) {
+        element = pattern.bullets[selectedCntElement.i];
+      } else {
+        alert("Wrong Element.");
+      }
+      if(isNaN(Number(e.value))) {
+        if(e.value != '-') {
+          alert("Input value is not number.");
+        }
+      } else if(Number(e.value) > 5) {
+        alert("Input value is too big.");
+      } else if(Number(e.value) <= 0) {
+        alert("Input value is too small.");
+      } else {
+        element.speed = Number(e.value);
+        return;
+      }
+      e.value = element.speed;
       break;
     default:
       alert("settingsInput:Error");
