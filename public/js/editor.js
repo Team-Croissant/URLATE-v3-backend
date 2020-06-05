@@ -568,22 +568,34 @@ const settingsInput = (v, e) => {
   }
 };
 
-const changeBPM = () => {
-  window.requestAnimationFrame(() => {
-    bpm = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value);
-  });
+const changeBPM = (e) => {
+  if(isNaN(Number(e.value))) {
+    alert("Input value is not number.");
+  } else {
+    bpm = Number(e.value);
+  }
 };
 
-const changeSpeed = () => {
-  window.requestAnimationFrame(() => {
-    speed = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value);
-  });
+const changeSpeed = (e) => {
+  if(isNaN(Number(e.value))) {
+    alert("Input value is not number.");
+  } else {
+    if(Number(e.value) > 5) {
+      alert("Input value is too high.");
+    } else if(Number(e.value) <= 0) {
+      alert("Input value is too low.");
+    } else {
+      speed = Number(e.value);
+    }
+  }
 };
 
-const changeOffset = () => {
-  window.requestAnimationFrame(() => {
-    offset = Number(trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value);
-  });
+const changeOffset = (e) => {
+  if(isNaN(Number(e.value))) {
+    alert("Input value is not number.");
+  } else {
+    offset = Number(e.value);
+  }
 };
 
 const trackMousePos = (event) => {
