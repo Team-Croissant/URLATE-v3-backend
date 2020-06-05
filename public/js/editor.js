@@ -527,11 +527,20 @@ const settingsInput = (v, e) => {
       e.value = pattern.bullets[selectedCntElement.i].location;
       break;
     case 'Angle':
+      if(isNaN(Number(e.value))) {
+        if(e.value != '-') {
+          alert("Input value is not number.");
+        }
+      } else {
+        pattern.bullets[selectedCntElement.i].angle = Number(e.value);
+        return;
+      }
+      e.value = pattern.bullets[selectedCntElement.i].angle;
       break;
     case 'Speed':
       break;
     default:
-      alert("");
+      alert("settingsInput:Error");
   }
 };
 
