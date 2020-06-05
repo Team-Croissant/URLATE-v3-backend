@@ -479,6 +479,17 @@ const settingsInput = (v, e) => {
       e.value = pattern.patterns[selectedCntElement.i][v]
       break;
     case 'Timing':
+      if(isNaN(Number(e.value))) {
+        alert("Input value is not number.");
+      } else if(Number(e.value) < 0) {
+        alert("Input value is too small.");
+      } else {
+        if(selectedCntElement.v1 == 0) {
+          pattern.patterns[selectedCntElement.i].ms = Number(e.value);
+        } else {
+          pattern.bullets[selectedCntElement.i].ms = Number(e.value);
+        }
+      }
       break;
     case 'Side':
       break;
