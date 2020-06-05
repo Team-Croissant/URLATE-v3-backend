@@ -283,6 +283,9 @@ const initialize = () => {
 const gotoMain = (isCalledByMain) => {
   song.stop();
   if(isCalledByMain || confirm(rusure)) {
+    changeSettingsMode(-1);
+    if(isSettingsOpened) toggleSettings();
+    selectedCntElement = {"v1": '', "v2": '', "i": ''};
     document.getElementById('initialScreenContainer').style.display = 'block';
     document.getElementById('initialButtonsContainer').style.display = 'flex';
     document.getElementById('songSelectionContainer').style.display = 'none';
