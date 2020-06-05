@@ -470,9 +470,9 @@ const settingsInput = (v, e) => {
           alert("Input value is not number.");
         }
       } else if(Number(e.value) > 100) {
-        alert("Input value is too big.");
+        alert("Input value is too high.");
       } else if(Number(e.value) < -100) {
-        alert("Input value is too small.");
+        alert("Input value is too low.");
       } else {
         pattern.patterns[selectedCntElement.i][v] = Number(e.value);
         return;
@@ -483,7 +483,7 @@ const settingsInput = (v, e) => {
       if(isNaN(Number(e.value))) {
         alert("Input value is not number.");
       } else if(Number(e.value) < 0) {
-        alert("Input value is too small.");
+        alert("Input value is too low.");
       } else {
         if(selectedCntElement.v1 == 0) {
           pattern.patterns[selectedCntElement.i].ms = Number(e.value);
@@ -520,9 +520,9 @@ const settingsInput = (v, e) => {
           alert("Input value is not number.");
         }
       } else if(Number(e.value) > 100) {
-        alert("Input value is too big.");
+        alert("Input value is too high.");
       } else if(Number(e.value) < -100) {
-        alert("Input value is too small.");
+        alert("Input value is too low.");
       } else {
         pattern.bullets[selectedCntElement.i].location = Number(e.value);
         return;
@@ -554,9 +554,9 @@ const settingsInput = (v, e) => {
           alert("Input value is not number.");
         }
       } else if(Number(e.value) > 5) {
-        alert("Input value is too big.");
+        alert("Input value is too high.");
       } else if(Number(e.value) <= 0) {
-        alert("Input value is too small.");
+        alert("Input value is too low.");
       } else {
         element.speed = Number(e.value);
         return;
