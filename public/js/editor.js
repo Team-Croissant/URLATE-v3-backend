@@ -4,7 +4,7 @@ const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
 let mouseX = 0, mouseY = 0;
-let mode = 0; //0: move tool, 1: edit tool
+let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let isSettingsOpened = false;
 let userName = '';
 let pattern = {
@@ -315,45 +315,47 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
-    const seek = song.seek() - (offset + sync) / 1000;
-    switch(v1) {
-      case 0:
-        const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
-        if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 150 && p <= 100) {
-          pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-        }
-        break;
-      case 1:
-        switch(v2) {
-          case 0:
-            if(song.playing()) {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
-                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+  if(mode != 2) {
+    if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
+      const seek = song.seek() - (offset + sync) / 1000;
+      switch(v1) {
+        case 0:
+          const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+          if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 150 && p <= 100) {
+            pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+          }
+          break;
+        case 1:
+          switch(v2) {
+            case 0:
+              if(song.playing()) {
+                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
+                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+                }
+              } else {
+                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
+                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+                }
               }
-            } else {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
-                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+              break;
+            case 1:
+              if(song.playing()) {
+                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 400) {
+                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+                }
+              } else {
+                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 300) {
+                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+                }
               }
-            }
-            break;
-          case 1:
-            if(song.playing()) {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 400) {
-                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-              }
-            } else {
-              if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 300) {
-                pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-              }
-            }
-            break;
-          default:
-            alert("trackMouseSelection:Error");
-        }
-        break;
-      default:
-        alert("trackMouseSelection:Error");
+              break;
+            default:
+              alert("trackMouseSelection:Error");
+          }
+          break;
+        default:
+          alert("trackMouseSelection:Error");
+      }
     }
   }
 };
@@ -618,31 +620,37 @@ const trackMousePos = (event) => {
 }
 
 const compClicked = () => {
-  if(pointingCntElement.v1 !== '') {
-    if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
+  if(mode == 0) {
+    //MOVE
+  } else if(mode == 1) {
+    if(pointingCntElement.v1 !== '') {
+      if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
+        changeSettingsMode(-1);
+        if(isSettingsOpened) toggleSettings();
+        selectedCntElement = {"v1": '', "v2": '', "i": ''};
+      } else {
+        let selectedElement;
+        switch(pointingCntElement.v1) {
+          case 0:
+            selectedElement = pattern.patterns[pointingCntElement.i];
+            break;
+          case 1:
+            selectedElement = pattern.bullets[pointingCntElement.i];
+            break;
+          default:
+            console.log("compClicked:Error");
+        }
+        changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
+        if(!isSettingsOpened) toggleSettings();
+        selectedCntElement = pointingCntElement;
+      }
+    } else {
       changeSettingsMode(-1);
       if(isSettingsOpened) toggleSettings();
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
-    } else {
-      let selectedElement;
-      switch(pointingCntElement.v1) {
-        case 0:
-          selectedElement = pattern.patterns[pointingCntElement.i];
-          break;
-        case 1:
-          selectedElement = pattern.bullets[pointingCntElement.i];
-          break;
-        default:
-          console.log("compClicked:Error");
-      }
-      changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
-      if(!isSettingsOpened) toggleSettings();
-      selectedCntElement = pointingCntElement;
     }
-  } else {
-    changeSettingsMode(-1);
-    if(isSettingsOpened) toggleSettings();
-    selectedCntElement = {"v1": '', "v2": '', "i": ''};
+  } else if(mode == 2) {
+
   }
 }
 
