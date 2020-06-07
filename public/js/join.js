@@ -20,30 +20,33 @@ document.addEventListener("DOMContentLoaded", (event) => {
 const nameReg = /^[a-zA-Z0-9_-]{5,12}$/;
 const passReg = /^[0-9]{4,6}$/;
 
-document.getElementById('nickname').addEventListener("blur", (e) => {
-    if(!nameReg.test(this.value)) {
-        console.log('hi');
-        if(!document.getElementById('name').classList[0]) {
-            document.getElementById('name').classList.toggle("show");
-        }
-    } else {
-        console.log('hello');
-        if(document.getElementById('name').classList[0]) {
-            document.getElementById('name').classList.toggle("show");
-        }
-    }   
+document.getElementById('nickname').addEventListener("blur", () => {
+    requestAnimationFrame(() => {
+        console.log(!nameReg.test(document.getElementById('nickname').value));
+        if(!nameReg.test(document.getElementById('nickname').value)) {
+            if(!document.getElementById('name').classList[0]) {
+                document.getElementById('name').classList.toggle("show");
+            }
+        } else {
+            if(document.getElementById('name').classList[0]) {
+                document.getElementById('name').classList.toggle("show");
+            }
+        } 
+    });  
 }, true);
 
-document.getElementById('password').addEventListener("blur", (e) => {
-    if(!passReg.test(this.value)) {
-        if(!document.getElementById('pw').classList[0]) {
-            document.getElementById('pw').classList.toggle("show");
+document.getElementById('password').addEventListener("blur", () => {
+    requestAnimationFrame(() => {
+        if(!passReg.test(document.getElementById('password').value)) {
+            if(!document.getElementById('pw').classList[0]) {
+                document.getElementById('pw').classList.toggle("show");
+            }
+        } else {
+            if(document.getElementById('pw').classList[0]) {
+                document.getElementById('pw').classList.toggle("show");
+            }
         }
-    } else {
-        if(document.getElementById('pw').classList[0]) {
-            document.getElementById('pw').classList.toggle("show");
-        }
-    }   
+    });
 }, true);
 
 const check = () => {

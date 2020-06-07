@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 const passReg = /^[0-9]{4,6}$/;
 
 document.getElementById('password').addEventListener("blur", (e) => {
-    if(!passReg.test(this.value)) {
+    if(!passReg.test(document.getElementById('password').value)) {
         if(!document.getElementById('pw').classList[0]) {
             document.getElementById('pw').classList.toggle("show");
         }
