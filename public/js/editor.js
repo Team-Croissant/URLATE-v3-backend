@@ -5,6 +5,7 @@ const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
 let mouseX = 0, mouseY = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
+let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
 let userName = '';
 let pattern = {
@@ -372,6 +373,29 @@ const cntRender = (e) => {
   let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
   eraseCanvas();
+  if(mode == 2) {
+    let p = [0, 0];
+    if(mouseX < -80) {
+      p[0] = (-80 - mouseX) / 20;
+    } else if(mouseX > 80) {
+      p[1] = (mouseX - 80) / 20;
+    }
+    if(p[0] == 0 && p[1] == 0) {
+      drawNote(100, mouseX, mouseY, true);
+    } else {
+      if(p[1] == 0) {
+        drawBullet(selectedBullet, -100, mouseY, 0, true);
+      } else {
+        drawBullet(selectedBullet, 100, mouseY, 180, true);
+      }
+    }
+    /*cntCtx.beginPath();
+    cntCtx.fillStyle = `rgba(230, 230, 230, ${p[0]})`;
+    cntCtx.fillRect(0, 0, cntCanvas.width / 20, cntCanvas.height);
+    cntCtx.beginPath();
+    cntCtx.fillStyle = `rgba(230, 230, 230, ${p[1]})`;
+    cntCtx.fillRect(cntCanvas.width - cntCanvas.width / 20, 0, cntCanvas.width, cntCanvas.height);*/
+  }
   for(let i = 0; i < renderNotes.length; i++) {
     const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
     trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
@@ -650,7 +674,28 @@ const compClicked = () => {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
     }
   } else if(mode == 2) {
-
+    const seek = song.seek() - (offset + sync) / 1000;
+    if(mouseX < -80 || mouseX > 80) {
+      let newElement = {"ms": parseInt(seek * 1000), "value": selectedBullet, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
+      pattern.bullets.push(newElement);
+      pattern.bullets.sort(sortAsTiming);
+      for(let i = 0; i < pattern.bullets.length; i++) {
+        if(JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
+          selectedCntElement = {"v1": 1, "v2": selectedBullet, "i": i};
+        }
+      }
+    } else {
+      let newElement = {"ms": parseInt(seek * 1000) + 1, "value": 0, "x": parseInt(mouseX), "y" : parseInt(mouseY)};
+      pattern.patterns.push(newElement);
+      pattern.patterns.sort(sortAsTiming);
+      for(let i = 0; i < pattern.patterns.length; i++) {
+        if(JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)) {
+          selectedCntElement = {"v1": 0, "v2": 0, "i": i};
+        }
+      }
+    }
+    changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+    if(!isSettingsOpened) toggleSettings();
   }
 }
 
@@ -738,6 +783,13 @@ document.onkeydown = e => {
       } else {
         song.stop();
       }
+    }
+  }
+  if(mode == 2) {
+    if(e.keyCode == 49) {
+      selectedBullet = 0;
+    } else if(e.keyCode == 50) {
+      selectedBullet = 1;
     }
   }
 };
