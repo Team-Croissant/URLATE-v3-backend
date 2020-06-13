@@ -647,33 +647,22 @@ const trackMousePos = (event) => {
 const elementFollowMouse = (v1, v2, i) => {
   requestAnimationFrame(() => {
     if(mouseDown && (pointingCntElement.v1 !== '' || v1 != undefined)) {
-      if(v1 != undefined) {
-        console.log(i);
-        switch(v1) {
-          case 0:
-            pattern.patterns[i].x = parseInt(mouseX);
-            pattern.patterns[i].y =parseInt(mouseY);
-            break;
-          case 1:
-            pattern.bullets[i].location = parseInt(mouseY);
-            break;
-        }
-        elementFollowMouse(v1, v2, i);
-        changeSettingsMode(v1, v2, i);
-      } else if(pointingCntElement !== '') {
-        selectedCntElement = {"v1": pointingCntElement.v1, "v2": pointingCntElement.v2, "i": pointingCntElement.i};
-        switch(pointingCntElement.v1) {
-          case 0:
-            pattern.patterns[pointingCntElement.i].x = parseInt(mouseX);
-            pattern.patterns[pointingCntElement.i].y = parseInt(mouseY);
-            break;
-          case 1:
-            pattern.bullets[pointingCntElement.i].location = parseInt(mouseY);
-            break;
-        }
-        elementFollowMouse(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
-        changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
+      if(v1 == undefined) {
+        v1 = pointingCntElement.v1;
+        v2 = pointingCntElement.v2;
+        i = pointingCntElement.i;
       }
+      switch(v1) {
+        case 0:
+          pattern.patterns[i].x = parseInt(mouseX);
+          pattern.patterns[i].y =parseInt(mouseY);
+          break;
+        case 1:
+          pattern.bullets[i].location = parseInt(mouseY);
+          break;
+      }
+      elementFollowMouse(v1, v2, i);
+      changeSettingsMode(v1, v2, i);
     }
   });
 };
