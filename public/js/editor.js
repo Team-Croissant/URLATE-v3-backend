@@ -7,6 +7,7 @@ let mouseX = 0, mouseY = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
+let mouseDown = false;
 let userName = '';
 let pattern = {
   "information": {
@@ -643,9 +644,43 @@ const trackMousePos = (event) => {
   }
 }
 
+const elementFollowMouse = (v1, v2, i) => {
+  requestAnimationFrame(() => {
+    if(mouseDown && (pointingCntElement.v1 !== '' || v1 != undefined)) {
+      if(v1 != undefined) {
+        console.log(i);
+        switch(v1) {
+          case 0:
+            pattern.patterns[i].x = parseInt(mouseX);
+            pattern.patterns[i].y =parseInt(mouseY);
+            break;
+          case 1:
+            pattern.bullets[i].location = parseInt(mouseY);
+            break;
+        }
+        elementFollowMouse(v1, v2, i);
+        changeSettingsMode(v1, v2, i);
+      } else if(pointingCntElement !== '') {
+        selectedCntElement = {"v1": pointingCntElement.v1, "v2": pointingCntElement.v2, "i": pointingCntElement.i};
+        switch(pointingCntElement.v1) {
+          case 0:
+            pattern.patterns[pointingCntElement.i].x = parseInt(mouseX);
+            pattern.patterns[pointingCntElement.i].y = parseInt(mouseY);
+            break;
+          case 1:
+            pattern.bullets[pointingCntElement.i].location = parseInt(mouseY);
+            break;
+        }
+        elementFollowMouse(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
+        changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
+      }
+    }
+  });
+};
+
 const compClicked = () => {
   if(mode == 0) {
-    //MOVE
+    elementFollowMouse();
   } else if(mode == 1) {
     if(pointingCntElement.v1 !== '') {
       if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
@@ -793,3 +828,10 @@ document.onkeydown = e => {
     }
   }
 };
+
+document.body.onmousedown = function() { 
+  mouseDown = true;
+}
+document.body.onmouseup = function() {
+  mouseDown = false;
+}
