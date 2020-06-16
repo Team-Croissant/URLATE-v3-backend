@@ -3,7 +3,8 @@ const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
-let mouseX = 0, mouseY = 0;
+let mouseX = 0, mouseY = 0, mouseMode = 0;
+let zoom = 1;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
@@ -192,6 +193,7 @@ const songSelected = () => {
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';
   window.requestAnimationFrame(cntRender);
+  window.requestAnimationFrame(tmlRender);
 };
 
 const toggleSettings = () => {
@@ -276,8 +278,12 @@ const drawBullet = (n, x, y, a, s) => {
   }
 };
 
-const eraseCanvas = () => {
+const eraseCnt = () => {
   cntCtx.clearRect(0, 0, cntCanvas.width, cntCanvas.height);
+}
+
+const eraseTml = () => {
+  tmlCtx.clearRect(0, 0, tmlCanvas.width, tmlCanvas.height);
 }
 
 const initialize = () => {
@@ -317,7 +323,7 @@ const gotoMain = (isCalledByMain) => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  if(mode != 2) {
+  if(mode != 2 && mouseMode == 0) {
     if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
       const seek = song.seek() - (offset + sync) / 1000;
       switch(v1) {
@@ -366,15 +372,31 @@ const selectedCheck = (n, i) => {
   return pointingCntElement.v1 === n && pointingCntElement.i == i || selectedCntElement.v1 === n && selectedCntElement.i == i;
 };
 
-const cntRender = (e) => {
+const tmlRender = () => {
+  eraseTml();
+  window.requestAnimationFrame(tmlRender);
+  const [startX, tmlStartX, startY, endX, endY] = [tmlCanvas.width / 50, tmlCanvas.width / 10, tmlCanvas.height / 8, tmlCanvas.width / 1.125, tmlCanvas.height / 1.2];
+  const seek = song.seek() - (offset + sync) / 1000;
+  let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed) - 1000);
+  let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 * zoom / speed));
+  const renderNotes = pattern.patterns.slice(start, end);
+  tmlCtx.beginPath();
+  tmlCtx.fillStyle = '#EEE';
+  tmlCtx.fillRect(tmlStartX, startY, endX, endY);
+  for(let i = 0; i < renderNotes.length; i++) {
+    
+  }
+};
+
+const cntRender = () => {
   pointingCntElement = {"v1": '', "v2": '', "i": ''};
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
   let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
   let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
-  eraseCanvas();
-  if(mode == 2) {
+  eraseCnt();
+  if(mode == 2 && mouseMode == 0) {
     let p = [0, 0];
     if(mouseX < -80) {
       p[0] = (-80 - mouseX) / 20;
@@ -390,12 +412,6 @@ const cntRender = (e) => {
         drawBullet(selectedBullet, 100, mouseY, 180, true);
       }
     }
-    /*cntCtx.beginPath();
-    cntCtx.fillStyle = `rgba(230, 230, 230, ${p[0]})`;
-    cntCtx.fillRect(0, 0, cntCanvas.width / 20, cntCanvas.height);
-    cntCtx.beginPath();
-    cntCtx.fillStyle = `rgba(230, 230, 230, ${p[1]})`;
-    cntCtx.fillRect(cntCanvas.width - cntCanvas.width / 20, 0, cntCanvas.width, cntCanvas.height);*/
   }
   for(let i = 0; i < renderNotes.length; i++) {
     const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
@@ -633,15 +649,23 @@ const changeOffset = (e) => {
   }
 };
 
-const trackMousePos = (event) => {
+const trackMousePos = () => {
   const width = parseInt((componentView.offsetWidth - canvasContainer.offsetWidth) / 2 + menuContainer.offsetWidth);
   const height = navbar.offsetHeight;
   const x = (event.clientX - width) / canvasContainer.offsetWidth * 200 - 100;
   const y = (event.clientY - height) / canvasContainer.offsetHeight * 200 - 100;
   if(!(x < -100 || y < -100 || x > 100 || y > 100)) {
+    mouseMode = 0;
     mouseX = x;
     mouseY = y;
   }
+}
+
+const trackTimelineMousePos = () => {
+  mouseMode = 1;
+  mouseX = event.clientX;
+  mouseY = event.clientY - Math.floor(window.innerHeight / 100 * 73);
+  console.log(mouseX, mouseY);
 }
 
 const elementFollowMouse = (v1, v2, i) => {
@@ -655,7 +679,7 @@ const elementFollowMouse = (v1, v2, i) => {
       switch(v1) {
         case 0:
           pattern.patterns[i].x = parseInt(mouseX);
-          pattern.patterns[i].y =parseInt(mouseY);
+          pattern.patterns[i].y = parseInt(mouseY);
           break;
         case 1:
           pattern.bullets[i].location = parseInt(mouseY);
