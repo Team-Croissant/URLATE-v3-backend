@@ -198,7 +198,11 @@ app.get('/logout', (req, res) => {
   delete req.session.tempEmail;
   delete req.session.vaildChecked;
   req.session.save(() => {
-    res.status(200).json(createSuccessResponse('success'));
+    if(req.query.redirect == 'true') {
+      res.redirect("https://rhyga.me");
+    } else {
+      res.status(200).json(createSuccessResponse('success'));
+    }
   });
 });
 

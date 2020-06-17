@@ -248,7 +248,12 @@ app.get('/logout', function (req, res) {
     delete req.session.tempEmail;
     delete req.session.vaildChecked;
     req.session.save(function () {
-        res.status(200).json(api_response_1.createSuccessResponse('success'));
+        if (req.query.redirect == 'true') {
+            res.redirect("https://rhyga.me");
+        }
+        else {
+            res.status(200).json(api_response_1.createSuccessResponse('success'));
+        }
     });
 });
 var PORT = 1024;
