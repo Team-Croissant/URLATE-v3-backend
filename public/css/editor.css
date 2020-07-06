@@ -269,7 +269,6 @@ body {
 #timelineInner {
   pointer-events: none;
   height: 100%;
-  width: 200%;
 }
 
 #timelineCanvas {
@@ -452,6 +451,7 @@ body {
   width: 20vw;
   height: 5vh;
   margin: 2vh;
+  background-color: #FFF;
   border: 1px solid #DEDEDE;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
 }
