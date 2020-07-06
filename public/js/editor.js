@@ -4,8 +4,8 @@ const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
 let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
 let mouseX = 0, mouseY = 0, mouseMode = 0;
-let zoom = 1;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
+let zoom = 1;
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
 let mouseDown = false;
@@ -49,7 +49,7 @@ let pattern = {
     {"ms": 6/18*42000, "value": 0, "x": 0, "y" : 0},
   ],
   "bullets" : [
-    {"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
+    /*{"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
     {"ms": 6/18*1000, "value": 0, "direction": "R", "location": 0, "angle": 0, "speed": 2},
     {"ms": 6/18*3000, "value": 0, "direction": "L", "location": 0, "angle": 30, "speed": 2},
     {"ms": 6/18*3000, "value": 0, "direction": "R", "location": 0, "angle": 30, "speed": 2},
@@ -78,7 +78,7 @@ let pattern = {
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": -30, "speed": 3},
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": -45, "speed": 4},
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 30, "speed": 3},
-    {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 4},
+    {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 4},*/
   ],
   "triggers" : []
 };
@@ -193,7 +193,6 @@ const songSelected = () => {
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';
   window.requestAnimationFrame(cntRender);
-  window.requestAnimationFrame(tmlRender);
 };
 
 const toggleSettings = () => {
@@ -374,17 +373,57 @@ const selectedCheck = (n, i) => {
 
 const tmlRender = () => {
   eraseTml();
-  window.requestAnimationFrame(tmlRender);
-  const [startX, tmlStartX, startY, endX, endY] = [tmlCanvas.width / 50, tmlCanvas.width / 10, tmlCanvas.height / 8, tmlCanvas.width / 1.125, tmlCanvas.height / 1.2];
-  const seek = song.seek() - (offset + sync) / 1000;
-  let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed) - 1000);
-  let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 * zoom / speed));
-  const renderNotes = pattern.patterns.slice(start, end);
+  const tmlStartX = tmlCanvas.width / 10,
+        startY = tmlCanvas.height / 6,
+        endX = tmlCanvas.width / 1.01,
+        endY = tmlCanvas.height / 1.1,
+        height = tmlCanvas.height / 7;
+  const seek = song.seek(),
+        minutes = Math.floor(seek / 60),
+        seconds = seek - minutes * 60;
+  const renderStart = parseInt(seek * 1000),
+        renderEnd = parseInt(renderStart + (5000 * zoom)),
+        msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#EEE';
-  tmlCtx.fillRect(tmlStartX, startY, endX, endY);
-  for(let i = 0; i < renderNotes.length; i++) {
-    
+  tmlCtx.fillRect(tmlStartX, startY, endX - tmlStartX, endY - startY);
+  tmlCtx.font = `${tmlCanvas.height / 15}px Heebo`;
+  tmlCtx.textAlign = "center";
+  tmlCtx.textBaseline = "middle";
+  tmlCtx.fillStyle = '#777';
+  for(let t = (1000 - renderStart % 1000); t <= renderEnd; t += 1000) {
+    const tmlMinutes = Math.floor((renderStart + t) / 60000),
+          tmlSeconds = Math.floor((renderStart + t) / 1000) - tmlMinutes * 60;
+    tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.7);
+  }
+  let start = lowerBound(pattern.patterns, renderStart);
+  console.log(endX, tmlCanvas.width);
+  let end = upperBound(pattern.patterns, renderEnd);
+  const renderNotes = pattern.patterns.slice(start, end);
+  tmlCtx.fillStyle = '#fbaf34';
+  for(let j = 0; j < renderNotes.length; j++) {
+    tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + height / 2, height / 3, 0, 2 * Math.PI);
+    tmlCtx.fill();
+  }
+  tmlCtx.fillStyle = '#FFF';
+  tmlCtx.fillRect(0, 0, tmlStartX, endY);
+  tmlCtx.fillRect(endX, 0, tmlCanvas.width, endY);
+  tmlCtx.fillStyle = '#2f91ed';
+  tmlCtx.font = `${tmlCanvas.height / 11}px Heebo`;
+  tmlCtx.textAlign = "right";
+  if(isNaN(minutes)) {
+    tmlCtx.fillText('Wait..', tmlStartX, startY / 1.7);
+  } else {
+    tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
+  }
+  tmlCtx.fillStyle = '#111';
+  tmlCtx.fillText('Notes', tmlStartX - 10, startY + height / 2);
+  let i = 1;
+  for(i; i == 1; i++) { //TODO
+    tmlCtx.fillText('Bullets', tmlStartX - 10, startY + height * i + height / 2);
+  }
+  for(i; i == 2; i++) { //TODO
+    tmlCtx.fillText('Triggers', tmlStartX - 10, startY + height * i + height / 2);
   }
 };
 
@@ -444,6 +483,7 @@ const cntRender = () => {
       drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
     }
   }
+  tmlRender();
   if(pointingCntElement.i === '') {
     componentView.style.cursor = "";
   } else {
@@ -801,7 +841,7 @@ const changeSettingsMode = (v1, v2, i) => {
   }
 }
 
-const scrollHorizontally = e => {
+/*const scrollHorizontally = e => {
   e = window.event || e;
   let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
   document.getElementById('timelineContainer').scrollLeft -= (delta * 30);
@@ -809,7 +849,7 @@ const scrollHorizontally = e => {
 };
 
 document.getElementById('timelineContainer').addEventListener("mousewheel", scrollHorizontally);
-document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollHorizontally);
+document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollHorizontally);*/
 window.addEventListener("resize", initialize);
 
 window.addEventListener("beforeunload", e => {
@@ -832,6 +872,10 @@ document.onkeydown = e => {
         song.stop();
       }
     }
+  } else if(e.keyCode == 37) { //LEFT
+    song.seek(song.seek() - (60 / bpm));
+  } else if(e.keyCode == 39) { //RIGHT
+    song.seek(song.seek() + (60 / bpm));
   }
   if(mode == 2) {
     if(e.keyCode == 49) {
