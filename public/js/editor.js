@@ -877,9 +877,13 @@ document.onkeydown = e => {
       }
     }
   } else if(e.keyCode == 37) { //LEFT
-    song.seek(song.seek() - (60 / bpm));
+    song.seek(song.seek() - 0.01);
+    let seek = song.seek();
+    song.seek(seek - (seek % (60 / bpm)));
   } else if(e.keyCode == 39) { //RIGHT
-    song.seek(song.seek() + (60 / bpm));
+    song.seek(song.seek() + 0.01);
+    let seek = song.seek();
+    song.seek(seek + (60 / bpm) - (seek % (60 / bpm)));
   }
   if(mode == 2) {
     if(e.keyCode == 49) {
