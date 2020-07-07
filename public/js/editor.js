@@ -381,7 +381,7 @@ const tmlRender = () => {
   const seek = song.seek(),
         minutes = Math.floor(seek / 60),
         seconds = seek - minutes * 60;
-  const renderStart = parseInt(seek * 1000),
+  const renderStart = parseInt(seek * 1000) - 1,
         renderEnd = parseInt(renderStart + (5000 * zoom)),
         baseMs = 60 / bpm * 1000,
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
@@ -395,7 +395,7 @@ const tmlRender = () => {
   for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
     if((renderStart + t) / 1000 < song._duration) {
       const tmlMinutes = Math.floor((renderStart + t) / 60000),
-          tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
+            tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
       tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.7);
     }
   }

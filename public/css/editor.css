@@ -268,7 +268,7 @@ body {
 
 #timelineInner {
   pointer-events: none;
-  height: 100%;
+  height: 200%;
 }
 
 #timelineCanvas {
