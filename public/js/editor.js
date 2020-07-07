@@ -397,11 +397,15 @@ const tmlRender = () => {
     tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.7);
   }
   let start = lowerBound(pattern.patterns, renderStart);
-  console.log(endX, tmlCanvas.width);
   let end = upperBound(pattern.patterns, renderEnd);
   const renderNotes = pattern.patterns.slice(start, end);
-  tmlCtx.fillStyle = '#fbaf34';
   for(let j = 0; j < renderNotes.length; j++) {
+    tmlCtx.beginPath();
+    if(start + j == selectedCntElement.i && selectedCntElement.v1 == '0') {
+      tmlCtx.fillStyle = "#ebd534";
+    } else {
+      tmlCtx.fillStyle = '#fbaf34';
+    }
     tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + height / 2, height / 3, 0, 2 * Math.PI);
     tmlCtx.fill();
   }
