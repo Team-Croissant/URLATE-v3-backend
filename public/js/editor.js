@@ -383,6 +383,7 @@ const tmlRender = () => {
         seconds = seek - minutes * 60;
   const renderStart = parseInt(seek * 1000),
         renderEnd = parseInt(renderStart + (5000 * zoom)),
+        baseMs = 60 / bpm * 1000,
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#EEE';
@@ -391,9 +392,10 @@ const tmlRender = () => {
   tmlCtx.textAlign = "center";
   tmlCtx.textBaseline = "middle";
   tmlCtx.fillStyle = '#777';
-  for(let t = (1000 - renderStart % 1000); t <= renderEnd; t += 1000) {
+  console.log(song.seek());
+  for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
     const tmlMinutes = Math.floor((renderStart + t) / 60000),
-          tmlSeconds = Math.floor((renderStart + t) / 1000) - tmlMinutes * 60;
+          tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
     tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.7);
   }
   let start = lowerBound(pattern.patterns, renderStart);
