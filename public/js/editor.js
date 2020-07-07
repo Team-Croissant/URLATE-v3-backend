@@ -392,11 +392,12 @@ const tmlRender = () => {
   tmlCtx.textAlign = "center";
   tmlCtx.textBaseline = "middle";
   tmlCtx.fillStyle = '#777';
-  console.log(song.seek());
   for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
-    const tmlMinutes = Math.floor((renderStart + t) / 60000),
+    if((renderStart + t) / 1000 < song._duration) {
+      const tmlMinutes = Math.floor((renderStart + t) / 60000),
           tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
-    tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.7);
+      tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.7);
+    }
   }
   let start = lowerBound(pattern.patterns, renderStart);
   let end = upperBound(pattern.patterns, renderEnd);
@@ -886,6 +887,9 @@ document.onkeydown = e => {
     song.seek(song.seek() + 0.01);
     let seek = song.seek();
     song.seek(seek + (60 / bpm) - (seek % (60 / bpm)));
+    if(song.seek() >= song._duration) {
+      song.seek(seek - (60 / bpm) + (seek % (60 / bpm)) - 0.01);
+    }
   }
   if(mode == 2) {
     if(e.keyCode == 49) {
