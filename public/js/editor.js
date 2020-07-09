@@ -374,6 +374,7 @@ const selectedCheck = (n, i) => {
 const tmlRender = () => {
   eraseTml();
   const tmlStartX = tmlCanvas.width / 10,
+        startX = tmlCanvas.width / 60,
         startY = tmlCanvas.height / 6,
         endX = tmlCanvas.width / 1.01,
         endY = tmlCanvas.height / 1.1,
@@ -409,7 +410,7 @@ const tmlRender = () => {
     } else {
       tmlCtx.fillStyle = '#fbaf34';
     }
-    tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + height / 2, height / 3, 0, 2 * Math.PI);
+    tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + height / 2, height / 4, 0, 2 * Math.PI);
     tmlCtx.fill();
   }
   tmlCtx.fillStyle = '#FFF';
@@ -423,14 +424,29 @@ const tmlRender = () => {
   } else {
     tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
   }
+  tmlCtx.beginPath();
+  tmlCtx.fillStyle = '#fbaf34';
+  tmlCtx.arc(startX, startY + height / 2, height / 6, 0, 2 * Math.PI);
+  tmlCtx.fill();
   tmlCtx.fillStyle = '#111';
-  tmlCtx.fillText('Notes', tmlStartX - 10, startY + height / 2);
+  tmlCtx.textAlign = "left";
+  tmlCtx.fillText('Notes', startX * 1.5 + height / 6, startY + height / 2);
   let i = 1;
   for(i; i == 1; i++) { //TODO
-    tmlCtx.fillText('Bullets', tmlStartX - 10, startY + height * i + height / 2);
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#2f91ed';
+    tmlCtx.arc(startX, startY + height * i + height / 2, height / 6, 0, 2 * Math.PI);
+    tmlCtx.fill();
+    tmlCtx.fillStyle = '#111';
+    tmlCtx.fillText('Bullets', startX * 1.5 + height / 6, startY + height * i + height / 2);
   }
   for(i; i == 2; i++) { //TODO
-    tmlCtx.fillText('Triggers', tmlStartX - 10, startY + height * i + height / 2);
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#3ccc1f';
+    tmlCtx.arc(startX, startY + height * i + height / 2, height / 6, 0, 2 * Math.PI);
+    tmlCtx.fill();
+    tmlCtx.fillStyle = '#111';
+    tmlCtx.fillText('Triggers', startX * 1.5 + height / 6, startY + height * i + height / 2);
   }
 };
 
