@@ -377,7 +377,7 @@ const selectedCheck = (n, i) => {
 const tmlRender = () => {
   eraseTml();
   const tmlStartX = tmlCanvas.width / 10,
-        startX = tmlCanvas.width / 60,
+        startX = tmlCanvas.width / 80,
         startY = tmlCanvas.height / 6,
         endX = tmlCanvas.width / 1.01,
         endY = tmlCanvas.height / 1.1,
@@ -454,7 +454,7 @@ const tmlRender = () => {
   tmlCtx.fill();
   tmlCtx.fillStyle = '#111';
   tmlCtx.textAlign = "left";
-  tmlCtx.font = `${tmlCanvas.height / 13}px Metropolis`;
+  tmlCtx.font = `${tmlCanvas.height / 14}px Metropolis`;
   tmlCtx.fillText('Note', startX * 1.2 + height / 6, startY + timelineYLoc + height / 1.8);
   let i = 1;
   for(i; i <= bulletsOverlapNum; i++) {
@@ -477,7 +477,7 @@ const tmlRender = () => {
   tmlCtx.fillStyle = '#FFF';
   tmlCtx.fillRect(0, endY, endX, tmlCanvas.height - endY);
   tmlCtx.fillRect(0, 0, endX, startY);
-  tmlCtx.font = `${tmlCanvas.height / 15}px Metropolis`;
+  tmlCtx.font = `${tmlCanvas.height / 16}px Metropolis`;
   tmlCtx.textAlign = "center";
   tmlCtx.textBaseline = "bottom";
   tmlCtx.fillStyle = '#777';
@@ -925,6 +925,20 @@ const zoomIn = () => {
 
 const zoomOut = () => {
   zoom += 0.1;
+};
+
+const playPauseBtn = () => {
+  if(song.playing()) {
+    document.getElementsByClassName('timeline-icon')[2].src = 'https://img.icons8.com/ios-glyphs/24/000000/play.png';
+  } else {
+    document.getElementsByClassName('timeline-icon')[2].src = 'https://img.icons8.com/ios-glyphs/24/000000/pause.png';
+  }
+  songPlayPause();
+};
+
+const stopBtn = () => {
+  document.getElementsByClassName('timeline-icon')[2].src = 'https://img.icons8.com/ios-glyphs/24/000000/play.png';
+  song.stop();
 };
 
 /*const scrollHorizontally = e => {

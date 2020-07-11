@@ -479,6 +479,20 @@ body {
   right: 1.5vw;
 }
 
+#timelinePlayController {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+  bottom: 23.5vh;
+  left: 1vw;
+  filter: invert(30%) sepia(0%) saturate(572%) hue-rotate(158deg) brightness(102%) contrast(86%);
+}
+
 .timeline-icon {
-  width: 1.2vw;
+  height: 2vh;
+}
+
+#percentage {
+  font-size: 1.7vh;
 }
