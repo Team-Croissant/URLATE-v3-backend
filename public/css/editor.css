@@ -493,6 +493,18 @@ body {
   height: 2vh;
 }
 
+.timeline-play {
+  content: url('https://img.icons8.com/ios-glyphs/24/000000/play.png');
+}
+
+.timeline-pause {
+  content: url('https://img.icons8.com/ios-glyphs/24/000000/pause.png');
+}
+
 #percentage {
   font-size: 1.7vh;
+}
+
+#controlBtn {
+  height: 1.9vh;
 }

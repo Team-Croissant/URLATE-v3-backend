@@ -929,15 +929,18 @@ const zoomOut = () => {
 
 const playPauseBtn = () => {
   if(song.playing()) {
-    document.getElementsByClassName('timeline-icon')[2].src = 'https://img.icons8.com/ios-glyphs/24/000000/play.png';
+    document.getElementById('controlBtn').classList.add('timeline-play');
+    document.getElementById('controlBtn').classList.remove('timeline-pause');
   } else {
-    document.getElementsByClassName('timeline-icon')[2].src = 'https://img.icons8.com/ios-glyphs/24/000000/pause.png';
+    document.getElementById('controlBtn').classList.add('timeline-pause');
+    document.getElementById('controlBtn').classList.remove('timeline-play');
   }
   songPlayPause();
 };
 
 const stopBtn = () => {
-  document.getElementsByClassName('timeline-icon')[2].src = 'https://img.icons8.com/ios-glyphs/24/000000/play.png';
+  document.getElementById('controlBtn').classList.add('timeline-play');
+  document.getElementById('controlBtn').classList.remove('timeline-pause');
   song.stop();
 };
 
