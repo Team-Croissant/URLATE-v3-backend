@@ -940,6 +940,7 @@ document.onkeydown = e => {
       if(song.playing()){
         songPlayPause();
       } else {
+        timelineYLoc = 0;
         song.stop();
       }
     }
