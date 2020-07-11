@@ -385,7 +385,7 @@ const tmlRender = () => {
   const seek = song.seek(),
         minutes = Math.floor(seek / 60),
         seconds = seek - minutes * 60;
-  const renderStart = parseInt(seek * 1000) - 1,
+  const renderStart = parseInt(seek * 1000) - (60000 / bpm * zoom),
         renderEnd = parseInt(renderStart + (5000 * zoom)),
         baseMs = 60 / bpm * 1000,
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
@@ -482,7 +482,7 @@ const tmlRender = () => {
   tmlCtx.textBaseline = "bottom";
   tmlCtx.fillStyle = '#777';
   for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
-    if((renderStart + t) / 1000 < song._duration) {
+    if((renderStart + t) / 1000 < song._duration && (renderStart + t) / 1000 > 0) {
       const tmlMinutes = Math.floor((renderStart + t) / 60000),
             tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
       tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
@@ -499,6 +499,17 @@ const tmlRender = () => {
   } else {
     tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
   }
+  tmlCtx.beginPath();
+  tmlCtx.fillStyle = '#555';
+  tmlCtx.moveTo(tmlStartX + baseMs * msToPx, endY);
+  tmlCtx.lineTo(tmlStartX + baseMs * msToPx, startY);
+  tmlCtx.stroke();
+  tmlCtx.lineTo(tmlStartX + baseMs * msToPx - 5, startY - 5);
+  tmlCtx.lineTo(tmlStartX + baseMs * msToPx - 5, startY - 20);
+  tmlCtx.lineTo(tmlStartX + baseMs * msToPx + 5, startY - 20);
+  tmlCtx.lineTo(tmlStartX + baseMs * msToPx + 5, startY - 5);
+  tmlCtx.lineTo(tmlStartX + baseMs * msToPx, startY);
+  tmlCtx.fill();
 };
 
 const cntRender = () => {
