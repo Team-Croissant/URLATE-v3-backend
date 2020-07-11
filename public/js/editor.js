@@ -49,7 +49,7 @@ let pattern = {
     {"ms": 6/18*42000, "value": 0, "x": 0, "y" : 0},
   ],
   "bullets" : [
-    /*{"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
+    {"ms": 6/18*1000, "value": 0, "direction": "L", "location": 0, "angle": 0, "speed": 2},
     {"ms": 6/18*1000, "value": 0, "direction": "R", "location": 0, "angle": 0, "speed": 2},
     {"ms": 6/18*3000, "value": 0, "direction": "L", "location": 0, "angle": 30, "speed": 2},
     {"ms": 6/18*3000, "value": 0, "direction": "R", "location": 0, "angle": 30, "speed": 2},
@@ -78,7 +78,7 @@ let pattern = {
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": -30, "speed": 3},
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": -45, "speed": 4},
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 30, "speed": 3},
-    {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 4},*/
+    {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 4},
   ],
   "triggers" : []
 };
@@ -403,6 +403,25 @@ const tmlRender = () => {
   let start = lowerBound(pattern.patterns, renderStart);
   let end = upperBound(pattern.patterns, renderEnd);
   const renderNotes = pattern.patterns.slice(start, end);
+  start = lowerBound(pattern.bullets, renderStart);
+  end = upperBound(pattern.bullets, renderEnd);
+  const renderBullets = pattern.bullets.slice(start, end);
+  let bulletsOverlapNum = 0;
+  let bulletsOverlap = {};
+  for(let i = 0; i < renderBullets.length; i++) {
+    let count = 0;
+    if(bulletsOverlap[renderBullets[i].ms]) {
+      bulletsOverlap[renderBullets[i].ms]++;
+    } else {
+      bulletsOverlap[renderBullets[i].ms] = 1;
+    }
+    for(let j = 0; j < renderBullets.length; j++) {
+      if(renderBullets[i].ms == renderBullets[j].ms) {
+        count++;
+      }
+    }
+    if(bulletsOverlapNum < count) bulletsOverlapNum = count;
+  }
   for(let j = 0; j < renderNotes.length; j++) {
     tmlCtx.beginPath();
     if(start + j == selectedCntElement.i && selectedCntElement.v1 == '0') {
@@ -413,9 +432,30 @@ const tmlRender = () => {
     tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + height / 2, height / 4, 0, 2 * Math.PI);
     tmlCtx.fill();
   }
+  for(let j = 0; j < renderBullets.length; j++) {
+    tmlCtx.beginPath();
+    if(start + j == selectedCntElement.i && selectedCntElement.v1 == '1') {
+      tmlCtx.fillStyle = "#5ee3f2";
+    } else {
+      tmlCtx.fillStyle = '#4297d4';
+    }
+    let x = tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
+    let y = startY + height * bulletsOverlap[renderBullets[j].ms] + height / 2;
+    let w = height / 4;
+    if(renderBullets[j].value == 0) {
+      tmlCtx.moveTo(x - w, y);
+      tmlCtx.lineTo(x, y + w);
+      tmlCtx.lineTo(x + w, y);
+      tmlCtx.lineTo(x, y - w);
+      tmlCtx.lineTo(x - w, y);
+    } else if(renderBullets[j].value == 1) {
+      tmlCtx.arc(x, y, w, 0, 2 * Math.PI);
+    }
+    bulletsOverlap[renderBullets[j].ms]--;
+    tmlCtx.fill();
+  }
   tmlCtx.fillStyle = '#FFF';
   tmlCtx.fillRect(0, 0, tmlStartX, endY);
-  tmlCtx.fillRect(endX, 0, tmlCanvas.width, endY);
   tmlCtx.fillStyle = '#2f91ed';
   tmlCtx.font = `${tmlCanvas.height / 11}px Heebo`;
   tmlCtx.textBaseline = "middle";
@@ -434,7 +474,7 @@ const tmlRender = () => {
   tmlCtx.font = `${tmlCanvas.height / 11}px Metropolis`;
   tmlCtx.fillText('Notes', startX * 1.2 + height / 6, startY + height / 1.8);
   let i = 1;
-  for(i; i == 1; i++) { //TODO
+  for(i; i <= bulletsOverlapNum; i++) {
     tmlCtx.beginPath();
     tmlCtx.fillStyle = '#2f91ed';
     tmlCtx.arc(startX, startY + height * i + height / 2, height / 6, 0, 2 * Math.PI);
@@ -442,7 +482,7 @@ const tmlRender = () => {
     tmlCtx.fillStyle = '#111';
     tmlCtx.fillText('Bullets', startX * 1.2 + height / 6, startY + height * i + height / 1.8);
   }
-  for(i; i == 2; i++) { //TODO
+  for(i; i < bulletsOverlapNum + 2; i++) { //TODO
     tmlCtx.beginPath();
     tmlCtx.fillStyle = '#3ccc1f';
     tmlCtx.arc(startX, startY + height * i + height / 2, height / 6, 0, 2 * Math.PI);
@@ -450,6 +490,8 @@ const tmlRender = () => {
     tmlCtx.fillStyle = '#111';
     tmlCtx.fillText('Triggers', startX * 1.2 + height / 6, startY + height * i + height / 1.8);
   }
+  tmlCtx.fillStyle = '#FFF';
+  tmlCtx.fillRect(0, endY, endX, tmlCanvas.height);
 };
 
 const cntRender = () => {
