@@ -6,7 +6,7 @@ let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
 let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
-let timelineYLoc = 0;
+let timelineYLoc = 0, timelineElementNum = 0, timelineScrollCount = 6;
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
 let mouseDown = false;
@@ -471,6 +471,7 @@ const tmlRender = () => {
     tmlCtx.fillStyle = '#111';
     tmlCtx.fillText('Trigger', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
   }
+  timelineElementNum = i;
   tmlCtx.fillStyle = '#FFF';
   tmlCtx.fillRect(0, endY, endX, tmlCanvas.height - endY);
   tmlCtx.fillRect(0, 0, endX, startY);
@@ -956,11 +957,16 @@ document.onkeydown = e => {
       song.seek(seek - (60 / bpm) + (seek % (60 / bpm)) - 0.01);
     }
   } else if(e.keyCode == 38) { //UP
-    timelineYLoc -= tmlCanvas.height / 9;
+    if(timelineElementNum > 6 && timelineScrollCount < timelineElementNum) {
+      timelineYLoc -= tmlCanvas.height / 9;
+      timelineScrollCount++;
+    }
   } else if(e.keyCode == 40) { //DOWN
     timelineYLoc += tmlCanvas.height / 9;
+    timelineScrollCount--;
     if(timelineYLoc > 0) {
       timelineYLoc -= tmlCanvas.height / 9;
+      timelineScrollCount++;
     }
   }
   if(mode == 2) {
