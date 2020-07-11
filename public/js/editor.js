@@ -6,6 +6,7 @@ let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
 let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
+let timelineYLoc = 0;
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
 let mouseDown = false;
@@ -378,7 +379,7 @@ const tmlRender = () => {
         startY = tmlCanvas.height / 6,
         endX = tmlCanvas.width / 1.01,
         endY = tmlCanvas.height / 1.1,
-        height = tmlCanvas.height / 7;
+        height = tmlCanvas.height / 9;
   const seek = song.seek(),
         minutes = Math.floor(seek / 60),
         seconds = seek - minutes * 60;
@@ -387,19 +388,8 @@ const tmlRender = () => {
         baseMs = 60 / bpm * 1000,
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
   tmlCtx.beginPath();
-  tmlCtx.fillStyle = '#EEE';
+  tmlCtx.fillStyle = '#F3F3F3';
   tmlCtx.fillRect(tmlStartX, startY, endX - tmlStartX, endY - startY);
-  tmlCtx.font = `${tmlCanvas.height / 15}px Metropolis`;
-  tmlCtx.textAlign = "center";
-  tmlCtx.textBaseline = "bottom";
-  tmlCtx.fillStyle = '#777';
-  for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
-    if((renderStart + t) / 1000 < song._duration) {
-      const tmlMinutes = Math.floor((renderStart + t) / 60000),
-            tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
-      tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
-    }
-  }
   let start = lowerBound(pattern.patterns, renderStart);
   let end = upperBound(pattern.patterns, renderEnd);
   const renderNotes = pattern.patterns.slice(start, end);
@@ -429,7 +419,7 @@ const tmlRender = () => {
     } else {
       tmlCtx.fillStyle = '#fbaf34';
     }
-    tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + height / 2, height / 4, 0, 2 * Math.PI);
+    tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + timelineYLoc + height / 2, height / 3, 0, 2 * Math.PI);
     tmlCtx.fill();
   }
   for(let j = 0; j < renderBullets.length; j++) {
@@ -440,8 +430,8 @@ const tmlRender = () => {
       tmlCtx.fillStyle = '#4297d4';
     }
     let x = tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
-    let y = startY + height * bulletsOverlap[renderBullets[j].ms] + height / 2;
-    let w = height / 4;
+    let y = startY + timelineYLoc + height * bulletsOverlap[renderBullets[j].ms] + height / 2;
+    let w = height / 3;
     if(renderBullets[j].value == 0) {
       tmlCtx.moveTo(x - w, y);
       tmlCtx.lineTo(x, y + w);
@@ -456,6 +446,47 @@ const tmlRender = () => {
   }
   tmlCtx.fillStyle = '#FFF';
   tmlCtx.fillRect(0, 0, tmlStartX, endY);
+  tmlCtx.beginPath();
+  tmlCtx.fillStyle = '#fbaf34';
+  tmlCtx.arc(startX, startY + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
+  tmlCtx.fill();
+  tmlCtx.fillStyle = '#111';
+  tmlCtx.textAlign = "left";
+  tmlCtx.font = `${tmlCanvas.height / 13}px Metropolis`;
+  tmlCtx.fillText('Note', startX * 1.2 + height / 6, startY + timelineYLoc + height / 1.8);
+  let i = 1;
+  for(i; i <= bulletsOverlapNum; i++) {
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#2f91ed';
+    tmlCtx.arc(startX, startY + timelineYLoc + height * i + height / 2, height / 6, 0, 2 * Math.PI);
+    tmlCtx.fill();
+    tmlCtx.fillStyle = '#111';
+    tmlCtx.fillText('Bullet', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
+  }
+  for(i; i < bulletsOverlapNum + 2; i++) { //TODO
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#3ccc1f';
+    tmlCtx.arc(startX, startY + height * i + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
+    tmlCtx.fill();
+    tmlCtx.fillStyle = '#111';
+    tmlCtx.fillText('Trigger', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
+  }
+  tmlCtx.fillStyle = '#FFF';
+  tmlCtx.fillRect(0, endY, endX, tmlCanvas.height - endY);
+  tmlCtx.fillRect(0, 0, endX, startY);
+  tmlCtx.font = `${tmlCanvas.height / 15}px Metropolis`;
+  tmlCtx.textAlign = "center";
+  tmlCtx.textBaseline = "bottom";
+  tmlCtx.fillStyle = '#777';
+  for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
+    if((renderStart + t) / 1000 < song._duration) {
+      const tmlMinutes = Math.floor((renderStart + t) / 60000),
+            tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
+      tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
+    }
+  }
+  tmlCtx.fillStyle = '#FFF';
+  tmlCtx.fillRect(0, 0, tmlStartX, startY);
   tmlCtx.fillStyle = '#2f91ed';
   tmlCtx.font = `${tmlCanvas.height / 11}px Heebo`;
   tmlCtx.textBaseline = "middle";
@@ -465,33 +496,6 @@ const tmlRender = () => {
   } else {
     tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
   }
-  tmlCtx.beginPath();
-  tmlCtx.fillStyle = '#fbaf34';
-  tmlCtx.arc(startX, startY + height / 2, height / 6, 0, 2 * Math.PI);
-  tmlCtx.fill();
-  tmlCtx.fillStyle = '#111';
-  tmlCtx.textAlign = "left";
-  tmlCtx.font = `${tmlCanvas.height / 11}px Metropolis`;
-  tmlCtx.fillText('Notes', startX * 1.2 + height / 6, startY + height / 1.8);
-  let i = 1;
-  for(i; i <= bulletsOverlapNum; i++) {
-    tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#2f91ed';
-    tmlCtx.arc(startX, startY + height * i + height / 2, height / 6, 0, 2 * Math.PI);
-    tmlCtx.fill();
-    tmlCtx.fillStyle = '#111';
-    tmlCtx.fillText('Bullets', startX * 1.2 + height / 6, startY + height * i + height / 1.8);
-  }
-  for(i; i < bulletsOverlapNum + 2; i++) { //TODO
-    tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#3ccc1f';
-    tmlCtx.arc(startX, startY + height * i + height / 2, height / 6, 0, 2 * Math.PI);
-    tmlCtx.fill();
-    tmlCtx.fillStyle = '#111';
-    tmlCtx.fillText('Triggers', startX * 1.2 + height / 6, startY + height * i + height / 1.8);
-  }
-  tmlCtx.fillStyle = '#FFF';
-  tmlCtx.fillRect(0, endY, endX, tmlCanvas.height);
 };
 
 const cntRender = () => {
@@ -926,7 +930,7 @@ window.addEventListener("beforeunload", e => {
 
 document.onkeydown = e => {
   e = e || window.event;
-  if(e.keyCode == 32 || e.keyCode == 13) {
+  if(e.keyCode == 32) {
     songPlayPause();
   } else if(e.keyCode == 27) {
     if(isSettingsOpened) {
@@ -949,6 +953,13 @@ document.onkeydown = e => {
     song.seek(seek + (60 / bpm) - (seek % (60 / bpm)));
     if(song.seek() >= song._duration) {
       song.seek(seek - (60 / bpm) + (seek % (60 / bpm)) - 0.01);
+    }
+  } else if(e.keyCode == 38) { //UP
+    timelineYLoc -= tmlCanvas.height / 9;
+  } else if(e.keyCode == 40) { //DOWN
+    timelineYLoc += tmlCanvas.height / 9;
+    if(timelineYLoc > 0) {
+      timelineYLoc -= tmlCanvas.height / 9;
     }
   }
   if(mode == 2) {

@@ -227,8 +227,8 @@ body {
   left: 0;
   position: absolute;
   z-index: 2;
-  overflow-y: scroll;
-  overflow-x: scroll;
+  /*overflow-y: scroll;
+  overflow-x: scroll;*/
   background-color: #FFF;
   width: 100vw;
   height: 27vh;
@@ -268,7 +268,7 @@ body {
 
 #timelineInner {
   pointer-events: none;
-  height: 200%;
+  height: 100%;
 }
 
 #timelineCanvas {
