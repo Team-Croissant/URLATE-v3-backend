@@ -469,3 +469,16 @@ body {
   left: 3vw;
   top: 4.5vh;
 }
+
+#timelineZoomController {
+  position: fixed;
+  display: flex;
+  align-content: flex-end;
+  z-index: 5;
+  bottom: 4vh;
+  right: 1.5vw;
+}
+
+.timeline-icon {
+  width: 1.2vw;
+}
