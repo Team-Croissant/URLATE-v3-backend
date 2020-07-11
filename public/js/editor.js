@@ -790,11 +790,15 @@ const elementFollowMouse = (v1, v2, i) => {
       }
       switch(v1) {
         case 0:
-          pattern.patterns[i].x = parseInt(mouseX);
-          pattern.patterns[i].y = parseInt(mouseY);
+          if((mouseX <= 100 || mouseX >= -100) && (mouseY <= 100 || mouseY >= -100) && mouseMode == 0) {
+            pattern.patterns[i].x = parseInt(mouseX);
+            pattern.patterns[i].y = parseInt(mouseY);
+          }
           break;
         case 1:
-          pattern.bullets[i].location = parseInt(mouseY);
+          if((mouseY <= 100 || mouseY >= -100) && mouseMode == 0) {
+            pattern.bullets[i].location = parseInt(mouseY);
+          }
           break;
       }
       elementFollowMouse(v1, v2, i);
