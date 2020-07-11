@@ -957,14 +957,14 @@ document.onkeydown = e => {
       song.seek(seek - (60 / bpm) + (seek % (60 / bpm)) - 0.01);
     }
   } else if(e.keyCode == 38) { //UP
-    if(timelineElementNum > 6 && timelineScrollCount < timelineElementNum) {
+    timelineYLoc += tmlCanvas.height / 9;
+    timelineScrollCount--;
+    if(timelineYLoc > 0) {
       timelineYLoc -= tmlCanvas.height / 9;
       timelineScrollCount++;
     }
   } else if(e.keyCode == 40) { //DOWN
-    timelineYLoc += tmlCanvas.height / 9;
-    timelineScrollCount--;
-    if(timelineYLoc > 0) {
+    if(timelineElementNum > 6 && timelineScrollCount < timelineElementNum) {
       timelineYLoc -= tmlCanvas.height / 9;
       timelineScrollCount++;
     }
