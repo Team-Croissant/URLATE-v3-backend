@@ -406,13 +406,13 @@ const tmlRender = () => {
   let bulletsOverlap = {};
   for(let i = 0; i < renderBullets.length; i++) {
     let count = 0;
-    if(bulletsOverlap[renderBullets[i].ms]) {
-      bulletsOverlap[renderBullets[i].ms]++;
+    if(bulletsOverlap[parseInt(renderBullets[i].ms / 100)]) {
+      bulletsOverlap[parseInt(renderBullets[i].ms / 100)]++;
     } else {
-      bulletsOverlap[renderBullets[i].ms] = 1;
+      bulletsOverlap[parseInt(renderBullets[i].ms / 100)] = 1;
     }
     for(let j = 0; j < renderBullets.length; j++) {
-      if(renderBullets[i].ms == renderBullets[j].ms) {
+      if(parseInt(renderBullets[i].ms / 100) == parseInt(renderBullets[j].ms / 100)) {
         count++;
       }
     }
@@ -436,7 +436,7 @@ const tmlRender = () => {
       tmlCtx.fillStyle = '#4297d4';
     }
     let x = tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
-    let y = startY + timelineYLoc + height * bulletsOverlap[renderBullets[j].ms] + height / 2;
+    let y = startY + timelineYLoc + height * bulletsOverlap[parseInt(renderBullets[j].ms / 100)] + height / 2;
     let w = height / 3;
     if(renderBullets[j].value == 0) {
       tmlCtx.moveTo(x - w, y);
@@ -447,7 +447,7 @@ const tmlRender = () => {
     } else if(renderBullets[j].value == 1) {
       tmlCtx.arc(x, y, w, 0, 2 * Math.PI);
     }
-    bulletsOverlap[renderBullets[j].ms]--;
+    bulletsOverlap[parseInt(renderBullets[j].ms / 100)]--;
     tmlCtx.fill();
   }
   tmlCtx.fillStyle = '#FFF';
