@@ -2,7 +2,7 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1, split = 1;
+let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1, split = 2;
 let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
@@ -204,12 +204,14 @@ const toggleSettings = () => {
     document.getElementById('settingsContainer').style.display = 'none';
     document.getElementById('timelineContainer').style.width = '100vw';
     document.getElementById('timelineZoomController').style.right = '1.5vw';
+    document.getElementById('timelineSplitController').style.left = '11vw';
     tmlCanvas.style.width = '100vw';
     tmlCanvas.width = window.innerWidth;
   } else {
     document.getElementById('settingsContainer').style.display = 'flex';
     document.getElementById('timelineContainer').style.width = '80vw';
     document.getElementById('timelineZoomController').style.right = '21vw';
+    document.getElementById('timelineSplitController').style.left = '9vw';
     tmlCanvas.style.width = '80vw';
     tmlCanvas.width = window.innerWidth * 0.8;
   }
