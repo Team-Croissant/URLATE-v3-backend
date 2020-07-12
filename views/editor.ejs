@@ -80,7 +80,7 @@
                 <p class="settingsSemiTitle">PROPERTY</p>
                 <div class="settingsPropertiesIndividual">
                   <span class="settingsPropertiesTitle">Timing</span>
-                  <input type="text" class="settingsPropertiesTextbox metropolis" onkeyup="settingsInput('Timing', this)">
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
                 </div>
               </div>
             </div>
@@ -104,7 +104,7 @@
                 <p class="settingsSemiTitle">PROPERTY</p>
                 <div class="settingsPropertiesIndividual">
                   <span class="settingsPropertiesTitle">Timing</span>
-                  <input type="text" class="settingsPropertiesTextbox metropolis" onkeyup="settingsInput('Timing', this)">
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
                 </div>
                 <div class="settingsPropertiesIndividual">
                   <span class="settingsPropertiesTitle">Speed</span>
@@ -157,11 +157,15 @@
               <p class="settingsSemiTitle">WRAP UP</p>
               <div class="settingsPropertiesIndividual">
                 <span class="settingsPropertiesTitle">SAVE</span>
-                <input type="button" class="settingsButtons metropolis clickable" onclick="save()" value="<%= __('save') %>">
+                <input type="button" class="settingsButtons metropolis clickable" onclick="save()" value="▶">
+              </div>
+              <div class="settingsPropertiesIndividual">
+                <span class="settingsPropertiesTitle">TEST</span>
+                <input type="button" class="settingsButtons metropolis clickable" onclick="test()" value="▶">
               </div>
               <div class="settingsPropertiesIndividual">
                 <span class="settingsPropertiesTitle">DELETE ALL</span>
-                <input type="button" class="settingsButtons metropolis clickable" onclick="deleteAll()" value="<%= __('delete') %>">
+                <input type="button" class="settingsButtons metropolis clickable" onclick="deleteAll()" value="▶">
               </div>
             </div>
           </div>
