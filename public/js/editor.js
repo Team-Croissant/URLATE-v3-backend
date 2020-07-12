@@ -2,7 +2,7 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0;
+let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1;
 let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
@@ -790,7 +790,7 @@ const trackTimelineMousePos = () => {
   mouseMode = 1;
   mouseX = event.clientX;
   mouseY = event.clientY - Math.floor(window.innerHeight / 100 * 73);
-  console.log(mouseX, mouseY);
+  //console.log(mouseX, mouseY);
 }
 
 const elementFollowMouse = (v1, v2, i) => {
@@ -953,6 +953,15 @@ const stopBtn = () => {
   document.getElementById('controlBtn').classList.add('timeline-play');
   document.getElementById('controlBtn').classList.remove('timeline-pause');
   song.stop();
+};
+
+const changeRate = () => {
+  rate += 0.25;
+  if(rate > 2) {
+    rate = 0.25;
+  }
+  document.getElementById('percentage').innerText = `${rate * 100}%`;
+  song.rate(rate);
 };
 
 /*const scrollHorizontally = e => {
