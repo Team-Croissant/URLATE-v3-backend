@@ -481,8 +481,8 @@ const tmlRender = () => {
   tmlCtx.textAlign = "center";
   tmlCtx.textBaseline = "bottom";
   tmlCtx.fillStyle = '#777';
-  for(let t = (baseMs - renderStart % baseMs); t <= renderEnd; t += baseMs) {
-    if((renderStart + t) / 1000 < song._duration && (renderStart + t) / 1000 > 0) {
+  for(let t = (baseMs - renderStart % baseMs) - baseMs; t <= renderEnd + baseMs; t += baseMs) {
+    if((renderStart + t) / 1000 < song._duration && (renderStart + t) / 1000 >= 0) {
       const tmlMinutes = Math.floor((renderStart + t) / 60000),
             tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
       tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
@@ -494,10 +494,12 @@ const tmlRender = () => {
   tmlCtx.font = `${tmlCanvas.height / 11}px Heebo`;
   tmlCtx.textBaseline = "middle";
   tmlCtx.textAlign = "right";
-  if(isNaN(minutes)) {
-    tmlCtx.fillText('Wait..', tmlStartX, startY / 1.7);
-  } else {
-    tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
+  if(tmlCanvas.height / tmlCanvas.width < 0.16) {
+    if(isNaN(minutes)) {
+      tmlCtx.fillText('Wait..', tmlStartX, startY / 1.7);
+    } else {
+      tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
+    }
   }
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#555';
