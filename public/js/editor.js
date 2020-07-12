@@ -504,7 +504,6 @@ const tmlRender = () => {
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#555';
   let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
-  console.log(lineX);
   tmlCtx.moveTo(lineX, endY);
   tmlCtx.lineTo(lineX, startY);
   tmlCtx.stroke();
@@ -583,8 +582,12 @@ const cntRender = () => {
 const songPlayPause = () => {
   if(document.getElementById('editorMainContainer').style.display == 'initial') {
     if(song.playing()){
+      document.getElementById('controlBtn').classList.add('timeline-play');
+      document.getElementById('controlBtn').classList.remove('timeline-pause');
       song.pause();
     } else {
+      document.getElementById('controlBtn').classList.add('timeline-pause');
+      document.getElementById('controlBtn').classList.remove('timeline-play');
       circleBulletAngles = [];
       song.play();
     }
@@ -943,13 +946,6 @@ const zoomOut = () => {
 };
 
 const playPauseBtn = () => {
-  if(song.playing()) {
-    document.getElementById('controlBtn').classList.add('timeline-play');
-    document.getElementById('controlBtn').classList.remove('timeline-pause');
-  } else {
-    document.getElementById('controlBtn').classList.add('timeline-pause');
-    document.getElementById('controlBtn').classList.remove('timeline-play');
-  }
   songPlayPause();
 };
 
