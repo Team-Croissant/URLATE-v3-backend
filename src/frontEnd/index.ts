@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(i18n);
 
 app.get('/', (req, res) => {
-  res.render('index', { url : config.project.url, api : config.project.api, communityUrl : config.project.communityUrl, miraiUrl : config.project.miraiUrl });
+  res.render('index', { url : config.project.url, api : config.project.api, community : config.project.community, mirai : config.project.mirai });
 });
 
 app.get('/en', function(req, res) {
@@ -46,15 +46,11 @@ app.get('/authorize', (req, res) => {
 });
 
 app.get('/game', (req, res) => {
-  res.render('game', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
-});
-
-app.get('/proto', (req, res) => {
-  res.render('proto', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
+  res.render('game', { cdn : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
 app.get('/editor', (req, res) => {
-  res.render('editor', { cdnUrl : config.project.cdn, url : config.project.url, api : config.project.api });
+  res.render('editor', { cdn : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
 app.get('/accessDenined', (req, res) => {

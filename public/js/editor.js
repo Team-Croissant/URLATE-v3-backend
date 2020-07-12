@@ -170,7 +170,7 @@ const newEditor = () => {
 
 const songSelected = () => {
   song = new Howl({
-    src: [`${cdnUrl}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+    src: [`${cdn}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
     autoplay: false,
     loop: false,
     onend: () => {
@@ -192,7 +192,7 @@ const songSelected = () => {
   bpm = tracks[songSelectBox.selectedIndex].bpm;
   offset = 0;
   speed = 2;
-  document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdnUrl}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
+  document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';

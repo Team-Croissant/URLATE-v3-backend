@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(i18n_1.default);
 app.get('/', function (req, res) {
-    res.render('index', { url: config.project.url, api: config.project.api, communityUrl: config.project.communityUrl, miraiUrl: config.project.miraiUrl });
+    res.render('index', { url: config.project.url, api: config.project.api, community: config.project.community, mirai: config.project.mirai });
 });
 app.get('/en', function (req, res) {
     res.cookie('lang', 'en');
@@ -43,13 +43,10 @@ app.get('/authorize', function (req, res) {
     }
 });
 app.get('/game', function (req, res) {
-    res.render('game', { cdnUrl: config.project.cdn, url: config.project.url, api: config.project.api });
-});
-app.get('/proto', function (req, res) {
-    res.render('proto', { cdnUrl: config.project.cdn, url: config.project.url, api: config.project.api });
+    res.render('game', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
 });
 app.get('/editor', function (req, res) {
-    res.render('editor', { cdnUrl: config.project.cdn, url: config.project.url, api: config.project.api });
+    res.render('editor', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
 });
 app.get('/accessDenined', function (req, res) {
     res.render('accessDenined');
