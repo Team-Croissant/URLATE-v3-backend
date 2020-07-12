@@ -174,6 +174,9 @@ const songSelected = () => {
     autoplay: false,
     loop: false,
     onend: () => {
+      document.getElementById('controlBtn').classList.remove('timeline-play');
+      document.getElementById('controlBtn').classList.remove('timeline-pause');
+      document.getElementById('controlBtn').classList.add('timeline-play');
       song.stop();
     },
     onload: () => {
