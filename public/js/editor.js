@@ -1023,6 +1023,15 @@ const changeSplit = () => {
   document.getElementById('split').innerText = `1/${split}`;
 };
 
+const deleteElement = () => {
+  if(selectedCntElement.v1 == 0) {
+    delete pattern.patterns[selectedCntElement.i];
+  } else if(selectedCntElement.v1 == 0) {
+    delete pattern.bullets[selectedCntElement.i];
+  }
+  pattern.patterns.sort(sortAsTiming);
+};
+
 /*const scrollHorizontally = e => {
   e = window.event || e;
   let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
@@ -1078,6 +1087,8 @@ document.onkeydown = e => {
       timelineYLoc -= tmlCanvas.height / 9;
       timelineScrollCount++;
     }
+  } else if(e.keyCode == 46) { //DELETE
+    deleteElement();
   }
   if(mode == 2) {
     if(e.keyCode == 49) {
