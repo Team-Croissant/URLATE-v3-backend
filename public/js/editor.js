@@ -503,14 +503,16 @@ const tmlRender = () => {
   }
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#555';
-  tmlCtx.moveTo(tmlStartX + baseMs * msToPx, endY);
-  tmlCtx.lineTo(tmlStartX + baseMs * msToPx, startY);
+  let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
+  console.log(lineX);
+  tmlCtx.moveTo(lineX, endY);
+  tmlCtx.lineTo(lineX, startY);
   tmlCtx.stroke();
-  tmlCtx.lineTo(tmlStartX + baseMs * msToPx - 5, startY - 5);
-  tmlCtx.lineTo(tmlStartX + baseMs * msToPx - 5, startY - 20);
-  tmlCtx.lineTo(tmlStartX + baseMs * msToPx + 5, startY - 20);
-  tmlCtx.lineTo(tmlStartX + baseMs * msToPx + 5, startY - 5);
-  tmlCtx.lineTo(tmlStartX + baseMs * msToPx, startY);
+  tmlCtx.lineTo(lineX - 5, startY - 5);
+  tmlCtx.lineTo(lineX - 5, startY - 20);
+  tmlCtx.lineTo(lineX + 5, startY - 20);
+  tmlCtx.lineTo(lineX + 5, startY - 5);
+  tmlCtx.lineTo(lineX, startY);
   tmlCtx.fill();
 };
 
@@ -933,11 +935,11 @@ const changeSettingsMode = (v1, v2, i) => {
 }
 
 const zoomIn = () => {
-  zoom -= 0.1;
+  zoom -= 0.15;
 };
 
 const zoomOut = () => {
-  zoom += 0.1;
+  zoom += 0.15;
 };
 
 const playPauseBtn = () => {
