@@ -309,7 +309,6 @@ const gotoMain = (isCalledByMain) => {
     document.getElementById('initialScreenContainer').style.display = 'block';
     document.getElementById('initialButtonsContainer').style.display = 'flex';
     document.getElementById('songSelectionContainer').style.display = 'none';
-    document.getElementsByClassName
     songSelectBox.selectedIndex = 0;
     document.getElementById('editorMainContainer').style.display = 'none';
     pattern = {
@@ -659,6 +658,30 @@ const save = () => {
   a.href = URL.createObjectURL(file);
   a.download = `${songName.innerText}.json`;
   a.click();
+};
+
+const deleteAll = () => {
+  if(confirm(deleteSure)) {
+    song.stop();
+    changeSettingsMode(-1);
+    if(isSettingsOpened) toggleSettings();
+    selectedCntElement = {"v1": '', "v2": '', "i": ''};
+    songSelectBox.selectedIndex = 0;
+    pattern = {
+      "information": {
+        "version": "1.0",
+        "track": "",
+        "producer": "",
+        "author": "",
+        "bpm": "",
+        "speed": "",
+        "offset": ""
+      },
+      "patterns" : [],
+      "bullets" : [],
+      "triggers" : []
+    };
+  }
 };
 
 const settingsInput = (v, e) => {

@@ -364,8 +364,8 @@ body {
 .settingsButtons {
   width: 25%;
   margin: 0.1vw;
-  border: none;
-  background-color: #DEDEDE;
+  border: solid 1px #AAA;
+  background-color: #FFF;
   border-radius: 3px;
   height: 2.5vh;
 }

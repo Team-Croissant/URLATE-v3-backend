@@ -153,6 +153,17 @@
                 <input type="text" class="settingsPropertiesTextbox metropolis" onkeyup="changeOffset(this)" value="0">
               </div>
             </div>
+            <div id="settingsPropertiesContainer">
+              <p class="settingsSemiTitle">WRAP UP</p>
+              <div class="settingsPropertiesIndividual">
+                <span class="settingsPropertiesTitle">SAVE</span>
+                <input type="button" class="settingsButtons metropolis clickable" onclick="save()" value="<%= __('save') %>">
+              </div>
+              <div class="settingsPropertiesIndividual">
+                <span class="settingsPropertiesTitle">DELETE ALL</span>
+                <input type="button" class="settingsButtons metropolis clickable" onclick="deleteAll()" value="<%= __('delete') %>">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -177,6 +188,7 @@
   </div>
   <script>
     const rusure = "<%= __('RUSure') %>";
+    const deleteSure = "<%= __('DeleteSure') %>";
     const cdnUrl = "<%= cdnUrl %>";
     const url = "<%= url %>";
     const api = "<%= api %>";
