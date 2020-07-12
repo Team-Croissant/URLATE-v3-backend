@@ -2,7 +2,7 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1;
+let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1, split = 1;
 let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
@@ -489,6 +489,20 @@ const tmlRender = () => {
       const tmlMinutes = Math.floor((renderStart + t) / 60000),
             tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
       tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
+      for(let i = 1; i <= split; i++) {
+        tmlCtx.beginPath();
+        let strokeY;
+        if(i == split) {
+          tmlCtx.strokeStyle = '#555';
+          strokeY = startY - 10;
+        } else {
+          tmlCtx.strokeStyle = '#999';
+          strokeY = startY - 5;
+        }
+        tmlCtx.moveTo(tmlStartX + t * msToPx + baseMs * msToPx / split * i, startY);
+        tmlCtx.lineTo(tmlStartX + t * msToPx + baseMs * msToPx / split * i, strokeY);
+        tmlCtx.stroke();
+      }
     }
   }
   tmlCtx.fillStyle = '#FFF';
@@ -506,6 +520,7 @@ const tmlRender = () => {
   }
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#555';
+  tmlCtx.strokeStyle = '#555';
   let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
   tmlCtx.moveTo(lineX, endY);
   tmlCtx.lineTo(lineX, startY);
@@ -967,6 +982,22 @@ const changeRate = () => {
   song.rate(rate);
 };
 
+const changeSplit = () => {
+  split++;
+  if(split == 5) {
+    split = 6;
+  } else if(split == 7) {
+    split = 8;
+  } else if(split == 9) {
+    split = 12;
+  } else if(split == 13) {
+    split = 16;
+  } else if(split == 17) {
+    split = 1;
+  }
+  document.getElementById('split').innerText = `1/${split}`;
+};
+
 /*const scrollHorizontally = e => {
   e = window.event || e;
   let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
@@ -1002,13 +1033,13 @@ document.onkeydown = e => {
   } else if(e.keyCode == 37) { //LEFT
     song.seek(song.seek() - 0.01);
     let seek = song.seek();
-    song.seek(seek - (seek % (60 / bpm)));
+    song.seek(seek - (seek % (60 / bpm / split)));
   } else if(e.keyCode == 39) { //RIGHT
     song.seek(song.seek() + 0.01);
     let seek = song.seek();
-    song.seek(seek + (60 / bpm) - (seek % (60 / bpm)));
+    song.seek(seek + (60 / bpm / split) - (seek % (60 / bpm / split)));
     if(song.seek() >= song._duration) {
-      song.seek(seek - (60 / bpm) + (seek % (60 / bpm)) - 0.01);
+      song.seek(seek - (60 / bpm / split) + (seek % (60 / bpm / split)) - 0.01);
     }
   } else if(e.keyCode == 38) { //UP
     timelineYLoc += tmlCanvas.height / 9;

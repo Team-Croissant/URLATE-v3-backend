@@ -470,23 +470,29 @@ body {
   top: 4.5vh;
 }
 
-#timelineZoomController {
+.controllers {
   position: fixed;
   display: flex;
-  align-content: flex-end;
   z-index: 5;
+}
+
+#timelineZoomController {
+  align-content: flex-end;
   bottom: 4vh;
   right: 1.5vw;
 }
 
 #timelinePlayController {
-  position: fixed;
-  display: flex;
   align-items: center;
-  z-index: 5;
   bottom: 23.5vh;
   left: 1vw;
   filter: invert(30%) sepia(0%) saturate(572%) hue-rotate(158deg) brightness(102%) contrast(86%);
+}
+
+#timelineSplitController {
+  align-items: center;
+  bottom: 4vh;
+  left: 11vw;
 }
 
 .timeline-icon {
@@ -502,6 +508,10 @@ body {
 }
 
 #percentage {
+  font-size: 1.7vh;
+}
+
+#split {
   font-size: 1.7vh;
 }
 

@@ -162,14 +162,17 @@
     </div>
     <canvas id="timelineCanvas" width="100%" height="100%">
     </canvas>
-    <div id="timelineZoomController">
+    <div id="timelineZoomController" class="controllers">
       <img src="https://img.icons8.com/ios-glyphs/24/000000/zoom-in.png" class="clickable timeline-icon" onclick="zoomIn()">
       <img src="https://img.icons8.com/ios-glyphs/24/000000/zoom-out.png" class="clickable timeline-icon" onclick="zoomOut()">
     </div>
-    <div id="timelinePlayController">
+    <div id="timelinePlayController" class="controllers">
       <img src="https://img.icons8.com/ios-glyphs/24/000000/play.png" id="controlBtn" class="clickable timeline-play" onclick="playPauseBtn()">
       <img src="https://img.icons8.com/ios-glyphs/24/000000/stop.png" class="clickable timeline-icon" onclick="stopBtn()">
       <span class="clickable" id="percentage" onclick="changeRate();">100%</span>
+    </div>
+    <div id="timelineSplitController" class="controllers">
+      <span class="clickable" id="split" onclick="changeSplit();">1/1</span>
     </div>
   </div>
   <script>
