@@ -833,6 +833,8 @@ const trackMousePos = () => {
     mouseMode = 0;
     mouseX = x;
     mouseY = y;
+  } else {
+    mouseMode = -1;
   }
 }
 
@@ -1005,6 +1007,22 @@ const changeRate = () => {
   }
   document.getElementById('percentage').innerText = `${rate * 100}%`;
   song.rate(rate);
+};
+
+const test = () => {
+  alert(need2Save);
+  save();
+  let trackSettingsForm = trackSettings.getElementsByClassName('settingsPropertiesTextbox');
+  pattern.information = {
+    "version": "1.0",
+    "track": trackSettingsForm[0].value,
+    "producer": trackSettingsForm[1].value,
+    "author": trackSettingsForm[2].value,
+    "bpm": bpm,
+    "speed": speed,
+    "offset": offset
+  };
+  window.location.href = `${url}/test?pattern=${JSON.stringify(pattern)}`;
 };
 
 const changeSplit = () => {
