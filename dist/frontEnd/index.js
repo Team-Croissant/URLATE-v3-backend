@@ -48,6 +48,9 @@ app.get('/game', function (req, res) {
 app.get('/editor', function (req, res) {
     res.render('editor', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
 });
+app.get('/test', function (req, res) {
+    res.render('test', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
+});
 app.get('/accessDenined', function (req, res) {
     res.render('accessDenined');
 });
