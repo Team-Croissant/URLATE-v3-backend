@@ -9,7 +9,7 @@ let zoom = 1;
 let timelineYLoc = 0, timelineElementNum = 0, timelineScrollCount = 6;
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
-let mouseDown = false;
+let mouseDown = false, ctrlDown = false;
 let userName = '';
 let pattern = {
   "information": {
@@ -1050,21 +1050,65 @@ const deleteElement = () => {
   pattern.patterns.sort(sortAsTiming);
 };
 
-/*const scrollHorizontally = e => {
+const tmlScrollLeft = () => {
+  song.seek(song.seek() - 0.01);
+  let seek = song.seek();
+  song.seek(seek - (seek % (60 / bpm / split)));
+};
+
+const tmlScrollRight = () => {
+  song.seek(song.seek() + 0.01);
+  let seek = song.seek();
+  song.seek(seek + (60 / bpm / split) - (seek % (60 / bpm / split)));
+  if(song.seek() >= song._duration) {
+    song.seek(seek - (60 / bpm / split) + (seek % (60 / bpm / split)) - 0.01);
+  }
+};
+
+const tmlScrollUp = () => {
+  timelineYLoc = Number(timelineYLoc.toFixed(2)) + tmlCanvas.height / 9;
+  timelineScrollCount--;
+  if(timelineYLoc > 1) {
+    timelineYLoc = Number(timelineYLoc.toFixed(2)) - tmlCanvas.height / 9;
+    timelineScrollCount++;
+  }
+};
+
+const tmlScrollDown = () => {
+  if(timelineElementNum > 6 && timelineScrollCount < timelineElementNum) {
+    timelineYLoc = Number(timelineYLoc.toFixed(2)) - tmlCanvas.height / 9;
+    timelineScrollCount++;
+  }
+};
+
+const scrollEvent = e => {
   e = window.event || e;
   let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-  document.getElementById('timelineContainer').scrollLeft -= (delta * 30);
+  if(delta == 1) { //UP
+    if(ctrlDown) tmlScrollUp();
+    else tmlScrollLeft();
+  } else { //DOWN
+    if(ctrlDown) tmlScrollDown();
+    else tmlScrollRight();
+  }
   e.preventDefault();
 };
 
-document.getElementById('timelineContainer').addEventListener("mousewheel", scrollHorizontally);
-document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollHorizontally);*/
+document.getElementById('timelineContainer').addEventListener("mousewheel", scrollEvent);
+document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollEvent);
 window.addEventListener("resize", initialize);
 
 window.addEventListener("beforeunload", e => {
   (e || window.event).returnValue = rusure;
   return rusure;
 });
+
+document.onkeyup = e => {
+  e = e || window.event;
+  if(e.keyCode == 17) { //CTRL
+    ctrlDown = false;
+  }
+};
 
 document.onkeydown = e => {
   e = e || window.event;
@@ -1083,30 +1127,17 @@ document.onkeydown = e => {
       }
     }
   } else if(e.keyCode == 37) { //LEFT
-    song.seek(song.seek() - 0.01);
-    let seek = song.seek();
-    song.seek(seek - (seek % (60 / bpm / split)));
+    tmlScrollLeft();
   } else if(e.keyCode == 39) { //RIGHT
-    song.seek(song.seek() + 0.01);
-    let seek = song.seek();
-    song.seek(seek + (60 / bpm / split) - (seek % (60 / bpm / split)));
-    if(song.seek() >= song._duration) {
-      song.seek(seek - (60 / bpm / split) + (seek % (60 / bpm / split)) - 0.01);
-    }
+    tmlScrollRight();
   } else if(e.keyCode == 38) { //UP
-    timelineYLoc += tmlCanvas.height / 9;
-    timelineScrollCount--;
-    if(timelineYLoc > 0) {
-      timelineYLoc -= tmlCanvas.height / 9;
-      timelineScrollCount++;
-    }
+    tmlScrollUp();
   } else if(e.keyCode == 40) { //DOWN
-    if(timelineElementNum > 6 && timelineScrollCount < timelineElementNum) {
-      timelineYLoc -= tmlCanvas.height / 9;
-      timelineScrollCount++;
-    }
+    tmlScrollDown();
   } else if(e.keyCode == 46) { //DELETE
     deleteElement();
+  } else if(e.keyCode == 17) { //CTRL
+    ctrlDown = true;
   }
   if(mode == 2) {
     if(e.keyCode == 49) {
