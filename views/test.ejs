@@ -9,6 +9,16 @@
   <link rel="shortcut icon" href="images/favicon.ico">
 </head>
 <body>
+  <div id="loadingContainer">
+    <img id="album">
+    <span id="title">Title</span>
+    <br>
+    <span id="artist">Various Artists</span>
+  </div>
+  <div id="canvasContainer">
+    <canvas id="componentCanvas" width="100%" height="100%">
+    </canvas>
+  </div>
   <script>
     const cdn = "<%= cdn %>";
     const url = "<%= url %>";

@@ -1,6 +1,8 @@
+const canvas = document.getElementById('componentCanvas');
+const ctx = canvas.getContext("2d");
 let pattern = {};
 let userName = '';
-let settings, tracks, sync;
+let settings, sync, song;
 
 function getParam(sname) {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -54,10 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
   .then(res => res.json())
   .then((data) => {
     if(data.result == 'success') {
-      tracks = data.tracks;
-      for(let i = 0; tracks.length > i; i++) {
-        //STH
-      }
+      /*song = new Howl({
+        src: [`${cdn}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+        autoplay: false,
+        loop: false,
+        onend: () => {
+          song.stop();
+        },
+        onload: () => {
+        }
+      });*/
     } else {
       alert('Failed to load song list.');
     }
@@ -69,6 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const initialize = () => {
   pattern = JSON.parse(decodeURI(getParam('pattern')));
+  canvas.width = window.innerWidth;
+  ctx.height = window.innerHeight;
 };
 
 const settingApply = () => {
