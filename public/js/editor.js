@@ -1044,10 +1044,14 @@ const changeSplit = () => {
 const deleteElement = () => {
   if(selectedCntElement.v1 == 0) {
     delete pattern.patterns[selectedCntElement.i];
-  } else if(selectedCntElement.v1 == 0) {
+    pattern.patterns.sort(sortAsTiming);
+  } else if(selectedCntElement.v1 == 1) {
     delete pattern.bullets[selectedCntElement.i];
+    pattern.bullets.sort(sortAsTiming);
   }
-  pattern.patterns.sort(sortAsTiming);
+  changeSettingsMode(-1);
+  selectedCntElement = {"v1": '', "v2": '', "i": ''};
+  if(isSettingsOpened) toggleSettings();
 };
 
 const tmlScrollLeft = () => {
