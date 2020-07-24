@@ -1126,6 +1126,7 @@ document.onkeydown = e => {
       if(song.playing()){
         songPlayPause();
       } else {
+        timelineScrollCount = 0;
         timelineYLoc = 0;
         song.stop();
       }
