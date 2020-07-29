@@ -137,6 +137,20 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>{opacity}</td>
     <td>채보 전체의 투명도를 조절하는 명령어입니다.<br>opacity: 0~1</td>
   </tr>
+  <tr>
+    <td>Speed</td>
+    <td>n</td>
+    <td>4</td>
+    <td>{speed}</td>
+    <td>채보 전체의 Speed를 바꾸는 명령어입니다.<br>speed: 1~5(Recommended)</td>
+  </tr>
+  <tr>
+    <td>Text</td>
+    <td>n</td>
+    <td>5</td>
+    <td>{text, time}</td>
+    <td>일정시간 텍스트를 출력하는 명령어입니다.<br>text: s, time: ms(n)</td>
+  </tr>
 </table>
 
 ## 다시보기 파일
