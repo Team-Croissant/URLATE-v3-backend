@@ -127,8 +127,8 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>BPM</td>
     <td>n</td>
     <td>2</td>
-    <td>{BPM}</td>
-    <td>특정 시점부터 채보의 BPM을 바꾸는 명령어입니다.<br>BPM : n</td>
+    <td>{bpm}</td>
+    <td>특정 시점부터 채보의 BPM을 바꾸는 명령어입니다.<br>bpm : n</td>
   </tr>
   <tr>
     <td>Opacity</td>
@@ -148,8 +148,8 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>Text</td>
     <td>n</td>
     <td>5</td>
-    <td>{text, time}</td>
-    <td>일정시간 텍스트를 출력하는 명령어입니다.<br>text: s, time: ms(n)</td>
+    <td>{text, x, y, align, time}</td>
+    <td>일정시간 텍스트를 출력하는 명령어입니다.<br>text: s<br>x: -100~100<br>y: -100~100<br>align:'left/center/right'<br>time: ms(n)</td>
   </tr>
 </table>
 
