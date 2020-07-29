@@ -862,7 +862,11 @@ const elementFollowMouse = (v1, v2, i) => {
           break;
         case 1:
           if((mouseY <= 100 || mouseY >= -100) && mouseMode == 0) {
-            pattern.bullets[i].location = parseInt(mouseY);
+            const seek = song.seek();
+            const left = pattern.bullets[i].direction == 'L';
+            const p = (seek * 1000 - pattern.bullets[i].ms) / (bpm * 40 / speed / pattern.bullets[i].speed) * 100;
+            const y = mouseY - p * getTan(circleBulletAngles[i] != undefined ? circleBulletAngles[i] : pattern.bullets[i].angle) * (left ? 1 : -1);
+            pattern.bullets[i].location = y;
           }
           break;
       }
