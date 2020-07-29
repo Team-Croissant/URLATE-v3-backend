@@ -81,7 +81,17 @@ let pattern = {
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 30, "speed": 3},
     {"ms": 6/18*21000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 4},
   ],
-  "triggers" : []
+  "triggers" : [
+    {"ms": 6/18*4000, "value": 2, "bpm": 90},
+    {"ms": 6/18*8000, "value": 2, "bpm": 180},
+    {"ms": 6/18*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT"},
+    {"ms": 6/18*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST"},
+    {"ms": 6/18*25000, "value": 4, "speed": 4},
+    {"ms": 6/18*29000, "value": 4, "speed": 2},
+    {"ms": 6/18*30000, "value": 3, "opacity": 0.5},
+    {"ms": 6/18*32000, "value": 3, "opacity": 0.1},
+    {"ms": 6/18*34000, "value": 3, "opacity": 1},
+  ]
 };
 let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
