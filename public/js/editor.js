@@ -181,6 +181,28 @@ const newEditor = () => {
   document.getElementById('songSelectionContainer').style.display = 'flex';
 };
 
+const loadEditor = () => {
+  let input = document.createElement("input");
+  input.type = 'file';
+  input.accept = '.json';
+  input.setAttribute("onchange", `dataLoaded(event)`);
+  console.log(input);
+  input.click();
+};
+
+const dataLoaded = (event) => {
+  let file = event.target.files[0];
+  let reader = new FileReader();
+  reader.onload = (e) => {
+    pattern = JSON.parse(e.target.result);
+    for(let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
+      if(document.getElementById("songSelectBox").options[i].value == pattern.information.track) songSelectBox.selectedIndex = i;
+    }
+    songSelected();
+  };
+  reader.readAsText(file);
+};
+
 const songSelected = () => {
   song = new Howl({
     src: [`${cdn}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
@@ -1173,6 +1195,7 @@ document.onkeydown = e => {
 document.body.onmousedown = function() { 
   mouseDown = true;
 }
+
 document.body.onmouseup = function() {
   mouseDown = false;
 }
