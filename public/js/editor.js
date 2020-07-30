@@ -503,10 +503,10 @@ const tmlRender = () => {
       const tmlMinutes = Math.floor((renderStart + t) / 60000),
             tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
       tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
-      for(let i = 1; i <= split; i++) {
+      for(let i = 0; i < split; i++) {
         tmlCtx.beginPath();
         let strokeY;
-        if(i == split) {
+        if(i == 0) {
           tmlCtx.strokeStyle = '#555';
           strokeY = startY - 10;
         } else {
