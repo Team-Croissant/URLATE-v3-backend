@@ -84,8 +84,11 @@ let pattern = {
   "triggers" : [
     {"ms": 6/18*4000, "value": 2, "bpm": 90},
     {"ms": 6/18*8000, "value": 2, "bpm": 180},
+    {"ms": 6/18*11000, "value": 0, "num": 10},
+    {"ms": 6/18*13000, "value": 0, "num": 13},
     {"ms": 6/18*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT"},
     {"ms": 6/18*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST"},
+    {"ms": 6/18*23000, "value": 1},
     {"ms": 6/18*25000, "value": 4, "speed": 4},
     {"ms": 6/18*29000, "value": 4, "speed": 2},
     {"ms": 6/18*30000, "value": 3, "opacity": 0.5},
