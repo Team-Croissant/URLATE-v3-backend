@@ -1083,9 +1083,11 @@ const changeSplit = () => {
 const deleteElement = () => {
   if(selectedCntElement.v1 == 0) {
     delete pattern.patterns[selectedCntElement.i];
+    pattern.patterns.length--;
     pattern.patterns.sort(sortAsTiming);
   } else if(selectedCntElement.v1 == 1) {
     delete pattern.bullets[selectedCntElement.i];
+    pattern.bullets.length--;
     pattern.bullets.sort(sortAsTiming);
   }
   changeSettingsMode(-1);
