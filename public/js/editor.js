@@ -450,7 +450,7 @@ const tmlRender = () => {
   start = lowerBound(pattern.bullets, renderStart);
   end = upperBound(pattern.bullets, renderEnd);
   const renderBullets = pattern.bullets.slice(start, end);
-  let bulletsOverlapNum = 0;
+  let bulletsOverlapNum = 1;
   let bulletsOverlap = {};
   for(let i = 0; i < renderBullets.length; i++) {
     let count = 0;
