@@ -198,12 +198,12 @@ const dataLoaded = (event) => {
     for(let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
       if(document.getElementById("songSelectBox").options[i].value == pattern.information.track) songSelectBox.selectedIndex = i;
     }
-    songSelected();
+    songSelected(true);
   };
   reader.readAsText(file);
 };
 
-const songSelected = () => {
+const songSelected = (isLoaded) => {
   song = new Howl({
     src: [`${cdn}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
     autoplay: false,
@@ -217,16 +217,29 @@ const songSelected = () => {
     onload: () => {
     }
   });
-  songName.innerText = tracks[songSelectBox.selectedIndex].name;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = songName.innerText;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = tracks[songSelectBox.selectedIndex].producer;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = tracks[songSelectBox.selectedIndex].bpm;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = 2;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = 0;
-  bpm = tracks[songSelectBox.selectedIndex].bpm;
-  offset = 0;
-  speed = 2;
+  if(isLoaded) {
+    songName.innerText = pattern.information.track;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = songName.innerText;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = pattern.information.producer;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = pattern.information.bpm;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = pattern.information.speed;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = pattern.information.offset;
+    bpm = pattern.information.bpm;
+    offset = pattern.information.offset;
+    speed = pattern.information.speed;
+  } else {
+    songName.innerText = tracks[songSelectBox.selectedIndex].name;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = songName.innerText;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = tracks[songSelectBox.selectedIndex].producer;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = tracks[songSelectBox.selectedIndex].bpm;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = 2;
+    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = 0;
+    bpm = tracks[songSelectBox.selectedIndex].bpm;
+    offset = 0;
+    speed = 2;
+  }
   document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
