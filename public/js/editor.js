@@ -476,7 +476,7 @@ const tmlRender = () => {
   for(let j = 0; j < renderNotes.length; j++) {
     tmlCtx.beginPath();
     if(start + j == selectedCntElement.i && selectedCntElement.v1 == '0') {
-      tmlCtx.fillStyle = "#ebd534";
+      tmlCtx.fillStyle = "#ed5b45";
     } else {
       tmlCtx.fillStyle = '#fbaf34';
     }
@@ -486,7 +486,7 @@ const tmlRender = () => {
   for(let j = 0; j < renderBullets.length; j++) {
     tmlCtx.beginPath();
     if(start + j == selectedCntElement.i && selectedCntElement.v1 == '1') {
-      tmlCtx.fillStyle = "#5ee3f2";
+      tmlCtx.fillStyle = "#ed5b45";
     } else {
       tmlCtx.fillStyle = '#4297d4';
     }
@@ -527,7 +527,7 @@ const tmlRender = () => {
   for(let j = 0; j < renderTriggers.length; j++) {
     tmlCtx.beginPath();
     if(start + j == selectedCntElement.i && selectedCntElement.v1 == '2') {
-      tmlCtx.fillStyle = "#34ed69";
+      tmlCtx.fillStyle = "#ed5b45";
     } else {
       tmlCtx.fillStyle = "#2ec90e";
     }
