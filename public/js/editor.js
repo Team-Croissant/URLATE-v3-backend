@@ -457,9 +457,6 @@ const tmlRender = () => {
   start = lowerBound(pattern.bullets, renderStart);
   end = upperBound(pattern.bullets, renderEnd);
   const renderBullets = pattern.bullets.slice(start, end);
-  start = lowerBound(pattern.triggers, renderStart);
-  end = upperBound(pattern.triggers, renderEnd);
-  const renderTriggers = pattern.triggers.slice(start, end);
   let bulletsOverlapNum = 1;
   let bulletsOverlap = {};
   for(let i = 0; i < renderBullets.length; i++) {
@@ -508,6 +505,42 @@ const tmlRender = () => {
     bulletsOverlap[parseInt(renderBullets[j].ms / 100)]--;
     tmlCtx.fill();
   }
+  start = lowerBound(pattern.triggers, renderStart);
+  end = upperBound(pattern.triggers, renderEnd);
+  const renderTriggers = pattern.triggers.slice(start, end);
+  let triggersOverlapNum = 2;
+  let triggersOverlap = {};
+  for(let i = 0; i < renderTriggers.length; i++) {
+    let count = 0;
+    if(triggersOverlap[parseInt(renderTriggers[i].ms / 100)]) {
+      triggersOverlap[parseInt(renderTriggers[i].ms / 100)]++;
+    } else {
+      triggersOverlap[parseInt(renderTriggers[i].ms / 100)] = 1;
+    }
+    for(let j = 0; j < renderTriggers.length; j++) {
+      if(parseInt(renderTriggers[i].ms / 100) == parseInt(renderTriggers[j].ms / 100)) {
+        count++;
+      }
+    }
+    if(triggersOverlapNum < count + 1) triggersOverlapNum = count + 1;
+  }
+  for(let j = 0; j < renderTriggers.length; j++) {
+    tmlCtx.beginPath();
+    if(start + j == selectedCntElement.i && selectedCntElement.v1 == '2') {
+      tmlCtx.fillStyle = "#34ed69";
+    } else {
+      tmlCtx.fillStyle = "#2ec90e";
+    }
+    let x = tmlStartX + parseInt((renderTriggers[j].ms - renderStart) * msToPx);
+    let y = startY + timelineYLoc + height * (bulletsOverlapNum + triggersOverlap[parseInt(renderTriggers[j].ms / 100)]) + height / 2;
+    let w = height / 3;
+    tmlCtx.moveTo(x - w / 1.1, y - w);
+    tmlCtx.lineTo(x + w / 1.1, y);
+    tmlCtx.lineTo(x - w / 1.1, y + w);
+    tmlCtx.lineTo(x - w / 1.1, y - w);
+    triggersOverlap[parseInt(renderTriggers[j].ms / 100)]--;
+    tmlCtx.fill();
+  }
   tmlCtx.fillStyle = '#FFF';
   tmlCtx.fillRect(0, 0, tmlStartX, endY);
   tmlCtx.beginPath();
@@ -527,25 +560,9 @@ const tmlRender = () => {
     tmlCtx.fillStyle = '#111';
     tmlCtx.fillText('Bullet', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
   }
-  let triggersOverlapNum = 2;
-  let triggersOverlap = {};
-  for(let i = 0; i < renderTriggers.length; i++) {
-    let count = 0;
-    if(triggersOverlap[parseInt(renderTriggers[i].ms / 100)]) {
-      triggersOverlap[parseInt(renderTriggers[i].ms / 100)]++;
-    } else {
-      triggersOverlap[parseInt(renderTriggers[i].ms / 100)] = 1;
-    }
-    for(let j = 0; j < renderTriggers.length; j++) {
-      if(parseInt(renderTriggers[i].ms / 100) == parseInt(renderTriggers[j].ms / 100)) {
-        count++;
-      }
-    }
-    if(triggersOverlapNum < count + 1) triggersOverlapNum = count + 1;
-  }
   for(i; i < bulletsOverlapNum + triggersOverlapNum; i++) {
     tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#3ccc1f';
+    tmlCtx.fillStyle = '#2ec90e';
     tmlCtx.arc(startX, startY + height * i + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
     tmlCtx.fill();
     tmlCtx.fillStyle = '#111';
