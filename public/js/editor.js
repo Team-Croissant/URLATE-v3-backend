@@ -12,7 +12,7 @@ let isSettingsOpened = false;
 let mouseDown = false, ctrlDown = false;
 let userName = '';
 
-const testBpm = 180;
+const testBpm = 136;
 let pattern = {
   "information": {
     "version": "1.0",
@@ -85,6 +85,8 @@ let pattern = {
   ],
   "triggers" : [
     {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
+    {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
+    {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
     {"ms": 60/testBpm*8000, "value": 2, "bpm": 180},
     {"ms": 60/testBpm*11000, "value": 0, "num": 10},
     {"ms": 60/testBpm*13000, "value": 0, "num": 13},
@@ -101,6 +103,7 @@ let pattern = {
 let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
+let destroyedBullets = [];
 
 const sortAsTiming = (a, b) => {
   if(a.ms == b.ms) return 0;
@@ -454,6 +457,9 @@ const tmlRender = () => {
   start = lowerBound(pattern.bullets, renderStart);
   end = upperBound(pattern.bullets, renderEnd);
   const renderBullets = pattern.bullets.slice(start, end);
+  start = lowerBound(pattern.triggers, renderStart);
+  end = upperBound(pattern.triggers, renderEnd);
+  const renderTriggers = pattern.triggers.slice(start, end);
   let bulletsOverlapNum = 1;
   let bulletsOverlap = {};
   for(let i = 0; i < renderBullets.length; i++) {
@@ -521,7 +527,23 @@ const tmlRender = () => {
     tmlCtx.fillStyle = '#111';
     tmlCtx.fillText('Bullet', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
   }
-  for(i; i < bulletsOverlapNum + 2; i++) { //TODO
+  let triggersOverlapNum = 2;
+  let triggersOverlap = {};
+  for(let i = 0; i < renderTriggers.length; i++) {
+    let count = 0;
+    if(triggersOverlap[parseInt(renderTriggers[i].ms / 100)]) {
+      triggersOverlap[parseInt(renderTriggers[i].ms / 100)]++;
+    } else {
+      triggersOverlap[parseInt(renderTriggers[i].ms / 100)] = 1;
+    }
+    for(let j = 0; j < renderTriggers.length; j++) {
+      if(parseInt(renderTriggers[i].ms / 100) == parseInt(renderTriggers[j].ms / 100)) {
+        count++;
+      }
+    }
+    if(triggersOverlapNum < count + 1) triggersOverlapNum = count + 1;
+  }
+  for(i; i < bulletsOverlapNum + triggersOverlapNum; i++) {
     tmlCtx.beginPath();
     tmlCtx.fillStyle = '#3ccc1f';
     tmlCtx.arc(startX, startY + height * i + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
