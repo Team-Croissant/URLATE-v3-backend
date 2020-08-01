@@ -1177,6 +1177,7 @@ document.onkeydown = e => {
   } else if(e.keyCode == 27) {
     if(isSettingsOpened) {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
+      changeSettingsMode(-1);
       toggleSettings();
     } else {
       if(song.playing()){
