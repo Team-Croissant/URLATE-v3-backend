@@ -85,8 +85,6 @@ let pattern = {
   ],
   "triggers" : [
     {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
-    {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
-    {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
     {"ms": 60/testBpm*8000, "value": 2, "bpm": 180},
     {"ms": 60/testBpm*11000, "value": 0, "num": 10},
     {"ms": 60/testBpm*13000, "value": 0, "num": 13},
@@ -611,18 +609,12 @@ const tmlRender = () => {
     }
   }
   tmlCtx.beginPath();
-  tmlCtx.fillStyle = '#555';
-  tmlCtx.strokeStyle = '#555';
+  tmlCtx.fillStyle = '#ed5b45';
+  tmlCtx.strokeStyle = '#ed5b45';
   let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
   tmlCtx.moveTo(lineX, endY);
   tmlCtx.lineTo(lineX, startY);
   tmlCtx.stroke();
-  tmlCtx.lineTo(lineX - 5, startY - 5);
-  tmlCtx.lineTo(lineX - 5, startY - 20);
-  tmlCtx.lineTo(lineX + 5, startY - 20);
-  tmlCtx.lineTo(lineX + 5, startY - 5);
-  tmlCtx.lineTo(lineX, startY);
-  tmlCtx.fill();
 };
 
 const cntRender = () => {
