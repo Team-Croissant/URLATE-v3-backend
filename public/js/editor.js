@@ -12,7 +12,7 @@ let isSettingsOpened = false;
 let mouseDown = false, ctrlDown = false;
 let userName = '';
 
-const testBpm = 136;
+const testBpm = 180;
 let pattern = {
   "information": {
     "version": "1.0",
@@ -220,29 +220,27 @@ const songSelected = (isLoaded) => {
     onload: () => {
     }
   });
-  if(isLoaded) {
-    songName.innerText = pattern.information.track;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = songName.innerText;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = pattern.information.producer;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = pattern.information.bpm;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = pattern.information.speed;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = pattern.information.offset;
-    bpm = pattern.information.bpm;
-    offset = pattern.information.offset;
-    speed = pattern.information.speed;
-  } else {
-    songName.innerText = tracks[songSelectBox.selectedIndex].name;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = songName.innerText;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = tracks[songSelectBox.selectedIndex].producer;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = userName;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = tracks[songSelectBox.selectedIndex].bpm;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = 2;
-    trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = 0;
-    bpm = tracks[songSelectBox.selectedIndex].bpm;
-    offset = 0;
-    speed = 2;
+  if(!isLoaded) {
+    pattern.information = {
+      "version": "1.0",
+      "track": tracks[songSelectBox.selectedIndex].name,
+      "producer": tracks[songSelectBox.selectedIndex].producer,
+      "author": userName,
+      "bpm": tracks[songSelectBox.selectedIndex].bpm,
+      "speed": 2,
+      "offset": 0
+    };
   }
+  songName.innerText = pattern.information.track;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = pattern.information.track;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = pattern.information.producer;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[2].value = pattern.information.author;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = pattern.information.bpm;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = pattern.information.speed;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = pattern.information.offset;
+  bpm = pattern.information.bpm;
+  offset = pattern.information.offset;
+  speed = pattern.information.speed;
   document.getElementById('percentage').innerText = '100%';
   rate = 1;
   document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
@@ -444,8 +442,8 @@ const tmlRender = () => {
         seconds = seek - minutes * 60;
   const renderStart = parseInt(seek * 1000) - (60000 / bpm * zoom),
         renderEnd = parseInt(renderStart + (5000 * zoom)),
-        baseMs = 60 / bpm * 1000,
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
+  let baseMs = 60 / bpm * 1000;
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#F3F3F3';
   tmlCtx.fillRect(tmlStartX, startY, endX - tmlStartX, endY - startY);
@@ -621,10 +619,37 @@ const cntRender = () => {
   pointingCntElement = {"v1": '', "v2": '', "i": ''};
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
-  let start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
-  let end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
-  const renderNotes = pattern.patterns.slice(start, end);
+  let start = lowerBound(pattern.triggers, 0);
+  let end = upperBound(pattern.triggers, seek * 1000);
+  const renderTriggers = pattern.triggers.slice(start, end);
   eraseCnt();
+  let bpmCount = 0, speedCount = 0;
+  for(let i = 0; i < renderTriggers.length; i++) {
+    if(renderTriggers[i].value == 0) {
+      //Destroy
+    } else if(renderTriggers[i].value == 1) {
+      //Destroy All
+    } else if(renderTriggers[i].value == 2) {
+      bpmCount++;
+      bpm = renderTriggers[i].bpm;
+    } else if(renderTriggers[i].value == 3) {
+      //Opacity
+    } else if(renderTriggers[i].value == 4) {
+      speedCount++;
+      speed = renderTriggers[i].speed;
+    } else if(renderTriggers[i].value == 5) {
+      //Text
+    }
+  }
+  if(bpmCount == 0) {
+    bpm = pattern.information.bpm;
+  }
+  if(speedCount == 0) {
+    speed = pattern.information.speed;
+  }
+  start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
+  end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
+  const renderNotes = pattern.patterns.slice(start, end);
   if(mode == 2 && mouseMode == 0) {
     let p = [0, 0];
     if(mouseX < -80) {

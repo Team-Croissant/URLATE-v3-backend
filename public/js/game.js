@@ -6,7 +6,7 @@ let analyser, dataArray;
 
 //volume need to 0.1~0.8
 const songs = new Howl({
-  src: [`${cdn}/tracks/192kbps/MyRhy Theme.mp3`],
+  src: [`${cdn}/tracks/192kbps/myrhy_theme.mp3`],
   autoplay: false,
   loop: true,
   onend: () => {}
