@@ -85,17 +85,28 @@ let pattern = {
   ],
   "triggers" : [
     {"ms": 60/testBpm*4000, "value": 2, "bpm": 90},
+    {"ms": 60/testBpm*4000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:90", time: 60/testBpm*4000, size: "16px"},
     {"ms": 60/testBpm*8000, "value": 2, "bpm": 180},
+    {"ms": 60/testBpm*8000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:180", time: 60/testBpm*3000, size: "16px"},
     {"ms": 60/testBpm*11000, "value": 0, "num": 10},
+    {"ms": 60/testBpm*11000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:10", time: 60/testBpm*2000, size: "16px"},
     {"ms": 60/testBpm*13000, "value": 0, "num": 13},
-    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT", time: 1000, size: "16px"},
-    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST", time: 2000, size: "32px"},
+    {"ms": 60/testBpm*13000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:13", time: 60/testBpm*4000, size: "16px"},
+    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT", time: 60/testBpm*4000, size: "16px"},
+    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST", time: 60/testBpm*6000, size: "32px"},
+    {"ms": 60/testBpm*21000, "value": 5, x: -90, y: -90, align: "left", "text": "text(2)", time: 60/testBpm*2000, size: "16px"},
     {"ms": 60/testBpm*23000, "value": 1},
+    {"ms": 60/testBpm*23000, "value": 5, x: -90, y: -90, align: "left", "text": "destroyAll", time: 60/testBpm*2000, size: "16px"},
     {"ms": 60/testBpm*25000, "value": 4, "speed": 4},
+    {"ms": 60/testBpm*25000, "value": 5, x: -90, y: -90, align: "left", "text": "speed:4", time: 60/testBpm*4000, size: "16px"},
     {"ms": 60/testBpm*29000, "value": 4, "speed": 2},
+    {"ms": 60/testBpm*29000, "value": 5, x: -90, y: -90, align: "left", "text": "speed:2", time: 60/testBpm*1000, size: "16px"},
     {"ms": 60/testBpm*30000, "value": 3, "opacity": 0.5},
+    {"ms": 60/testBpm*30000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:0.5", time: 60/testBpm*2000, size: "16px"},
     {"ms": 60/testBpm*32000, "value": 3, "opacity": 0.1},
+    {"ms": 60/testBpm*32000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:0.1", time: 60/testBpm*2000, size: "16px"},
     {"ms": 60/testBpm*34000, "value": 3, "opacity": 1},
+    {"ms": 60/testBpm*34000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:1", time: 60/testBpm*4000, size: "16px"},
   ]
 };
 let pointingCntElement = {"v1": '', "v2": '', "i": ''};
@@ -333,6 +344,34 @@ const drawBullet = (n, x, y, a, s) => {
       break;
     default:
       alert("Wrong draw access.");
+  }
+};
+
+const drawParticle = (n, x, y) => {
+  if(n == 0) {
+    x = cntCanvas.width / 200 * (x + 100);
+    y = cntCanvas.height / 200 * (y + 100);
+    let randomDirection = [];
+    for(let i = 0; i < 3; i++) {
+      let x = Math.floor(Math.random() * 6) - 3;
+      let y = Math.floor(Math.random() * 6) - 3;
+      randomDirection[i] = [x, y];
+    }
+    const raf = (n, w) => {
+      w -= 0.4;
+      for(let i = 0; i < 3; i++) {
+        cntCtx.beginPath();
+        cntCtx.fillStyle = '#222';
+        cntCtx.arc(x + (n * randomDirection[i][0]), y + (n * randomDirection[i][1]), w, 0, 2 * Math.PI);
+        cntCtx.fill();
+      }
+      if(w - 0.4 >= 0) {
+        requestAnimationFrame(() => {
+          raf(++n, w);
+        });
+      }
+    };
+    raf(1, 10);
   }
 };
 

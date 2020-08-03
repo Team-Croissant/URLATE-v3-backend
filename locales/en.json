@@ -54,5 +54,7 @@
 	"RUsure": "RUsure",
 	"RUSure": "RUSure",
 	"goto_game": "goto_game",
-	"cancel": "cancel"
+	"cancel": "cancel",
+	"needToSave": "needToSave",
+	"DeleteSure": "DeleteSure"
 }
