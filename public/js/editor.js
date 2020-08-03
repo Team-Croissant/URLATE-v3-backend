@@ -101,7 +101,7 @@ let pattern = {
 let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
-let destroyedBullets = [];
+let destroyedBullets = new Set([]);
 
 const sortAsTiming = (a, b) => {
   if(a.ms == b.ms) return 0;
@@ -620,20 +620,27 @@ const cntRender = () => {
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
   let start = lowerBound(pattern.triggers, 0);
-  let end = upperBound(pattern.triggers, seek * 1000);
+  let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
   const renderTriggers = pattern.triggers.slice(start, end);
   eraseCnt();
-  let bpmCount = 0, speedCount = 0;
+  let bpmCount = 0, speedCount = 0, opacityCount = 0;
+  destroyedBullets.clear();
   for(let i = 0; i < renderTriggers.length; i++) {
     if(renderTriggers[i].value == 0) {
-      //Destroy
+      destroyedBullets.add(renderTriggers.num);
     } else if(renderTriggers[i].value == 1) {
-      //Destroy All
+      start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
+      end = upperBound(pattern.bullets, seek * 1000);
+      const renderBullets = pattern.bullets.slice(start, end);
+      for(let j = 0; renderBullets.length > j; j++) {
+        destroyedBullets.add(start + j);
+      }
     } else if(renderTriggers[i].value == 2) {
       bpmCount++;
       bpm = renderTriggers[i].bpm;
     } else if(renderTriggers[i].value == 3) {
-      //Opacity
+      opacityCount++;
+      cntCanvas.style.opacity = renderTriggers[i].opacity;
     } else if(renderTriggers[i].value == 4) {
       speedCount++;
       speed = renderTriggers[i].speed;
@@ -641,11 +648,14 @@ const cntRender = () => {
       //Text
     }
   }
-  if(bpmCount == 0) {
+  if(!bpmCount) {
     bpm = pattern.information.bpm;
   }
-  if(speedCount == 0) {
+  if(!speedCount) {
     speed = pattern.information.speed;
+  }
+  if(!opacityCount) {
+    cntCanvas.style.opacity = 1;
   }
   start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
   end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
@@ -676,26 +686,28 @@ const cntRender = () => {
   end = upperBound(pattern.bullets, seek * 1000);
   const renderBullets = pattern.bullets.slice(start, end);
   for(let i = 0; i < renderBullets.length; i++) {
-    const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
-    const left = renderBullets[i].direction == 'L';
-    let x = (left ? -1 : 1) * (100 - p);
-    let y = 0;
-    if(renderBullets[i].value == 0) {
-      y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
-      trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-      drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
-    } else {
-      if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
-      if(left) {
-        if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
-        else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
+    if(!destroyedBullets.has(start + i)) {
+      const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
+      const left = renderBullets[i].direction == 'L';
+      let x = (left ? -1 : 1) * (100 - p);
+      let y = 0;
+      if(renderBullets[i].value == 0) {
+        y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
+        trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+        drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
       } else {
-        if(70 < circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 70;
-        else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
+        if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
+        if(left) {
+          if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
+          else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
+        } else {
+          if(70 < circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 70;
+          else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
+        }
+        y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
+        trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+        drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
       }
-      y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
-      trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-      drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
     }
   }
   tmlRender();
