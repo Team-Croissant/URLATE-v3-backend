@@ -88,8 +88,8 @@ let pattern = {
     {"ms": 60/testBpm*8000, "value": 2, "bpm": 180},
     {"ms": 60/testBpm*11000, "value": 0, "num": 10},
     {"ms": 60/testBpm*13000, "value": 0, "num": 13},
-    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT"},
-    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST"},
+    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT", time: 1000, size: "16px"},
+    {"ms": 60/testBpm*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST", time: 2000, size: "32px"},
     {"ms": 60/testBpm*23000, "value": 1},
     {"ms": 60/testBpm*25000, "value": 4, "speed": 4},
     {"ms": 60/testBpm*29000, "value": 4, "speed": 2},
@@ -645,7 +645,14 @@ const cntRender = () => {
       speedCount++;
       speed = renderTriggers[i].speed;
     } else if(renderTriggers[i].value == 5) {
-      //Text
+      if(renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time >= seek * 1000) {
+        console.log(renderTriggers[i]);
+        cntCtx.beginPath();
+        cntCtx.fillStyle = "#111";
+        cntCtx.font = `${renderTriggers[i].size} Metropolis`;
+        cntCtx.textAlign = renderTriggers[i].align;
+        cntCtx.fillText(renderTriggers[i].text, cntCanvas.width / 200 * (renderTriggers[i].x + 100), cntCanvas.height / 200 * (renderTriggers[i].y + 100));
+      }
     }
   }
   if(!bpmCount) {
