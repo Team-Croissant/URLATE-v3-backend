@@ -148,8 +148,8 @@ patterns : [{ here }], bullets : [{ here }], triggers : [{ here }]
     <td>Text</td>
     <td>n</td>
     <td>5</td>
-    <td>{text, x, y, align, time}</td>
-    <td>일정시간 텍스트를 출력하는 명령어입니다.<br>text: s<br>x: -100~100<br>y: -100~100<br>align:'left/center/right'<br>time: ms(n)</td>
+    <td>{text, x, y, align, time, size}</td>
+    <td>일정시간 텍스트를 출력하는 명령어입니다.<br>text: s<br>x: -100~100<br>y: -100~100<br>align:'left/center/right'<br>time: ms(n)<br>size: px(n)</td>
   </tr>
 </table>
 
