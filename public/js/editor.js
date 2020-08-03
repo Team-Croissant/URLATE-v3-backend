@@ -353,8 +353,8 @@ const drawParticle = (n, x, y) => {
     y = cntCanvas.height / 200 * (y + 100);
     let randomDirection = [];
     for(let i = 0; i < 3; i++) {
-      let x = Math.floor(Math.random() * 6) - 3;
-      let y = Math.floor(Math.random() * 6) - 3;
+      let x = Math.floor(Math.random() * 4) - 2;
+      let y = Math.floor(Math.random() * 4) - 2;
       randomDirection[i] = [x, y];
     }
     const raf = (n, w) => {
