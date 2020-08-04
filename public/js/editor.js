@@ -113,6 +113,7 @@ let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
 let destroyedBullets = new Set([]);
+let prevDestroyedBullets = new Set([]);
 
 const sortAsTiming = (a, b) => {
   if(a.ms == b.ms) return 0;
@@ -358,20 +359,20 @@ const drawParticle = (n, x, y) => {
       randomDirection[i] = [x, y];
     }
     const raf = (n, w) => {
-      w -= 0.3;
+      w -= 0.1;
       for(let i = 0; i < 3; i++) {
         cntCtx.beginPath();
         cntCtx.fillStyle = '#222';
         cntCtx.arc(x + (n * randomDirection[i][0]), y + (n * randomDirection[i][1]), w, 0, 2 * Math.PI);
         cntCtx.fill();
       }
-      if(w - 0.3 >= 0) {
+      if(w - 0.1 >= 0) {
         requestAnimationFrame(() => {
           raf(++n, w);
         });
       }
     };
-    raf(1, 10);
+    raf(1, 5);
   }
 };
 
@@ -662,58 +663,61 @@ const cntRender = () => {
   let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
   const renderTriggers = pattern.triggers.slice(start, end);
   eraseCnt();
-  let bpmCount = 0, speedCount = 0, opacityCount = 0, destroyCount = 0;
+  destroyedBullets.clear();
+  let bpmCount = 0, speedCount = 0, opacityCount = 0;
   for(let i = 0; i < renderTriggers.length; i++) {
     if(renderTriggers[i].value == 0) {
-      destroyCount++;
       if(!destroyedBullets.has(renderTriggers[i].num)) {
-        let j = renderTriggers[i].num;
-        const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
-        const left = pattern.bullets[j].direction == 'L';
-        let x = (left ? -1 : 1) * (100 - p);
-        let y = 0;
-        if(pattern.bullets[j].value == 0) {
-          y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
-        } else {
-          if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
-          if(left) {
-            if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
-            else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
+        if(!prevDestroyedBullets.has(renderTriggers[i].num)) {
+          let j = renderTriggers[i].num;
+          const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
+          const left = pattern.bullets[j].direction == 'L';
+          let x = (left ? -1 : 1) * (100 - p);
+          let y = 0;
+          if(pattern.bullets[j].value == 0) {
+            y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
           } else {
-            if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
-            else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
+            if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
+            if(left) {
+              if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+              else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
+            } else {
+              if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+              else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
+            }
+            y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
           }
-          y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
+          drawParticle(0, x, y);
         }
         destroyedBullets.add(renderTriggers[i].num);
-        drawParticle(0, x, y);
       }
     } else if(renderTriggers[i].value == 1) {
-      destroyCount++;
       start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
       end = upperBound(pattern.bullets, seek * 1000);
       const renderBullets = pattern.bullets.slice(start, end);
       for(let j = 0; renderBullets.length > j; j++) {
         if(!destroyedBullets.has(start + j)) {
-          const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
-          const left = renderBullets[j].direction == 'L';
-          let x = (left ? -1 : 1) * (100 - p);
-          let y = 0;
-          if(renderBullets[j].value == 0) {
-            y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
-          } else {
-            if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
-            if(left) {
-              if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
-              else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
+          if(!prevDestroyedBullets.has(start + j)) {
+            const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
+            const left = renderBullets[j].direction == 'L';
+            let x = (left ? -1 : 1) * (100 - p);
+            let y = 0;
+            if(renderBullets[j].value == 0) {
+              y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
             } else {
-              if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
-              else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
+              if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
+              if(left) {
+                if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
+                else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
+              } else {
+                if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
+                else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
+              }
+              y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
             }
-            y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
+            drawParticle(0, x, y);
           }
           destroyedBullets.add(start + j);
-          drawParticle(0, x, y);
         }
       }
     } else if(renderTriggers[i].value == 2) {
@@ -744,9 +748,7 @@ const cntRender = () => {
   if(!opacityCount) {
     cntCanvas.style.opacity = 1;
   }
-  if(!destroyCount) {
-    destroyedBullets.clear();
-  }
+  prevDestroyedBullets = new Set(destroyedBullets);
   start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
   end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
   const renderNotes = pattern.patterns.slice(start, end);
