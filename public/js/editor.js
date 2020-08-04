@@ -418,44 +418,23 @@ const gotoMain = (isCalledByMain) => {
     };
   }
 };
-
+let asdf = true;
 const trackMouseSelection = (i, v1, v2, x, y) => {
   if(mode != 2 && mouseMode == 0) {
     if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
       const seek = song.seek() - (offset + sync) / 1000;
+      const powX = (mouseX - x) * canvasContainer.offsetWidth / 200;
+      const powY = (mouseY - y) * canvasContainer.offsetHeight / 200;
       switch(v1) {
         case 0:
           const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
-          if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 150 && p <= 100) {
+          if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= cntCanvas.width / 40 && p <= 100) {
             pointingCntElement = {"v1": v1, "v2": v2, "i": i};
           }
           break;
         case 1:
-          switch(v2) {
-            case 0:
-              if(song.playing()) {
-                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 350) {
-                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-                }
-              } else {
-                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 250) {
-                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-                }
-              }
-              break;
-            case 1:
-              if(song.playing()) {
-                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 400) {
-                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-                }
-              } else {
-                if(Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= cntCanvas.width / 300) {
-                  pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-                }
-              }
-              break;
-            default:
-              alert("trackMouseSelection:Error");
+          if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= cntCanvas.width / (asdf ? 80 : 50)) {
+            pointingCntElement = {"v1": v1, "v2": v2, "i": i};
           }
           break;
         default:
