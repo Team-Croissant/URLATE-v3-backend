@@ -201,7 +201,6 @@ const loadEditor = () => {
   input.type = 'file';
   input.accept = '.json';
   input.setAttribute("onchange", `dataLoaded(event)`);
-  console.log(input);
   input.click();
 };
 
@@ -709,7 +708,7 @@ const cntRender = () => {
       speedCount++;
       speed = renderTriggers[i].speed;
     } else if(renderTriggers[i].value == 5) {
-      if(renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time >= seek * 1000) {
+      if(renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time > seek * 1000) {
         cntCtx.beginPath();
         cntCtx.fillStyle = "#111";
         cntCtx.font = `${renderTriggers[i].size} Metropolis`;
