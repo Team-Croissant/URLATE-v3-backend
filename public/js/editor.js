@@ -417,7 +417,7 @@ const gotoMain = (isCalledByMain) => {
     };
   }
 };
-let asdf = true;
+
 const trackMouseSelection = (i, v1, v2, x, y) => {
   if(mode != 2 && mouseMode == 0) {
     if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
@@ -432,7 +432,7 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
           }
           break;
         case 1:
-          if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= cntCanvas.width / (asdf ? 80 : 50)) {
+          if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= cntCanvas.width / (song.playing() ? 80 : 50)) {
             pointingCntElement = {"v1": v1, "v2": v2, "i": i};
           }
           break;
