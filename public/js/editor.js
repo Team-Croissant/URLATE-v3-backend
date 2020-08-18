@@ -9,8 +9,9 @@ let zoom = 1;
 let timelineYLoc = 0, timelineElementNum = 0, timelineScrollCount = 6;
 let selectedBullet = 0; //same with spec value
 let isSettingsOpened = false;
-let mouseDown = false, ctrlDown = false;
+let mouseDown = false, ctrlDown = false, shiftDown = false;
 let userName = '';
+let patternSeek = -1;
 
 const testBpm = 180;
 let pattern = {
@@ -109,6 +110,7 @@ let pattern = {
     {"ms": 60/testBpm*34000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:1", time: 60/testBpm*4000, size: "16px"},
   ]
 };
+let patternHistory = [];
 let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
@@ -259,6 +261,7 @@ const songSelected = (isLoaded) => {
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';
   window.requestAnimationFrame(cntRender);
+  patternChanged();
 };
 
 const toggleSettings = () => {
@@ -415,11 +418,12 @@ const gotoMain = (isCalledByMain) => {
       "bullets" : [],
       "triggers" : []
     };
+    patternHistory.clear();
   }
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  if(mode != 2 && mouseMode == 0) {
+  if(mode != 2 && !mouseMode) {
     if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
       const seek = song.seek() - (offset + sync) / 1000;
       const powX = (mouseX - x) * canvasContainer.offsetWidth / 200;
@@ -871,6 +875,7 @@ const deleteAll = () => {
       "bullets" : [],
       "triggers" : []
     };
+    patternHistory.clear();
   }
 };
 
@@ -888,6 +893,7 @@ const settingsInput = (v, e) => {
         alert("Input value is too low.");
       } else {
         pattern.patterns[selectedCntElement.i][v] = Number(e.value);
+        patternChanged();
         return;
       }
       e.value = pattern.patterns[selectedCntElement.i][v];
@@ -900,8 +906,12 @@ const settingsInput = (v, e) => {
       } else {
         if(selectedCntElement.v1 == 0) {
           pattern.patterns[selectedCntElement.i].ms = Number(e.value);
+          pattern.patterns.sort(sortAsTiming);
+          patternChanged();
         } else {
           pattern.bullets[selectedCntElement.i].ms = Number(e.value);
+          pattern.bullets.sort(sortAsTiming);
+          patternChanged();
         }
       }
       if(selectedCntElement.v1 == 0) {
@@ -913,16 +923,22 @@ const settingsInput = (v, e) => {
     case 'Side':
       if(e.value.toUpperCase() == 'L' || e.value.toUpperCase() == 'LEFT') {
         pattern.bullets[selectedCntElement.i].direction = 'L';
+        patternChanged();
       } else if(e.value.toUpperCase() == 'R' || e.value.toUpperCase() == 'RIGHT') {
         pattern.bullets[selectedCntElement.i].direction = 'R';
+        patternChanged();
       } else if(e.value == '') {
         if(pattern.bullets[selectedCntElement.i].direction == 'L') {
           pattern.bullets[selectedCntElement.i].direction = 'R';
         } else {
           pattern.bullets[selectedCntElement.i].direction = 'L';
         }
+        patternChanged();
       } else {
-        pattern.bullets[selectedCntElement.i].direction = 'L';
+        if(pattern.bullets[selectedCntElement.i].direction == 'R') {
+          pattern.bullets[selectedCntElement.i].direction = 'L';
+          patternChanged();
+        }
         alert("Input is wrong value.");
       }
       e.value = pattern.bullets[selectedCntElement.i].direction;
@@ -938,6 +954,7 @@ const settingsInput = (v, e) => {
         alert("Input value is too low.");
       } else {
         pattern.bullets[selectedCntElement.i].location = Number(e.value);
+        patternChanged();
         return;
       }
       e.value = pattern.bullets[selectedCntElement.i].location;
@@ -949,6 +966,7 @@ const settingsInput = (v, e) => {
         }
       } else {
         pattern.bullets[selectedCntElement.i].angle = Number(e.value);
+        patternChanged();
         return;
       }
       e.value = pattern.bullets[selectedCntElement.i].angle;
@@ -972,6 +990,7 @@ const settingsInput = (v, e) => {
         alert("Input value is too low.");
       } else {
         element.speed = Number(e.value);
+        patternChanged();
         return;
       }
       e.value = element.speed;
@@ -979,9 +998,6 @@ const settingsInput = (v, e) => {
     default:
       alert("settingsInput:Error");
   }
-  pattern.patterns.sort(sortAsTiming);
-  pattern.bullets.sort(sortAsTiming);
-  pattern.triggers.sort(sortAsTiming);
 };
 
 const changeBPM = (e) => {
@@ -989,6 +1005,8 @@ const changeBPM = (e) => {
     alert("Input value is not number.");
   } else {
     bpm = Number(e.value);
+    pattern.information.bpm = bpm;
+    patternChanged();
   }
 };
 
@@ -1002,6 +1020,8 @@ const changeSpeed = (e) => {
       alert("Input value is too low.");
     } else {
       speed = Number(e.value);
+      pattern.information.speed = speed;
+      patternChanged();
     }
   }
 };
@@ -1011,6 +1031,8 @@ const changeOffset = (e) => {
     alert("Input value is not number.");
   } else {
     offset = Number(e.value);
+    pattern.information.offset = offset;
+    patternChanged();
   }
 };
 
@@ -1060,6 +1082,7 @@ const elementFollowMouse = (v1, v2, i) => {
           }
           break;
       }
+      patternChanged();
       elementFollowMouse(v1, v2, i);
       changeSettingsMode(v1, v2, i);
     }
@@ -1102,6 +1125,7 @@ const compClicked = () => {
       let newElement = {"ms": parseInt(seek * 1000), "value": selectedBullet, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
       pattern.bullets.push(newElement);
       pattern.bullets.sort(sortAsTiming);
+      patternChanged();
       for(let i = 0; i < pattern.bullets.length; i++) {
         if(JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
           selectedCntElement = {"v1": 1, "v2": selectedBullet, "i": i};
@@ -1111,6 +1135,7 @@ const compClicked = () => {
       let newElement = {"ms": parseInt(seek * 1000) + 1, "value": 0, "x": parseInt(mouseX), "y" : parseInt(mouseY)};
       pattern.patterns.push(newElement);
       pattern.patterns.sort(sortAsTiming);
+      patternChanged();
       for(let i = 0; i < pattern.patterns.length; i++) {
         if(JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)) {
           selectedCntElement = {"v1": 0, "v2": 0, "i": i};
@@ -1245,9 +1270,35 @@ const deleteElement = () => {
     pattern.bullets.length--;
     pattern.bullets.sort(sortAsTiming);
   }
+  patternChanged();
   changeSettingsMode(-1);
   selectedCntElement = {"v1": '', "v2": '', "i": ''};
   if(isSettingsOpened) toggleSettings();
+};
+
+const patternChanged = () => {
+  if(patternSeek != patternHistory.length - 1) {
+    patternHistory.splice(patternSeek + 1, patternHistory.length - 1 - patternSeek);
+  }
+  patternHistory.push(eval(`(${JSON.stringify(pattern)})`));
+  if(patternHistory.length > 50) {
+    patternHistory.splice(50, patternHistory.length - 50);
+  }
+  patternSeek = patternHistory.length - 1;
+};
+
+const patternUndo = () => {
+  if(patternSeek >= 1) {
+    patternSeek--;
+    pattern = eval(`(${JSON.stringify(patternHistory[patternSeek])})`);
+  }
+};
+
+const patternRedo = () => {
+  if(patternSeek < patternHistory.length - 1) {
+    patternSeek++;
+    pattern = eval(`(${JSON.stringify(patternHistory[patternSeek])})`);
+  }
 };
 
 const tmlScrollLeft = () => {
@@ -1307,6 +1358,8 @@ document.onkeyup = e => {
   e = e || window.event;
   if(e.keyCode == 17) { //CTRL
     ctrlDown = false;
+  } else if(e.keyCode == 16) { //SHIFT
+    shiftDown = false;
   }
 };
 
@@ -1340,6 +1393,16 @@ document.onkeydown = e => {
     deleteElement();
   } else if(e.keyCode == 17) { //CTRL
     ctrlDown = true;
+  } else if(e.keyCode == 16) { //SHIFT
+    shiftDown = true;
+  } else if(e.keyCode == 90) { //Z
+    if(ctrlDown) {
+      if(shiftDown) {
+        patternRedo();
+      } else {
+        patternUndo();
+      }
+    }
   }
   if(mode == 2) {
     if(e.keyCode == 49) {
