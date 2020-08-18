@@ -13,6 +13,7 @@ let mouseDown = false, ctrlDown = false, shiftDown = false;
 let userName = '';
 let patternSeek = -1;
 let lastMovedMs = -1;
+let copiedElement = {"v1": '', "element": {}};
 
 let pattern = {
   "information": {
@@ -1225,6 +1226,32 @@ const patternRedo = () => {
   }
 };
 
+const elementCopy = () => {
+  copiedElement.v1 = selectedCntElement.v1;
+  if(selectedCntElement.v1 == 0) {
+    copiedElement.element = eval(`(${JSON.stringify(pattern.patterns[selectedCntElement.i])})`);
+  } else if(selectedCntElement.v1 == 1) {
+    copiedElement.element = eval(`(${JSON.stringify(pattern.bullets[selectedCntElement.i])})`);
+  } else if(selectedCntElement.v1 == 2) {
+    copiedElement.element = eval(`(${JSON.stringify(pattern.triggers[selectedCntElement.i])})`);
+  }
+};
+
+const elementPaste = () => {
+  copiedElement.element.ms = song.seek() * 1000;
+  if(selectedCntElement.v1 == 0) {
+    pattern.patterns.push(eval(`(${JSON.stringify(copiedElement.element)})`));
+    pattern.patterns.sort(sortAsTiming);
+  } else if(selectedCntElement.v1 == 1) {
+    pattern.bullets.push(eval(`(${JSON.stringify(copiedElement.element)})`));
+    pattern.bullets.sort(sortAsTiming);
+  } else if(selectedCntElement.v1 == 2) {
+    pattern.triggers.push(eval(`(${JSON.stringify(copiedElement.element)})`));
+    pattern.triggers.sort(sortAsTiming);
+  }
+  patternChanged();
+};
+
 const tmlScrollLeft = () => {
   song.seek(song.seek() - 0.01);
   let seek = song.seek();
@@ -1326,6 +1353,14 @@ document.onkeydown = e => {
       } else {
         patternUndo();
       }
+    }
+  } else if(e.keyCode == 67) { //C
+    if(ctrlDown) {
+      elementCopy();
+    }
+  } else if(e.keyCode == 86) { //V
+    if(ctrlDown) {
+      elementPaste();
     }
   } else if(e.keyCode == 113) { //F2, for test
     song.stop();
