@@ -12,6 +12,7 @@ let isSettingsOpened = false;
 let mouseDown = false, ctrlDown = false, shiftDown = false;
 let userName = '';
 let patternSeek = -1;
+let lastMovedMs = -1;
 
 const testBpm = 180;
 let pattern = {
@@ -1082,7 +1083,13 @@ const elementFollowMouse = (v1, v2, i) => {
           }
           break;
       }
-      patternChanged();
+      lastMovedMs = Date.now();
+      setTimeout(() => {
+        if(Date.now() - lastMovedMs >= 100 && lastMovedMs != -1) {
+          lastMovedMs = -1;
+          patternChanged();
+        }
+      }, 100);
       elementFollowMouse(v1, v2, i);
       changeSettingsMode(v1, v2, i);
     }
