@@ -1282,7 +1282,7 @@ const patternChanged = () => {
   }
   patternHistory.push(eval(`(${JSON.stringify(pattern)})`));
   if(patternHistory.length > 50) {
-    patternHistory.splice(50, patternHistory.length - 50);
+    patternHistory.splice(0, patternHistory.length - 50);
   }
   patternSeek = patternHistory.length - 1;
 };
