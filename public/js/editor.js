@@ -7,7 +7,7 @@ let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
 let timelineYLoc = 0, timelineElementNum = 0, timelineScrollCount = 6;
-let selectedBullet = 0; //same with spec value
+let selectedValue = 0; //same with spec value
 let isSettingsOpened = false;
 let mouseDown = false, ctrlDown = false, shiftDown = false;
 let userName = '';
@@ -664,9 +664,9 @@ const cntRender = () => {
       drawNote(100, mouseX, mouseY, true);
     } else {
       if(p[1] == 0) {
-        drawBullet(selectedBullet, -100, mouseY, 0, true);
+        drawBullet(selectedValue, -100, mouseY, 0, true);
       } else {
-        drawBullet(selectedBullet, 100, mouseY, 180, true);
+        drawBullet(selectedValue, 100, mouseY, 180, true);
       }
     }
   }
@@ -1047,13 +1047,13 @@ const compClicked = () => {
   } else if(mode == 2) {
     const seek = song.seek() - (offset + sync) / 1000;
     if(mouseX < -80 || mouseX > 80) {
-      let newElement = {"ms": parseInt(seek * 1000), "value": selectedBullet, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
+      let newElement = {"ms": parseInt(seek * 1000), "value": selectedValue, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
       pattern.bullets.push(newElement);
       pattern.bullets.sort(sortAsTiming);
       patternChanged();
       for(let i = 0; i < pattern.bullets.length; i++) {
         if(JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
-          selectedCntElement = {"v1": 1, "v2": selectedBullet, "i": i};
+          selectedCntElement = {"v1": 1, "v2": selectedValue, "i": i};
         }
       }
     } else {
@@ -1326,9 +1326,9 @@ document.onkeyup = e => {
 
 document.onkeydown = e => {
   e = e || window.event;
-  if(e.keyCode == 32) {
+  if(e.keyCode == 32) { //Space
     songPlayPause();
-  } else if(e.keyCode == 27) {
+  } else if(e.keyCode == 27) { //Esc
     if(isSettingsOpened) {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
       changeSettingsMode(-1);
@@ -1342,6 +1342,24 @@ document.onkeydown = e => {
         song.stop();
       }
     }
+  } else if(e.keyCode == 49) { //1
+    if(ctrlDown) {
+      e.preventDefault();
+      changeMode(0);
+      return;
+    }
+  } else if(e.keyCode == 50) { //2
+    if(ctrlDown) {
+      e.preventDefault();
+      changeMode(1);
+      return;
+    }
+  } else if(e.keyCode == 51) { //3
+    if(ctrlDown) {
+      e.preventDefault();
+      changeMode(2);
+      return;
+    }
   } else if(e.keyCode == 37) { //LEFT
     tmlScrollLeft();
   } else if(e.keyCode == 39) { //RIGHT
@@ -1351,11 +1369,22 @@ document.onkeydown = e => {
   } else if(e.keyCode == 40) { //DOWN
     tmlScrollDown();
   } else if(e.keyCode == 46) { //DELETE
+    if(ctrlDown) {
+      if(shiftDown) {
+        deleteAll();
+        return;
+      }
+    }
     deleteElement();
   } else if(e.keyCode == 17) { //CTRL
     ctrlDown = true;
   } else if(e.keyCode == 16) { //SHIFT
     shiftDown = true;
+  } else if(e.keyCode == 83) { //S
+    if(ctrlDown) {
+      e.preventDefault();
+      save();
+    }
   } else if(e.keyCode == 90) { //Z
     if(ctrlDown) {
       if(shiftDown) {
@@ -1367,6 +1396,11 @@ document.onkeydown = e => {
   } else if(e.keyCode == 67) { //C
     if(ctrlDown) {
       elementCopy();
+    }
+  } else if(e.keyCode == 84) { //T
+    if(ctrlDown) {
+      e.preventDefault();
+      test();
     }
   } else if(e.keyCode == 86) { //V
     if(ctrlDown) {
@@ -1476,10 +1510,10 @@ document.onkeydown = e => {
     songSelected();
   }
   if(mode == 2) {
-    if(e.keyCode == 49) {
-      selectedBullet = 0;
-    } else if(e.keyCode == 50) {
-      selectedBullet = 1;
+    if(e.keyCode == 49) { //1
+      selectedValue = 0;
+    } else if(e.keyCode == 50) { //2
+      selectedValue = 1;
     }
   }
 };
