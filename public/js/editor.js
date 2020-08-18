@@ -1328,6 +1328,7 @@ document.onkeydown = e => {
       }
     }
   } else if(e.keyCode == 113) { //F2, for test
+    song.stop();
     pattern = {
       "information": {
         "version": "1.0",
@@ -1435,10 +1436,10 @@ document.onkeydown = e => {
   }
 };
 
-document.body.onmousedown = function() { 
+document.body.onmousedown = () => { 
   mouseDown = true;
 }
 
-document.body.onmouseup = function() {
+document.body.onmouseup = () => {
   mouseDown = false;
 }
