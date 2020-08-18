@@ -1252,6 +1252,14 @@ const elementPaste = () => {
   patternChanged();
 };
 
+const showHelp = () => {
+  document.getElementById('helpContainer').style.display = 'flex';
+};
+
+const hideHelp = () => {
+  document.getElementById('helpContainer').style.display = 'none';
+};
+
 const tmlScrollLeft = () => {
   song.seek(song.seek() - 0.01);
   let seek = song.seek();
@@ -1311,6 +1319,8 @@ document.onkeyup = e => {
     ctrlDown = false;
   } else if(e.keyCode == 16) { //SHIFT
     shiftDown = false;
+  } else if(e.keyCode == 112) { //F1
+    hideHelp();
   }
 };
 
@@ -1362,6 +1372,9 @@ document.onkeydown = e => {
     if(ctrlDown) {
       elementPaste();
     }
+  } else if(e.keyCode == 112) { //F1
+    e.preventDefault();
+    showHelp();
   } else if(e.keyCode == 113) { //F2, for test
     song.stop();
     pattern = {
