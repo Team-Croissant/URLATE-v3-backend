@@ -1397,7 +1397,7 @@ document.onkeydown = e => {
     if(ctrlDown) {
       elementCopy();
     }
-  } else if(e.keyCode == 84) { //T
+  } else if(e.keyCode == 80) { //P
     if(ctrlDown) {
       e.preventDefault();
       test();
