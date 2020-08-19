@@ -337,7 +337,7 @@ const gotoMain = (isCalledByMain) => {
       "bullets" : [],
       "triggers" : []
     };
-    patternHistory.clear();
+    patternHistory = [];
   }
 };
 
@@ -779,7 +779,6 @@ const deleteAll = () => {
     changeSettingsMode(-1);
     if(isSettingsOpened) toggleSettings();
     selectedCntElement = {"v1": '', "v2": '', "i": ''};
-    songSelectBox.selectedIndex = 0;
     pattern = {
       "information": {
         "version": "1.0",
@@ -794,7 +793,8 @@ const deleteAll = () => {
       "bullets" : [],
       "triggers" : []
     };
-    patternHistory.clear();
+    songSelected();
+    patternHistory = [];
   }
 };
 
