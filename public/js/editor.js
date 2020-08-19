@@ -1217,6 +1217,8 @@ const patternUndo = () => {
     patternSeek--;
     pattern = eval(`(${JSON.stringify(patternHistory[patternSeek])})`);
   }
+  selectedCntElement = {"i": '', "v1": '', "v2": ''};
+  if(isSettingsOpened) toggleSettings();
 };
 
 const patternRedo = () => {
@@ -1224,6 +1226,8 @@ const patternRedo = () => {
     patternSeek++;
     pattern = eval(`(${JSON.stringify(patternHistory[patternSeek])})`);
   }
+  selectedCntElement = {"i": '', "v1": '', "v2": ''};
+  if(isSettingsOpened) toggleSettings();
 };
 
 const elementCopy = () => {
@@ -1239,16 +1243,27 @@ const elementCopy = () => {
 
 const elementPaste = () => {
   copiedElement.element.ms = song.seek() * 1000;
-  if(selectedCntElement.v1 == 0) {
+  let searchTarget = '';
+  if(copiedElement.v1 == 0) {
     pattern.patterns.push(eval(`(${JSON.stringify(copiedElement.element)})`));
     pattern.patterns.sort(sortAsTiming);
-  } else if(selectedCntElement.v1 == 1) {
+    searchTarget = pattern.patterns;
+  } else if(copiedElement.v1 == 1) {
     pattern.bullets.push(eval(`(${JSON.stringify(copiedElement.element)})`));
     pattern.bullets.sort(sortAsTiming);
-  } else if(selectedCntElement.v1 == 2) {
+    searchTarget = pattern.bullets;
+  } else if(copiedElement.v1 == 2) {
     pattern.triggers.push(eval(`(${JSON.stringify(copiedElement.element)})`));
     pattern.triggers.sort(sortAsTiming);
+    searchTarget = pattern.triggers;
   }
+  for(let i = 0; i < searchTarget.length; i++) {
+    if(JSON.stringify(searchTarget[i]) == JSON.stringify(copiedElement.element)) {
+      selectedCntElement = {"i": i, "v1": copiedElement.v1, "v2": searchTarget.value};
+    }
+  }
+  if(!isSettingsOpened) toggleSettings();
+  changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i); 
   patternChanged();
 };
 
