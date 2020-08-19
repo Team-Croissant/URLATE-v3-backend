@@ -174,7 +174,7 @@
               <div class="settingsPropertiesContainer">
                 <p class="settingsSemiTitle">PROPERTY</p>
                 <div class="settingsPropertiesIndividual">
-                  <span class="settingsPropertiesTitle">Timing</span>
+                  <span class="settingsPropertiesTitle">TIMING</span>
                   <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
                 </div>
               </div>
@@ -190,27 +190,151 @@
               <div class="settingsPropertiesContainer">
                 <p class="settingsSemiTitle">POSITION</p>
                 <div class="settingsPropertiesIndividual">
-                  <span class="settingsPropertiesTitle">Side</span>
+                  <span class="settingsPropertiesTitle">SIDE</span>
                   <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Side', this)">
                 </div>
                 <div class="settingsPropertiesIndividual">
-                  <span class="settingsPropertiesTitle">Location</span>
+                  <span class="settingsPropertiesTitle">LOCATION</span>
                   <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Location', this)">
                 </div>
                 <div class="settingsPropertiesIndividual">
-                  <span class="settingsPropertiesTitle">Angle</span>
+                  <span class="settingsPropertiesTitle">ANGLE</span>
                   <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Angle', this)">
                 </div>
               </div>
               <div class="settingsPropertiesContainer">
                 <p class="settingsSemiTitle">PROPERTY</p>
                 <div class="settingsPropertiesIndividual">
-                  <span class="settingsPropertiesTitle">Timing</span>
+                  <span class="settingsPropertiesTitle">TIMING</span>
                   <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
                 </div>
                 <div class="settingsPropertiesIndividual">
-                  <span class="settingsPropertiesTitle">Speed</span>
+                  <span class="settingsPropertiesTitle">SPEED</span>
                   <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Speed', this)">
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">ACTION</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">DELETE</span>
+                  <input type="button" class="settingsButtons metropolis clickable" onclick="deleteElement()" value="▶">
+                </div>
+              </div>
+            </div>
+            <div id="triggerInitializeContainer">
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">GENERAL</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TYPE</span>
+                  <select class="settingsSelectBox metropolis clickable" id="triggerInitBox" onchange="triggerSet()">
+                    <option></option>
+                    <option>Destroy</option>
+                    <option>Destroy All</option>
+                    <option>BPM</option>
+                    <option>Opacity</option>
+                    <option>Speed</option>
+                    <option>Text</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="triggerSettingsContainer">
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">GENERAL</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TYPE</span>
+                  <select class="settingsSelectBox metropolis clickable" id="triggerSelectBox" onchange="triggerSet(true)">
+                    <option>Destroy</option>
+                    <option>Destroy All</option>
+                    <option>BPM</option>
+                    <option>Opacity</option>
+                    <option>Speed</option>
+                    <option>Text</option>
+                  </select>
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">PROPERTY</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIMING</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TARGET NUM</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('num', this)">
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">PROPERTY</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIMING</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">PROPERTY</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIMING</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">BPM</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('bpm', this)">
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">PROPERTY</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIMING</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">OPACITY</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('opacity', this)">
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">PROPERTY</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIMING</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">SPEED</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('speed', this)">
+                </div>
+              </div>
+              <div class="settingsPropertiesContainer">
+                <p class="settingsSemiTitle">PROPERTY</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIMING</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="settingsInput('Timing', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">ALIGN</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('align', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">SIZE</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('size', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TIME</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('time', this)">
+                </div>
+                <p class="settingsSemiTitle">POSITION</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">X</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('x', this)">
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">Y</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('y', this)">
+                </div>
+                <p class="settingsSemiTitle">VALUE</p>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TEXT</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onblur="triggersInput('text', this)">
                 </div>
               </div>
               <div class="settingsPropertiesContainer">
@@ -235,15 +359,15 @@
             <div class="settingsPropertiesContainer">
               <p class="settingsSemiTitle">INFORMATION</p>
               <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">Track</span>
+                <span class="settingsPropertiesTitle">TRACK</span>
                 <input type="text" class="settingsPropertiesTextbox metropolis" readonly>
               </div>
               <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">Producer</span>
+                <span class="settingsPropertiesTitle">PRODUCER</span>
                 <input type="text" class="settingsPropertiesTextbox metropolis" readonly>
               </div>
               <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">Author</span>
+                <span class="settingsPropertiesTitle">AUTHOR</span>
                 <input type="text" class="settingsPropertiesTextbox metropolis" value="">
               </div>
             </div>
@@ -254,11 +378,11 @@
               <input type="text" class="settingsPropertiesTextbox metropolis" onblur="changeBPM(this)">
               </div>
               <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">Speed</span>
+                <span class="settingsPropertiesTitle">SPEED</span>
                 <input type="text" class="settingsPropertiesTextbox metropolis" onblur="changeSpeed(this)" value="1">
               </div>
               <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">Offset</span>
+                <span class="settingsPropertiesTitle">OFFSET</span>
                 <input type="text" class="settingsPropertiesTextbox metropolis" onblur="changeOffset(this)" value="0">
               </div>
             </div>

@@ -827,16 +827,22 @@ const settingsInput = (v, e) => {
           pattern.patterns[selectedCntElement.i].ms = Number(e.value);
           pattern.patterns.sort(sortAsTiming);
           patternChanged();
-        } else {
+        } else if(selectedCntElement.v1 == 1) {
           pattern.bullets[selectedCntElement.i].ms = Number(e.value);
           pattern.bullets.sort(sortAsTiming);
+          patternChanged();
+        } else if(selectedCntElement.v1 == 2) {
+          pattern.triggers[selectedCntElement.i].ms = Number(e.value);
+          pattern.triggers.sort(sortAsTiming);
           patternChanged();
         }
       }
       if(selectedCntElement.v1 == 0) {
         e.value = pattern.patterns[selectedCntElement.i].ms.toFixed();
-      } else {
+      } else if(selectedCntElement.v1 == 1) {
         e.value = pattern.bullets[selectedCntElement.i].ms.toFixed();
+      } else if(selectedCntElement.v1 == 2) {
+        e.value = pattern.triggers[selectedCntElement.i].ms.toFixed();
       }
       break;
     case 'Side':
@@ -913,6 +919,97 @@ const settingsInput = (v, e) => {
         return;
       }
       e.value = element.speed;
+      break;
+    default:
+      alert("settingsInput:Error");
+  }
+};
+
+const triggersInput = (v, e) => {
+  switch(v) {
+    case 'x':
+    case 'y':
+      if(isNaN(Number(e.value))) {
+        if(e.value != '-') {
+          alert("Input value is not number.");
+        }
+      } else if(Number(e.value) > 100) {
+        alert("Input value is too high.");
+      } else if(Number(e.value) < -100) {
+        alert("Input value is too low.");
+      } else {
+        pattern.triggers[selectedCntElement.i][v] = Number(e.value);
+        patternChanged();
+        return;
+      }
+      e.value = pattern.triggers[selectedCntElement.i][v];
+      break;
+    case 'num':
+      if(isNaN(Number(e.value))) {
+        alert("Input value is not number.");
+      } else if(Number(e.value) > pattern.bullets.length || Number(e.value) < 0) {
+        alert(`Bullet${e.value} is undefined.`);
+      } else {
+        pattern.triggers[selectedCntElement.i][v] = Number(e.value);
+        patternChanged();
+        return;
+      }
+      e.value = pattern.triggers[selectedCntElement.i][v];
+      break;
+    case 'bpm':
+    case 'time':
+      if(isNaN(Number(e.value))) {
+        alert("Input value is not number.");
+      } else if(Number(e.value) < 0) {
+        alert("Input value must not be less than 0.");
+      } else {
+        pattern.triggers[selectedCntElement.i][v] = Number(e.value);
+        patternChanged();
+        return;
+      }
+      e.value = pattern.triggers[selectedCntElement.i][v];
+      break;
+    case 'opacity':
+      if(isNaN(Number(e.value))) {
+        alert("Input value is not number.");
+      } else if(Number(e.value) < 0) {
+        alert("Input value must not be less than 0.");
+      } else if(Number(e.value) > 1) {
+        alert("Input value must not be more than 1.");
+      } else {
+        pattern.triggers[selectedCntElement.i][v] = Number(e.value);
+        patternChanged();
+        return;
+      }
+      e.value = pattern.triggers[selectedCntElement.i][v];
+      break;
+    case 'speed':
+      if(isNaN(Number(e.value))) {
+        alert("Input value is not number.");
+      } else if(Number(e.value) < 0) {
+        alert("Input value must not be less than 0.");
+      } else if(Number(e.value) > 5) {
+        alert("Input value must not be more than 5.");
+      } else {
+        pattern.triggers[selectedCntElement.i][v] = Number(e.value);
+        patternChanged();
+        return;
+      }
+      e.value = pattern.triggers[selectedCntElement.i][v];
+      break;
+    case 'align':
+      if(e.value == 'left' || e.value == 'center' || e.value == 'right') {
+        pattern.triggers[selectedCntElement.i][v] = e.value;
+        patternChanged();
+        return;
+      }
+      alert("Input value should be 'left', 'center', or 'right'.");
+      e.value = pattern.triggers[selectedCntElement.i][v];
+      break;
+    case 'size':
+    case 'text':
+      pattern.triggers[selectedCntElement.i][v] = e.value;
+      patternChanged();
       break;
     default:
       alert("settingsInput:Error");
@@ -1091,13 +1188,17 @@ const changeSettingsMode = (v1, v2, i) => {
       document.getElementById("elementsSettings").style.display = 'block';
       document.getElementById("noteSettingsContainer").style.display = 'block';
       document.getElementById("bulletSettingsContainer").style.display = 'none';
+      document.getElementById("triggerSettingsContainer").style.display = 'none';
+      document.getElementById("triggerInitializeContainer").style.display = 'none';
       noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.patterns[i].x;
       noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.patterns[i].y;
       noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.patterns[i].ms.toFixed();
       break;
     case 1:
       document.getElementById("noteSettingsContainer").style.display = 'none';
+      document.getElementById("triggerSettingsContainer").style.display = 'none';
       document.getElementById("bulletSettingsContainer").style.display = 'block';
+      document.getElementById("triggerInitializeContainer").style.display = 'none';
       bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.bullets[i].direction;
       bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.bullets[i].location;
       bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[3].value = pattern.bullets[i].ms.toFixed();
@@ -1120,11 +1221,37 @@ const changeSettingsMode = (v1, v2, i) => {
     case 2:
       document.getElementById("settingsNameSpace").innerText = `Trigger_${i}`;
       document.getElementById("dot").style.color = '#36bf24';
+      document.getElementById("trackSettings").style.display = 'none';
+      document.getElementById("elementsSettings").style.display = 'block';
+      document.getElementById("noteSettingsContainer").style.display = 'none';
+      document.getElementById("bulletSettingsContainer").style.display = 'none';
+      document.getElementById("triggerSettingsContainer").style.display = 'block';
+      document.getElementById("triggerInitializeContainer").style.display = 'none';
+      triggerSelectBox.selectedIndex = pattern.triggers[selectedCntElement.i].value;
+      if(v2 == -1) {
+        document.getElementById("triggerSettingsContainer").style.display = 'none';
+        document.getElementById("triggerInitializeContainer").style.display = 'block';
+      } else {
+        let properties = triggerSettingsContainer.getElementsByClassName('settingsPropertiesContainer');
+        let start = 1;
+        for(let j = start; properties.length - start > j; j++) {
+          properties[j].style.display = 'none';
+          if(j - start == v2) {
+            properties[j].style.display = 'block';
+            properties[j].getElementsByClassName('settingsPropertiesTextbox')[0].value = pattern.triggers[i].ms;
+          }
+        }
+      }
       break;
     default:
       alert("changeSettingsMode:Error");
   }
 }
+
+const triggerSet = (isChanged) => {
+  pattern.triggers[selectedCntElement.i].value = (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1);
+  changeSettingsMode(2, (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1), selectedCntElement.i);
+};
 
 const zoomIn = () => {
   zoom -= 0.15;
@@ -1386,6 +1513,7 @@ document.onkeydown = e => {
   } else if(e.keyCode == 46) { //DELETE
     if(ctrlDown) {
       if(shiftDown) {
+        e.preventDefault();
         deleteAll();
         return;
       }
@@ -1420,6 +1548,18 @@ document.onkeydown = e => {
   } else if(e.keyCode == 86) { //V
     if(ctrlDown) {
       elementPaste();
+    }
+  } else if(e.keyCode == 84) { //T
+    pattern.triggers.push({"ms": song.seek() * 1000, "value": -1});
+    pattern.triggers.sort(sortAsTiming);
+    for(let i = 0; i < pattern.triggers.length; i++) {
+      if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1}`) {
+        selectedCntElement = {"i": i, "v1": 2, "v2": -1};
+        patternChanged();
+        changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+        if(!isSettingsOpened) toggleSettings();
+        return;
+      }
     }
   } else if(e.keyCode == 112) { //F1
     e.preventDefault();
@@ -1498,28 +1638,28 @@ document.onkeydown = e => {
       ],
       "triggers" : [
         {"ms": 60/bpm*4000, "value": 2, "bpm": 90},
-        {"ms": 60/bpm*4000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:90", time: 60/bpm*4000, size: "16px"},
+        {"ms": 60/bpm*4000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:90", "time": 60/bpm*4000, "size": "16px"},
         {"ms": 60/bpm*8000, "value": 2, "bpm": 180},
-        {"ms": 60/bpm*8000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:180", time: 60/bpm*3000, size: "16px"},
+        {"ms": 60/bpm*8000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:180", "time": 60/bpm*3000, "size": "16px"},
         {"ms": 60/bpm*11000, "value": 0, "num": 10},
-        {"ms": 60/bpm*11000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:10", time: 60/bpm*2000, size: "16px"},
+        {"ms": 60/bpm*11000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:10", "time": 60/bpm*2000, "size": "16px"},
         {"ms": 60/bpm*13000, "value": 0, "num": 13},
-        {"ms": 60/bpm*13000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:13", time: 60/bpm*4000, size: "16px"},
-        {"ms": 60/bpm*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT", time: 60/bpm*4000, size: "16px"},
-        {"ms": 60/bpm*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST", time: 60/bpm*6000, size: "32px"},
-        {"ms": 60/bpm*21000, "value": 5, x: -90, y: -90, align: "left", "text": "text(2)", time: 60/bpm*2000, size: "16px"},
+        {"ms": 60/bpm*13000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:13", "time": 60/bpm*4000, "size": "16px"},
+        {"ms": 60/bpm*21000, "value": 5, x: 0, y: 0, align: "right", "text": "JUST TEXT", "time": 60/bpm*4000, "size": "16px"},
+        {"ms": 60/bpm*21000, "value": 5, x: 0, y: 0, align: "left", "text": "AND TEST", "time": 60/bpm*6000, "size": "32px"},
+        {"ms": 60/bpm*21000, "value": 5, x: -90, y: -90, align: "left", "text": "text(2)", "time": 60/bpm*2000, "size": "16px"},
         {"ms": 60/bpm*23000, "value": 1},
-        {"ms": 60/bpm*23000, "value": 5, x: -90, y: -90, align: "left", "text": "destroyAll", time: 60/bpm*2000, size: "16px"},
+        {"ms": 60/bpm*23000, "value": 5, x: -90, y: -90, align: "left", "text": "destroyAll", "time": 60/bpm*2000, "size": "16px"},
         {"ms": 60/bpm*25000, "value": 4, "speed": 4},
-        {"ms": 60/bpm*25000, "value": 5, x: -90, y: -90, align: "left", "text": "speed:4", time: 60/bpm*4000, size: "16px"},
+        {"ms": 60/bpm*25000, "value": 5, x: -90, y: -90, align: "left", "text": "speed:4", "time": 60/bpm*4000, "size": "16px"},
         {"ms": 60/bpm*29000, "value": 4, "speed": 2},
-        {"ms": 60/bpm*29000, "value": 5, x: -90, y: -90, align: "left", "text": "speed:2", time: 60/bpm*1000, size: "16px"},
+        {"ms": 60/bpm*29000, "value": 5, x: -90, y: -90, align: "left", "text": "speed:2", "time": 60/bpm*1000, "size": "16px"},
         {"ms": 60/bpm*30000, "value": 3, "opacity": 0.5},
-        {"ms": 60/bpm*30000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:0.5", time: 60/bpm*2000, size: "16px"},
+        {"ms": 60/bpm*30000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:0.5", "time": 60/bpm*2000, "size": "16px"},
         {"ms": 60/bpm*32000, "value": 3, "opacity": 0.1},
-        {"ms": 60/bpm*32000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:0.1", time: 60/bpm*2000, size: "16px"},
+        {"ms": 60/bpm*32000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:0.1", "time": 60/bpm*2000, "size": "16px"},
         {"ms": 60/bpm*34000, "value": 3, "opacity": 1},
-        {"ms": 60/bpm*34000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:1", time: 60/bpm*4000, size: "16px"},
+        {"ms": 60/bpm*34000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:1", "time": 60/bpm*4000, "size": "16px"},
       ]
     };
     songSelected();
