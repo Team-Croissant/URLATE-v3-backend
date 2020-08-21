@@ -1353,17 +1353,11 @@ const changeSplit = () => {
 
 const deleteElement = () => {
   if(selectedCntElement.v1 == 0) {
-    delete pattern.patterns[selectedCntElement.i];
-    pattern.patterns.length--;
-    pattern.patterns.sort(sortAsTiming);
+    pattern.patterns.splice(selectedCntElement.i, 1);
   } else if(selectedCntElement.v1 == 1) {
-    delete pattern.bullets[selectedCntElement.i];
-    pattern.bullets.length--;
-    pattern.bullets.sort(sortAsTiming);
+    pattern.bullets.splice(selectedCntElement.i, 1);
   } else if(selectedCntElement.v1 == 2) {
-    delete pattern.triggers[selectedCntElement.i];
-    pattern.triggers.length--;
-    pattern.triggers.sort(sortAsTiming);
+    pattern.triggers.splice(selectedCntElement.i, 1);
   }
   patternChanged();
   changeSettingsMode(-1);
