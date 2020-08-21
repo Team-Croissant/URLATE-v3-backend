@@ -353,14 +353,6 @@ body {
   justify-content: space-between;
 }
 
-.settingsPropertiesButtons {
-  padding-left: 1.5vw;
-  margin-top: 1vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
 .settingsButtons {
   width: 25%;
   margin: 0.1vw;
@@ -369,17 +361,6 @@ body {
   color: #555;
   border-radius: 3px;
   height: 2.5vh;
-}
-
-.selectedButton {
-  background-color: #BBB;
-}
-
-#settingsButtonsText {
-  color: #BBB;
-  letter-spacing: 0px;
-  margin-top: 1vh;
-  margin-left: 1.5vw;
 }
 
 #elementsSettings {
