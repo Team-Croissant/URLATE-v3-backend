@@ -1361,6 +1361,10 @@ const deleteElement = () => {
     delete pattern.bullets[selectedCntElement.i];
     pattern.bullets.length--;
     pattern.bullets.sort(sortAsTiming);
+  } else if(selectedCntElemenv.v1 == 2) {
+    delete pattern.triggers[selectedCntElement.i];
+    pattern.triggers.length--;
+    pattern.triggers.sort(sortAsTiming);
   }
   patternChanged();
   changeSettingsMode(-1);
