@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
       for(let i = 0; tracks.length > i; i++) {
         let option = document.createElement("option");
         option.innerHTML = tracks[i].name;
-        option.value = tracks[i].name;
         document.getElementById("songSelectBox").options.add(option);
       }
     } else {
@@ -1361,7 +1360,7 @@ const deleteElement = () => {
     delete pattern.bullets[selectedCntElement.i];
     pattern.bullets.length--;
     pattern.bullets.sort(sortAsTiming);
-  } else if(selectedCntElemenv.v1 == 2) {
+  } else if(selectedCntElement.v1 == 2) {
     delete pattern.triggers[selectedCntElement.i];
     pattern.triggers.length--;
     pattern.triggers.sort(sortAsTiming);
