@@ -312,7 +312,7 @@ const initialize = () => {
   if(isSettingsOpened) {
     tmlCanvas.width = window.innerWidth * 0.8;
   } else {
-  tmlCanvas.width = window.innerWidth;
+    tmlCanvas.width = window.innerWidth;
   }
 };
 

@@ -594,3 +594,20 @@ body {
   font-weight: 500;
   font-size: 1.5vh;
 }
+
+kbd {
+  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-style: italic;
+  border: 2px solid #555;
+  padding: 4px 14px 4px 8px;
+  border-radius: 5px;
+}
+
+.noItalic {
+  font-style: normal;
+  padding: 4px 8px 4px 8px;
+}
+
+.helpMotion {
+  font-style: italic;
+}
