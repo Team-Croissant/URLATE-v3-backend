@@ -14,6 +14,7 @@ let userName = '';
 let patternSeek = -1;
 let lastMovedMs = -1;
 let copiedElement = {"v1": '', "element": {}};
+let pixelRatio = window.devicePixelRatio;
 
 let pattern = {
   "information": {
@@ -306,13 +307,13 @@ const eraseTml = () => {
 }
 
 const initialize = () => {
-  cntCanvas.width = window.innerWidth * 0.6;
-  cntCanvas.height = window.innerHeight * 0.65;
-  tmlCanvas.height = window.innerHeight * 0.27;
+  cntCanvas.width = window.innerWidth * 0.6 * window.devicePixelRatio;
+  cntCanvas.height = window.innerHeight * 0.65 * window.devicePixelRatio;
+  tmlCanvas.height = window.innerHeight * 0.27 * window.devicePixelRatio;
   if(isSettingsOpened) {
-    tmlCanvas.width = window.innerWidth * 0.8;
+    tmlCanvas.width = window.innerWidth * 0.8 * window.devicePixelRatio;
   } else {
-    tmlCanvas.width = window.innerWidth;
+    tmlCanvas.width = window.innerWidth * window.devicePixelRatio;
   }
 };
 
@@ -561,6 +562,10 @@ const tmlRender = () => {
 };
 
 const cntRender = () => {
+  if(window.devicePixelRatio != pixelRatio) {
+    pixelRatio = window.devicePixelRatio;
+    initialize();
+  }
   pointingCntElement = {"v1": '', "v2": '', "i": ''};
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
