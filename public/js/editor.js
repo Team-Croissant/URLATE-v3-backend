@@ -308,8 +308,12 @@ const eraseTml = () => {
 const initialize = () => {
   cntCanvas.width = window.innerWidth * 0.6;
   cntCanvas.height = window.innerHeight * 0.65;
-  tmlCanvas.width = window.innerWidth;
   tmlCanvas.height = window.innerHeight * 0.27;
+  if(isSettingsOpened) {
+    tmlCanvas.width = window.innerWidth * 0.8;
+  } else {
+  tmlCanvas.width = window.innerWidth;
+  }
 };
 
 const gotoMain = (isCalledByMain) => {
