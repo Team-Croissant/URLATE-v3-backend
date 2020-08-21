@@ -841,7 +841,9 @@ const settingsInput = (v, e) => {
         patternChanged();
         return;
       }
-      e.value = pattern.patterns[selectedCntElement.i][v];
+      if(e.value != '-') {
+        e.value = pattern.patterns[selectedCntElement.i][v];
+      }
       break;
     case 'Timing':
       if(isNaN(Number(e.value))) {
@@ -873,8 +875,16 @@ const settingsInput = (v, e) => {
           if(JSON.stringify(targetElements[i]) == JSON.stringify(changedResult)) {
             selectedCntElement = {"i": i, "v1": selectedCntElement.v1, "v2": selectedCntElement.v2};
             changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+            return;
           }
         }
+      }
+      if(selectedCntElement.v1 == 0) {
+        e.value = pattern.patterns[selectedCntElement.i].ms;
+      } else if(selectedCntElement.v1 == 1) {
+        e.value = pattern.bullets[selectedCntElement.i].ms;
+      } else {
+        e.value = pattern.triggers[selectedCntElement.i].ms;
       }
       break;
     case 'Side':
@@ -914,7 +924,9 @@ const settingsInput = (v, e) => {
         patternChanged();
         return;
       }
-      e.value = pattern.bullets[selectedCntElement.i].location;
+      if(e.value != '-') {
+        e.value = pattern.bullets[selectedCntElement.i].location;
+      }
       break;
     case 'Angle':
       if(isNaN(Number(e.value))) {
@@ -926,7 +938,9 @@ const settingsInput = (v, e) => {
         patternChanged();
         return;
       }
-      e.value = pattern.bullets[selectedCntElement.i].angle;
+      if(e.value != '-') {
+        e.value = pattern.bullets[selectedCntElement.i].angle;
+      }
       break;
     case 'Speed':
       let element;
@@ -943,14 +957,13 @@ const settingsInput = (v, e) => {
         }
       } else if(Number(e.value) > 5) {
         alert("Input value is too high.");
-      } else if(Number(e.value) <= 0) {
+      } else if(e.value != '' && Number(e.value) < 1) {
         alert("Input value is too low.");
       } else {
         element.speed = Number(e.value);
         patternChanged();
         return;
       }
-      e.value = element.speed;
       break;
     default:
       alert("settingsInput:Error");
@@ -1295,7 +1308,8 @@ const changeSettingsMode = (v1, v2, i) => {
 
 const triggerSet = (isChanged) => {
   pattern.triggers[selectedCntElement.i].value = (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1);
-  changeSettingsMode(2, (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1), selectedCntElement.i);
+  selectedCntElement = {"i": selectedCntElement.i, "v1": 2, "v2": (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1)};
+  changeSettingsMode(2, selectedCntElement.v2, selectedCntElement.i);
 };
 
 const zoomIn = () => {
