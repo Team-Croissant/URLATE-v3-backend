@@ -49,12 +49,11 @@
 	"advanced_details10": "Available for released version play",
 	"advanced_details5": "Available for released and beta version play",
 	"support": "Support!",
-	"editor_main": "editor_main",
-	"select_a_song": "select_a_song",
-	"RUsure": "RUsure",
-	"RUSure": "RUSure",
-	"goto_game": "goto_game",
-	"cancel": "cancel",
-	"needToSave": "needToSave",
-	"DeleteSure": "DeleteSure"
+	"editor_main": "Editor Main",
+	"select_a_song": "Select a Song",
+	"RUsure": "Are you really going to end? All work in progress disappears.",
+	"goto_game": "Exit",
+	"cancel": "Cancel",
+	"needToSave": "It is recommended to save the pattern before testing.",
+	"DeleteSure": "Caution! When you click the OK button, all the work in progress disappears."
 }
