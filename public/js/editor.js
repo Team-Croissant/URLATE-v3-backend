@@ -703,6 +703,24 @@ const cntRender = () => {
       }
     }
   }
+  if(mode == 2 && mouseMode == -1) {
+    cntCtx.fillStyle = "rgba(0,0,0,0.5)";
+    cntCtx.fillRect(0, 0, cntCanvas.width, cntCanvas.height);
+    cntCtx.beginPath();
+    cntCtx.fillStyle = "#FFF";
+    cntCtx.strokeStyle = "#FFF";
+    cntCtx.lineWidth = 4;
+    cntCtx.moveTo(cntCanvas.width / 2, cntCanvas.height / 2 - 30);
+    cntCtx.lineTo(cntCanvas.width / 2, cntCanvas.height / 2);
+    cntCtx.stroke();
+    cntCtx.moveTo(cntCanvas.width / 2 - 15, cntCanvas.height / 2 - 15);
+    cntCtx.lineTo(cntCanvas.width / 2 + 15, cntCanvas.height / 2 - 15);
+    cntCtx.stroke();
+    cntCtx.font = "24px Metropolis";
+    cntCtx.textAlign = "center";
+    cntCtx.textBaseline = "top";
+    cntCtx.fillText('Click to add Trigger', cntCanvas.width / 2, cntCanvas.height / 2 + 10);
+  }
   tmlRender();
   if(pointingCntElement.i === '') {
     componentView.style.cursor = "";
@@ -1142,30 +1160,43 @@ const compClicked = () => {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
     }
   } else if(mode == 2) {
-    const seek = song.seek() - (offset + sync) / 1000;
-    if(mouseX < -80 || mouseX > 80) {
-      let newElement = {"ms": parseInt(seek * 1000), "value": selectedValue, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
-      pattern.bullets.push(newElement);
-      pattern.bullets.sort(sortAsTiming);
-      patternChanged();
-      for(let i = 0; i < pattern.bullets.length; i++) {
-        if(JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
-          selectedCntElement = {"v1": 1, "v2": selectedValue, "i": i};
+    if(mouseMode != -1) {
+      const seek = song.seek() - (offset + sync) / 1000;
+      if(mouseX < -80 || mouseX > 80) {
+        let newElement = {"ms": parseInt(seek * 1000), "value": selectedValue, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
+        pattern.bullets.push(newElement);
+        pattern.bullets.sort(sortAsTiming);
+        patternChanged();
+        for(let i = 0; i < pattern.bullets.length; i++) {
+          if(JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
+            selectedCntElement = {"v1": 1, "v2": selectedValue, "i": i};
+          }
+        }
+      } else {
+        let newElement = {"ms": parseInt(seek * 1000) + 1, "value": 0, "x": parseInt(mouseX), "y" : parseInt(mouseY)};
+        pattern.patterns.push(newElement);
+        pattern.patterns.sort(sortAsTiming);
+        patternChanged();
+        for(let i = 0; i < pattern.patterns.length; i++) {
+          if(JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)) {
+            selectedCntElement = {"v1": 0, "v2": 0, "i": i};
+          }
         }
       }
+      changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+      if(!isSettingsOpened) toggleSettings();
     } else {
-      let newElement = {"ms": parseInt(seek * 1000) + 1, "value": 0, "x": parseInt(mouseX), "y" : parseInt(mouseY)};
-      pattern.patterns.push(newElement);
-      pattern.patterns.sort(sortAsTiming);
-      patternChanged();
-      for(let i = 0; i < pattern.patterns.length; i++) {
-        if(JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)) {
-          selectedCntElement = {"v1": 0, "v2": 0, "i": i};
+      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1});
+      pattern.triggers.sort(sortAsTiming);
+      for(let i = 0; i < pattern.triggers.length; i++) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1}`) {
+          selectedCntElement = {"i": i, "v1": 2, "v2": -1};
+          patternChanged();
+          changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+          if(!isSettingsOpened) toggleSettings();
         }
       }
     }
-    changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
-    if(!isSettingsOpened) toggleSettings();
   }
 }
 
