@@ -849,26 +849,32 @@ const settingsInput = (v, e) => {
       } else if(Number(e.value) < 0) {
         alert("Input value is too low.");
       } else {
+        let targetElements, changedResult;
         if(selectedCntElement.v1 == 0) {
           pattern.patterns[selectedCntElement.i].ms = Number(e.value);
+          changedResult = pattern.patterns[selectedCntElement.i];
           pattern.patterns.sort(sortAsTiming);
           patternChanged();
+          targetElements = pattern.patterns;
         } else if(selectedCntElement.v1 == 1) {
           pattern.bullets[selectedCntElement.i].ms = Number(e.value);
+          changedResult = pattern.bullets[selectedCntElement.i];
           pattern.bullets.sort(sortAsTiming);
           patternChanged();
+          targetElements = pattern.bullets;
         } else if(selectedCntElement.v1 == 2) {
           pattern.triggers[selectedCntElement.i].ms = Number(e.value);
+          changedResult = pattern.triggers[selectedCntElement.i];
           pattern.triggers.sort(sortAsTiming);
           patternChanged();
+          targetElements = pattern.triggers;
         }
-      }
-      if(selectedCntElement.v1 == 0) {
-        e.value = pattern.patterns[selectedCntElement.i].ms.toFixed();
-      } else if(selectedCntElement.v1 == 1) {
-        e.value = pattern.bullets[selectedCntElement.i].ms.toFixed();
-      } else if(selectedCntElement.v1 == 2) {
-        e.value = pattern.triggers[selectedCntElement.i].ms.toFixed();
+        for(let i = 0; i < targetElements.length; i++) {
+          if(JSON.stringify(targetElements[i]) == JSON.stringify(changedResult)) {
+            selectedCntElement = {"i": i, "v1": selectedCntElement.v1, "v2": selectedCntElement.v2};
+            changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+          }
+        }
       }
       break;
     case 'Side':
