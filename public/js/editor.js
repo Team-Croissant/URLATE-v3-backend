@@ -82,13 +82,16 @@ document.addEventListener("DOMContentLoaded", () => {
           settingApply();
         } else {
           alert(`Error occured.\n${data.description}`);
+          console.error(`Error occured.\n${data.description}`);
         }
       }).catch((error) => {
         alert(`Error occured.\n${error}`);
+        console.error(`Error occured.\n${error}`);
       });
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
   fetch(`${api}/getTracks`, {
     method: 'GET',
@@ -105,9 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       alert('Failed to load song list.');
+      console.error('Failed to load song list.');
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
   initialize();
 });
@@ -265,7 +270,12 @@ const drawBullet = (n, x, y, a, s) => {
       cntCtx.fill();
       break;
     default:
-      alert("Wrong draw access.");
+      cntCtx.font = "18px Metropolis";
+      cntCtx.fillStyle = "#F55";
+      cntCtx.textAlign = "left";
+      cntCtx.textBaseline = "top";
+      cntCtx.fillText(`drawBullet:bullet number isn't specified.`, cntCanvas.width / 100, cntCanvas.height / 100);
+      console.error(`drawBullet:bullet number isn't specified.`);
   }
 };
 
@@ -364,7 +374,12 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
           }
           break;
         default:
-          alert("trackMouseSelection:Error");
+          cntCtx.font = "18px Metropolis";
+          cntCtx.fillStyle = "#F55";
+          cntCtx.textAlign = "left";
+          cntCtx.textBaseline = "top";
+          cntCtx.fillText(`trackMouseSelection:Undefined element.`, cntCanvas.width / 100, cntCanvas.height / 100);
+          console.error(`trackMouseSelection:Undefined element.`);
       }
     }
   }
@@ -388,6 +403,7 @@ const tmlRender = () => {
   const renderStart = parseInt(seek * 1000) - (60000 / bpm * zoom),
         renderEnd = parseInt(renderStart + (5000 * zoom)),
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
+  try {
   let baseMs = 60 / bpm * 1000;
   tmlCtx.beginPath();
   tmlCtx.fillStyle = '#F3F3F3';
@@ -558,6 +574,14 @@ const tmlRender = () => {
   tmlCtx.moveTo(lineX, endY);
   tmlCtx.lineTo(lineX, startY);
   tmlCtx.stroke();
+  } catch (e) {
+    tmlCtx.font = "18px Metropolis";
+    tmlCtx.fillStyle = "#F55";
+    tmlCtx.textAlign = "left";
+    tmlCtx.textBaseline = "top";
+    tmlCtx.fillText(e, tmlStartX, endY);
+    console.error(e);
+  }
 };
 
 const cntRender = () => {
@@ -565,6 +589,7 @@ const cntRender = () => {
     pixelRatio = window.devicePixelRatio;
     initialize();
   }
+  try {
   pointingCntElement = {"v1": '', "v2": '', "i": ''};
   window.requestAnimationFrame(cntRender);
   const seek = song.seek() - (offset + sync) / 1000;
@@ -729,12 +754,22 @@ const cntRender = () => {
     cntCtx.textBaseline = "top";
     cntCtx.fillText('Click to add Trigger', cntCanvas.width / 2, cntCanvas.height / 2 + 10);
   }
-  tmlRender();
   if(pointingCntElement.i === '') {
     componentView.style.cursor = "";
   } else {
     componentView.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
   }
+  } catch (e) {
+    if(e) {
+      cntCtx.font = "18px Metropolis";
+      cntCtx.fillStyle = "#F55";
+      cntCtx.textAlign = "left";
+      cntCtx.textBaseline = "top";
+      cntCtx.fillText(e, cntCanvas.width / 100, cntCanvas.height / 100);
+      console.error(e);
+    }
+  }
+  tmlRender();
 };
 
 const songPlayPause = () => {
@@ -1175,7 +1210,7 @@ const compClicked = () => {
             selectedElement = pattern.bullets[pointingCntElement.i];
             break;
           default:
-            console.log("compClicked:Error");
+            console.error("compClicked:Wrong element pointing.");
         }
         changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
         if(!isSettingsOpened) toggleSettings();
