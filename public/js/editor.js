@@ -404,176 +404,176 @@ const tmlRender = () => {
         renderEnd = parseInt(renderStart + (5000 * zoom)),
         msToPx = (endX - tmlStartX) / (renderEnd - renderStart);
   try {
-  let baseMs = 60 / bpm * 1000;
-  tmlCtx.beginPath();
-  tmlCtx.fillStyle = '#F3F3F3';
-  tmlCtx.fillRect(tmlStartX, startY, endX - tmlStartX, endY - startY);
-  let start = lowerBound(pattern.patterns, renderStart);
-  let end = upperBound(pattern.patterns, renderEnd);
-  const renderNotes = pattern.patterns.slice(start, end);
-  start = lowerBound(pattern.bullets, renderStart);
-  end = upperBound(pattern.bullets, renderEnd);
-  const renderBullets = pattern.bullets.slice(start, end);
-  let bulletsOverlapNum = 1;
-  let bulletsOverlap = {};
-  for(let i = 0; i < renderBullets.length; i++) {
-    let count = 0;
-    if(bulletsOverlap[parseInt(renderBullets[i].ms / 100)]) {
-      bulletsOverlap[parseInt(renderBullets[i].ms / 100)]++;
-    } else {
-      bulletsOverlap[parseInt(renderBullets[i].ms / 100)] = 1;
+    let baseMs = 60 / bpm * 1000;
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#F3F3F3';
+    tmlCtx.fillRect(tmlStartX, startY, endX - tmlStartX, endY - startY);
+    let start = lowerBound(pattern.patterns, renderStart);
+    let end = upperBound(pattern.patterns, renderEnd);
+    const renderNotes = pattern.patterns.slice(start, end);
+    start = lowerBound(pattern.bullets, renderStart);
+    end = upperBound(pattern.bullets, renderEnd);
+    const renderBullets = pattern.bullets.slice(start, end);
+    let bulletsOverlapNum = 1;
+    let bulletsOverlap = {};
+    for(let i = 0; i < renderBullets.length; i++) {
+      let count = 0;
+      if(bulletsOverlap[parseInt(renderBullets[i].ms / 100)]) {
+        bulletsOverlap[parseInt(renderBullets[i].ms / 100)]++;
+      } else {
+        bulletsOverlap[parseInt(renderBullets[i].ms / 100)] = 1;
+      }
+      for(let j = 0; j < renderBullets.length; j++) {
+        if(parseInt(renderBullets[i].ms / 100) == parseInt(renderBullets[j].ms / 100)) {
+          count++;
+        }
+      }
+      if(bulletsOverlapNum < count) bulletsOverlapNum = count;
+    }
+    for(let j = 0; j < renderNotes.length; j++) {
+      tmlCtx.beginPath();
+      if(start + j == selectedCntElement.i && selectedCntElement.v1 == '0') {
+        tmlCtx.fillStyle = "#ed5b45";
+      } else {
+        tmlCtx.fillStyle = '#fbaf34';
+      }
+      tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + timelineYLoc + height / 2, height / 3, 0, 2 * Math.PI);
+      tmlCtx.fill();
     }
     for(let j = 0; j < renderBullets.length; j++) {
-      if(parseInt(renderBullets[i].ms / 100) == parseInt(renderBullets[j].ms / 100)) {
-        count++;
+      tmlCtx.beginPath();
+      if(start + j == selectedCntElement.i && selectedCntElement.v1 == '1') {
+        tmlCtx.fillStyle = "#ed5b45";
+      } else {
+        tmlCtx.fillStyle = '#4297d4';
       }
+      let x = tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
+      let y = startY + timelineYLoc + height * bulletsOverlap[parseInt(renderBullets[j].ms / 100)] + height / 2;
+      let w = height / 3;
+      if(renderBullets[j].value == 0) {
+        tmlCtx.moveTo(x - w, y);
+        tmlCtx.lineTo(x, y + w);
+        tmlCtx.lineTo(x + w, y);
+        tmlCtx.lineTo(x, y - w);
+        tmlCtx.lineTo(x - w, y);
+      } else if(renderBullets[j].value == 1) {
+        tmlCtx.arc(x, y, w, 0, 2 * Math.PI);
+      }
+      bulletsOverlap[parseInt(renderBullets[j].ms / 100)]--;
+      tmlCtx.fill();
     }
-    if(bulletsOverlapNum < count) bulletsOverlapNum = count;
-  }
-  for(let j = 0; j < renderNotes.length; j++) {
-    tmlCtx.beginPath();
-    if(start + j == selectedCntElement.i && selectedCntElement.v1 == '0') {
-      tmlCtx.fillStyle = "#ed5b45";
-    } else {
-      tmlCtx.fillStyle = '#fbaf34';
-    }
-    tmlCtx.arc(tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx), startY + timelineYLoc + height / 2, height / 3, 0, 2 * Math.PI);
-    tmlCtx.fill();
-  }
-  for(let j = 0; j < renderBullets.length; j++) {
-    tmlCtx.beginPath();
-    if(start + j == selectedCntElement.i && selectedCntElement.v1 == '1') {
-      tmlCtx.fillStyle = "#ed5b45";
-    } else {
-      tmlCtx.fillStyle = '#4297d4';
-    }
-    let x = tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
-    let y = startY + timelineYLoc + height * bulletsOverlap[parseInt(renderBullets[j].ms / 100)] + height / 2;
-    let w = height / 3;
-    if(renderBullets[j].value == 0) {
-      tmlCtx.moveTo(x - w, y);
-      tmlCtx.lineTo(x, y + w);
-      tmlCtx.lineTo(x + w, y);
-      tmlCtx.lineTo(x, y - w);
-      tmlCtx.lineTo(x - w, y);
-    } else if(renderBullets[j].value == 1) {
-      tmlCtx.arc(x, y, w, 0, 2 * Math.PI);
-    }
-    bulletsOverlap[parseInt(renderBullets[j].ms / 100)]--;
-    tmlCtx.fill();
-  }
-  start = lowerBound(pattern.triggers, renderStart);
-  end = upperBound(pattern.triggers, renderEnd);
-  const renderTriggers = pattern.triggers.slice(start, end);
-  let triggersOverlapNum = 2;
-  let triggersOverlap = {};
-  for(let i = 0; i < renderTriggers.length; i++) {
-    let count = 0;
-    if(triggersOverlap[parseInt(renderTriggers[i].ms / 100)]) {
-      triggersOverlap[parseInt(renderTriggers[i].ms / 100)]++;
-    } else {
-      triggersOverlap[parseInt(renderTriggers[i].ms / 100)] = 1;
+    start = lowerBound(pattern.triggers, renderStart);
+    end = upperBound(pattern.triggers, renderEnd);
+    const renderTriggers = pattern.triggers.slice(start, end);
+    let triggersOverlapNum = 2;
+    let triggersOverlap = {};
+    for(let i = 0; i < renderTriggers.length; i++) {
+      let count = 0;
+      if(triggersOverlap[parseInt(renderTriggers[i].ms / 100)]) {
+        triggersOverlap[parseInt(renderTriggers[i].ms / 100)]++;
+      } else {
+        triggersOverlap[parseInt(renderTriggers[i].ms / 100)] = 1;
+      }
+      for(let j = 0; j < renderTriggers.length; j++) {
+        if(parseInt(renderTriggers[i].ms / 100) == parseInt(renderTriggers[j].ms / 100)) {
+          count++;
+        }
+      }
+      if(triggersOverlapNum < count + 1) triggersOverlapNum = count + 1;
     }
     for(let j = 0; j < renderTriggers.length; j++) {
-      if(parseInt(renderTriggers[i].ms / 100) == parseInt(renderTriggers[j].ms / 100)) {
-        count++;
+      tmlCtx.beginPath();
+      if(start + j == selectedCntElement.i && selectedCntElement.v1 == '2') {
+        tmlCtx.fillStyle = "#ed5b45";
+      } else {
+        tmlCtx.fillStyle = "#2ec90e";
       }
+      let x = tmlStartX + parseInt((renderTriggers[j].ms - renderStart) * msToPx);
+      let y = startY + timelineYLoc + height * (bulletsOverlapNum + triggersOverlap[parseInt(renderTriggers[j].ms / 100)]) + height / 2;
+      let w = height / 3;
+      tmlCtx.moveTo(x - w / 1.1, y - w);
+      tmlCtx.lineTo(x + w / 1.1, y);
+      tmlCtx.lineTo(x - w / 1.1, y + w);
+      tmlCtx.lineTo(x - w / 1.1, y - w);
+      triggersOverlap[parseInt(renderTriggers[j].ms / 100)]--;
+      tmlCtx.fill();
     }
-    if(triggersOverlapNum < count + 1) triggersOverlapNum = count + 1;
-  }
-  for(let j = 0; j < renderTriggers.length; j++) {
+    tmlCtx.fillStyle = '#FFF';
+    tmlCtx.fillRect(0, 0, tmlStartX, endY);
     tmlCtx.beginPath();
-    if(start + j == selectedCntElement.i && selectedCntElement.v1 == '2') {
-      tmlCtx.fillStyle = "#ed5b45";
-    } else {
-      tmlCtx.fillStyle = "#2ec90e";
-    }
-    let x = tmlStartX + parseInt((renderTriggers[j].ms - renderStart) * msToPx);
-    let y = startY + timelineYLoc + height * (bulletsOverlapNum + triggersOverlap[parseInt(renderTriggers[j].ms / 100)]) + height / 2;
-    let w = height / 3;
-    tmlCtx.moveTo(x - w / 1.1, y - w);
-    tmlCtx.lineTo(x + w / 1.1, y);
-    tmlCtx.lineTo(x - w / 1.1, y + w);
-    tmlCtx.lineTo(x - w / 1.1, y - w);
-    triggersOverlap[parseInt(renderTriggers[j].ms / 100)]--;
-    tmlCtx.fill();
-  }
-  tmlCtx.fillStyle = '#FFF';
-  tmlCtx.fillRect(0, 0, tmlStartX, endY);
-  tmlCtx.beginPath();
-  tmlCtx.fillStyle = '#fbaf34';
-  tmlCtx.arc(startX, startY + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
-  tmlCtx.fill();
-  tmlCtx.fillStyle = '#111';
-  tmlCtx.textAlign = "left";
-  tmlCtx.font = `${tmlCanvas.height / 14}px Metropolis`;
-  tmlCtx.fillText('Note', startX * 1.2 + height / 6, startY + timelineYLoc + height / 1.8);
-  let i = 1;
-  for(i; i <= bulletsOverlapNum; i++) {
-    tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#2f91ed';
-    tmlCtx.arc(startX, startY + timelineYLoc + height * i + height / 2, height / 6, 0, 2 * Math.PI);
+    tmlCtx.fillStyle = '#fbaf34';
+    tmlCtx.arc(startX, startY + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
     tmlCtx.fill();
     tmlCtx.fillStyle = '#111';
-    tmlCtx.fillText('Bullet', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
-  }
-  for(i; i < bulletsOverlapNum + triggersOverlapNum; i++) {
-    tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#2ec90e';
-    tmlCtx.arc(startX, startY + height * i + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
-    tmlCtx.fill();
-    tmlCtx.fillStyle = '#111';
-    tmlCtx.fillText('Trigger', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
-  }
-  timelineElementNum = i;
-  tmlCtx.fillStyle = '#FFF';
-  tmlCtx.fillRect(0, endY, endX, tmlCanvas.height - endY);
-  tmlCtx.fillRect(0, 0, endX, startY);
-  tmlCtx.font = `${tmlCanvas.height / 16}px Metropolis`;
-  tmlCtx.textAlign = "center";
-  tmlCtx.textBaseline = "bottom";
-  tmlCtx.fillStyle = '#777';
-  for(let t = (baseMs - renderStart % baseMs) - baseMs; t <= renderEnd + baseMs; t += baseMs) {
-    if((renderStart + t) / 1000 < song._duration && (renderStart + t) / 1000 >= 0) {
-      const tmlMinutes = Math.floor((renderStart + t) / 60000),
-            tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
-      tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
-      for(let i = 0; i < split; i++) {
-        tmlCtx.beginPath();
-        let strokeY;
-        if(i == 0) {
-          tmlCtx.strokeStyle = '#555';
-          strokeY = startY - 10;
-        } else {
-          tmlCtx.strokeStyle = '#999';
-          strokeY = startY - 5;
+    tmlCtx.textAlign = "left";
+    tmlCtx.font = `${tmlCanvas.height / 14}px Metropolis`;
+    tmlCtx.fillText('Note', startX * 1.2 + height / 6, startY + timelineYLoc + height / 1.8);
+    let i = 1;
+    for(i; i <= bulletsOverlapNum; i++) {
+      tmlCtx.beginPath();
+      tmlCtx.fillStyle = '#2f91ed';
+      tmlCtx.arc(startX, startY + timelineYLoc + height * i + height / 2, height / 6, 0, 2 * Math.PI);
+      tmlCtx.fill();
+      tmlCtx.fillStyle = '#111';
+      tmlCtx.fillText('Bullet', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
+    }
+    for(i; i < bulletsOverlapNum + triggersOverlapNum; i++) {
+      tmlCtx.beginPath();
+      tmlCtx.fillStyle = '#2ec90e';
+      tmlCtx.arc(startX, startY + height * i + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
+      tmlCtx.fill();
+      tmlCtx.fillStyle = '#111';
+      tmlCtx.fillText('Trigger', startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
+    }
+    timelineElementNum = i;
+    tmlCtx.fillStyle = '#FFF';
+    tmlCtx.fillRect(0, endY, endX, tmlCanvas.height - endY);
+    tmlCtx.fillRect(0, 0, endX, startY);
+    tmlCtx.font = `${tmlCanvas.height / 16}px Metropolis`;
+    tmlCtx.textAlign = "center";
+    tmlCtx.textBaseline = "bottom";
+    tmlCtx.fillStyle = '#777';
+    for(let t = (baseMs - renderStart % baseMs) - baseMs; t <= renderEnd + baseMs; t += baseMs) {
+      if((renderStart + t) / 1000 < song._duration && (renderStart + t) / 1000 >= 0) {
+        const tmlMinutes = Math.floor((renderStart + t) / 60000),
+              tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
+        tmlCtx.fillText(`${String(tmlMinutes).padStart(2, '0')}:${tmlSeconds.toFixed(2).padStart(5, '0')}`, tmlStartX + t * msToPx, startY / 1.3);
+        for(let i = 0; i < split; i++) {
+          tmlCtx.beginPath();
+          let strokeY;
+          if(i == 0) {
+            tmlCtx.strokeStyle = '#555';
+            strokeY = startY - 10;
+          } else {
+            tmlCtx.strokeStyle = '#999';
+            strokeY = startY - 5;
+          }
+          tmlCtx.moveTo(tmlStartX + t * msToPx + baseMs * msToPx / split * i, startY);
+          tmlCtx.lineTo(tmlStartX + t * msToPx + baseMs * msToPx / split * i, strokeY);
+          tmlCtx.stroke();
         }
-        tmlCtx.moveTo(tmlStartX + t * msToPx + baseMs * msToPx / split * i, startY);
-        tmlCtx.lineTo(tmlStartX + t * msToPx + baseMs * msToPx / split * i, strokeY);
-        tmlCtx.stroke();
       }
     }
-  }
-  tmlCtx.fillStyle = '#FFF';
-  tmlCtx.fillRect(0, 0, tmlStartX, startY);
-  tmlCtx.fillStyle = '#2f91ed';
-  tmlCtx.font = `${tmlCanvas.height / 11}px Heebo`;
-  tmlCtx.textBaseline = "middle";
-  tmlCtx.textAlign = "right";
-  if(tmlCanvas.height / tmlCanvas.width < 0.16) {
-    if(isNaN(minutes)) {
-      tmlCtx.fillText('Wait..', tmlStartX, startY / 1.7);
-    } else {
-      tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
+    tmlCtx.fillStyle = '#FFF';
+    tmlCtx.fillRect(0, 0, tmlStartX, startY);
+    tmlCtx.fillStyle = '#2f91ed';
+    tmlCtx.font = `${tmlCanvas.height / 11}px Heebo`;
+    tmlCtx.textBaseline = "middle";
+    tmlCtx.textAlign = "right";
+    if(tmlCanvas.height / tmlCanvas.width < 0.16) {
+      if(isNaN(minutes)) {
+        tmlCtx.fillText('Wait..', tmlStartX, startY / 1.7);
+      } else {
+        tmlCtx.fillText(`${String(minutes).padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`, tmlStartX, startY / 1.7);
+      }
     }
-  }
-  tmlCtx.beginPath();
-  tmlCtx.fillStyle = '#ed5b45';
-  tmlCtx.strokeStyle = '#ed5b45';
-  let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
-  tmlCtx.moveTo(lineX, endY);
-  tmlCtx.lineTo(lineX, startY);
-  tmlCtx.stroke();
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#ed5b45';
+    tmlCtx.strokeStyle = '#ed5b45';
+    let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
+    tmlCtx.moveTo(lineX, endY);
+    tmlCtx.lineTo(lineX, startY);
+    tmlCtx.stroke();
   } catch (e) {
     tmlCtx.font = "18px Metropolis";
     tmlCtx.fillStyle = "#F55";
@@ -590,175 +590,175 @@ const cntRender = () => {
     initialize();
   }
   try {
-  pointingCntElement = {"v1": '', "v2": '', "i": ''};
-  window.requestAnimationFrame(cntRender);
-  const seek = song.seek() - (offset + sync) / 1000;
-  let start = lowerBound(pattern.triggers, 0);
-  let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
-  const renderTriggers = pattern.triggers.slice(start, end);
-  eraseCnt();
-  destroyedBullets.clear();
-  let bpmCount = 0, speedCount = 0, opacityCount = 0;
-  for(let i = 0; i < renderTriggers.length; i++) {
-    if(renderTriggers[i].value == 0) {
-      if(!destroyedBullets.has(renderTriggers[i].num)) {
-        if(!prevDestroyedBullets.has(renderTriggers[i].num)) {
-          let j = renderTriggers[i].num;
-          const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
-          const left = pattern.bullets[j].direction == 'L';
-          let x = (left ? -1 : 1) * (100 - p);
-          let y = 0;
-          if(pattern.bullets[j].value == 0) {
-            y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
-          } else {
-            if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
-            if(left) {
-              if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
-              else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
-            } else {
-              if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
-              else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
-            }
-            y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
-          }
-          drawParticle(0, x, y);
-        }
-        destroyedBullets.add(renderTriggers[i].num);
-      }
-    } else if(renderTriggers[i].value == 1) {
-      start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
-      end = upperBound(pattern.bullets, seek * 1000);
-      const renderBullets = pattern.bullets.slice(start, end);
-      for(let j = 0; renderBullets.length > j; j++) {
-        if(!destroyedBullets.has(start + j)) {
-          if(!prevDestroyedBullets.has(start + j)) {
-            const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
-            const left = renderBullets[j].direction == 'L';
+    pointingCntElement = {"v1": '', "v2": '', "i": ''};
+    window.requestAnimationFrame(cntRender);
+    const seek = song.seek() - (offset + sync) / 1000;
+    let start = lowerBound(pattern.triggers, 0);
+    let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
+    const renderTriggers = pattern.triggers.slice(start, end);
+    eraseCnt();
+    destroyedBullets.clear();
+    let bpmCount = 0, speedCount = 0, opacityCount = 0;
+    for(let i = 0; i < renderTriggers.length; i++) {
+      if(renderTriggers[i].value == 0) {
+        if(!destroyedBullets.has(renderTriggers[i].num)) {
+          if(!prevDestroyedBullets.has(renderTriggers[i].num)) {
+            let j = renderTriggers[i].num;
+            const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
+            const left = pattern.bullets[j].direction == 'L';
             let x = (left ? -1 : 1) * (100 - p);
             let y = 0;
-            if(renderBullets[j].value == 0) {
-              y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
+            if(pattern.bullets[j].value == 0) {
+              y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
             } else {
-              if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
+              if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
               if(left) {
-                if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
-                else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
+                if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+                else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
               } else {
-                if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
-                else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
+                if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+                else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
               }
-              y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
+              y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
             }
             drawParticle(0, x, y);
           }
-          destroyedBullets.add(start + j);
+          destroyedBullets.add(renderTriggers[i].num);
+        }
+      } else if(renderTriggers[i].value == 1) {
+        start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
+        end = upperBound(pattern.bullets, seek * 1000);
+        const renderBullets = pattern.bullets.slice(start, end);
+        for(let j = 0; renderBullets.length > j; j++) {
+          if(!destroyedBullets.has(start + j)) {
+            if(!prevDestroyedBullets.has(start + j)) {
+              const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
+              const left = renderBullets[j].direction == 'L';
+              let x = (left ? -1 : 1) * (100 - p);
+              let y = 0;
+              if(renderBullets[j].value == 0) {
+                y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
+              } else {
+                if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
+                if(left) {
+                  if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
+                  else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
+                } else {
+                  if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
+                  else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
+                }
+                y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
+              }
+              drawParticle(0, x, y);
+            }
+            destroyedBullets.add(start + j);
+          }
+        }
+      } else if(renderTriggers[i].value == 2) {
+        bpmCount++;
+        bpm = renderTriggers[i].bpm;
+      } else if(renderTriggers[i].value == 3) {
+        opacityCount++;
+        cntCanvas.style.opacity = renderTriggers[i].opacity;
+      } else if(renderTriggers[i].value == 4) {
+        speedCount++;
+        speed = renderTriggers[i].speed;
+      } else if(renderTriggers[i].value == 5) {
+        if(renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time > seek * 1000) {
+          cntCtx.beginPath();
+          cntCtx.fillStyle = "#111";
+          cntCtx.font = `${renderTriggers[i].size} Metropolis`;
+          cntCtx.textAlign = renderTriggers[i].align;
+          cntCtx.fillText(renderTriggers[i].text, cntCanvas.width / 200 * (renderTriggers[i].x + 100), cntCanvas.height / 200 * (renderTriggers[i].y + 100));
         }
       }
-    } else if(renderTriggers[i].value == 2) {
-      bpmCount++;
-      bpm = renderTriggers[i].bpm;
-    } else if(renderTriggers[i].value == 3) {
-      opacityCount++;
-      cntCanvas.style.opacity = renderTriggers[i].opacity;
-    } else if(renderTriggers[i].value == 4) {
-      speedCount++;
-      speed = renderTriggers[i].speed;
-    } else if(renderTriggers[i].value == 5) {
-      if(renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time > seek * 1000) {
-        cntCtx.beginPath();
-        cntCtx.fillStyle = "#111";
-        cntCtx.font = `${renderTriggers[i].size} Metropolis`;
-        cntCtx.textAlign = renderTriggers[i].align;
-        cntCtx.fillText(renderTriggers[i].text, cntCanvas.width / 200 * (renderTriggers[i].x + 100), cntCanvas.height / 200 * (renderTriggers[i].y + 100));
+    }
+    if(!bpmCount) {
+      bpm = pattern.information.bpm;
+    }
+    if(!speedCount) {
+      speed = pattern.information.speed;
+    }
+    if(!opacityCount) {
+      cntCanvas.style.opacity = 1;
+    }
+    prevDestroyedBullets = new Set(destroyedBullets);
+    start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
+    end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
+    const renderNotes = pattern.patterns.slice(start, end);
+    if(mode == 2 && mouseMode == 0) {
+      let p = [0, 0];
+      if(mouseX < -80) {
+        p[0] = (-80 - mouseX) / 20;
+      } else if(mouseX > 80) {
+        p[1] = (mouseX - 80) / 20;
       }
-    }
-  }
-  if(!bpmCount) {
-    bpm = pattern.information.bpm;
-  }
-  if(!speedCount) {
-    speed = pattern.information.speed;
-  }
-  if(!opacityCount) {
-    cntCanvas.style.opacity = 1;
-  }
-  prevDestroyedBullets = new Set(destroyedBullets);
-  start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
-  end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
-  const renderNotes = pattern.patterns.slice(start, end);
-  if(mode == 2 && mouseMode == 0) {
-    let p = [0, 0];
-    if(mouseX < -80) {
-      p[0] = (-80 - mouseX) / 20;
-    } else if(mouseX > 80) {
-      p[1] = (mouseX - 80) / 20;
-    }
-    if(p[0] == 0 && p[1] == 0) {
-      drawNote(100, mouseX, mouseY, true);
-    } else {
-      if(p[1] == 0) {
-        drawBullet(selectedValue, -100, mouseY, 0, true);
+      if(p[0] == 0 && p[1] == 0) {
+        drawNote(100, mouseX, mouseY, true);
       } else {
-        drawBullet(selectedValue, 100, mouseY, 180, true);
-      }
-    }
-  }
-  for(let i = 0; i < renderNotes.length; i++) {
-    const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
-    trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
-    drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCheck(0, start + i));
-  }
-  start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
-  end = upperBound(pattern.bullets, seek * 1000);
-  const renderBullets = pattern.bullets.slice(start, end);
-  for(let i = 0; i < renderBullets.length; i++) {
-    if(!destroyedBullets.has(start + i)) {
-      const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
-      const left = renderBullets[i].direction == 'L';
-      let x = (left ? -1 : 1) * (100 - p);
-      let y = 0;
-      if(renderBullets[i].value == 0) {
-        y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
-        trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-        drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
-      } else {
-        if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
-        if(left) {
-          if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
-          else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
+        if(p[1] == 0) {
+          drawBullet(selectedValue, -100, mouseY, 0, true);
         } else {
-          if(70 < circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 70;
-          else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
+          drawBullet(selectedValue, 100, mouseY, 180, true);
         }
-        y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
-        trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-        drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
       }
     }
-  }
-  if(mode == 2 && mouseMode == -1) {
-    cntCtx.fillStyle = "rgba(0,0,0,0.5)";
-    cntCtx.fillRect(0, 0, cntCanvas.width, cntCanvas.height);
-    cntCtx.beginPath();
-    cntCtx.fillStyle = "#FFF";
-    cntCtx.strokeStyle = "#FFF";
-    cntCtx.lineWidth = 4;
-    cntCtx.moveTo(cntCanvas.width / 2, cntCanvas.height / 2 - 30);
-    cntCtx.lineTo(cntCanvas.width / 2, cntCanvas.height / 2);
-    cntCtx.stroke();
-    cntCtx.moveTo(cntCanvas.width / 2 - 15, cntCanvas.height / 2 - 15);
-    cntCtx.lineTo(cntCanvas.width / 2 + 15, cntCanvas.height / 2 - 15);
-    cntCtx.stroke();
-    cntCtx.font = "24px Metropolis";
-    cntCtx.textAlign = "center";
-    cntCtx.textBaseline = "top";
-    cntCtx.fillText('Click to add Trigger', cntCanvas.width / 2, cntCanvas.height / 2 + 10);
-  }
-  if(pointingCntElement.i === '') {
-    componentView.style.cursor = "";
-  } else {
-    componentView.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
-  }
+    for(let i = 0; i < renderNotes.length; i++) {
+      const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+      trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
+      drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCheck(0, start + i));
+    }
+    start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
+    end = upperBound(pattern.bullets, seek * 1000);
+    const renderBullets = pattern.bullets.slice(start, end);
+    for(let i = 0; i < renderBullets.length; i++) {
+      if(!destroyedBullets.has(start + i)) {
+        const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
+        const left = renderBullets[i].direction == 'L';
+        let x = (left ? -1 : 1) * (100 - p);
+        let y = 0;
+        if(renderBullets[i].value == 0) {
+          y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
+          trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+          drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
+        } else {
+          if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
+          if(left) {
+            if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
+            else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
+          } else {
+            if(70 < circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 70;
+            else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
+          }
+          y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
+          trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+          drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
+        }
+      }
+    }
+    if(mode == 2 && mouseMode == -1) {
+      cntCtx.fillStyle = "rgba(0,0,0,0.5)";
+      cntCtx.fillRect(0, 0, cntCanvas.width, cntCanvas.height);
+      cntCtx.beginPath();
+      cntCtx.fillStyle = "#FFF";
+      cntCtx.strokeStyle = "#FFF";
+      cntCtx.lineWidth = 4;
+      cntCtx.moveTo(cntCanvas.width / 2, cntCanvas.height / 2 - 30);
+      cntCtx.lineTo(cntCanvas.width / 2, cntCanvas.height / 2);
+      cntCtx.stroke();
+      cntCtx.moveTo(cntCanvas.width / 2 - 15, cntCanvas.height / 2 - 15);
+      cntCtx.lineTo(cntCanvas.width / 2 + 15, cntCanvas.height / 2 - 15);
+      cntCtx.stroke();
+      cntCtx.font = "24px Metropolis";
+      cntCtx.textAlign = "center";
+      cntCtx.textBaseline = "top";
+      cntCtx.fillText('Click to add Trigger', cntCanvas.width / 2, cntCanvas.height / 2 + 10);
+    }
+    if(pointingCntElement.i === '') {
+      componentView.style.cursor = "";
+    } else {
+      componentView.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
+    }
   } catch (e) {
     if(e) {
       cntCtx.font = "18px Metropolis";
@@ -1061,7 +1061,9 @@ const triggersInput = (v, e) => {
         patternChanged();
         return;
       }
-      e.value = pattern.triggers[selectedCntElement.i][v];
+      if(e.value != '0.') {
+        e.value = pattern.triggers[selectedCntElement.i][v];
+      }
       break;
     case 'speed':
       if(isNaN(Number(e.value))) {
@@ -1641,16 +1643,19 @@ document.onkeydown = e => {
     if(ctrlDown) {
       elementPaste();
     }
-  } else if(e.keyCode == 84) { //T
-    pattern.triggers.push({"ms": song.seek() * 1000, "value": -1});
-    pattern.triggers.sort(sortAsTiming);
-    for(let i = 0; i < pattern.triggers.length; i++) {
-      if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1}`) {
-        selectedCntElement = {"i": i, "v1": 2, "v2": -1};
-        patternChanged();
-        changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
-        if(!isSettingsOpened) toggleSettings();
-        return;
+  } else if(e.keyCode == 82) { //R
+    if(ctrlDown) {
+      e.preventDefault();
+      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1});
+      pattern.triggers.sort(sortAsTiming);
+      for(let i = 0; i < pattern.triggers.length; i++) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1}`) {
+          selectedCntElement = {"i": i, "v1": 2, "v2": -1};
+          patternChanged();
+          changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+          if(!isSettingsOpened) toggleSettings();
+          return;
+        }
       }
     }
   } else if(e.keyCode == 112) { //F1
