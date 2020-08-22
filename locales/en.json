@@ -51,9 +51,9 @@
 	"support": "Support!",
 	"editor_main": "Editor Main",
 	"select_a_song": "Select a Song",
-	"RUsure": "Are you really going to end? All work in progress disappears.",
 	"goto_game": "Exit",
 	"cancel": "Cancel",
 	"needToSave": "It is recommended to save the pattern before testing.",
-	"DeleteSure": "Caution! When you click the OK button, all the work in progress disappears."
+	"DeleteSure": "Caution! When you click the OK button, all the work in progress disappears.",
+	"RUSure": "Are you really going to end? All work in progress disappears."
 }
