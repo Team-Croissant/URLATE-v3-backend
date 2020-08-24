@@ -588,8 +588,8 @@ const tmlRender = () => {
     tmlCtx.fillStyle = "#F55";
     tmlCtx.textAlign = "right";
     tmlCtx.textBaseline = "top";
-    tmlCtx.fillText(zoomAlert, endX, endY);
-    console.error(zoomAlert);
+    tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY);
+    console.error(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`);
   }
 };
 
