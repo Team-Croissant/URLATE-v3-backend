@@ -506,6 +506,7 @@ const tmlRender = () => {
     tmlCtx.fill();
     tmlCtx.fillStyle = '#111';
     tmlCtx.textAlign = "left";
+    tmlCtx.textBaseline = "middle";
     tmlCtx.font = `${tmlCanvas.height / 14}px Metropolis`;
     tmlCtx.fillText('Note', startX * 1.2 + height / 6, startY + timelineYLoc + height / 1.8);
     let i = 1;
@@ -581,6 +582,14 @@ const tmlRender = () => {
     tmlCtx.textBaseline = "top";
     tmlCtx.fillText(e, tmlStartX, endY);
     console.error(e);
+  }
+  if(pixelRatio != 1) {
+    tmlCtx.font = "18px Metropolis";
+    tmlCtx.fillStyle = "#F55";
+    tmlCtx.textAlign = "right";
+    tmlCtx.textBaseline = "top";
+    tmlCtx.fillText(zoomAlert, endX, endY);
+    console.error(zoomAlert);
   }
 };
 
