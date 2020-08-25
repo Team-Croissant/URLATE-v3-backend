@@ -1373,6 +1373,34 @@ const changeSettingsMode = (v1, v2, i) => {
             properties[j].getElementsByClassName('settingsPropertiesTextbox')[0].value = pattern.triggers[i].ms;
           }
         }
+        let textBox = properties[v2 + start].getElementsByClassName('settingsPropertiesTextbox');
+        switch(v2) {
+          case 0:
+            //Destroy
+            textBox[1].value = pattern.triggers[i].num;
+            break;
+          case 2:
+            //BPM
+            textBox[1].value = pattern.triggers[i].bpm;
+            break;
+          case 3:
+            //Opacity
+            textBox[1].value = pattern.triggers[i].opacity;
+            break;
+          case 4:
+            //Speed
+            textBox[1].value = pattern.triggers[i].speed;
+            break;
+          case 5:
+            //Text
+            textBox[1].value = pattern.triggers[i].align;
+            textBox[2].value = pattern.triggers[i].size;
+            textBox[3].value = pattern.triggers[i].time;
+            textBox[4].value = pattern.triggers[i].x;
+            textBox[5].value = pattern.triggers[i].y;
+            textBox[6].value = pattern.triggers[i].text;
+            break;
+        }
       }
       break;
     default:
@@ -1683,10 +1711,10 @@ document.onkeydown = e => {
   } else if(e.keyCode == 82) { //R
     if(ctrlDown) {
       e.preventDefault();
-      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1});
+      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": Number((60/bpm*1000).toFixed()), "x": 0, "y": 0, "text": ""});
       pattern.triggers.sort(sortAsTiming);
       for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1}`) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${(60/bpm*1000).toFixed()},"x":0,"y":0,"text":""}`) {
           selectedCntElement = {"i": i, "v1": 2, "v2": -1};
           patternChanged();
           changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
