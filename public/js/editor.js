@@ -15,6 +15,8 @@ let patternSeek = -1;
 let lastMovedMs = -1;
 let copiedElement = {"v1": '', "element": {}};
 let pixelRatio = window.devicePixelRatio;
+let bulletsOverlapNum = 1;
+let triggersOverlapNum = 2;
 
 let pattern = {
   "information": {
@@ -433,7 +435,7 @@ const tmlRender = () => {
     start = lowerBound(pattern.bullets, renderStart);
     end = upperBound(pattern.bullets, renderEnd);
     const renderBullets = pattern.bullets.slice(start, end);
-    let bulletsOverlapNum = 1;
+    bulletsOverlapNum = 1;
     let bulletsOverlap = {};
     for(let i = 0; i < renderBullets.length; i++) {
       let count = 0;
@@ -475,7 +477,7 @@ const tmlRender = () => {
     start = lowerBound(pattern.triggers, renderStart);
     end = upperBound(pattern.triggers, renderEnd);
     const renderTriggers = pattern.triggers.slice(start, end);
-    let triggersOverlapNum = 2;
+    triggersOverlapNum = 2;
     let triggersOverlap = {};
     for(let i = 0; i < renderTriggers.length; i++) {
       let count = 0;
@@ -1274,7 +1276,50 @@ const tmlClicked = () => {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
     }
   } else if(mode == 2) {
+    timelineAddElement();
+  }
+}
 
+const timelineAddElement = () => {
+  let startY = tmlCanvas.height / 6;
+  let height = tmlCanvas.height / 9;
+  let msToPx = (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) / ((parseInt((parseInt(song.seek() * 1000) - (60000 / bpm * zoom)) + (5000 * zoom))) - (parseInt(song.seek() * 1000) - (60000 / bpm * zoom)));
+  let calculatedMs = (mouseX - tmlCanvas.width / 10) / msToPx - (60 / bpm * 1000) + song.seek() * 1000;
+  if(mouseX > tmlCanvas.width / 10 && mouseX < tmlCanvas.width / 1.01 && mouseY > startY && mouseY < tmlCanvas.height / 1.1) {
+    if(mouseY >= startY && mouseY <= startY + height) {
+      let newElement = {"ms": parseInt(calculatedMs), "value": 0, "x": 0, "y" : 0};
+      pattern.patterns.push(newElement);
+      pattern.patterns.sort(sortAsTiming);
+      patternChanged();
+      for(let i = 0; i < pattern.patterns.length; i++) {
+        if(JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)) {
+          selectedCntElement = {"v1": 0, "v2": 0, "i": i};
+        }
+      }
+    } else if(mouseY >= startY + height && mouseY <= startY + height * (bulletsOverlapNum + 1)) {
+      let newElement = {"ms": parseInt(calculatedMs), "value": selectedValue, "direction": "L", "location": 0, "angle": 0, "speed": 2};
+      pattern.bullets.push(newElement);
+      pattern.bullets.sort(sortAsTiming);
+      patternChanged();
+      for(let i = 0; i < pattern.bullets.length; i++) {
+        if(JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
+          selectedCntElement = {"v1": 1, "v2": selectedValue, "i": i};
+        }
+      }
+    } else if(mouseY >= startY + height * (bulletsOverlapNum + 1) && mouseY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum + 1)) {
+      pattern.triggers.push({"ms": parseInt(calculatedMs), "value": -1});
+      pattern.triggers.sort(sortAsTiming);
+      patternChanged();
+      for(let i = 0; i < pattern.triggers.length; i++) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${parseInt(calculatedMs)},"value":-1}`) {
+          selectedCntElement = {"i": i, "v1": 2, "v2": -1};
+        }
+      }
+    } else {
+      return;
+    }
+    changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
+    if(!isSettingsOpened) toggleSettings();
   }
 }
 
