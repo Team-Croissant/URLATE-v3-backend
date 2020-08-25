@@ -596,7 +596,7 @@ const tmlRender = () => {
   }
   if(pixelRatio != 1) {
     tmlCtx.font = "18px Metropolis";
-    tmlCtx.fillStyle = "#F55";
+    tmlCtx.fillStyle = "#555";
     tmlCtx.textAlign = "right";
     tmlCtx.textBaseline = "top";
     tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY);
