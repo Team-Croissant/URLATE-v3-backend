@@ -1217,9 +1217,46 @@ const elementFollowMouse = (v1, v2, i) => {
   });
 };
 
+const timelineFollowMouse = (v1, v2, i) => {
+  requestAnimationFrame(() => {
+    if(mouseDown && (pointingCntElement.v1 !== '' || v1 != undefined)) {
+      if(v1 == undefined) {
+        v1 = pointingCntElement.v1;
+        v2 = pointingCntElement.v2;
+        i = pointingCntElement.i;
+      }
+      if(mouseMode == 1 && mouseX > tmlCanvas.width / 10 && mouseX < tmlCanvas.width / 1.01) {
+        let msToPx = (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) / ((parseInt((parseInt(song.seek() * 1000) - (60000 / bpm * zoom)) + (5000 * zoom))) - (parseInt(song.seek() * 1000) - (60000 / bpm * zoom)));
+        let calculatedMs = (mouseX - tmlCanvas.width / 10) / msToPx - (60 / bpm * 1000) + song.seek() * 1000;
+        if(calculatedMs <= 0) calculatedMs = 0;
+        switch(v1) {
+          case 0:
+            pattern.patterns[i].ms = calculatedMs;
+            break;
+          case 1:
+            pattern.bullets[i].ms = calculatedMs;
+            break;
+          case 2:
+            pattern.triggers[i].ms = calculatedMs;
+            break;
+        }
+        lastMovedMs = Date.now();
+        setTimeout(() => {
+          if(Date.now() - lastMovedMs >= 100 && lastMovedMs != -1) {
+            lastMovedMs = -1;
+            patternChanged();
+          }
+        }, 100);
+      }
+      timelineFollowMouse(v1, v2, i);
+      changeSettingsMode(v1, v2, i);
+    }
+  });
+};
+
 const tmlClicked = () => {
   if(mode == 0) {
-    //follow
+    timelineFollowMouse();
   } else if(mode == 1) {
     if(pointingCntElement.v1 !== '') {
       if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
@@ -1711,10 +1748,10 @@ document.onkeydown = e => {
   } else if(e.keyCode == 82) { //R
     if(ctrlDown) {
       e.preventDefault();
-      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": Number((60/bpm*1000).toFixed()), "x": 0, "y": 0, "text": ""});
+      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
       pattern.triggers.sort(sortAsTiming);
       for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${(60/bpm*1000).toFixed()},"x":0,"y":0,"text":""}`) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":""}`) {
           selectedCntElement = {"i": i, "v1": 2, "v2": -1};
           patternChanged();
           changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
