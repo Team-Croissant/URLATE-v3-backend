@@ -359,8 +359,8 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   if(mode != 2 && mouseMode == 0) {
     if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
       const seek = song.seek() - (offset + sync) / 1000;
-      const powX = (mouseX - x) * canvasContainer.offsetWidth / 200;
-      const powY = (mouseY - y) * canvasContainer.offsetHeight / 200;
+      const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
+      const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
       switch(v1) {
         case 0:
           const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
@@ -1175,9 +1175,8 @@ const trackMousePos = () => {
 
 const trackTimelineMousePos = () => {
   mouseMode = 1;
-  mouseX = event.clientX;
-  mouseY = event.clientY - Math.floor(window.innerHeight / 100 * 73);
-  //console.log(mouseX, mouseY);
+  mouseX = event.clientX * pixelRatio;
+  mouseY = (event.clientY - Math.floor(window.innerHeight / 100 * 73)) * pixelRatio;
 }
 
 const elementFollowMouse = (v1, v2, i) => {
