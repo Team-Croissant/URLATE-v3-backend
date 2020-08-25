@@ -1217,6 +1217,30 @@ const elementFollowMouse = (v1, v2, i) => {
   });
 };
 
+const tmlClicked = () => {
+  if(mode == 0) {
+    //follow
+  } else if(mode == 1) {
+    if(pointingCntElement.v1 !== '') {
+      if(JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
+        changeSettingsMode(-1);
+        if(isSettingsOpened) toggleSettings();
+        selectedCntElement = {"v1": '', "v2": '', "i": ''};
+      } else {
+        changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
+        if(!isSettingsOpened) toggleSettings();
+        selectedCntElement = pointingCntElement;
+      }
+    } else {
+      changeSettingsMode(-1);
+      if(isSettingsOpened) toggleSettings();
+      selectedCntElement = {"v1": '', "v2": '', "i": ''};
+    }
+  } else if(mode == 2) {
+
+  }
+}
+
 const compClicked = () => {
   if(mode == 0) {
     elementFollowMouse();
@@ -1335,7 +1359,7 @@ const changeSettingsMode = (v1, v2, i) => {
       document.getElementById("bulletSettingsContainer").style.display = 'none';
       document.getElementById("triggerSettingsContainer").style.display = 'block';
       document.getElementById("triggerInitializeContainer").style.display = 'none';
-      triggerSelectBox.selectedIndex = pattern.triggers[selectedCntElement.i].value;
+      triggerSelectBox.selectedIndex = pattern.triggers[i].value;
       if(v2 == -1) {
         document.getElementById("triggerSettingsContainer").style.display = 'none';
         document.getElementById("triggerInitializeContainer").style.display = 'block';
