@@ -271,11 +271,6 @@ MyRhy의 하드유저를 위한 멤버십으로, 월 5,000-20,000원 또는 년 
       <td>Phantom</td>
     </tr>
     <tr>
-      <td>SUReal</td>
-      <td>The weight of time</td>
-      <td>-</td>
-    </tr>
-    <tr>
       <td>Tido Kang</td>
       <td>필연(<span style="font-family: system-ui;">必然</span>)</td>
       <td>-</td>
@@ -312,11 +307,6 @@ MyRhy의 하드유저를 위한 멤버십으로, 월 5,000-20,000원 또는 년 
     </tr>
     <tr>
       <td>Overcharge</td>
-    </tr>
-    <tr>
-      <td>Sereno</td>
-      <td>심야열차(<span style="font-family: system-ui;">深夜列車</span>)</td>
-      <td>-</td>
     </tr>
     <tr>
       <td rowspan="2">Sterrezo</td>
