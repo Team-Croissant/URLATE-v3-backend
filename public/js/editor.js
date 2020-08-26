@@ -1317,8 +1317,9 @@ const timelineAddElement = () => {
   let height = tmlCanvas.height / 9;
   let msToPx = (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) / ((parseInt((parseInt(song.seek() * 1000) - (60000 / bpm * zoom)) + (5000 * zoom))) - (parseInt(song.seek() * 1000) - (60000 / bpm * zoom)));
   let calculatedMs = (mouseX - tmlCanvas.width / 10) / msToPx - (60 / bpm * 1000) + song.seek() * 1000;
+  let mousePosY = mouseY - timelineYLoc;
   if(mouseX > tmlCanvas.width / 10 && mouseX < tmlCanvas.width / 1.01 && mouseY > startY && mouseY < tmlCanvas.height / 1.1) {
-    if(mouseY >= startY && mouseY <= startY + height) {
+    if(mousePosY >= startY && mousePosY <= startY + height) {
       let newElement = {"ms": parseInt(calculatedMs), "value": 0, "x": 0, "y" : 0};
       pattern.patterns.push(newElement);
       pattern.patterns.sort(sortAsTiming);
@@ -1328,7 +1329,7 @@ const timelineAddElement = () => {
           selectedCntElement = {"v1": 0, "v2": 0, "i": i};
         }
       }
-    } else if(mouseY >= startY + height && mouseY <= startY + height * (bulletsOverlapNum + 1)) {
+    } else if(mousePosY >= startY + height && mousePosY <= startY + height * (bulletsOverlapNum + 1)) {
       let newElement = {"ms": parseInt(calculatedMs), "value": selectedValue, "direction": "L", "location": 0, "angle": 0, "speed": 2};
       pattern.bullets.push(newElement);
       pattern.bullets.sort(sortAsTiming);
@@ -1338,7 +1339,7 @@ const timelineAddElement = () => {
           selectedCntElement = {"v1": 1, "v2": selectedValue, "i": i};
         }
       }
-    } else if(mouseY >= startY + height * (bulletsOverlapNum + 1) && mouseY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum + 1)) {
+    } else if(mousePosY >= startY + height * (bulletsOverlapNum + 1) && mousePosY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum + 1)) {
       pattern.triggers.push({"ms": parseInt(calculatedMs), "value": -1});
       pattern.triggers.sort(sortAsTiming);
       patternChanged();
