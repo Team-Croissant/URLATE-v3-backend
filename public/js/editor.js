@@ -596,6 +596,38 @@ const tmlRender = () => {
     tmlCtx.fillText(e, tmlStartX, endY);
     console.error(e);
   }
+  if(mode == 2 && mouseMode == 1) {
+    if(mouseX > tmlStartX && mouseX < endX && mouseY > startY && mouseY < endY) {
+      let height = tmlCanvas.height / 9;
+      let w = height / 3;
+      let mousePosY = mouseY - timelineYLoc;
+      tmlCtx.beginPath();
+      tmlCtx.fillStyle = "#ebd534";
+      if(mousePosY >= startY && mousePosY <= startY + height) {
+        tmlCtx.arc(mouseX, startY + height / 2, w, 0, 2 * Math.PI);
+      } else if(mousePosY >= startY + height && mousePosY <= startY + height * (bulletsOverlapNum + 1)) {
+        let mouseYLocCount = 1 + bulletsOverlapNum - Math.round((Math.round(2 * startY + height * bulletsOverlapNum - mousePosY) / height));
+        let y = startY + height * mouseYLocCount + height / 2 + timelineYLoc;
+        if(selectedValue == 0) {
+          tmlCtx.moveTo(mouseX - w, y);
+          tmlCtx.lineTo(mouseX, y + w);
+          tmlCtx.lineTo(mouseX + w, y);
+          tmlCtx.lineTo(mouseX, y - w);
+          tmlCtx.lineTo(mouseX - w, y);
+        } else if(selectedValue == 1) {
+          tmlCtx.arc(mouseX, y, w, 0, 2 * Math.PI);
+        }
+      } else if(mousePosY >= startY + height * (bulletsOverlapNum + 1) && mousePosY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum - 1)) {
+        let mouseYLocCount = -(1 - Math.round((mousePosY - height - height * (bulletsOverlapNum + 1)) / height));
+        let y = startY + height * (bulletsOverlapNum + 1) + height * mouseYLocCount + height / 2 + timelineYLoc;
+        tmlCtx.moveTo(mouseX - w / 1.1, y - w);
+        tmlCtx.lineTo(mouseX + w / 1.1, y);
+        tmlCtx.lineTo(mouseX - w / 1.1, y + w);
+        tmlCtx.lineTo(mouseX - w / 1.1, y - w);
+      }
+      tmlCtx.fill();
+    }
+  }
   if(pixelRatio != 1) {
     tmlCtx.font = "18px Metropolis";
     tmlCtx.fillStyle = "#555";
