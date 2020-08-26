@@ -1881,9 +1881,9 @@ document.onkeydown = e => {
         {"ms": 60/bpm*21000, "value": 0, "direction": "R", "location": 0, "angle": 45, "speed": 4},
       ],
       "triggers" : [
-        {"ms": 60/bpm*4000, "value": 2, "bpm": 90},
+        {"ms": 60/bpm*4000, "value": 2, "bpm": bpm/2},
         {"ms": 60/bpm*4000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:90", "time": 60/bpm*4000, "size": "16px"},
-        {"ms": 60/bpm*8000, "value": 2, "bpm": 180},
+        {"ms": 60/bpm*8000, "value": 2, "bpm": bpm},
         {"ms": 60/bpm*8000, "value": 5, x: -90, y: -90, align: "left", "text": "bpm:180", "time": 60/bpm*3000, "size": "16px"},
         {"ms": 60/bpm*11000, "value": 0, "num": 10},
         {"ms": 60/bpm*11000, "value": 5, x: -90, y: -90, align: "left", "text": "destroy:10", "time": 60/bpm*2000, "size": "16px"},
