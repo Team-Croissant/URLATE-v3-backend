@@ -99,7 +99,7 @@ const settingApply = () => {
     if(tracks[i].name == pattern.information.track) {
       fileName = tracks[i].fileName;
       document.getElementById("album").src = `${cdn}/albums/${fileName}.png`;
-      document.getElementById('canvasBackgroundImage').style.backgroundImage = `${cdn}/albums/${fileName}.png`;
+      document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
       break;
     }
   }
