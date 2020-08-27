@@ -2,7 +2,12 @@ const canvas = document.getElementById('componentCanvas');
 const ctx = canvas.getContext("2d");
 let pattern = {};
 let userName = '';
-let settings, sync, song;
+let settings, sync, song, tracks, pixelRatio, offset, bpm, speed;
+let pointingCntElement = {"v1": '', "v2": '', "i": ''};
+let circleBulletAngles = [];
+let destroyedBullets = new Set([]);
+let prevDestroyedBullets = new Set([]);
+let mouseX = 0, mouseY = 0;
 
 function getParam(sname) {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -16,6 +21,22 @@ function getParam(sname) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  fetch(`${api}/getTracks`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == 'success') {
+      tracks = data.tracks;
+    } else {
+      alert('Failed to load song list.');
+      console.error('Failed to load song list.');
+    }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
   fetch(`${api}/getStatus`, {
     method: 'GET',
     credentials: 'include'
@@ -41,14 +62,47 @@ document.addEventListener("DOMContentLoaded", () => {
           settingApply();
         } else {
           alert(`Error occured.\n${data.description}`);
+          console.error(`Error occured.\n${data.description}`);
         }
       }).catch((error) => {
         alert(`Error occured.\n${error}`);
+        console.error(`Error occured.\n${error}`);
       });
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
+  initialize(true);
+});
+
+const initialize = (isFirstCalled) => {
+  if(isFirstCalled) {
+    pattern = JSON.parse(decodeURI(getParam('pattern')));
+    document.getElementById('title').textContent = pattern.information.track;
+    document.getElementById('artist').textContent = pattern.information.producer;
+    document.getElementById('authorNamespace').textContent = pattern.information.author;
+    offset = pattern.information.offset;
+    bpm = pattern.information.bpm;
+    speed = pattern.information.speed;
+  }
+  canvas.width = window.innerWidth * pixelRatio;
+  canvas.height = window.innerHeight * pixelRatio;
+};
+
+const settingApply = () => {
+  Howler.volume(settings.sound.musicVolume / 100);
+  sync = parseInt(settings.sound.offset);
+  document.getElementById('loadingContainer').style.opacity = 1;
+  let fileName = '';
+  for(let i = 0; i < tracks.length; i++) {
+    if(tracks[i].name == pattern.information.track) {
+      fileName = tracks[i].fileName;
+      document.getElementById("album").src = `${cdn}/albums/${fileName}.png`;
+      document.getElementById('canvasBackgroundImage').style.backgroundImage = `${cdn}/albums/${fileName}.png`;
+      break;
+    }
+  }
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -56,8 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
   .then(res => res.json())
   .then((data) => {
     if(data.result == 'success') {
-      /*song = new Howl({
-        src: [`${cdn}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+      song = new Howl({
+        src: [`${cdn}/tracks/${settings.sound.quality}/${fileName}.mp3`],
         autoplay: false,
         loop: false,
         onend: () => {
@@ -65,23 +119,317 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         onload: () => {
         }
-      });*/
+      });
     } else {
       alert('Failed to load song list.');
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
   });
-  initialize();
+};
+
+const eraseCnt = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+const drawParticle = (n, x, y) => {
+  if(n == 0) {
+    x = canvas.width / 200 * (x + 100);
+    y = canvas.height / 200 * (y + 100);
+    let randomDirection = [];
+    for(let i = 0; i < 3; i++) {
+      let x = Math.floor(Math.random() * 4) - 2;
+      let y = Math.floor(Math.random() * 4) - 2;
+      randomDirection[i] = [x, y];
+    }
+    const raf = (n, w) => {
+      w -= 0.1;
+      for(let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.fillStyle = '#222';
+        ctx.arc(x + (n * randomDirection[i][0]), y + (n * randomDirection[i][1]), w, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+      if(w - 0.1 >= 0) {
+        requestAnimationFrame(() => {
+          raf(++n, w);
+        });
+      }
+    };
+    raf(1, 5);
+  }
+};
+
+const drawNote = (p, x, y, s) => {
+  p = Math.max(p, 0);
+  x = canvas.width / 200 * (x + 100);
+  y = canvas.height / 200 * (y + 100);
+  let w = canvas.width / 40;
+  let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+  let opacity = 1;
+  if(p > 100) {
+    opacity = (130 - p) / 130;
+  }
+  if(s == true) {
+    grd.addColorStop(0, `rgba(235, 213, 52, ${opacity})`);
+    grd.addColorStop(1, `rgba(235, 213, 52, ${opacity})`);
+  } else {
+    grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
+    grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
+  }
+  ctx.strokeStyle = grd;
+  ctx.fillStyle = grd;
+  ctx.lineWidth = Math.round(canvas.width / 500);
+  ctx.beginPath();
+  ctx.arc(x, y, w, 0, p / 50 * Math.PI);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(x, y, w / 100 * p, 0, 2 * Math.PI);
+  ctx.fill();
+};
+
+const drawBullet = (n, x, y, a, s) => {
+  x = canvas.width / 200 * (x + 100);
+  y = canvas.height / 200 * (y + 100);
+  let w = canvas.width / 80;
+  if(s == true) {
+    ctx.fillStyle = "#ebd534";
+    ctx.strokeStyle = "#ebd534";
+  } else {
+    ctx.fillStyle = "#555";
+    ctx.strokeStyle = "#555";
+  }
+  ctx.beginPath();
+  switch(n) {
+    case 0:
+      a = Math.PI * (a / 180 + 0.5);
+      ctx.arc(x, y, w, a, a + Math.PI);
+      a = a - (0.5 * Math.PI);
+      ctx.moveTo(x - (w * Math.sin(a)), y + (w * Math.cos(a)));
+      ctx.lineTo(x + (w * 2 * Math.cos(a)), y + (w * 2 * Math.sin(a)));
+      ctx.lineTo(x + (w * Math.sin(a)), y - (w * Math.cos(a)));
+      ctx.fill();
+      break;
+    case 1:
+      ctx.arc(x, y, w, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    default:
+      ctx.font = "18px Metropolis";
+      ctx.fillStyle = "#F55";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText(`drawBullet:bullet number isn't specified.`, canvas.width / 100, canvas.height / 100);
+      console.error(`drawBullet:bullet number isn't specified.`);
+  }
+};
+
+const selectedCheck = (n, i) => {
+  return pointingCntElement.v1 === n && pointingCntElement.i == i;
+};
+
+const cntRender = () => {
+  if(window.devicePixelRatio != pixelRatio) {
+    pixelRatio = window.devicePixelRatio;
+    initialize(false);
+  }
+  try {
+    pointingCntElement = {"v1": '', "v2": '', "i": ''};
+    window.requestAnimationFrame(cntRender);
+    const seek = song.seek() - (offset + sync) / 1000;
+    let start = lowerBound(pattern.triggers, 0);
+    let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
+    const renderTriggers = pattern.triggers.slice(start, end);
+    eraseCnt();
+    destroyedBullets.clear();
+    for(let i = 0; i < renderTriggers.length; i++) {
+      if(renderTriggers[i].value == 0) {
+        if(!destroyedBullets.has(renderTriggers[i].num)) {
+          if(!prevDestroyedBullets.has(renderTriggers[i].num)) {
+            let j = renderTriggers[i].num;
+            const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
+            const left = pattern.bullets[j].direction == 'L';
+            let x = (left ? -1 : 1) * (100 - p);
+            let y = 0;
+            if(pattern.bullets[j].value == 0) {
+              y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
+            } else {
+              if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
+              if(left) {
+                if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+                else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
+              } else {
+                if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+                else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
+              }
+              y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
+            }
+            drawParticle(0, x, y);
+          }
+          destroyedBullets.add(renderTriggers[i].num);
+        }
+      } else if(renderTriggers[i].value == 1) {
+        start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
+        end = upperBound(pattern.bullets, seek * 1000);
+        const renderBullets = pattern.bullets.slice(start, end);
+        for(let j = 0; renderBullets.length > j; j++) {
+          if(!destroyedBullets.has(start + j)) {
+            if(!prevDestroyedBullets.has(start + j)) {
+              const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
+              const left = renderBullets[j].direction == 'L';
+              let x = (left ? -1 : 1) * (100 - p);
+              let y = 0;
+              if(renderBullets[j].value == 0) {
+                y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
+              } else {
+                if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
+                if(left) {
+                  if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
+                  else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
+                } else {
+                  if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
+                  else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
+                }
+                y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
+              }
+              drawParticle(0, x, y);
+            }
+            destroyedBullets.add(start + j);
+          }
+        }
+      } else if(renderTriggers[i].value == 2) {
+        bpm = renderTriggers[i].bpm;
+      } else if(renderTriggers[i].value == 3) {
+        canvas.style.opacity = renderTriggers[i].opacity;
+      } else if(renderTriggers[i].value == 4) {
+        speed = renderTriggers[i].speed;
+      } else if(renderTriggers[i].value == 5) {
+        if(renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time > seek * 1000) {
+          ctx.beginPath();
+          ctx.fillStyle = "#111";
+          ctx.font = `${renderTriggers[i].size} Metropolis`;
+          ctx.textAlign = renderTriggers[i].align;
+          ctx.fillText(renderTriggers[i].text, canvas.width / 200 * (renderTriggers[i].x + 100), canvas.height / 200 * (renderTriggers[i].y + 100));
+        }
+      }
+    }
+    prevDestroyedBullets = new Set(destroyedBullets);
+    start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
+    end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
+    const renderNotes = pattern.patterns.slice(start, end);
+    for(let i = 0; i < renderNotes.length; i++) {
+      const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+      trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
+      drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCheck(0, start + i));
+    }
+    start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
+    end = upperBound(pattern.bullets, seek * 1000);
+    const renderBullets = pattern.bullets.slice(start, end);
+    for(let i = 0; i < renderBullets.length; i++) {
+      if(!destroyedBullets.has(start + i)) {
+        const p = (seek * 1000 - renderBullets[i].ms) / (bpm * 40 / speed / renderBullets[i].speed) * 100;
+        const left = renderBullets[i].direction == 'L';
+        let x = (left ? -1 : 1) * (100 - p);
+        let y = 0;
+        if(renderBullets[i].value == 0) {
+          y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
+          trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+          drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
+        } else {
+          if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
+          if(left) {
+            if(110 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 110;
+            else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] > -110) circleBulletAngles[start+i] = -110;
+          } else {
+            if(70 < circleBulletAngles[start+i] && circleBulletAngles[start+i] > 0) circleBulletAngles[start+i] = 70;
+            else if(0 > circleBulletAngles[start+i] && circleBulletAngles[start+i] < -70) circleBulletAngles[start+i] = -70;
+          }
+          y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
+          trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+          drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
+        }
+      }
+    }
+    if(pointingCntElement.i === '') {
+      canvasContainer.style.cursor = "";
+    } else {
+      canvasContainer.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
+    }
+  } catch (e) {
+    if(e) {
+      ctx.font = "18px Metropolis";
+      ctx.fillStyle = "#F55";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText(e, canvas.width / 100, canvas.height / 100);
+      console.error(e);
+    }
+  }
+};
+
+const trackMousePos = () => {
+  const x = event.clientX / canvasContainer.offsetWidth * 200 - 100;
+  const y = event.clientY / canvasContainer.offsetHeight * 200 - 100;
+  mouseX = x;
+  mouseY = y;
+  console.log(x, y);
+};
+
+const trackMouseSelection = (i, v1, v2, x, y) => {
+  if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
+    const seek = song.seek() - (offset + sync) / 1000;
+    const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
+    const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
+    switch(v1) {
+      case 0:
+        const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+        if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 && p <= 100) {
+          pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+        }
+        break;
+      case 1:
+        if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / (song.playing() ? 80 : 50)) {
+          pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+        }
+        break;
+      default:
+        ctx.font = "18px Metropolis";
+        ctx.fillStyle = "#F55";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+        ctx.fillText(`trackMouseSelection:Undefined element.`, canvas.width / 100, canvas.height / 100);
+        console.error(`trackMouseSelection:Undefined element.`);
+    }
+  }
+};
+
+const compClicked = () => {
+  if(pointingCntElement.v1 !== '') {
+    //clicked
+  }
+};
+
+Pace.on('done', () => {
+  setTimeout(() => {
+    cntRender();
+    document.getElementById('loadingContainer').classList.remove('opacity1');
+    document.getElementById('loadingContainer').classList.add('opacity0');
+    setTimeout(() => {
+      document.getElementById('loadingContainer').style.display = 'none';
+    }, 1000);
+    setTimeout(songPlayPause, 4000);
+  }, 1000);
 });
 
-const initialize = () => {
-  pattern = JSON.parse(decodeURI(getParam('pattern')));
-  canvas.width = window.innerWidth;
-  ctx.height = window.innerHeight;
+const songPlayPause = () => {
+  if(song.playing()) {
+    song.pause();
+  } else {
+    circleBulletAngles = [];
+    song.play();
+  }
 };
 
-const settingApply = () => {
-  Howler.volume(settings.sound.musicVolume / 100);
-  sync = parseInt(settings.sound.offset);
-};
+window.addEventListener("resize", () => {
+  initialize(false);
+});

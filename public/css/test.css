@@ -94,20 +94,61 @@ body {
   height: 100vh;
 }
 
+#canvasBackgroundImage {
+  position: fixed;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: grayscale(30%) opacity(10%);
+}
+
 #loadingContainer {
+  background-color: #eee;
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  opacity: 0;
+  transition-duration: 1s;
 }
 
 #title {
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
   font-size: 2em;
   font-weight: 600;
 }
 
 #artist {
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
   font-size: 1.3em;
+}
+
+#alertMessage {
+  color: #FF5555;
+  filter: drop-shadow(0 0 5px rgba(255,100,100,0.2));
+  font-size: 1.3em;
+}
+
+#album {
+  width: 30vw;
+  margin-bottom: 3vh;
+  border-radius: 5px;
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+}
+
+.opacity0 {
+  opacity: 0 !important;
+}
+
+#author {
+  font-size: 1.2em;
+  text-align: right;
+  position: fixed;
+  bottom: 2vh;
+  right: 2vw;
 }
