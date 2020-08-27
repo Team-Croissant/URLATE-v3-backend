@@ -44,15 +44,6 @@ const sortAsTiming = (a, b) => {
   return a.ms > b.ms ? 1 : -1;
 };
 
-const calcAngleDegrees = (x, y) => {
-  return Math.atan2(y, x) * 180 / Math.PI;
-};
-
-const getTan = deg => {
-  let rad = deg * Math.PI / 180;
-  return Math.tan(rad);
-};
-
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
   sync = parseInt(settings.sound.offset);
@@ -846,35 +837,6 @@ const songPlayPause = () => {
   }
 };
 
-const lowerBound = (array, value) => {
-  if(value < 0) value = 0;
-  let low = 0;
-  let high = array.length;
-  while (low < high) {
-    const mid = Math.floor(low + (high - low) / 2);
-    if (value <= array[mid].ms) {
-      high = mid;
-    } else {
-      low = mid + 1;
-    }
-  }
-  return low;
-};
-
-const upperBound = (array, value) => {
-  let low = 0;
-  let high = array.length;
-  while (low < high) {
-    const mid = Math.floor(low + (high - low) / 2);
-    if (value >= array[mid].ms) {
-      low = mid + 1;
-    } else {
-      high = mid;
-    }
-  }
-  return low;
-}
-
 const save = () => {
   let trackSettingsForm = trackSettings.getElementsByClassName('settingsPropertiesTextbox');
   pattern.information = {
@@ -1205,7 +1167,7 @@ const trackMousePos = () => {
   } else {
     mouseMode = -1;
   }
-}
+};
 
 const trackTimelineMousePos = () => {
   mouseMode = 1;
@@ -1310,7 +1272,7 @@ const tmlClicked = () => {
   } else if(mode == 2) {
     timelineAddElement();
   }
-}
+};
 
 const timelineAddElement = () => {
   let startY = tmlCanvas.height / 6;
@@ -1354,7 +1316,7 @@ const timelineAddElement = () => {
     changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
     if(!isSettingsOpened) toggleSettings();
   }
-}
+};
 
 const compClicked = () => {
   if(mode == 0) {
@@ -1414,7 +1376,7 @@ const compClicked = () => {
       }
     }
   }
-}
+};
 
 const changeSettingsMode = (v1, v2, i) => {
   trackSettings.style.display = 'none';
