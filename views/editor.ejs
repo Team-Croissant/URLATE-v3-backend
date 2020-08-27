@@ -145,8 +145,10 @@
           <img src="https://img.icons8.com/ios-filled/52/000000/resize-four-directions.png" class="menuIcon menuSelected" onclick="changeMode(0)">
           <img src="https://img.icons8.com/ios-glyphs/48/000000/edit.png" class="menuIcon biggerIcon clickable" onclick="changeMode(1)">
           <img src="https://img.icons8.com/ios-glyphs/48/000000/add.png" class="menuIcon biggerIcon clickable" onclick="changeMode(2)">
-          <!-- <div id="horizontalLine" class="menuIcon"></div>
-          <img src="https://img.icons8.com/ios-glyphs/60/000000/search.png" class="menuIcon clickable"> -->
+          <div id="horizontalLine" class="menuIcon"></div>
+          <img src="https://img.icons8.com/ios-glyphs/48/000000/play.png" class="menuIcon clickable" onclick="test()">
+          <img src="https://img.icons8.com/ios-glyphs/48/000000/save.png" class="menuIcon clickable" onclick="save()">
+          <img src="https://img.icons8.com/ios-glyphs/48/000000/delete.png" class="menuIcon clickable" onclick="deleteAll()">
         </div>
         <div id="componentView" onmousemove="trackMousePos(event)" onmousedown="compClicked()">
           <div id="canvasContainer">
@@ -379,21 +381,6 @@
               <div class="settingsPropertiesIndividual">
                 <span class="settingsPropertiesTitle">OFFSET</span>
                 <input type="text" class="settingsPropertiesTextbox metropolis" onkeyup="changeOffset(this)" value="0">
-              </div>
-            </div>
-            <div class="settingsPropertiesContainer">
-              <p class="settingsSemiTitle">ACTION</p>
-              <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">SAVE</span>
-                <input type="button" class="settingsButtons metropolis clickable" onclick="save()" value="▶">
-              </div>
-              <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">TEST</span>
-                <input type="button" class="settingsButtons metropolis clickable" onclick="test()" value="▶">
-              </div>
-              <div class="settingsPropertiesIndividual">
-                <span class="settingsPropertiesTitle">DELETE ALL</span>
-                <input type="button" class="settingsButtons metropolis clickable" onclick="deleteAll()" value="▶">
               </div>
             </div>
           </div>
