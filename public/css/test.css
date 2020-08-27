@@ -92,6 +92,8 @@ body {
 #componentCanvas {
   width: 100vw;
   height: 100vh;
+  opacity: 0;
+  transition-duration: 1s;
 }
 
 .wall {
@@ -156,6 +158,10 @@ body {
   margin-bottom: 3vh;
   border-radius: 5px;
   filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+}
+
+.opacity1 {
+  opacity: 1 !important;
 }
 
 .opacity0 {

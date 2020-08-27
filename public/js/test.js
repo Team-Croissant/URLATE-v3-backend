@@ -160,7 +160,7 @@ const drawParticle = (n, x, y) => {
   }
 };
 
-const drawNote = (p, x, y, s) => {
+const drawNote = (p, x, y) => {
   p = Math.max(p, 0);
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
@@ -170,13 +170,8 @@ const drawNote = (p, x, y, s) => {
   if(p > 100) {
     opacity = (130 - p) / 130;
   }
-  if(s == true) {
-    grd.addColorStop(0, `rgba(235, 213, 52, ${opacity})`);
-    grd.addColorStop(1, `rgba(235, 213, 52, ${opacity})`);
-  } else {
-    grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
-    grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
-  }
+  grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
+  grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
   ctx.strokeStyle = grd;
   ctx.fillStyle = grd;
   ctx.lineWidth = Math.round(canvas.width / 500);
@@ -188,17 +183,12 @@ const drawNote = (p, x, y, s) => {
   ctx.fill();
 };
 
-const drawBullet = (n, x, y, a, s) => {
+const drawBullet = (n, x, y, a) => {
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
   let w = canvas.width / 80;
-  if(s == true) {
-    ctx.fillStyle = "#ebd534";
-    ctx.strokeStyle = "#ebd534";
-  } else {
-    ctx.fillStyle = "#555";
-    ctx.strokeStyle = "#555";
-  }
+  ctx.fillStyle = "#555";
+  ctx.strokeStyle = "#555";
   ctx.beginPath();
   switch(n) {
     case 0:
@@ -222,10 +212,6 @@ const drawBullet = (n, x, y, a, s) => {
       ctx.fillText(`drawBullet:bullet number isn't specified.`, canvas.width / 100, canvas.height / 100);
       console.error(`drawBullet:bullet number isn't specified.`);
   }
-};
-
-const selectedCheck = (n, i) => {
-  return pointingCntElement.v1 === n && pointingCntElement.i == i;
 };
 
 const cntRender = () => {
@@ -320,7 +306,7 @@ const cntRender = () => {
     for(let i = 0; i < renderNotes.length; i++) {
       const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
       trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
-      drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCheck(0, start + i));
+      drawNote(p, renderNotes[i].x, renderNotes[i].y);
     }
     start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
     end = upperBound(pattern.bullets, seek * 1000);
@@ -334,7 +320,7 @@ const cntRender = () => {
         if(renderBullets[i].value == 0) {
           y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
           trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-          drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
+          drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180));
         } else {
           if(!circleBulletAngles[start+i]) circleBulletAngles[start+i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
           if(left) {
@@ -346,14 +332,9 @@ const cntRender = () => {
           }
           y = renderBullets[i].location + p * getTan(circleBulletAngles[start+i]) * (left ? 1 : -1);
           trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-          drawBullet(renderBullets[i].value, x, y, '', selectedCheck(1, start + i));
+          drawBullet(renderBullets[i].value, x, y, '');
         }
       }
-    }
-    if(pointingCntElement.i === '') {
-      canvasContainer.style.cursor = "";
-    } else {
-      canvasContainer.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
     }
   } catch (e) {
     if(e) {
@@ -412,6 +393,7 @@ const compClicked = () => {
 Pace.on('done', () => {
   setTimeout(() => {
     cntRender();
+    document.getElementById('componentCanvas').classList.add('opacity1');
     document.getElementById('loadingContainer').classList.remove('opacity1');
     document.getElementById('loadingContainer').classList.add('opacity0');
     setTimeout(() => {
