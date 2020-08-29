@@ -98,6 +98,11 @@ body {
 
 .wall {
   position: fixed;
+  -webkit-pointer-events: none;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   top: 0;
   height: 100vh;
   width: 10vw;
