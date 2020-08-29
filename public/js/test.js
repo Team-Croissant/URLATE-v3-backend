@@ -360,6 +360,14 @@ const cntRender = () => {
       console.error(e);
     }
   }
+  ctx.font = "4vh Heebo";
+  ctx.fillStyle = "#333";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillText(`${score}`.padStart(8, 0), canvas.width / 2, canvas.height / 80);
+  ctx.font = "2.5vh Heebo";
+  ctx.fillStyle = "#555";
+  ctx.fillText(`${combo}x`, canvas.width / 2, canvas.height / 70 + canvas.height / 25);
   drawCursor();
   window.requestAnimationFrame(cntRender);
 };
