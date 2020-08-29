@@ -1,6 +1,4 @@
-![MyRhyLogo](./public/images/others/bigImage.png)
-
-
+## URLATE
 <table>
   <tr>
     <td>Platform</td>
@@ -28,8 +26,7 @@
   </tr>
 </table>
 
-## URLATE
-Avoid & Get on the tempo, URLATE.
+> Avoid & Get on the tempo, URLATE.
 
 README comming soon!
 
