@@ -8,6 +8,7 @@ let circleBulletAngles = [];
 let destroyedBullets = new Set([]);
 let prevDestroyedBullets = new Set([]);
 let mouseX = 0, mouseY = 0;
+let score = 0, combo = 0;
 
 function getParam(sname) {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -307,6 +308,7 @@ const cntRender = () => {
           ctx.fillStyle = "#111";
           ctx.font = `${renderTriggers[i].size} Metropolis`;
           ctx.textAlign = renderTriggers[i].align;
+          ctx.textBaseline = "middle";
           ctx.fillText(renderTriggers[i].text, canvas.width / 200 * (renderTriggers[i].x + 100), canvas.height / 200 * (renderTriggers[i].y + 100));
         }
       }
@@ -370,29 +372,29 @@ const trackMousePos = () => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-    const seek = song.seek() - (offset + sync) / 1000;
-    const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
-    const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
-    switch(v1) {
-      case 0:
-        const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
-        if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 && p <= 100) {
-          pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-        }
-        break;
-      case 1:
-        if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / (song.playing() ? 80 : 50)) {
-          pointingCntElement = {"v1": v1, "v2": v2, "i": i};
-        }
-        break;
-      default:
-        ctx.font = "18px Metropolis";
-        ctx.fillStyle = "#F55";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "top";
-        ctx.fillText(`trackMouseSelection:Undefined element.`, canvas.width / 100, canvas.height / 100);
-        console.error(`trackMouseSelection:Undefined element.`);
-    }
+  const seek = song.seek() - (offset + sync) / 1000;
+  const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
+  const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
+  switch(v1) {
+    case 0:
+      const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
+      if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 && p <= 100) {
+        pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+      }
+      break;
+    case 1:
+      if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / (song.playing() ? 80 : 50)) {
+        pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+      }
+      break;
+    default:
+      ctx.font = "18px Metropolis";
+      ctx.fillStyle = "#F55";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText(`trackMouseSelection:Undefined element.`, canvas.width / 100, canvas.height / 100);
+      console.error(`trackMouseSelection:Undefined element.`);
+  }
 };
 
 const compClicked = () => {
