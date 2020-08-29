@@ -7,7 +7,7 @@ body {
   background-repeat: repeat;
   width: 100vw;
   height: 100vh;
-  cursor: url('/images/parts/cursor/blueCursor.cur'), default;
+  cursor: none; 
   margin: 0;
   padding: 0;
   text-align: center;

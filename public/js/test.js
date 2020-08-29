@@ -183,6 +183,19 @@ const drawNote = (p, x, y) => {
   ctx.fill();
 };
 
+const drawCursor = () => {
+  ctx.beginPath();
+  let w = canvas.width / 70;
+  x = canvas.width / 200 * (mouseX + 100);
+  y = canvas.height / 200 * (mouseY + 100);
+  let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+  grd.addColorStop(0, `rgb(174, 102, 237)`);
+  grd.addColorStop(1, `rgb(102, 183, 237)`);
+  ctx.fillStyle = grd;
+  ctx.arc(x, y, w, 0, 2 * Math.PI);
+  ctx.fill();
+};
+
 const drawBullet = (n, x, y, a) => {
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
@@ -221,7 +234,6 @@ const cntRender = () => {
   }
   try {
     pointingCntElement = {"v1": '', "v2": '', "i": ''};
-    window.requestAnimationFrame(cntRender);
     const seek = song.seek() - (offset + sync) / 1000;
     let start = lowerBound(pattern.triggers, 0);
     let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
@@ -346,6 +358,8 @@ const cntRender = () => {
       console.error(e);
     }
   }
+  drawCursor();
+  window.requestAnimationFrame(cntRender);
 };
 
 const trackMousePos = () => {
@@ -353,11 +367,9 @@ const trackMousePos = () => {
   const y = event.clientY / canvasContainer.offsetHeight * 200 - 100;
   mouseX = x;
   mouseY = y;
-  console.log(x, y);
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
     const seek = song.seek() - (offset + sync) / 1000;
     const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
     const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
@@ -381,7 +393,6 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
         ctx.fillText(`trackMouseSelection:Undefined element.`, canvas.width / 100, canvas.height / 100);
         console.error(`trackMouseSelection:Undefined element.`);
     }
-  }
 };
 
 const compClicked = () => {
