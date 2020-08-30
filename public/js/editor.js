@@ -719,7 +719,7 @@ const cntRender = () => {
           cntCtx.fillStyle = "#111";
           cntCtx.font = `${renderTriggers[i].size} Metropolis`;
           cntCtx.textAlign = renderTriggers[i].align;
-          ctx.textBaseline = "middle";
+          cntCtx.textBaseline = "middle";
           cntCtx.fillText(renderTriggers[i].text, cntCanvas.width / 200 * (renderTriggers[i].x + 100), cntCanvas.height / 200 * (renderTriggers[i].y + 100));
         }
       }
