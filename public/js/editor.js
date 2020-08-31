@@ -1044,7 +1044,9 @@ const triggersInput = (v, e) => {
         patternChanged();
         return;
       }
-      e.value = pattern.triggers[selectedCntElement.i][v];
+      if(e.value != '-') {
+        e.value = pattern.triggers[selectedCntElement.i][v];
+      }
       break;
     case 'num':
       if(isNaN(Number(e.value))) {
