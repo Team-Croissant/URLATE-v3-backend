@@ -1906,10 +1906,12 @@ document.onkeydown = e => {
     songSelected();
   }
   if(mode == 2) {
-    if(e.keyCode == 49) { //1
-      selectedValue = 0;
-    } else if(e.keyCode == 50) { //2
-      selectedValue = 1;
+    if(e.keyCode == 18) { // Alt
+      if(selectedValue == 0) {
+        selectedValue = 1;
+      } else {
+        selectedValue = 0;
+      }
     }
   }
 };
