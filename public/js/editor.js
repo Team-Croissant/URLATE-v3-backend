@@ -1441,6 +1441,7 @@ const changeSettingsMode = (v1, v2, i) => {
       if(v2 == -1) {
         document.getElementById("triggerSettingsContainer").style.display = 'none';
         document.getElementById("triggerInitializeContainer").style.display = 'block';
+        triggerInitBox.selectedIndex = 0;
       } else {
         let properties = triggerSettingsContainer.getElementsByClassName('settingsPropertiesContainer');
         let start = 1;
