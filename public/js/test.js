@@ -7,8 +7,14 @@ let pointingCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
 let destroyedBullets = new Set([]);
 let prevDestroyedBullets = new Set([]);
+let destroyedNotes = new Set([]);
 let mouseX = 0, mouseY = 0;
-let score = 0, combo = 0;
+let score = 0, combo = 0, displayScore = 0;
+let perfect = 0;
+let great = 0;
+let good = 0;
+let bad = 0;
+let miss = 0;
 
 function getParam(sname) {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -134,9 +140,9 @@ const eraseCnt = () => {
 }
 
 const drawParticle = (n, x, y) => {
+  x = canvas.width / 200 * (x + 100);
+  y = canvas.height / 200 * (y + 100);
   if(n == 0) {
-    x = canvas.width / 200 * (x + 100);
-    y = canvas.height / 200 * (y + 100);
     let randomDirection = [];
     for(let i = 0; i < 3; i++) {
       let x = Math.floor(Math.random() * 4) - 2;
@@ -158,6 +164,38 @@ const drawParticle = (n, x, y) => {
       }
     };
     raf(1, 5);
+  } else if(n == 1) {
+    const raf = (n, w) => {
+      ctx.beginPath();
+      let width = window.innerWidth / 20;
+      let p = (width - w) / width;
+      ctx.strokeStyle = `rgba(${100 - p * 100}, 52, 235, ${p / 3})`;
+      ctx.arc(x, y, w, 0, 2 * Math.PI);
+      ctx.stroke();
+      w += 1.5 - 0.01 * n;
+      if(w <= width) {
+        requestAnimationFrame(() => {
+          raf(++n, w);
+        });
+      }
+    };
+    raf(1, 1);
+  } else if(n == 2) {
+    const raf = (n, w) => {
+      ctx.beginPath();
+      let width = window.innerWidth / 40;
+      let p = (width - w) / width;
+      ctx.strokeStyle = `rgba(0, 0, 0, ${p / 3})`;
+      ctx.arc(x, y, w, 0, 2 * Math.PI);
+      ctx.stroke();
+      w += 1 - 0.01 * n;
+      if(w <= width) {
+        requestAnimationFrame(() => {
+          raf(++n, w);
+        });
+      }
+    };
+    raf(1, 1);
   }
 };
 
@@ -360,11 +398,14 @@ const cntRender = () => {
       console.error(e);
     }
   }
+  if(displayScore < score) {
+    displayScore += score / 60;
+  }
   ctx.font = "4vh Heebo";
   ctx.fillStyle = "#333";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText(`${score}`.padStart(8, 0), canvas.width / 2, canvas.height / 80);
+  ctx.fillText(`${Math.round(displayScore)}`.padStart(8, 0), canvas.width / 2, canvas.height / 80);
   ctx.font = "2.5vh Heebo";
   ctx.fillStyle = "#555";
   ctx.fillText(`${combo}x`, canvas.width / 2, canvas.height / 70 + canvas.height / 25);
@@ -386,7 +427,7 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   switch(v1) {
     case 0:
       const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
-      if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 && p <= 100) {
+      if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 + canvas.width / 70) {
         pointingCntElement = {"v1": v1, "v2": v2, "i": i};
       }
       break;
@@ -406,8 +447,51 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 };
 
 const compClicked = () => {
-  if(pointingCntElement.v1 !== '') {
-    //clicked
+  if(pointingCntElement.v1 === 0 && !destroyedNotes.has(pointingCntElement.i)) {
+    drawParticle(1, mouseX, mouseY);
+    let seek = song.seek() * 1000;
+    let ms = pattern.patterns[pointingCntElement.i].ms;
+    let perfect = 60000 / bpm / 8;
+    let great = 60000 / bpm / 5;
+    let good = 60000 / bpm / 3;
+    let bad = 60000 / bpm / 2;
+    if(seek < ms + perfect && seek > ms - perfect) {
+      calculateScore('perfect', pointingCntElement.i);
+      perfect++;
+    } else if(seek > ms - great && seek < ms) {
+      calculateScore('great', pointingCntElement.i);
+      great++;
+    } else if(seek > ms - good && seek < ms) {
+      calculateScore('good', pointingCntElement.i);
+      good++;
+    } else if(seek > ms - bad && seek < ms) {
+      calculateScore('bad', pointingCntElement.i);
+      bad++;
+    } else {
+      calculateScore('miss', pointingCntElement.i);
+      miss++;
+    }
+  } else {
+    drawParticle(2, mouseX, mouseY);
+  }
+};
+
+const calculateScore = (judge, i) => {
+  destroyedNotes.add(i);
+  pattern.patterns[i].ms = song.seek() * 1000;
+  if(judge == 'miss') {
+    combo = 0;
+    return;
+  }
+  combo++;
+  if(judge == 'perfect') {
+    score += combo * 200;
+  } else if(judge == 'great') {
+    score += combo * 150;
+  } else if(judge == 'good') {
+    score += combo * 100;
+  } else {
+    score += combo / 2 * 50;
   }
 };
 
@@ -431,6 +515,16 @@ const songPlayPause = () => {
     circleBulletAngles = [];
     song.play();
   }
+};
+
+document.onkeydown = e => {
+  e = e || window.event;
+  if(e.keyCode == 27) { // Esc
+    e.preventDefault();
+    //menu
+    return;
+  }
+  compClicked();
 };
 
 window.addEventListener("resize", () => {
