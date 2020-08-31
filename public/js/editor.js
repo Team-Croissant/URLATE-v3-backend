@@ -1303,11 +1303,11 @@ const timelineAddElement = () => {
         }
       }
     } else if(mousePosY >= startY + height * (bulletsOverlapNum + 1) && mousePosY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum + 1)) {
-      pattern.triggers.push({"ms": parseInt(calculatedMs), "value": -1});
+      pattern.triggers.push({"ms": parseInt(calculatedMs), "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
       pattern.triggers.sort(sortAsTiming);
       patternChanged();
       for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${parseInt(calculatedMs)},"value":-1}`) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${parseInt(calculatedMs)},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":""}`) {
           selectedCntElement = {"i": i, "v1": 2, "v2": -1};
         }
       }
@@ -1365,10 +1365,10 @@ const compClicked = () => {
       changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
       if(!isSettingsOpened) toggleSettings();
     } else {
-      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1});
+      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
       pattern.triggers.sort(sortAsTiming);
       for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1}`) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":""}`) {
           selectedCntElement = {"i": i, "v1": 2, "v2": -1};
           patternChanged();
           changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
