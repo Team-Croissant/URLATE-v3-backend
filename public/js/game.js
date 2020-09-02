@@ -134,8 +134,8 @@ Pace.on('done', () => {
   setTimeout(() => {
     document.getElementById("loadingContainer").style.display = "none";
     document.getElementById("menuContainer").classList.toggle("loaded");
-    document.getElementById("myrhyText").style.fontSize = "1em";
-    document.getElementById("myrhyText").style.marginBottom = "0";
+    document.getElementById("urlateText").style.fontSize = "1em";
+    document.getElementById("urlateText").style.marginBottom = "0";
     document.getElementById("songName").style.fontSize = "1.8em";
     document.getElementById("header").classList.toggle("fadeIn");
     setTimeout(() => {
