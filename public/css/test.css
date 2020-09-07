@@ -82,6 +82,7 @@ body {
 }
 
 #canvasContainer {
+  cursor: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -90,6 +91,7 @@ body {
 }
 
 #componentCanvas {
+  cursor: none;
   width: 100vw;
   height: 100vh;
   opacity: 0;
@@ -118,6 +120,7 @@ body {
 }
 
 #canvasBackgroundImage {
+  cursor: none;
   position: fixed;
   z-index: -1;
   width: 100vw;

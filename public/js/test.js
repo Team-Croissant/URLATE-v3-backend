@@ -156,6 +156,7 @@ const drawParticle = (n, x, y) => {
         ctx.fillStyle = '#222';
         ctx.arc(x + (n * randomDirection[i][0]), y + (n * randomDirection[i][1]), w, 0, 2 * Math.PI);
         ctx.fill();
+        drawCursor();
       }
       if(w - 0.1 >= 0) {
         requestAnimationFrame(() => {
@@ -172,8 +173,7 @@ const drawParticle = (n, x, y) => {
       ctx.strokeStyle = `rgba(${100 - p * 100}, 52, 235, ${p / 3})`;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
-      w += 1.5 - 0.01 * n;
-      if(w <= width) {
+      drawCursor();
         requestAnimationFrame(() => {
           raf(++n, w);
         });
@@ -188,8 +188,7 @@ const drawParticle = (n, x, y) => {
       ctx.strokeStyle = `rgba(0, 0, 0, ${p / 3})`;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
-      w += 1 - 0.01 * n;
-      if(w <= width) {
+      drawCursor();
         requestAnimationFrame(() => {
           raf(++n, w);
         });
