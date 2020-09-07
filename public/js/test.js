@@ -166,7 +166,7 @@ const drawParticle = (n, x, y) => {
     };
     raf(1, 5);
   } else if(n == 1) { //Click Note
-    const raf = (n, w, s) => {
+    const raf = (w, s) => {
       ctx.beginPath();
       let width = canvas.width / 50;
       let p = 100 - ((s + 0.5 - song.seek()) * 200);
@@ -181,13 +181,13 @@ const drawParticle = (n, x, y) => {
       console.log(p, w);
       if(p < 100) {
         requestAnimationFrame(() => {
-          raf(++n, w, s);
+          raf(w, s);
         });
       }
     };
     raf(1, canvas.width / 70, song.seek());
   } else if(n == 2) { //Click Default
-    const raf = (n, w, s) => {
+    const raf = (w, s) => {
       ctx.beginPath();
       let width = canvas.width / 60;
       let p = 100 - ((s + 0.3 - song.seek()) * (1000 / 3));
@@ -202,13 +202,13 @@ const drawParticle = (n, x, y) => {
       console.log(p, w);
       if(p < 100) {
         requestAnimationFrame(() => {
-          raf(++n, w, s);
+          raf(w, s);
         });
       }
     };
     raf(1, canvas.width / 70, song.seek());
   } else if(n == 3) { //Judge Miss
-    const raf = (n, w, s) => {
+    const raf = (w, s) => {
 
     };
   }
