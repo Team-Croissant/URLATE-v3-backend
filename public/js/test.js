@@ -168,7 +168,7 @@ const drawParticle = (n, x, y, j) => {
     const raf = (w, s) => {
       ctx.beginPath();
       let width = canvas.width / 50;
-      let p = 100 - ((s + 0.5 - song.seek()) * 200);
+      let p = 100 - ((s + 500 - Date.now()) / 5);
       let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
       grd.addColorStop(0, `rgba(251, 73, 52, ${0.5 - p / 200})`);
       grd.addColorStop(1, `rgba(235, 217, 52, ${0.5 - p / 200})`);
@@ -183,12 +183,13 @@ const drawParticle = (n, x, y, j) => {
         });
       }
     };
-    raf(canvas.width / 70, song.seek());
+    let d = Date.now();
+    raf(canvas.width / 70, Date.now());
   } else if(n == 2) { //Click Default
     const raf = (w, s) => {
       ctx.beginPath();
       let width = canvas.width / 60;
-      let p = 100 - ((s + 0.3 - song.seek()) * (1000 / 3));
+      let p = 100 - ((s + 300 - Date.now()) / 3);
       let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
       grd.addColorStop(0, `rgba(174, 102, 237, ${0.2 - p / 500})`);
       grd.addColorStop(1, `rgba(102, 183, 237, ${0.2 - p / 500})`);
@@ -203,11 +204,11 @@ const drawParticle = (n, x, y, j) => {
         });
       }
     };
-    raf(canvas.width / 70, song.seek());
+    raf(canvas.width / 70, Date.now());
   } else if(n == 3) { //Judge
     const raf = (y, s) => {
       ctx.beginPath();
-      let p = 100 - ((s + 0.3 - song.seek()) * (1000 / 3));
+      let p = 100 - ((s + 300 - Date.now()) * (1000 / 3));
       let newY = y - Math.round(p / 10);
       ctx.fillStyle = `rgba(50, 50, 50, ${1 - p / 100})`;
       ctx.font = "3vh Metropolis";
@@ -220,7 +221,7 @@ const drawParticle = (n, x, y, j) => {
         });
       }
     };
-    raf(y, song.seek());
+    raf(y, Date.now());
   }
 };
 
