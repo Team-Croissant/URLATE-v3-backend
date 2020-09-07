@@ -142,7 +142,7 @@ const eraseCnt = () => {
 const drawParticle = (n, x, y) => {
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
-  if(n == 0) {
+  if(n == 0) { //Destroy
     let randomDirection = [];
     for(let i = 0; i < 3; i++) {
       let x = Math.floor(Math.random() * 4) - 2;
@@ -165,36 +165,52 @@ const drawParticle = (n, x, y) => {
       }
     };
     raf(1, 5);
-  } else if(n == 1) {
-    const raf = (n, w) => {
+  } else if(n == 1) { //Click Note
+    const raf = (n, w, s) => {
       ctx.beginPath();
-      let width = window.innerWidth / 20;
-      let p = (width - w) / width;
-      ctx.strokeStyle = `rgba(${100 - p * 100}, 52, 235, ${p / 3})`;
+      let width = canvas.width / 50;
+      let p = 100 - ((s + 0.5 - song.seek()) * 200);
+      let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+      grd.addColorStop(0, `rgba(251, 73, 52, ${0.5 - p / 200})`);
+      grd.addColorStop(1, `rgba(235, 217, 52, ${0.5 - p / 200})`);
+      ctx.strokeStyle = grd;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
       drawCursor();
+      w = canvas.width / 70 + width * (p / 100);
+      console.log(p, w);
+      if(p < 100) {
         requestAnimationFrame(() => {
-          raf(++n, w);
+          raf(++n, w, s);
         });
       }
     };
-    raf(1, 1);
-  } else if(n == 2) {
-    const raf = (n, w) => {
+    raf(1, canvas.width / 70, song.seek());
+  } else if(n == 2) { //Click Default
+    const raf = (n, w, s) => {
       ctx.beginPath();
-      let width = window.innerWidth / 40;
-      let p = (width - w) / width;
-      ctx.strokeStyle = `rgba(0, 0, 0, ${p / 3})`;
+      let width = canvas.width / 60;
+      let p = 100 - ((s + 0.3 - song.seek()) * (1000 / 3));
+      let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+      grd.addColorStop(0, `rgba(174, 102, 237, ${0.2 - p / 500})`);
+      grd.addColorStop(1, `rgba(102, 183, 237, ${0.2 - p / 500})`);
+      ctx.strokeStyle = grd;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
       drawCursor();
+      w = canvas.width / 70 + width * (p / 100);
+      console.log(p, w);
+      if(p < 100) {
         requestAnimationFrame(() => {
-          raf(++n, w);
+          raf(++n, w, s);
         });
       }
     };
-    raf(1, 1);
+    raf(1, canvas.width / 70, song.seek());
+  } else if(n == 3) { //Judge Miss
+    const raf = (n, w, s) => {
+
+    };
   }
 };
 
