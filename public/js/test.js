@@ -139,7 +139,7 @@ const eraseCnt = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-const drawParticle = (n, x, y) => {
+const drawParticle = (n, x, y, j) => {
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
   if(n == 0) { //Destroy
@@ -185,7 +185,7 @@ const drawParticle = (n, x, y) => {
         });
       }
     };
-    raf(1, canvas.width / 70, song.seek());
+    raf(canvas.width / 70, song.seek());
   } else if(n == 2) { //Click Default
     const raf = (w, s) => {
       ctx.beginPath();
@@ -206,11 +206,24 @@ const drawParticle = (n, x, y) => {
         });
       }
     };
-    raf(1, canvas.width / 70, song.seek());
-  } else if(n == 3) { //Judge Miss
-    const raf = (w, s) => {
-
+    raf(canvas.width / 70, song.seek());
+  } else if(n == 3) { //Judge
+    const raf = (y, s) => {
+      ctx.beginPath();
+      let p = 100 - ((s + 0.3 - song.seek()) * (1000 / 3));
+      let newY = y - Math.round(p / 10);
+      ctx.fillStyle = `rgba(50, 50, 50, ${1 - p / 100})`;
+      ctx.font = "3vh Metropolis";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(j, x, newY);
+      if(p < 100) {
+        requestAnimationFrame(() => {
+          raf(y, s);
+        });
+      }
     };
+    raf(y, song.seek());
   }
 };
 
@@ -470,20 +483,27 @@ const compClicked = () => {
     let great = 60000 / bpm / 5;
     let good = 60000 / bpm / 3;
     let bad = 60000 / bpm / 2;
+    let x = pattern.patterns[pointingCntElement.i].x;
+    let y = pattern.patterns[pointingCntElement.i].y;
     if(seek < ms + perfect && seek > ms - perfect) {
       calculateScore('perfect', pointingCntElement.i);
+      drawParticle(3, x, y, 'Perfect');
       perfect++;
     } else if(seek > ms - great && seek < ms) {
       calculateScore('great', pointingCntElement.i);
+      drawParticle(3, x, y, 'Great');
       great++;
     } else if(seek > ms - good && seek < ms) {
       calculateScore('good', pointingCntElement.i);
+      drawParticle(3, x, y, 'Good');
       good++;
     } else if(seek > ms - bad && seek < ms) {
       calculateScore('bad', pointingCntElement.i);
+      drawParticle(3, x, y, 'Bad');
       bad++;
     } else {
       calculateScore('miss', pointingCntElement.i);
+      drawParticle(3, x, y, 'Miss');
       miss++;
     }
   } else {
