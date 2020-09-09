@@ -15,6 +15,9 @@ let great = 0;
 let good = 0;
 let bad = 0;
 let miss = 0;
+let mouseClicked = false;
+let mouseClickedMs = -1;
+let frameCounterMs = Date.now();
 
 function getParam(sname) {
   let params = location.search.substr(location.search.indexOf("?") + 1);
@@ -175,8 +178,7 @@ const drawParticle = (n, x, y, j) => {
       ctx.strokeStyle = grd;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
-      w = canvas.width / 70 + width * (p / 100);
-      console.log(p, w);
+      w = canvas.width / 70 + canvas.width / 250 + width * (p / 100);
       if(p < 100) {
         requestAnimationFrame(() => {
           raf(w, s);
@@ -184,7 +186,7 @@ const drawParticle = (n, x, y, j) => {
       }
     };
     let d = Date.now();
-    raf(canvas.width / 70, Date.now());
+    raf(canvas.width / 70 + canvas.width / 250, Date.now());
   } else if(n == 2) { //Click Default
     const raf = (w, s) => {
       ctx.beginPath();
@@ -196,15 +198,14 @@ const drawParticle = (n, x, y, j) => {
       ctx.strokeStyle = grd;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
-      w = canvas.width / 70 + width * (p / 100);
-      console.log(p, w);
+      w = canvas.width / 70 + canvas.width / 250 + width * (p / 100);
       if(p < 100) {
         requestAnimationFrame(() => {
           raf(w, s);
         });
       }
     };
-    raf(canvas.width / 70, Date.now());
+    raf(canvas.width / 70 + canvas.width / 250, Date.now());
   } else if(n == 3) { //Judge
     const raf = (y, s) => {
       ctx.beginPath();
@@ -251,6 +252,20 @@ const drawNote = (p, x, y) => {
 const drawCursor = () => {
   ctx.beginPath();
   let w = canvas.width / 70;
+  if(mouseClickedMs == -1) {
+    mouseClickedMs = Date.now() - 100;
+  }
+  if(mouseClicked) {
+    if(mouseClickedMs + 20 > Date.now()) {
+      w = w + (canvas.width / 250 * (1 - ((mouseClickedMs + 20 - Date.now()) / 20)));
+    } else {
+      w = w + (canvas.width / 250 * 1);
+    }
+  } else {
+    if(mouseClickedMs + 50 > Date.now()) {
+      w = w + (canvas.width / 250 * (mouseClickedMs + 50 - Date.now()) / 50);
+    }
+  }
   x = canvas.width / 200 * (mouseX + 100);
   y = canvas.height / 200 * (mouseY + 100);
   let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
@@ -436,6 +451,11 @@ const cntRender = () => {
   ctx.fillStyle = "#555";
   ctx.fillText(`${combo}x`, canvas.width / 2, canvas.height / 70 + canvas.height / 25);
   drawCursor();
+
+  //fps counter
+  let fps = 1000 / (Date.now() - frameCounterMs);
+  frameCounterMs = Date.now();
+  console.log(fps);
   window.requestAnimationFrame(cntRender);
 };
 
@@ -473,6 +493,8 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 };
 
 const compClicked = () => {
+  mouseClicked = true;
+  mouseClickedMs = Date.now();
   if(pointingCntElement.v1 === 0 && !destroyedNotes.has(pointingCntElement.i)) {
     drawParticle(1, mouseX, mouseY);
     let seek = song.seek() * 1000;
@@ -507,6 +529,11 @@ const compClicked = () => {
   } else {
     drawParticle(2, mouseX, mouseY);
   }
+};
+
+const compReleased = () => {
+  mouseClicked = false;
+  mouseClickedMs = Date.now();
 };
 
 const calculateScore = (judge, i) => {
@@ -558,6 +585,15 @@ document.onkeydown = e => {
     return;
   }
   compClicked();
+};
+
+document.onkeyup = e => {
+  e = e || window.event;
+  if(e.keyCode == 27) { // Esc
+    return;
+  }
+  mouseClicked = false;
+  mouseClickedMs = Date.now();
 };
 
 window.addEventListener("resize", () => {
