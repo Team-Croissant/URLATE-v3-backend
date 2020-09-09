@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 let pattern = {};
 let userName = '';
 let settings, sync, song, tracks, pixelRatio, offset, bpm, speed;
-let pointingCntElement = {"v1": '', "v2": '', "i": ''};
+let pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
 let circleBulletAngles = [];
 let destroyedBullets = new Set([]);
 let prevDestroyedBullets = new Set([]);
@@ -328,7 +328,7 @@ const cntRender = () => {
     initialize(false);
   }
   try {
-    pointingCntElement = {"v1": '', "v2": '', "i": ''};
+    pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
     const seek = song.seek() - (offset + sync) / 1000;
     let start = lowerBound(pattern.triggers, 0);
     let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
@@ -488,12 +488,12 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
     case 0:
       const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
       if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 + canvas.width / 70) {
-        pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+        pointingCntElement.push({"v1": v1, "v2": v2, "i": i});
       }
       break;
     case 1:
       if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / (song.playing() ? 80 : 50)) {
-        pointingCntElement = {"v1": v1, "v2": v2, "i": i};
+        pointingCntElement.push({"v1": v1, "v2": v2, "i": i});
       }
       break;
     default:
@@ -509,40 +509,42 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 const compClicked = () => {
   mouseClicked = true;
   mouseClickedMs = Date.now();
-  if(pointingCntElement.v1 === 0 && !destroyedNotes.has(pointingCntElement.i)) {
-    drawParticle(1, mouseX, mouseY);
-    let seek = song.seek() * 1000;
-    let ms = pattern.patterns[pointingCntElement.i].ms;
-    let perfect = 60000 / bpm / 8;
-    let great = 60000 / bpm / 5;
-    let good = 60000 / bpm / 3;
-    let bad = 60000 / bpm / 2;
-    let x = pattern.patterns[pointingCntElement.i].x;
-    let y = pattern.patterns[pointingCntElement.i].y;
-    if(seek < ms + perfect && seek > ms - perfect) {
-      calculateScore('perfect', pointingCntElement.i);
-      drawParticle(3, x, y, 'Perfect');
-      perfect++;
-    } else if(seek > ms - great && seek < ms) {
-      calculateScore('great', pointingCntElement.i);
-      drawParticle(3, x, y, 'Great');
-      great++;
-    } else if(seek > ms - good && seek < ms) {
-      calculateScore('good', pointingCntElement.i);
-      drawParticle(3, x, y, 'Good');
-      good++;
-    } else if(seek > ms - bad && seek < ms) {
-      calculateScore('bad', pointingCntElement.i);
-      drawParticle(3, x, y, 'Bad');
-      bad++;
-    } else {
-      calculateScore('miss', pointingCntElement.i);
-      drawParticle(3, x, y, 'Miss');
-      miss++;
+  for(let i = 0; i < pointingCntElement.length; i++) {
+    if(pointingCntElement[i].v1 === 0 && !destroyedNotes.has(pointingCntElement[i].i)) {
+      drawParticle(1, mouseX, mouseY);
+      let seek = song.seek() * 1000;
+      let ms = pattern.patterns[pointingCntElement[i].i].ms;
+      let perfect = 60000 / bpm / 8;
+      let great = 60000 / bpm / 5;
+      let good = 60000 / bpm / 3;
+      let bad = 60000 / bpm / 2;
+      let x = pattern.patterns[pointingCntElement[i].i].x;
+      let y = pattern.patterns[pointingCntElement[i].i].y;
+      if(seek < ms + perfect && seek > ms - perfect) {
+        calculateScore('perfect', pointingCntElement[i].i);
+        drawParticle(3, x, y, 'Perfect');
+        perfect++;
+      } else if(seek > ms - great && seek < ms) {
+        calculateScore('great', pointingCntElement[i].i);
+        drawParticle(3, x, y, 'Great');
+        great++;
+      } else if(seek > ms - good && seek < ms) {
+        calculateScore('good', pointingCntElement[i].i);
+        drawParticle(3, x, y, 'Good');
+        good++;
+      } else if(seek > ms - bad && seek < ms) {
+        calculateScore('bad', pointingCntElement[i].i);
+        drawParticle(3, x, y, 'Bad');
+        bad++;
+      } else {
+        calculateScore('miss', pointingCntElement[i].i);
+        drawParticle(3, x, y, 'Miss');
+        miss++;
+      }
+      return;
     }
-  } else {
-    drawParticle(2, mouseX, mouseY);
   }
+  drawParticle(2, mouseX, mouseY);
 };
 
 const compReleased = () => {
