@@ -178,7 +178,7 @@ const drawParticle = (n, x, y, j) => {
       ctx.strokeStyle = grd;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
-      w = canvas.width / 70 + canvas.width / 250 + width * (p / 100);
+      w = canvas.width / 70 + canvas.width / 400 + width * (p / 100);
       if(p < 100) {
         requestAnimationFrame(() => {
           raf(w, s);
@@ -186,7 +186,7 @@ const drawParticle = (n, x, y, j) => {
       }
     };
     let d = Date.now();
-    raf(canvas.width / 70 + canvas.width / 250, Date.now());
+    raf(canvas.width / 70 + canvas.width / 400, Date.now());
   } else if(n == 2) { //Click Default
     const raf = (w, s) => {
       ctx.beginPath();
@@ -198,14 +198,14 @@ const drawParticle = (n, x, y, j) => {
       ctx.strokeStyle = grd;
       ctx.arc(x, y, w, 0, 2 * Math.PI);
       ctx.stroke();
-      w = canvas.width / 70 + canvas.width / 250 + width * (p / 100);
+      w = canvas.width / 70 + canvas.width / 400 + width * (p / 100);
       if(p < 100) {
         requestAnimationFrame(() => {
           raf(w, s);
         });
       }
     };
-    raf(canvas.width / 70 + canvas.width / 250, Date.now());
+    raf(canvas.width / 70 + canvas.width / 400, Date.now());
   } else if(n == 3) { //Judge
     const raf = (y, s) => {
       ctx.beginPath();
@@ -257,13 +257,13 @@ const drawCursor = () => {
   }
   if(mouseClicked) {
     if(mouseClickedMs + 20 > Date.now()) {
-      w = w + (canvas.width / 250 * (1 - ((mouseClickedMs + 20 - Date.now()) / 20)));
+      w = w + (canvas.width / 400 * (1 - ((mouseClickedMs + 20 - Date.now()) / 20)));
     } else {
-      w = w + (canvas.width / 250 * 1);
+      w = w + (canvas.width / 400 * 1);
     }
   } else {
-    if(mouseClickedMs + 50 > Date.now()) {
-      w = w + (canvas.width / 250 * (mouseClickedMs + 50 - Date.now()) / 50);
+    if(mouseClickedMs + 100 > Date.now()) {
+      w = w + (canvas.width / 400 * (mouseClickedMs + 100 - Date.now()) / 100);
     }
   }
   x = canvas.width / 200 * (mouseX + 100);
