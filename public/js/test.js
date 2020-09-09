@@ -208,9 +208,8 @@ const drawParticle = (n, x, y, j) => {
     raf(canvas.width / 70 + canvas.width / 400, Date.now());
   } else if(n == 3) { //Judge
     const raf = (y, s) => {
-      console.log(y);
       ctx.beginPath();
-      let p = 100 - ((s + 300 - Date.now()) * (1000 / 3));
+      let p = 100 - ((s + 300 - Date.now()) / 3);
       let newY = y - Math.round(p / 10);
       ctx.fillStyle = `rgba(50, 50, 50, ${1 - p / 100})`;
       ctx.font = "3vh Metropolis";
