@@ -211,7 +211,22 @@ const drawParticle = (n, x, y, j) => {
       ctx.beginPath();
       let p = 100 - ((s + 300 - Date.now()) / 3);
       let newY = y - Math.round(p / 10);
-      ctx.fillStyle = `rgba(50, 50, 50, ${1 - p / 100})`;
+      if(j == 'Miss') {
+        ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
+      } else if(j == 'Perfect') {
+        let grd = ctx.createLinearGradient(x - 50, newY - 20, x + 50, newY + 20);
+        grd.addColorStop(0, `rgba(87, 209, 71, ${1 - p / 100})`);
+        grd.addColorStop(1, `rgba(67, 167, 224, ${1 - p / 100})`);
+        ctx.fillStyle = grd;
+      } else if(j == 'Great') {
+        ctx.fillStyle = `rgba(87, 209, 71, ${1 - p / 100})`;
+      } else if(j == 'Good') {
+        ctx.fillStyle = `rgba(67, 167, 224, ${1 - p / 100})`;
+      } else if(j == 'Bad') {
+        ctx.fillStyle = `rgba(176, 103, 90, ${1 - p / 100})`;
+      } else {
+        ctx.fillStyle = `rgba(50, 50, 50, ${1 - p / 100})`;
+      }
       ctx.font = "3vh Metropolis";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
