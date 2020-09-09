@@ -208,6 +208,7 @@ const drawParticle = (n, x, y, j) => {
     raf(canvas.width / 70 + canvas.width / 400, Date.now());
   } else if(n == 3) { //Judge
     const raf = (y, s) => {
+      console.log(y);
       ctx.beginPath();
       let p = 100 - ((s + 300 - Date.now()) * (1000 / 3));
       let newY = y - Math.round(p / 10);
@@ -455,7 +456,6 @@ const cntRender = () => {
   //fps counter
   let fps = 1000 / (Date.now() - frameCounterMs);
   frameCounterMs = Date.now();
-  console.log(fps);
   window.requestAnimationFrame(cntRender);
 };
 
@@ -563,6 +563,7 @@ Pace.on('done', () => {
     document.getElementById('loadingContainer').classList.add('opacity0');
     setTimeout(() => {
       document.getElementById('loadingContainer').style.display = 'none';
+      document.getElementById('componentCanvas').style.transitionDuration = '0s';
     }, 1000);
     setTimeout(songPlayPause, 4000);
   }, 1000);
