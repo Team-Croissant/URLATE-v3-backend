@@ -397,6 +397,12 @@ const cntRender = () => {
       const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
       trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
       drawNote(p, renderNotes[i].x, renderNotes[i].y);
+      console.log(p, p >= 130, !destroyedNotes.has(start + i));
+      if(p >= 120 && !destroyedNotes.has(start + i)) {
+        calculateScore('miss', start + i);
+        drawParticle(3, renderNotes[i].x, renderNotes[i].y, 'Miss');
+        miss++;
+      }
     }
     start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
     end = upperBound(pattern.bullets, seek * 1000);
