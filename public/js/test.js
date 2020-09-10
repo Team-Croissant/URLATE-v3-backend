@@ -32,6 +32,7 @@ function getParam(sname) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  menuContainer.style.display = 'none';
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -397,7 +398,6 @@ const cntRender = () => {
       const p = ((bpm * 14 / speed) - (renderNotes[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
       trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
       drawNote(p, renderNotes[i].x, renderNotes[i].y);
-      console.log(p, p >= 130, !destroyedNotes.has(start + i));
       if(p >= 120 && !destroyedNotes.has(start + i)) {
         calculateScore('miss', start + i);
         drawParticle(3, renderNotes[i].x, renderNotes[i].y, 'Miss');
@@ -584,16 +584,60 @@ const songPlayPause = () => {
   if(song.playing()) {
     song.pause();
   } else {
-    circleBulletAngles = [];
     song.play();
   }
+};
+
+const resume = () => {
+  menuContainer.style.display = 'none';
+  song.play();
+};
+
+const retry = () => {
+  song.seek(0);
+  pattern = {};
+  pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
+  circleBulletAngles = [];
+  destroyParticles = [];
+  destroyedBullets = new Set([]);
+  destroyedNotes = new Set([]);
+  mouseX = 0, mouseY = 0;
+  bpm = 0, speed = 0;
+  score = 0, combo = 0, displayScore = 0;
+  perfect = 0;
+  great = 0;
+  good = 0;
+  bad = 0;
+  miss = 0;
+  bullet = 0;
+  mouseClicked = false;
+  mouseClickedMs = -1;
+  frameCounterMs = Date.now();
+  menuContainer.style.display = 'none';
+  initialize(true);
+  settingApply();
+  setTimeout(songPlayPause, 4000);
+};
+
+const editor = () => {
+  window.location.href = `${url}/editor`;
+};
+
+const home = () => {
+  window.location.href = url;
 };
 
 document.onkeydown = e => {
   e = e || window.event;
   if(e.keyCode == 27) { // Esc
     e.preventDefault();
-    //menu
+    if(menuContainer.style.display == 'none') {
+      menuContainer.style.display = 'flex';
+      song.pause();
+    } else {
+      menuContainer.style.display = 'none';
+      song.play();
+    }
     return;
   }
   compClicked();
