@@ -443,7 +443,7 @@ const cntRender = () => {
   ctx.fillStyle = "#333";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText(`${Math.round(displayScore)}`.padStart(8, 0), canvas.width / 2, canvas.height / 80);
+  ctx.fillText(`${Math.round(displayScore)}`.padStart(9, 0), canvas.width / 2, canvas.height / 80);
   ctx.font = "2.5vh Heebo";
   ctx.fillStyle = "#555";
   ctx.fillText(`${combo}x`, canvas.width / 2, canvas.height / 70 + canvas.height / 25);
