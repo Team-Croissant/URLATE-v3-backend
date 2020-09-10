@@ -47,6 +47,13 @@ const sortAsTiming = (a, b) => {
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
   sync = parseInt(settings.sound.offset);
+  if(getParam("pattern") != '') {
+    pattern = JSON.parse(decodeURI(getParam('pattern')));
+    for(let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
+      if(document.getElementById("songSelectBox").options[i].value == pattern.information.track) songSelectBox.selectedIndex = i;
+    }
+    songSelected(true);
+  }
 };
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -20,17 +20,6 @@ let mouseClicked = false;
 let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
 
-function getParam(sname) {
-  let params = location.search.substr(location.search.indexOf("?") + 1);
-  let sval = "";
-  params = params.split("&");
-  for (let i = 0; i < params.length; i++) {
-      temp = params[i].split("=");
-      if ([temp[0]] == sname) { sval = temp[1]; }
-  }
-  return sval;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
   fetch(`${api}/getTracks`, {
@@ -620,7 +609,7 @@ const retry = () => {
 };
 
 const editor = () => {
-  window.location.href = `${url}/editor`;
+  window.location.href = `${url}/editor?pattern=${JSON.stringify(pattern)}`;
 };
 
 const home = () => {
