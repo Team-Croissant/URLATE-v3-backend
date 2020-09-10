@@ -513,7 +513,7 @@ const compClicked = () => {
         calculateScore('perfect', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Perfect');
         perfect++;
-      } else if(seek > ms - great && seek < ms) {
+      } else if(seek < ms + great && seek < ms - great) {
         calculateScore('great', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Great');
         great++;
@@ -521,7 +521,7 @@ const compClicked = () => {
         calculateScore('good', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Good');
         good++;
-      } else if(seek > ms - bad && seek < ms) {
+      } else if((seek > ms - bad && seek < ms) || ms < seek) {
         calculateScore('bad', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Bad');
         bad++;
@@ -556,7 +556,7 @@ const calculateScore = (judge, i) => {
   } else if(judge == 'good') {
     score += combo * 100;
   } else {
-    score += combo / 2 * 50;
+    score += combo * 25;
   }
 };
 
