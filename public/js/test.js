@@ -17,6 +17,7 @@ let bad = 0;
 let miss = 0;
 let bullet = 0; //miss와 bullet을 따로 처리
 let mouseClicked = false;
+let menuAllowed = false;
 let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
 
@@ -572,8 +573,10 @@ Pace.on('done', () => {
 const songPlayPause = () => {
   if(song.playing()) {
     song.pause();
+    menuAllowed = false;
   } else {
     song.play();
+    menuAllowed = true;
   }
 };
 
@@ -600,6 +603,7 @@ const retry = () => {
   miss = 0;
   bullet = 0;
   mouseClicked = false;
+  menuAllowed = false;
   mouseClickedMs = -1;
   frameCounterMs = Date.now();
   menuContainer.style.display = 'none';
@@ -620,12 +624,14 @@ document.onkeydown = e => {
   e = e || window.event;
   if(e.keyCode == 27) { // Esc
     e.preventDefault();
-    if(menuContainer.style.display == 'none') {
-      menuContainer.style.display = 'flex';
-      song.pause();
-    } else {
-      menuContainer.style.display = 'none';
-      song.play();
+    if(menuAllowed) {
+      if(menuContainer.style.display == 'none') {
+        menuContainer.style.display = 'flex';
+        song.pause();
+      } else {
+        menuContainer.style.display = 'none';
+        song.play();
+      }
     }
     return;
   }
