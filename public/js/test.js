@@ -5,6 +5,7 @@ let userName = '';
 let settings, sync, song, tracks, pixelRatio, offset, bpm, speed;
 let pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
 let circleBulletAngles = [];
+let destroyParticles = [];
 let destroyedBullets = new Set([]);
 let destroyedNotes = new Set([]);
 let mouseX = 0, mouseY = 0;
@@ -145,29 +146,15 @@ const drawParticle = (n, x, y, j) => {
   let cx = canvas.width / 200 * (x + 100);
   let cy = canvas.height / 200 * (y + 100);
   if(n == 0) { //Destroy
-    console.log('drawParticle, x : ' + x + ', y : ' + y);
-    console.log('0, x : ' + cx + ', y : ' + cy);
-    let randomDirection = [];
-    for(let i = 0; i < 3; i++) {
-      let rx = Math.floor(Math.random() * 4) - 2;
-      let ry = Math.floor(Math.random() * 4) - 2;
-      randomDirection[i] = [rx, ry];
-    }
     const raf = (n, w) => {
-      w -= 0.1;
       for(let i = 0; i < 3; i++) {
         ctx.beginPath();
         ctx.fillStyle = '#222';
-        ctx.arc(cx + (n * randomDirection[i][0]), cy + (n * randomDirection[i][1]), w, 0, 2 * Math.PI);
+        ctx.arc(cx + (n * destroyParticles[j].d[i][0]), cy + (n * destroyParticles[j].d[i][1]), w, 0, 2 * Math.PI);
         ctx.fill();
       }
-      if(w - 0.1 >= 0) {
-        requestAnimationFrame(() => {
-          raf(++n, w);
-        });
-      }
     };
-    raf(1, 5);
+    raf(destroyParticles[j].n, destroyParticles[j].w);
   } else if(n == 1) { //Click Note
     const raf = (w, s) => {
       ctx.beginPath();
@@ -323,6 +310,7 @@ const drawBullet = (n, x, y, a) => {
 };
 
 const cntRender = () => {
+  eraseCnt();
   if(window.devicePixelRatio != pixelRatio) {
     pixelRatio = window.devicePixelRatio;
     initialize(false);
@@ -333,7 +321,6 @@ const cntRender = () => {
     let start = lowerBound(pattern.triggers, seek * 1000 - 2000);
     let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
     const renderTriggers = pattern.triggers.slice(start, end);
-    eraseCnt();
     for(let i = 0; i < renderTriggers.length; i++) {
       if(renderTriggers[i].value == 0) {
         if(!destroyedBullets.has(renderTriggers[i].num)) {
@@ -355,7 +342,13 @@ const cntRender = () => {
             }
             y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
           }
-          drawParticle(0, x, y);
+          let randomDirection = [];
+          for(let i = 0; i < 3; i++) {
+            let rx = Math.floor(Math.random() * 4) - 2;
+            let ry = Math.floor(Math.random() * 4) - 2;
+            randomDirection[i] = [rx, ry];
+          }
+          destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
           destroyedBullets.add(renderTriggers[i].num);
         }
       } else if(renderTriggers[i].value == 1) {
@@ -381,7 +374,13 @@ const cntRender = () => {
               }
               y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
             }
-            drawParticle(0, x, y);
+            let randomDirection = [];
+            for(let i = 0; i < 3; i++) {
+              let rx = Math.floor(Math.random() * 4) - 2;
+              let ry = Math.floor(Math.random() * 4) - 2;
+              randomDirection[i] = [rx, ry];
+            }
+            destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
             destroyedBullets.add(start + j);
           }
         }
@@ -400,6 +399,13 @@ const cntRender = () => {
           ctx.textBaseline = "middle";
           ctx.fillText(renderTriggers[i].text, canvas.width / 200 * (renderTriggers[i].x + 100), canvas.height / 200 * (renderTriggers[i].y + 100));
         }
+      }
+    }
+    for(let i = 0; i < destroyParticles.length; i++) {
+      if(destroyParticles[i].w > 0) {
+        drawParticle(0, destroyParticles[i].x, destroyParticles[i].y, i);
+        destroyParticles[i].w -= 0.1;
+        destroyParticles[i].n++;
       }
     }
     prevDestroyedBullets = new Set(destroyedBullets);
@@ -464,8 +470,13 @@ const cntRender = () => {
 
   //fps counter
   let fps = 1000 / (Date.now() - frameCounterMs);
+  ctx.font = "2.5vh Heebo";
+  ctx.fillStyle = "#555";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(fps.toFixed(), canvas.width / 2, canvas.height - canvas.height / 70);
+  drawCursor();
   frameCounterMs = Date.now();
-  window.requestAnimationFrame(cntRender);
+  requestAnimationFrame(cntRender);
 };
 
 const trackMousePos = () => {
@@ -481,7 +492,6 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
   switch(v1) {
     case 0:
-      const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
       if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 + canvas.width / 70) {
         pointingCntElement.push({"v1": v1, "v2": v2, "i": i});
       }
