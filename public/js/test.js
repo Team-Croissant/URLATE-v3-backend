@@ -15,6 +15,7 @@ let great = 0;
 let good = 0;
 let bad = 0;
 let miss = 0;
+let bullet = 0; //miss와 bullet을 따로 처리
 let mouseClicked = false;
 let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
@@ -309,6 +310,35 @@ const drawBullet = (n, x, y, a) => {
   }
 };
 
+const callBulletDestroy = (j) => {
+  const seek = song.seek() - (offset + sync) / 1000;
+  const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
+  const left = pattern.bullets[j].direction == 'L';
+  let x = (left ? -1 : 1) * (100 - p);
+  let y = 0;
+  if(pattern.bullets[j].value == 0) {
+    y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
+  } else {
+    if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
+    if(left) {
+      if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+      else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
+    } else {
+      if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+      else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
+    }
+    y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
+  }
+  let randomDirection = [];
+  for(let i = 0; i < 3; i++) {
+    let rx = Math.floor(Math.random() * 4) - 2;
+    let ry = Math.floor(Math.random() * 4) - 2;
+    randomDirection[i] = [rx, ry];
+  }
+  destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
+  destroyedBullets.add(j);
+};
+
 const cntRender = () => {
   eraseCnt();
   if(window.devicePixelRatio != pixelRatio) {
@@ -324,32 +354,7 @@ const cntRender = () => {
     for(let i = 0; i < renderTriggers.length; i++) {
       if(renderTriggers[i].value == 0) {
         if(!destroyedBullets.has(renderTriggers[i].num)) {
-          let j = renderTriggers[i].num;
-          const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
-          const left = pattern.bullets[j].direction == 'L';
-          let x = (left ? -1 : 1) * (100 - p);
-          let y = 0;
-          if(pattern.bullets[j].value == 0) {
-            y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
-          } else {
-            if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
-            if(left) {
-              if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
-              else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
-            } else {
-              if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
-              else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
-            }
-            y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
-          }
-          let randomDirection = [];
-          for(let i = 0; i < 3; i++) {
-            let rx = Math.floor(Math.random() * 4) - 2;
-            let ry = Math.floor(Math.random() * 4) - 2;
-            randomDirection[i] = [rx, ry];
-          }
-          destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
-          destroyedBullets.add(renderTriggers[i].num);
+          callBulletDestroy(renderTriggers[i].num);
         }
       } else if(renderTriggers[i].value == 1) {
         start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
@@ -357,31 +362,7 @@ const cntRender = () => {
         const renderBullets = pattern.bullets.slice(start, end);
         for(let j = 0; renderBullets.length > j; j++) {
           if(!destroyedBullets.has(start + j)) {
-            const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
-            const left = renderBullets[j].direction == 'L';
-            let x = (left ? -1 : 1) * (100 - p);
-            let y = 0;
-            if(renderBullets[j].value == 0) {
-              y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
-            } else {
-              if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
-              if(left) {
-                if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
-                else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
-              } else {
-                if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
-                else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
-              }
-              y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
-            }
-            let randomDirection = [];
-            for(let i = 0; i < 3; i++) {
-              let rx = Math.floor(Math.random() * 4) - 2;
-              let ry = Math.floor(Math.random() * 4) - 2;
-              randomDirection[i] = [rx, ry];
-            }
-            destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
-            destroyedBullets.add(start + j);
+            callBulletDestroy(start + j);
           }
         }
       } else if(renderTriggers[i].value == 2) {
@@ -487,7 +468,6 @@ const trackMousePos = () => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  const seek = song.seek() - (offset + sync) / 1000;
   const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
   const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
   switch(v1) {
@@ -499,7 +479,9 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
     case 1:
       if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 80) {
         if(!destroyedBullets.has(i)) {
-          destroyedBullets.add(i);
+          bullet++;
+          combo = 0;
+          callBulletDestroy(i);
         }
       }
       break;
