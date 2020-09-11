@@ -14,6 +14,7 @@ let userName = '';
 let patternSeek = -1;
 let lastMovedMs = -1;
 let copiedElement = {"v1": '', "element": {}};
+let destroyParticles = [];
 let pixelRatio = window.devicePixelRatio;
 let bulletsOverlapNum = 1;
 let triggersOverlapNum = 2;
@@ -279,31 +280,18 @@ const drawBullet = (n, x, y, a, s) => {
   }
 };
 
-const drawParticle = (n, x, y) => {
+const drawParticle = (n, x, y, j) => {
+  let cx = cntCanvas.width / 200 * (x + 100);
+  let cy = cntCanvas.height / 200 * (y + 100);
   if(n == 0) {
-    x = cntCanvas.width / 200 * (x + 100);
-    y = cntCanvas.height / 200 * (y + 100);
-    let randomDirection = [];
+    let n = destroyParticles[j].n;
+    let w = destroyParticles[j].w;
     for(let i = 0; i < 3; i++) {
-      let x = Math.floor(Math.random() * 4) - 2;
-      let y = Math.floor(Math.random() * 4) - 2;
-      randomDirection[i] = [x, y];
+      cntCtx.beginPath();
+      cntCtx.fillStyle = '#222';
+      cntCtx.arc(cx + (n * destroyParticles[j].d[i][0]), cy + (n * destroyParticles[j].d[i][1]), w, 0, 2 * Math.PI);
+      cntCtx.fill();
     }
-    const raf = (n, w) => {
-      w -= 0.1;
-      for(let i = 0; i < 3; i++) {
-        cntCtx.beginPath();
-        cntCtx.fillStyle = '#222';
-        cntCtx.arc(x + (n * randomDirection[i][0]), y + (n * randomDirection[i][1]), w, 0, 2 * Math.PI);
-        cntCtx.fill();
-      }
-      if(w - 0.1 >= 0) {
-        requestAnimationFrame(() => {
-          raf(++n, w);
-        });
-      }
-    };
-    raf(1, 5);
   }
 };
 
@@ -641,6 +629,35 @@ const tmlRender = () => {
   }
 };
 
+const callBulletDestroy = (j) => {
+  const seek = song.seek() - (offset + sync) / 1000;
+  const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
+  const left = pattern.bullets[j].direction == 'L';
+  let x = (left ? -1 : 1) * (100 - p);
+  let y = 0;
+  if(pattern.bullets[j].value == 0) {
+    y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
+  } else {
+    if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
+    if(left) {
+      if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+      else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
+    } else {
+      if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+      else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
+    }
+    y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
+  }
+  let randomDirection = [];
+  for(let i = 0; i < 3; i++) {
+    let rx = Math.floor(Math.random() * 4) - 2;
+    let ry = Math.floor(Math.random() * 4) - 2;
+    randomDirection[i] = [rx, ry];
+  }
+  destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
+  destroyedBullets.add(j);
+};
+
 const cntRender = () => {
   if(window.devicePixelRatio != pixelRatio) {
     pixelRatio = window.devicePixelRatio;
@@ -660,25 +677,7 @@ const cntRender = () => {
       if(renderTriggers[i].value == 0) {
         if(!destroyedBullets.has(renderTriggers[i].num)) {
           if(!prevDestroyedBullets.has(renderTriggers[i].num)) {
-            let j = renderTriggers[i].num;
-            const p = (seek * 1000 - pattern.bullets[j].ms) / (bpm * 40 / speed / pattern.bullets[j].speed) * 100;
-            const left = pattern.bullets[j].direction == 'L';
-            let x = (left ? -1 : 1) * (100 - p);
-            let y = 0;
-            if(pattern.bullets[j].value == 0) {
-              y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
-            } else {
-              if(!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
-              if(left) {
-                if(110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
-                else if(0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
-              } else {
-                if(70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
-                else if(0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
-              }
-              y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
-            }
-            drawParticle(0, x, y);
+            callBulletDestroy(renderTriggers[i].num);
           }
           destroyedBullets.add(renderTriggers[i].num);
         }
@@ -689,24 +688,7 @@ const cntRender = () => {
         for(let j = 0; renderBullets.length > j; j++) {
           if(!destroyedBullets.has(start + j)) {
             if(!prevDestroyedBullets.has(start + j)) {
-              const p = (seek * 1000 - renderBullets[j].ms) / (bpm * 40 / speed / renderBullets[j].speed) * 100;
-              const left = renderBullets[j].direction == 'L';
-              let x = (left ? -1 : 1) * (100 - p);
-              let y = 0;
-              if(renderBullets[j].value == 0) {
-                y = renderBullets[j].location + p * getTan(renderBullets[j].angle) * (left ? 1 : -1);
-              } else {
-                if(!circleBulletAngles[start+j]) circleBulletAngles[start+j] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[j].location - mouseY);
-                if(left) {
-                  if(110 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 110;
-                  else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] > -110) circleBulletAngles[start+j] = -110;
-                } else {
-                  if(70 < circleBulletAngles[start+j] && circleBulletAngles[start+j] > 0) circleBulletAngles[start+j] = 70;
-                  else if(0 > circleBulletAngles[start+j] && circleBulletAngles[start+j] < -70) circleBulletAngles[start+j] = -70;
-                }
-                y = renderBullets[j].location + p * getTan(circleBulletAngles[start+j]) * (left ? 1 : -1);
-              }
-              drawParticle(0, x, y);
+              callBulletDestroy(start + j);
             }
             destroyedBullets.add(start + j);
           }
@@ -729,6 +711,13 @@ const cntRender = () => {
           cntCtx.textBaseline = "middle";
           cntCtx.fillText(renderTriggers[i].text, cntCanvas.width / 200 * (renderTriggers[i].x + 100), cntCanvas.height / 200 * (renderTriggers[i].y + 100));
         }
+      }
+    }
+    for(let i = 0; i < destroyParticles.length; i++) {
+      if(destroyParticles[i].w > 0) {
+        drawParticle(0, destroyParticles[i].x, destroyParticles[i].y, i);
+        destroyParticles[i].w -= 0.1;
+        destroyParticles[i].n++;
       }
     }
     if(!bpmCount) {
