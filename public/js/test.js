@@ -6,6 +6,7 @@ let settings, sync, song, tracks, pixelRatio, offset, bpm, speed;
 let pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
 let circleBulletAngles = [];
 let destroyParticles = [];
+let missParticles = [];
 let destroyedBullets = new Set([]);
 let destroyedNotes = new Set([]);
 let mouseX = 0, mouseY = 0;
@@ -217,6 +218,15 @@ const drawParticle = (n, x, y, j) => {
       }
     };
     raf(cy, Date.now());
+  } else if(n == 4) { //judge:miss
+    ctx.beginPath();
+    let p = 100 - ((missParticles[j].s + 300 - Date.now()) / 3);
+    let newY = cy - Math.round(p / 10);
+    ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
+    ctx.font = "3vh Metropolis";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText('Miss', cx, newY);
   }
 };
 
@@ -380,6 +390,11 @@ const cntRender = () => {
         destroyParticles[i].n++;
       }
     }
+    for(let i = 0; i < missParticles.length; i++) {
+      if(missParticles[i].s + 300 > Date.now()) {
+        drawParticle(4, missParticles[i].x, missParticles[i].y, i);
+      }
+    }
     prevDestroyedBullets = new Set(destroyedBullets);
     start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
     end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
@@ -390,7 +405,7 @@ const cntRender = () => {
       drawNote(p, renderNotes[i].x, renderNotes[i].y);
       if(p >= 120 && !destroyedNotes.has(start + i)) {
         calculateScore('miss', start + i);
-        drawParticle(3, renderNotes[i].x, renderNotes[i].y, 'Miss');
+        missParticles.push({'x': renderNotes[i].x, 'y': renderNotes[i].y, 's': Date.now()});
         miss++;
       }
     }
