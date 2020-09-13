@@ -873,6 +873,8 @@ const deleteAll = () => {
     songSelected();
     patternHistory = [];
   }
+  ctrlDown = false;
+  shiftDown = false;
 };
 
 const settingsInput = (v, e) => {
@@ -1533,6 +1535,7 @@ const test = () => {
     "offset": offset
   };
   window.location.href = `${url}/test?pattern=${JSON.stringify(pattern)}`;
+  ctrlDown = false;
 };
 
 const changeSplit = () => {
