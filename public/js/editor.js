@@ -18,6 +18,7 @@ let destroyParticles = [];
 let pixelRatio = window.devicePixelRatio;
 let bulletsOverlapNum = 1;
 let triggersOverlapNum = 2;
+let isTextboxFocused = false;
 
 let pattern = {
   "information": {
@@ -1058,6 +1059,7 @@ const triggersInput = (v, e) => {
       break;
     case 'bpm':
     case 'time':
+      textBlurred();
       if(isNaN(Number(e.value))) {
         alert("Input value is not number.");
       } else if(Number(e.value) < 0) {
@@ -1086,6 +1088,7 @@ const triggersInput = (v, e) => {
       }
       break;
     case 'speed':
+      textBlurred();
       if(isNaN(Number(e.value))) {
         alert("Input value is not number.");
       } else if(Number(e.value) < 0) {
@@ -1100,6 +1103,7 @@ const triggersInput = (v, e) => {
       e.value = pattern.triggers[selectedCntElement.i][v];
       break;
     case 'align':
+      textBlurred();
       if(e.value == 'left' || e.value == 'center' || e.value == 'right') {
         pattern.triggers[selectedCntElement.i][v] = e.value;
         patternChanged();
@@ -1682,6 +1686,14 @@ const scrollEvent = e => {
   e.preventDefault();
 };
 
+const textFocused = () => {
+  isTextboxFocused = true;
+};
+
+const textBlurred = () => {
+  isTextboxFocused = false;
+};
+
 document.getElementById('timelineContainer').addEventListener("mousewheel", scrollEvent);
 document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollEvent);
 window.addEventListener("resize", initialize);
@@ -1704,9 +1716,7 @@ document.onkeyup = e => {
 
 document.onkeydown = e => {
   e = e || window.event;
-  if(e.code == 'Space') {
-    songPlayPause();
-  } else if(e.key == 'Escape') {
+  if(e.key == 'Escape') {
     if(isSettingsOpened) {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
       changeSettingsMode(-1);
@@ -1720,41 +1730,6 @@ document.onkeydown = e => {
         song.stop();
       }
     }
-  } else if(e.key == '1') {
-    if(ctrlDown) {
-      e.preventDefault();
-      changeMode(0);
-      return;
-    }
-  } else if(e.key == '2') {
-    if(ctrlDown) {
-      e.preventDefault();
-      changeMode(1);
-      return;
-    }
-  } else if(e.key == '3') {
-    if(ctrlDown) {
-      e.preventDefault();
-      changeMode(2);
-      return;
-    }
-  } else if(e.key == 'ArrowLeft') {
-    tmlScrollLeft();
-  } else if(e.key == 'ArrowRight') {
-    tmlScrollRight();
-  } else if(e.key == 'ArrowUp') {
-    tmlScrollUp();
-  } else if(e.key == 'ArrowDown') {
-    tmlScrollDown();
-  } else if(e.key == 'Delete') {
-    if(ctrlDown) {
-      if(shiftDown) {
-        e.preventDefault();
-        deleteAll();
-        return;
-      }
-    }
-    deleteElement();
   } else if(e.key == 'Control') {
     ctrlDown = true;
   } else if(e.key == 'Shift') {
@@ -1772,18 +1747,10 @@ document.onkeydown = e => {
         patternUndo();
       }
     }
-  } else if(e.key.toLowerCase() == 'c') {
-    if(ctrlDown) {
-      elementCopy();
-    }
   } else if(e.key.toLowerCase() == 'p') {
     if(ctrlDown) {
       e.preventDefault();
       test();
-    }
-  } else if(e.key.toLowerCase() == 'v') {
-    if(ctrlDown) {
-      elementPaste();
     }
   } else if(e.key.toLowerCase() == 'r') {
     if(ctrlDown) {
@@ -1902,6 +1869,48 @@ document.onkeydown = e => {
       ]
     };
     songSelected();
+  }
+  if(!isTextboxFocused) {
+    if(e.code == 'Space') {
+      songPlayPause();
+    } else if(e.key == '1') {
+      e.preventDefault();
+      changeMode(0);
+      return;
+    } else if(e.key == '2') {
+      e.preventDefault();
+      changeMode(1);
+      return;
+    } else if(e.key == '3') {
+      e.preventDefault();
+      changeMode(2);
+      return;
+    } else if(e.key == 'ArrowLeft') {
+      tmlScrollLeft();
+    } else if(e.key == 'ArrowRight') {
+      tmlScrollRight();
+    } else if(e.key == 'ArrowUp') {
+      tmlScrollUp();
+    } else if(e.key == 'ArrowDown') {
+      tmlScrollDown();
+    } else if(e.key == 'Delete') {
+      if(ctrlDown) {
+        if(shiftDown) {
+          e.preventDefault();
+          deleteAll();
+          return;
+        }
+      }
+      deleteElement();
+    } else if(e.key.toLowerCase() == 'c') {
+      if(ctrlDown) {
+        elementCopy();
+      }
+    } else if(e.key.toLowerCase() == 'v') {
+      if(ctrlDown) {
+        elementPaste();
+      }
+    }
   }
   if(mode == 2) {
     if(e.key == 'Alt') {
