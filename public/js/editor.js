@@ -1622,7 +1622,7 @@ const elementPaste = () => {
   }
   for(let i = 0; i < searchTarget.length; i++) {
     if(JSON.stringify(searchTarget[i]) == JSON.stringify(copiedElement.element)) {
-      selectedCntElement = {"i": i, "v1": copiedElement.v1, "v2": searchTarget.value};
+      selectedCntElement = {"i": i, "v1": copiedElement.v1, "v2": searchTarget[i].value};
     }
   }
   if(!isSettingsOpened) toggleSettings();
