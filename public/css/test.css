@@ -109,7 +109,7 @@ body {
   top: 0;
   height: 100vh;
   width: 10vw;
-  transition-duration: 2s;
+  transition-duration: 1s;
 }
 
 #wallLeft {
@@ -179,7 +179,7 @@ body {
 }
 
 #author {
-  color: #ddd;
+  color: #222;
   font-size: 1.2em;
   text-align: right;
   position: fixed;
