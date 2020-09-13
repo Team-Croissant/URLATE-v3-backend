@@ -567,6 +567,7 @@ const calculateScore = (judge, i) => {
   } else if(judge == 'good') {
     score += combo * 100;
   } else {
+    combo = 0;
     score += combo * 25;
   }
 };
