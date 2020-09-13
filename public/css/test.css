@@ -99,6 +99,7 @@ body {
 }
 
 .wall {
+  filter: drop-shadow(0 0px 10px rgba(0,0,0,0.5));
   position: fixed;
   -webkit-pointer-events: none;
   pointer-events: none;
