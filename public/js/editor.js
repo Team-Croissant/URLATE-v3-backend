@@ -1914,6 +1914,7 @@ document.onkeydown = e => {
   }
   if(mode == 2) {
     if(e.key == 'Alt') {
+      e.preventDefault();
       if(selectedValue == 0) {
         selectedValue = 1;
       } else {
