@@ -240,3 +240,15 @@ body {
 #backToEditor:hover {
   background-image: url("/images/parts/elements/back_to_editor_button_background.png");
 }
+
+#scoreContainer {
+  align-items: center;
+  justify-content: center;
+  cursor: initial;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}

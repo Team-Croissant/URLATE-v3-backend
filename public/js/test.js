@@ -21,9 +21,11 @@ let mouseClicked = false;
 let menuAllowed = false;
 let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
+let isMenuOpened = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
+  scoreContainer.style.display = 'none';
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -598,6 +600,7 @@ const songPlayPause = () => {
 
 const resume = () => {
   menuContainer.style.display = 'none';
+  isMenuOpened = false;
   song.play();
 };
 
@@ -623,6 +626,7 @@ const retry = () => {
   mouseClickedMs = -1;
   frameCounterMs = Date.now();
   menuContainer.style.display = 'none';
+  isMenuOpened = false;
   initialize(true);
   settingApply();
   setTimeout(songPlayPause, 4000);
@@ -642,16 +646,20 @@ document.onkeydown = e => {
     e.preventDefault();
     if(menuAllowed) {
       if(menuContainer.style.display == 'none') {
+        isMenuOpened = true;
         menuContainer.style.display = 'flex';
         song.pause();
       } else {
+        isMenuOpened = false;
         menuContainer.style.display = 'none';
         song.play();
       }
     }
     return;
   }
-  compClicked();
+  if(!isMenuOpened && menuAllowed) {
+    compClicked();
+  }
 };
 
 document.onkeyup = e => {
