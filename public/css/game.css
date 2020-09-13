@@ -224,7 +224,7 @@ body {
   background-image: url('/images/parts/elements/namespace.png');
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: auto 9vh;
+  background-size: 19vw auto;
 }
 
 #headerRight {
