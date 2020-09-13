@@ -22,15 +22,10 @@ const passReg = /^[0-9]{4,6}$/;
 
 document.getElementById('nickname').addEventListener("blur", () => {
     requestAnimationFrame(() => {
-        console.log(!nameReg.test(document.getElementById('nickname').value));
         if(!nameReg.test(document.getElementById('nickname').value)) {
-            if(!document.getElementById('name').classList[0]) {
-                document.getElementById('name').classList.toggle("show");
-            }
+            document.getElementById('name').classList.add("show");
         } else {
-            if(document.getElementById('name').classList[0]) {
-                document.getElementById('name').classList.toggle("show");
-            }
+            document.getElementById('name').classList.remove("show");
         } 
     });  
 }, true);
@@ -38,34 +33,22 @@ document.getElementById('nickname').addEventListener("blur", () => {
 document.getElementById('password').addEventListener("blur", () => {
     requestAnimationFrame(() => {
         if(!passReg.test(document.getElementById('password').value)) {
-            if(!document.getElementById('pw').classList[0]) {
-                document.getElementById('pw').classList.toggle("show");
-            }
+            document.getElementById('pw').classList.add("show");
         } else {
-            if(document.getElementById('pw').classList[0]) {
-                document.getElementById('pw').classList.toggle("show");
-            }
+            document.getElementById('pw').classList.remove("show");
         }
     });
 }, true);
 
 const check = () => {
     if(!nameReg.test(document.getElementById('nickname').value)) {
-        if(!document.getElementById('name').classList[0]) {
-            document.getElementById('name').classList.toggle("show");
-        }
+        document.getElementById('name').classList.add("show");
     } else {
-        if(document.getElementById('name').classList[0]) {
-            document.getElementById('name').classList.toggle("show");
-        }
+        document.getElementById('name').classList.remove("show");
         if(!passReg.test(document.getElementById('password').value)) {
-            if(!document.getElementById('pw').classList[0]) {
-                document.getElementById('pw').classList.toggle("show");
-            }
+            document.getElementById('pw').classList.add("show");
         } else {
-            if(document.getElementById('pw').classList[0]) {
-                document.getElementById('pw').classList.toggle("show");
-            }
+            document.getElementById('pw').classList.remove("show");
             fetch(`${api}/join`, {
               method: 'POST',
               credentials: 'include',
@@ -82,8 +65,13 @@ const check = () => {
                 if(data.result == "success") {
                     window.location.href = `${projectUrl}/authorize`;
                 } else if(data.result == "failed") {
-                    alert("join failed.");
-                    console.log(data);
+                    if(data.error == "Exist Name") {
+                        document.getElementById('nameExist').style.display = "initial";
+                        document.getElementById('nameExist').classList.add("show");
+                    } else {
+                        alert("join failed.");
+                        console.log(data);
+                    }
                 }
             }).catch((error) => {
                 alert(`Error occured.\n${error}`);

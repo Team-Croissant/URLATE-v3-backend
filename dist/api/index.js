@@ -132,45 +132,60 @@ app.post('/login', function (req, res) {
         });
     });
 });
-app.post("/join", function (req, res) {
-    var hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken;
-    if (!hasToken) {
-        res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Request', 'You need to login first.'));
-        return;
-    }
-    var namePattern = /^[a-zA-Z0-9_-]{5,12}$/;
-    var passPattern = /^[0-9]{4,6}$/;
-    var isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword);
-    if (!isValidated) {
-        res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Format', 'Wrong name OR password format.'));
-        return;
-    }
-    hasher({
-        password: req.body.secondaryPassword
-    }, function (err, pass, salt, hash) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, knex('users').insert({
-                        nickname: req.body.displayName,
-                        userid: req.session.userid,
-                        salt: salt,
-                        secondary: hash,
-                        date: new Date(),
-                        email: req.session.tempEmail,
-                        settings: JSON.stringify(settingsConfig)
-                    })];
-                case 1:
-                    _a.sent();
-                    delete req.session.tempName;
-                    delete req.session.tempEmail;
-                    req.session.save(function () {
-                        res.status(200).json(api_response_1.createSuccessResponse('success'));
-                    });
+app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var hasToken, namePattern, passPattern, isValidated, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken;
+                if (!hasToken) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Request', 'You need to login first.'));
                     return [2 /*return*/];
-            }
-        });
-    }); });
-});
+                }
+                namePattern = /^[a-zA-Z0-9_-]{5,12}$/;
+                passPattern = /^[0-9]{4,6}$/;
+                isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword);
+                if (!isValidated) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong Format', 'Wrong name OR password format.'));
+                    return [2 /*return*/];
+                }
+                return [4 /*yield*/, knex('users').select('nickname').where('nickname', req.body.displayName)];
+            case 1:
+                results = _a.sent();
+                if (!results[0]) {
+                    hasher({
+                        password: req.body.secondaryPassword
+                    }, function (err, pass, salt, hash) { return __awaiter(void 0, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, knex('users').insert({
+                                        nickname: req.body.displayName,
+                                        userid: req.session.userid,
+                                        salt: salt,
+                                        secondary: hash,
+                                        date: new Date(),
+                                        email: req.session.tempEmail,
+                                        settings: JSON.stringify(settingsConfig)
+                                    })];
+                                case 1:
+                                    _a.sent();
+                                    delete req.session.tempName;
+                                    delete req.session.tempEmail;
+                                    req.session.save(function () {
+                                        res.status(200).json(api_response_1.createSuccessResponse('success'));
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
+                }
+                else {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Exist Name', 'The name sent already exists.'));
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
 var passwordPattern = /^[0-9]{4,6}$/;
 app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;

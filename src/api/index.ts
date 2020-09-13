@@ -103,7 +103,7 @@ app.post('/login', (req, res) => {
   });
 });
 
-app.post("/join", (req, res) => {
+app.post("/join", async (req, res) => {
   const hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken
   if (!hasToken) {
     res.status(400).json(createErrorResponse('failed', 'Wrong Request', 'You need to login first.'));
@@ -112,31 +112,36 @@ app.post("/join", (req, res) => {
 
   const namePattern = /^[a-zA-Z0-9_-]{5,12}$/;
   const passPattern = /^[0-9]{4,6}$/;
-  const isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword)
+  const isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword);
   if (!isValidated) {
     res.status(400).json(createErrorResponse('failed', 'Wrong Format', 'Wrong name OR password format.'));
     return;
   }
 
-  hasher({
-    password: req.body.secondaryPassword
-  }, async (err, pass, salt, hash) => {
-    await knex('users').insert({
-      nickname: req.body.displayName,
-      userid: req.session.userid,
-      salt: salt,
-      secondary: hash,
-      date: new Date(),
-      email: req.session.tempEmail,
-      settings: JSON.stringify(settingsConfig)
+  const results = await knex('users').select('nickname').where('nickname', req.body.displayName);
+  if (!results[0]) {
+    hasher({
+      password: req.body.secondaryPassword
+    }, async (err, pass, salt, hash) => {
+      await knex('users').insert({
+        nickname: req.body.displayName,
+        userid: req.session.userid,
+        salt: salt,
+        secondary: hash,
+        date: new Date(),
+        email: req.session.tempEmail,
+        settings: JSON.stringify(settingsConfig)
+      });
+  
+      delete req.session.tempName;
+      delete req.session.tempEmail;
+      req.session.save(() => {
+        res.status(200).json(createSuccessResponse('success'));
+      });
     });
-
-    delete req.session.tempName;
-    delete req.session.tempEmail;
-    req.session.save(() => {
-      res.status(200).json(createSuccessResponse('success'));
-    });
-  });
+  } else {
+    res.status(400).json(createErrorResponse('failed', 'Exist Name', 'The name sent already exists.'));
+  }
 });
 
 const passwordPattern = /^[0-9]{4,6}$/;

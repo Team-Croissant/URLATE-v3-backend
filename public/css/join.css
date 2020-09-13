@@ -72,6 +72,16 @@ form {
     opacity: 1;
 }
 
+#nameExist {
+    display: none;
+    opacity: 0;
+    transition-duration: .5s;
+}
+
+#nameExist.show {
+    opacity: 1;
+}
+
 #pw {
     opacity: 0;
     transition-duration: .5s;
