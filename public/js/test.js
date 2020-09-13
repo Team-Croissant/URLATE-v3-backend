@@ -406,7 +406,7 @@ const cntRender = () => {
       trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
       drawNote(p, renderNotes[i].x, renderNotes[i].y);
       if(p >= 120 && !destroyedNotes.has(start + i)) {
-        calculateScore('miss', start + i);
+        calculateScore('miss', start + i, true);
         missParticles.push({'x': renderNotes[i].x, 'y': renderNotes[i].y, 's': Date.now()});
         miss++;
       }
@@ -554,9 +554,11 @@ const compReleased = () => {
   mouseClickedMs = Date.now();
 };
 
-const calculateScore = (judge, i) => {
+const calculateScore = (judge, i, isMissed) => {
   destroyedNotes.add(i);
-  pattern.patterns[i].ms = song.seek() * 1000;
+  if(!isMissed) {
+    pattern.patterns[i].ms = song.seek() * 1000;
+  }
   if(judge == 'miss') {
     combo = 0;
     return;
