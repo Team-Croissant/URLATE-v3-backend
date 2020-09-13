@@ -1693,20 +1693,20 @@ window.addEventListener("beforeunload", e => {
 
 document.onkeyup = e => {
   e = e || window.event;
-  if(e.keyCode == 17) { //CTRL
+  if(e.key == 'Control') {
     ctrlDown = false;
-  } else if(e.keyCode == 16) { //SHIFT
+  } else if(e.key == 'Shift') {
     shiftDown = false;
-  } else if(e.keyCode == 112) { //F1
+  } else if(e.key == 'F1') {
     hideHelp();
   }
 };
 
 document.onkeydown = e => {
   e = e || window.event;
-  if(e.keyCode == 32) { //Space
+  if(e.code == 'Space') {
     songPlayPause();
-  } else if(e.keyCode == 27) { //Esc
+  } else if(e.key == 'Escape') {
     if(isSettingsOpened) {
       selectedCntElement = {"v1": '', "v2": '', "i": ''};
       changeSettingsMode(-1);
@@ -1720,33 +1720,33 @@ document.onkeydown = e => {
         song.stop();
       }
     }
-  } else if(e.keyCode == 49) { //1
+  } else if(e.key == '1') {
     if(ctrlDown) {
       e.preventDefault();
       changeMode(0);
       return;
     }
-  } else if(e.keyCode == 50) { //2
+  } else if(e.key == '2') {
     if(ctrlDown) {
       e.preventDefault();
       changeMode(1);
       return;
     }
-  } else if(e.keyCode == 51) { //3
+  } else if(e.key == '3') {
     if(ctrlDown) {
       e.preventDefault();
       changeMode(2);
       return;
     }
-  } else if(e.keyCode == 37) { //LEFT
+  } else if(e.key == 'ArrowLeft') {
     tmlScrollLeft();
-  } else if(e.keyCode == 39) { //RIGHT
+  } else if(e.key == 'ArrowRight') {
     tmlScrollRight();
-  } else if(e.keyCode == 38) { //UP
+  } else if(e.key == 'ArrowUp') {
     tmlScrollUp();
-  } else if(e.keyCode == 40) { //DOWN
+  } else if(e.key == 'ArrowDown') {
     tmlScrollDown();
-  } else if(e.keyCode == 46) { //DELETE
+  } else if(e.key == 'Delete') {
     if(ctrlDown) {
       if(shiftDown) {
         e.preventDefault();
@@ -1755,16 +1755,16 @@ document.onkeydown = e => {
       }
     }
     deleteElement();
-  } else if(e.keyCode == 17) { //CTRL
+  } else if(e.key == 'Control') {
     ctrlDown = true;
-  } else if(e.keyCode == 16) { //SHIFT
+  } else if(e.key == 'Shift') {
     shiftDown = true;
-  } else if(e.keyCode == 83) { //S
+  } else if(e.key.toLowerCase() == 's') {
     if(ctrlDown) {
       e.preventDefault();
       save();
     }
-  } else if(e.keyCode == 90) { //Z
+  } else if(e.key.toLowerCase() == 'z') {
     if(ctrlDown) {
       if(shiftDown) {
         patternRedo();
@@ -1772,20 +1772,20 @@ document.onkeydown = e => {
         patternUndo();
       }
     }
-  } else if(e.keyCode == 67) { //C
+  } else if(e.key.toLowerCase() == 'c') {
     if(ctrlDown) {
       elementCopy();
     }
-  } else if(e.keyCode == 80) { //P
+  } else if(e.key.toLowerCase() == 'p') {
     if(ctrlDown) {
       e.preventDefault();
       test();
     }
-  } else if(e.keyCode == 86) { //V
+  } else if(e.key.toLowerCase() == 'v') {
     if(ctrlDown) {
       elementPaste();
     }
-  } else if(e.keyCode == 82) { //R
+  } else if(e.key.toLowerCase() == 'r') {
     if(ctrlDown) {
       e.preventDefault();
       pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
@@ -1800,10 +1800,10 @@ document.onkeydown = e => {
         }
       }
     }
-  } else if(e.keyCode == 112) { //F1
+  } else if(e.key == 'F1') {
     e.preventDefault();
     showHelp();
-  } else if(e.keyCode == 113) { //F2, for test
+  } else if(e.key == 'F2') { //for test
     song.stop();
     pattern = {
       "information": {
@@ -1904,7 +1904,7 @@ document.onkeydown = e => {
     songSelected();
   }
   if(mode == 2) {
-    if(e.keyCode == 18) { // Alt
+    if(e.key == 'Alt') {
       if(selectedValue == 0) {
         selectedValue = 1;
       } else {

@@ -565,14 +565,14 @@ const calculateScore = (judge, i, isMissed) => {
   }
   combo++;
   if(judge == 'perfect') {
-    score += combo * 200;
+    score += 200 + combo * 2;
   } else if(judge == 'great') {
-    score += combo * 150;
+    score += 150 + combo * 1.5;
   } else if(judge == 'good') {
-    score += combo * 100;
+    score += 100 + combo * 1;
   } else {
     combo = 0;
-    score += combo * 25;
+    score += 50;
   }
 };
 
@@ -644,7 +644,7 @@ const home = () => {
 
 document.onkeydown = e => {
   e = e || window.event;
-  if(e.keyCode == 27) { // Esc
+  if(e.key == 'Escape') {
     e.preventDefault();
     if(menuAllowed) {
       if(menuContainer.style.display == 'none') {
@@ -666,7 +666,7 @@ document.onkeydown = e => {
 
 document.onkeyup = e => {
   e = e || window.event;
-  if(e.keyCode == 27) { // Esc
+  if(e.key == 'Escape') {
     return;
   }
   mouseClicked = false;
