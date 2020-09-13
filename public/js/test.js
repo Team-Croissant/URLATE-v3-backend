@@ -391,11 +391,6 @@ const cntRender = () => {
         destroyParticles[i].n++;
       }
     }
-    for(let i = 0; i < missParticles.length; i++) {
-      if(missParticles[i].s + 300 > Date.now()) {
-        drawParticle(4, missParticles[i].x, missParticles[i].y, i);
-      }
-    }
     prevDestroyedBullets = new Set(destroyedBullets);
     start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
     end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
@@ -408,6 +403,11 @@ const cntRender = () => {
         calculateScore('miss', start + i, true);
         missParticles.push({'x': renderNotes[i].x, 'y': renderNotes[i].y, 's': Date.now()});
         miss++;
+      }
+    }
+    for(let i = 0; i < missParticles.length; i++) {
+      if(missParticles[i].s + 300 > Date.now()) {
+        drawParticle(4, missParticles[i].x, missParticles[i].y, i);
       }
     }
     start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
