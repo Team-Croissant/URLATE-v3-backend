@@ -25,7 +25,7 @@ let isMenuOpened = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
-  scoreContainer.style.display = 'initial';
+  scoreContainer.style.display = 'none';
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -360,12 +360,11 @@ const cntRender = () => {
           callBulletDestroy(renderTriggers[i].num);
         }
       } else if(renderTriggers[i].value == 1) {
-        start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
-        end = upperBound(pattern.bullets, seek * 1000);
-        const renderBullets = pattern.bullets.slice(start, end);
+        end = upperBound(pattern.bullets, renderTriggers[i].ms);
+        const renderBullets = pattern.bullets.slice(0, end);
         for(let j = 0; renderBullets.length > j; j++) {
-          if(!destroyedBullets.has(start + j)) {
-            callBulletDestroy(start + j);
+          if(!destroyedBullets.has(j)) {
+            callBulletDestroy(j);
           }
         }
       } else if(renderTriggers[i].value == 2) {
