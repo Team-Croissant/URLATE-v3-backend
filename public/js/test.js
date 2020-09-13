@@ -25,7 +25,7 @@ let isMenuOpened = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
-  scoreContainer.style.display = 'none';
+  scoreContainer.style.display = 'initial';
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -582,6 +582,8 @@ Pace.on('done', () => {
     document.getElementById('componentCanvas').classList.add('opacity1');
     document.getElementById('loadingContainer').classList.remove('opacity1');
     document.getElementById('loadingContainer').classList.add('opacity0');
+    document.getElementById('wallLeft').style.left = '0vw';
+    document.getElementById('wallRight').style.right = '0vw';
     setTimeout(() => {
       document.getElementById('loadingContainer').style.display = 'none';
       document.getElementById('componentCanvas').style.transitionDuration = '0s';

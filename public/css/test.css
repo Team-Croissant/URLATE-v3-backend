@@ -109,14 +109,15 @@ body {
   top: 0;
   height: 100vh;
   width: 10vw;
+  transition-duration: 2s;
 }
 
 #wallLeft {
-  left: 0;
+  left: -10vw;
 }
 
 #wallRight {
-  right: 0;
+  right: -10vw;
   transform: rotate(180deg);
 }
 
