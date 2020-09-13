@@ -130,7 +130,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: grayscale(30%) opacity(10%);
+  filter: grayscale(30%) opacity(20%);
 }
 
 #loadingContainer {
