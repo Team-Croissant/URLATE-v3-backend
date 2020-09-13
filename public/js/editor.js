@@ -656,7 +656,6 @@ const callBulletDestroy = (j) => {
     randomDirection[i] = [rx, ry];
   }
   destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
-  destroyedBullets.add(j);
 };
 
 const cntRender = () => {
@@ -668,9 +667,8 @@ const cntRender = () => {
     pointingCntElement = {"v1": '', "v2": '', "i": ''};
     window.requestAnimationFrame(cntRender);
     const seek = song.seek() - (offset + sync) / 1000;
-    let start = lowerBound(pattern.triggers, 0);
     let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
-    const renderTriggers = pattern.triggers.slice(start, end);
+    const renderTriggers = pattern.triggers.slice(0, end);
     eraseCnt();
     destroyedBullets.clear();
     let bpmCount = 0, speedCount = 0, opacityCount = 0;
@@ -683,15 +681,14 @@ const cntRender = () => {
           destroyedBullets.add(renderTriggers[i].num);
         }
       } else if(renderTriggers[i].value == 1) {
-        start = lowerBound(pattern.bullets, seek * 1000 - (bpm * 40));
-        end = upperBound(pattern.bullets, seek * 1000);
-        const renderBullets = pattern.bullets.slice(start, end);
+        end = upperBound(pattern.bullets, renderTriggers[i].ms);
+        const renderBullets = pattern.bullets.slice(0, end);
         for(let j = 0; renderBullets.length > j; j++) {
-          if(!destroyedBullets.has(start + j)) {
-            if(!prevDestroyedBullets.has(start + j)) {
-              callBulletDestroy(start + j);
+          if(!destroyedBullets.has(j)) {
+            if(!prevDestroyedBullets.has(j)) {
+              callBulletDestroy(j);
             }
-            destroyedBullets.add(start + j);
+            destroyedBullets.add(j);
           }
         }
       } else if(renderTriggers[i].value == 2) {
