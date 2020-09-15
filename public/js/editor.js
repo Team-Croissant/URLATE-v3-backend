@@ -317,6 +317,7 @@ const initialize = () => {
 
 const gotoMain = (isCalledByMain) => {
   if(isCalledByMain || confirm(rusure)) {
+    localStorage.clear(pattern);
     if(!isCalledByMain) song.stop();
     changeSettingsMode(-1);
     if(isSettingsOpened) toggleSettings();
