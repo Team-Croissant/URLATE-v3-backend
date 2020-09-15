@@ -23,6 +23,8 @@ let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
 let isMenuOpened = false;
 let isResultShowing = false;
+let frameArray = [];
+let fps = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
@@ -468,7 +470,11 @@ const cntRender = () => {
   drawCursor();
 
   //fps counter
-  let fps = 1000 / (Date.now() - frameCounterMs);
+  frameArray.push(1000 / (Date.now() - frameCounterMs));
+  if(frameArray.length == 5) {
+    fps = (frameArray[0] + frameArray[1] + frameArray[2] + frameArray[3] + frameArray[4]) / 5;
+    frameArray = [];
+  }
   ctx.font = "2.5vh Heebo";
   ctx.fillStyle = "#555";
   ctx.textBaseline = "bottom";
