@@ -503,7 +503,7 @@ const calculateResult = () => {
   let accuracy = ((perfect + great / 10 * 7 + good / 2 + bad / 10 * 3) / (perfect + great + good + bad + miss + bullet) * 100).toFixed(1);
   accuracyText.textContent = `${accuracy}%`;
   let rank = '';
-  if(accuracy >= 98 || (miss == 0 && bullet == 0)) {
+  if(accuracy >= 98 || (bad == 0 && miss == 0 && bullet == 0)) {
     rankImg.style.animationName = 'rainbow';
     rank = 'SS';
   } else if(accuracy >= 95) {
