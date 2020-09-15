@@ -244,6 +244,7 @@ body {
 }
 
 #scoreContainer {
+  background-color: #222;
   align-items: center;
   justify-content: center;
   cursor: initial;
@@ -253,4 +254,225 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
+}
+
+#scoreBackground {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  filter: opacity(15%) blur(10px);
+  background-size: cover;
+  background-position: center;
+}
+
+#scoreDecorations {
+  pointer-events: none;
+  background-image: url('/images/backgrounds/decorations.png');
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  mix-blend-mode: screen;
+  filter: opacity(50%);
+  background-size: cover;
+  background-position: center;
+}
+
+#scoreAlbumInformations {
+  width: 100vw;
+  height: 24vh;
+  padding: 3vh;
+}
+
+#scoreAlbum {
+  float: left;
+  width: 22vh;
+  height: 22vh;
+  background-size: cover;
+  background-position: center;
+  border: 1vh solid white;
+  filter: drop-shadow(0 0 0 10px rgba(0,0,0,.3));
+}
+
+#scoreAlbumInfo {
+  text-align: left;
+  padding-top: 1vh;
+  padding-left: 2vh;
+  float: left;
+  height: 22vh;
+}
+
+#scoreTitle {
+  color: #F3F3F3;
+  font-size: 5vh;
+  font-weight: 600;
+}
+
+#scoreArtist {
+  color: #F3F3F3;
+  font-size: 3vh;
+  font-weight: 400;
+}
+
+#scoreDifficulty {
+  color: #bebebe;
+  font-size: 2.5vh;
+  font-weight: 400;
+}
+
+#scoreDifficultyNum {
+  font-weight: 700;
+}
+
+#resultContainer {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 30vw;
+  width: 40vw;
+  height: 30vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#result {
+  color: #F3F3F3;
+  font-weight: 600;
+  font-size: 5vh;
+}
+
+#scoreInfoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 45vh;
+}
+
+#scoreInfoRank {
+  height: 45vh;
+}
+
+#scoreInfoRank::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  height: 45vh;
+  width: calc(0.77 * 45vh);
+  background-image: url('/images/parts/elements/Sback.png');
+  background-position: center;
+  background-size: cover;
+  mix-blend-mode: overlay;
+}
+
+#rankImg {
+  z-index: 50;
+  height: 40vh;
+}
+
+#scoreInfoScore {
+  width: 30vw;
+  margin-right: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: right;
+}
+
+.scoreSemiTitle {
+  color: #FFF;
+  font-weight: 400;
+  font-size: 3vh;
+}
+
+.scoreValue {
+  color: #FFF;
+  font-weight: 600;
+  font-size: 5vh;
+}
+
+#scoreInfoJudge {
+  width: 30vw;
+  margin-left: 2vw;
+}
+
+#scoreJudgeLeft {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+
+.judge {
+  font-weight: 600;
+  font-size: 4vh;
+}
+
+.judgeResult {
+  color: #FFF;
+  font-weight: 600;
+  font-size: 4vh;
+}
+
+#scoreJudgeRight {
+  float: left;
+  width: 7vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: right;
+}
+
+#perfect {
+  background: linear-gradient(to right, #57d147, #43a7e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#great {
+  color: #57d147;
+}
+
+#good {
+  color: #43a7e0;
+}
+
+#bad {
+  color: #b0675a;
+}
+
+#miss {
+  color: #ed4e32;
+}
+
+#urlate {
+  width: 40vw;
+  text-align: center;
+  position: fixed;
+  font-size: 3vh;
+  font-weight: 200;
+  color: #fff;
+  mix-blend-mode: overlay;
+  bottom: 3vh;
+  left: 30vw;
+}
+
+#skip {
+  text-align: right;
+  position: fixed;
+  font-size: 3vh;
+  font-weight: 500;
+  color: #fff;
+  mix-blend-mode: overlay;
+  bottom: 3vh;
+  right: 3vw;
 }

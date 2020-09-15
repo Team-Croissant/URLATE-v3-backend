@@ -25,7 +25,7 @@ let isMenuOpened = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
-  scoreContainer.style.display = 'none';
+  scoreContainer.style.display = 'initial';
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -85,7 +85,9 @@ const initialize = (isFirstCalled) => {
   if(isFirstCalled) {
     pattern = JSON.parse(decodeURI(getParam('pattern')));
     document.getElementById('title').textContent = pattern.information.track;
+    document.getElementById('scoreTitle').textContent = pattern.information.track;
     document.getElementById('artist').textContent = pattern.information.producer;
+    document.getElementById('scoreArtist').textContent = pattern.information.producer;
     document.getElementById('authorNamespace').textContent = pattern.information.author;
     offset = pattern.information.offset;
     bpm = pattern.information.bpm;
@@ -105,6 +107,8 @@ const settingApply = () => {
       fileName = tracks[i].fileName;
       document.getElementById("album").src = `${cdn}/albums/${fileName}.png`;
       document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
+      document.getElementById('scoreBackground').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
+      document.getElementById('scoreAlbum').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
       break;
     }
   }
