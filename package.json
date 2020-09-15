@@ -1,11 +1,11 @@
 {
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/credible/myrhy.git"
+    "url": "https://github.com/Team-Croissant/URLATE"
   },
-  "name": "myrhy",
+  "name": "URLATE",
   "version": "1.0.0",
-  "description": "Avoid & Get on the tempo, MyRhy",
+  "description": "Avoid & Get on the tempo, URLATE",
   "main": "src/",
   "scripts": {
     "auto-build": "watch tsc src",
