@@ -568,6 +568,7 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
       if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 80) {
         if(!destroyedBullets.has(i)) {
           bullet++;
+          missPoint.push(song.seek() * 1000);
           combo = 0;
           callBulletDestroy(i);
         }
