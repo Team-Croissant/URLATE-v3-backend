@@ -554,25 +554,25 @@ const compClicked = () => {
       drawParticle(1, mouseX, mouseY);
       let seek = song.seek() * 1000;
       let ms = pattern.patterns[pointingCntElement[i].i].ms;
-      let perfect = 60000 / bpm / 8;
-      let great = 60000 / bpm / 5;
-      let good = 60000 / bpm / 3;
-      let bad = 60000 / bpm / 2;
+      let perfectJudge = 60000 / bpm / 8;
+      let greatJudge = 60000 / bpm / 5;
+      let goodJudge = 60000 / bpm / 3;
+      let badJudge = 60000 / bpm / 2;
       let x = pattern.patterns[pointingCntElement[i].i].x;
       let y = pattern.patterns[pointingCntElement[i].i].y;
-      if(seek < ms + perfect && seek > ms - perfect) {
+      if(seek < ms + perfectJudge && seek > ms - perfectJudge) {
         calculateScore('perfect', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Perfect');
         perfect++;
-      } else if(seek < ms + great && seek < ms - great) {
+      } else if(seek < ms + greatJudge && seek < ms - greatJudge) {
         calculateScore('great', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Great');
         great++;
-      } else if(seek > ms - good && seek < ms) {
+      } else if(seek > ms - goodJudge && seek < ms) {
         calculateScore('good', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Good');
         good++;
-      } else if((seek > ms - bad && seek < ms) || ms < seek) {
+      } else if((seek > ms - badJudge && seek < ms) || ms < seek) {
         calculateScore('bad', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Bad');
         bad++;
