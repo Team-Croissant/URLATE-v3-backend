@@ -204,7 +204,7 @@ const drawParticle = (n, x, y, j) => {
       if(j == 'Miss') {
         ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
       } else if(j == 'Perfect') {
-        let grd = ctx.createLinearGradient(x - 50, newY - 20, x + 50, newY + 20);
+        let grd = ctx.createLinearGradient(cx - 50, newY - 20, cx + 50, newY + 20);
         grd.addColorStop(0, `rgba(87, 209, 71, ${1 - p / 100})`);
         grd.addColorStop(1, `rgba(67, 167, 224, ${1 - p / 100})`);
         ctx.fillStyle = grd;
