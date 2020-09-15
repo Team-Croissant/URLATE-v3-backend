@@ -539,10 +539,10 @@ const calculateResult = () => {
   let length = song.duration() * 1000;
   missCtx.fillStyle = '#F00';
   missCtx.strokeStyle = '#FFF';
-  missCtx.lineWidth = 1;
+  missCtx.lineWidth = 2;
   for(let i = 0; i < missPoint.length; i++) {
     missCtx.beginPath();
-    missCtx.arc(missCanvas.width * (missPoint[i] / length), missCanvas.height * 0.8, missCanvas.height * 0.15, 0, 2 * Math.PI);
+    missCtx.arc(missCanvas.width * (missPoint[i] / length), missCanvas.height * 0.8, missCanvas.height * 0.1, 0, 2 * Math.PI);
     missCtx.fill();
     missCtx.stroke();
   }
