@@ -22,6 +22,7 @@ let menuAllowed = false;
 let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
 let isMenuOpened = false;
+let isResultShowing = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
@@ -123,7 +124,9 @@ const settingApply = () => {
         autoplay: false,
         loop: false,
         onend: () => {
-          song.stop();
+          isResultShowing = true;
+          menuAllowed = false;
+          calculateResult();
         },
         onload: () => {
         }
@@ -684,23 +687,29 @@ const home = () => {
 
 document.onkeydown = e => {
   e = e || window.event;
-  if(e.key == 'Escape') {
-    e.preventDefault();
-    if(menuAllowed) {
-      if(menuContainer.style.display == 'none') {
-        isMenuOpened = true;
-        menuContainer.style.display = 'flex';
-        song.pause();
-      } else {
-        isMenuOpened = false;
-        menuContainer.style.display = 'none';
-        song.play();
+  if(!isResultShowing) {
+    if(e.key == 'Escape') {
+      e.preventDefault();
+      if(menuAllowed) {
+        if(menuContainer.style.display == 'none') {
+          isMenuOpened = true;
+          menuContainer.style.display = 'flex';
+          song.pause();
+        } else {
+          isMenuOpened = false;
+          menuContainer.style.display = 'none';
+          song.play();
+        }
       }
+      return;
     }
-    return;
-  }
-  if(!isMenuOpened && menuAllowed) {
-    compClicked();
+    if(!isMenuOpened && menuAllowed) {
+      compClicked();
+    }
+  } else {
+    if(confirm(returnToEditor)) {
+      editor();
+    }
   }
 };
 
