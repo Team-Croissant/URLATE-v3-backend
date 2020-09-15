@@ -599,6 +599,9 @@ const calculateScore = (judge, i, isMissed) => {
     return;
   }
   combo++;
+  if(maxCombo < combo) {
+    maxCombo = combo;
+  }
   if(judge == 'perfect') {
     score += 200 + combo * 2;
   } else if(judge == 'great') {
