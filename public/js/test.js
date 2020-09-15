@@ -491,8 +491,7 @@ const calculateResult = () => {
   bulletResult.textContent = bullet;
   scoreText.textContent = numberWithCommas(`${score}`);
   comboText.textContent = `${maxCombo}x`;
-  //let accuracy = ((perfect + great / 10 * 7 + good / 2 + bad / 10 * 3) / (perfect + great + good + bad + miss + bullet) * 100).toFixed(1);
-  accuracy = 60;
+  let accuracy = ((perfect + great / 10 * 7 + good / 2 + bad / 10 * 3) / (perfect + great + good + bad + miss + bullet) * 100).toFixed(1);
   accuracyText.textContent = `${accuracy}%`;
   let rank = '';
   if(accuracy >= 98 || (miss == 0 && bullet == 0)) {
