@@ -56,5 +56,7 @@
 	"needToSave": "It is recommended to save the pattern before testing.",
 	"DeleteSure": "Caution! When you click the OK button, all the work in progress disappears.",
 	"RUSure": "Are you really going to end? All work in progress disappears.",
-	"zoomAlert": "The device or browser magnification is not 100%. The editor may not work properly. Current magnification:"
+	"zoomAlert": "The device or browser magnification is not 100%. The editor may not work properly. Current magnification:",
+	"nameExist": "The nickname you entered already exists.",
+	"return_to_editor": "Go back to the editor."
 }
