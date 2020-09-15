@@ -49,8 +49,8 @@ const sortAsTiming = (a, b) => {
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
   sync = parseInt(settings.sound.offset);
-  if(getParam("pattern") != '') {
-    pattern = JSON.parse(decodeURI(getParam('pattern')));
+  if(localStorage.pattern) {
+    pattern = JSON.parse(localStorage.pattern);
     for(let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
       if(document.getElementById("songSelectBox").options[i].value == pattern.information.track) songSelectBox.selectedIndex = i;
     }
@@ -1534,7 +1534,8 @@ const test = () => {
     "speed": speed,
     "offset": offset
   };
-  window.location.href = `${url}/test?pattern=${JSON.stringify(pattern)}`;
+  localStorage.pattern = JSON.stringify(pattern);
+  window.location.href = `${url}/test`;
   ctrlDown = false;
 };
 

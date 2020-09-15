@@ -2,17 +2,6 @@ const numberWithCommas = x => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const getParam = sname => {
-  let params = location.search.substr(location.search.indexOf("?") + 1);
-  let sval = "";
-  params = params.split("&");
-  for (let i = 0; i < params.length; i++) {
-      temp = params[i].split("=");
-      if ([temp[0]] == sname) { sval = temp[1]; }
-  }
-  return sval;
-};
-
 const getTan = deg => {
   let rad = deg * Math.PI / 180;
   return Math.tan(rad);

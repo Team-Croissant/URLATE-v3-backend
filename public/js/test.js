@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const initialize = (isFirstCalled) => {
   if(isFirstCalled) {
-    pattern = JSON.parse(decodeURI(getParam('pattern')));
+    pattern = JSON.parse(localStorage.pattern);
     document.getElementById('title').textContent = pattern.information.track;
     document.getElementById('scoreTitle').textContent = pattern.information.track;
     document.getElementById('artist').textContent = pattern.information.producer;
@@ -684,7 +684,7 @@ const retry = () => {
 };
 
 const editor = () => {
-  window.location.href = `${url}/editor?pattern=${JSON.stringify(pattern)}`;
+  window.location.href = `${url}/editor`;
 };
 
 const home = () => {
