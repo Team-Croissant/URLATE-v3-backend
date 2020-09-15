@@ -546,6 +546,13 @@ const calculateResult = () => {
     missCtx.fill();
     missCtx.stroke();
   }
+  if(missPoint.length == 0) {
+    missCtx.fillStyle = '#FFF';
+    missCtx.font = "500 3vh Metropolis";
+    missCtx.textAlign = "right";
+    missCtx.textBaseline = "bottom";
+    missCtx.fillText('Perfect!', missCanvas.width - 10, missCanvas.height * 0.8 - 10);  
+  }
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
