@@ -244,6 +244,8 @@ body {
 }
 
 #scoreContainer {
+  opacity: 0;
+  pointer-events: none;
   background-color: #222;
   align-items: center;
   justify-content: center;
@@ -254,6 +256,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
+  transition-duration: 1s;
 }
 
 #scoreBackground {
@@ -364,13 +367,16 @@ body {
   z-index: -1;
   height: 45vh;
   width: calc(0.77 * 45vh);
-  background-image: url('/images/parts/elements/Sback.png');
+  background-image: var(--background);
   background-position: center;
   background-size: cover;
   mix-blend-mode: overlay;
 }
 
 #rankImg {
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
   z-index: 50;
   height: 40vh;
 }
@@ -454,6 +460,10 @@ body {
   color: #ed4e32;
 }
 
+#bullet {
+  color: #d4d4d4;
+}
+
 #urlate {
   width: 40vw;
   text-align: center;
@@ -475,4 +485,19 @@ body {
   mix-blend-mode: overlay;
   bottom: 3vh;
   right: 3vw;
+}
+
+@keyframes rainbow {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  40% {
+    filter: hue-rotate(130deg);
+  }
+  60% {
+    filter: hue-rotate(260deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }

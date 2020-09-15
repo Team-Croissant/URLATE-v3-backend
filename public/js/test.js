@@ -10,7 +10,7 @@ let missParticles = [];
 let destroyedBullets = new Set([]);
 let destroyedNotes = new Set([]);
 let mouseX = 0, mouseY = 0;
-let score = 0, combo = 0, displayScore = 0;
+let score = 0, combo = 0, displayScore = 0, maxCombo = 0;
 let perfect = 0;
 let great = 0;
 let good = 0;
@@ -25,7 +25,6 @@ let isMenuOpened = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
-  scoreContainer.style.display = 'initial';
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -459,7 +458,7 @@ const cntRender = () => {
   ctx.fillStyle = "#333";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText(`${Math.round(displayScore)}`.padStart(9, 0), canvas.width / 2, canvas.height / 80);
+  ctx.fillText(numberWithCommas(`${Math.round(displayScore)}`.padStart(9, 0)), canvas.width / 2, canvas.height / 80);
   ctx.font = "2.5vh Metropolis";
   ctx.fillStyle = "#555";
   ctx.fillText(`${combo}x`, canvas.width / 2, canvas.height / 70 + canvas.height / 25);
@@ -481,6 +480,40 @@ const trackMousePos = () => {
   let y = event.clientY / canvasContainer.offsetHeight * 200 - 100;
   mouseX = x;
   mouseY = y;
+};
+
+const calculateResult = () => {
+  perfectResult.textContent = perfect;
+  greatResult.textContent = great;
+  goodResult.textContent = good;
+  badResult.textContent = bad;
+  missResult.textContent = miss;
+  bulletResult.textContent = bullet;
+  scoreText.textContent = numberWithCommas(`${score}`);
+  comboText.textContent = `${maxCombo}x`;
+  //let accuracy = ((perfect + great / 10 * 7 + good / 2 + bad / 10 * 3) / (perfect + great + good + bad + miss + bullet) * 100).toFixed(1);
+  accuracy = 60;
+  accuracyText.textContent = `${accuracy}%`;
+  let rank = '';
+  if(accuracy >= 98 || (miss == 0 && bullet == 0)) {
+    rankImg.style.animationName = 'rainbow';
+    rank = 'SS';
+  } else if(accuracy >= 95) {
+    rank = 'S';
+  } else if(accuracy >= 90) {
+    rank = 'A';
+  } else if(accuracy >= 80) {
+    rank = 'B';
+  } else if(accuracy >= 70) {
+    rank = 'C';
+  } else {
+    rank = 'F';
+  }
+  rankImg.src = `/images/parts/elements/${rank}.png`;
+  scoreInfoRank.style.setProperty('--background', `url('/images/parts/elements/${rank}back.png')`);
+
+  scoreContainer.style.opacity = '1';
+  scoreContainer.style.pointerEvents = 'all';
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {

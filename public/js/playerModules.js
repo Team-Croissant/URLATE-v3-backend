@@ -1,3 +1,7 @@
+const numberWithCommas = x => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const getParam = sname => {
   let params = location.search.substr(location.search.indexOf("?") + 1);
   let sval = "";
