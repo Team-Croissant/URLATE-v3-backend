@@ -331,6 +331,18 @@ body {
   font-weight: 700;
 }
 
+#missPointCanvas {
+  height: 5vh;
+  width: 20vw;
+}
+
+#missPoint {
+  color: #FFF;
+  font-style: italic;
+  font-size: 2vh;
+  font-weight: 300;
+}
+
 #resultContainer {
   position: fixed;
   display: flex;

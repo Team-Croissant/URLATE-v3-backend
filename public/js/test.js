@@ -1,5 +1,7 @@
 const canvas = document.getElementById('componentCanvas');
 const ctx = canvas.getContext("2d");
+const missCanvas = document.getElementById('missPointCanvas');
+const missCtx = missCanvas.getContext("2d");
 let pattern = {};
 let userName = '';
 let settings, sync, song, tracks, pixelRatio, offset, bpm, speed;
@@ -25,6 +27,7 @@ let isMenuOpened = false;
 let isResultShowing = false;
 let frameArray = [];
 let fps = 0;
+let missPoint = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
@@ -97,6 +100,8 @@ const initialize = (isFirstCalled) => {
   }
   canvas.width = window.innerWidth * pixelRatio;
   canvas.height = window.innerHeight * pixelRatio;
+  missCanvas.width = window.innerWidth * 0.2 * pixelRatio;
+  missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
 };
 
 const settingApply = () => {
@@ -411,6 +416,7 @@ const cntRender = () => {
         calculateScore('miss', start + i, true);
         missParticles.push({'x': renderNotes[i].x, 'y': renderNotes[i].y, 's': Date.now()});
         miss++;
+        missPoint.push(song.seek() * 1000);
       }
     }
     for(let i = 0; i < missParticles.length; i++) {
@@ -522,6 +528,24 @@ const calculateResult = () => {
 
   scoreContainer.style.opacity = '1';
   scoreContainer.style.pointerEvents = 'all';
+
+  missCtx.beginPath();
+  missCtx.fillStyle = '#FFF';
+  missCtx.strokeStyle = '#FFF';
+  missCtx.lineWidth = 5;
+  missCtx.moveTo(0, missCanvas.height * 0.8);
+  missCtx.lineTo(missCanvas.width, missCanvas.height * 0.8);
+  missCtx.stroke();
+  let length = song.duration() * 1000;
+  missCtx.fillStyle = '#F00';
+  missCtx.strokeStyle = '#FFF';
+  missCtx.lineWidth = 1;
+  for(let i = 0; i < missPoint.length; i++) {
+    missCtx.beginPath();
+    missCtx.arc(missCanvas.width * (missPoint[i] / length), missCanvas.height * 0.8, missCanvas.height * 0.15, 0, 2 * Math.PI);
+    missCtx.fill();
+    missCtx.stroke();
+  }
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
