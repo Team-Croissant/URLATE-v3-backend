@@ -169,7 +169,6 @@ const menuRight = () => {
 
 const infoScreen = () => {
   display = 4;
-  infoInit();
   document.getElementById("infoContainer").style.display = "block";
   document.getElementById("infoContainer").classList.toggle("fadeIn");
 };
