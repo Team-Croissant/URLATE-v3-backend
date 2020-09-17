@@ -189,6 +189,7 @@ const displayClose = () => {
     document.getElementById("advancedContainer").classList.toggle("fadeOut");
     setTimeout(() => {
       document.getElementById("advancedContainer").classList.remove("fadeOut");
+      document.getElementById("advancedContainer").style.display = "none";
     }, 500);
   } else if(display == 4) {
     //Info
@@ -196,7 +197,7 @@ const displayClose = () => {
     document.getElementById("infoContainer").classList.toggle("fadeOut");
     setTimeout(() => {
       document.getElementById("infoContainer").classList.remove("fadeOut");
-      document.getElementById('infoContainer').style.display = "none";
+      document.getElementById("infoContainer").style.display = "none";
     }, 500);
   }
   display = 0;
@@ -228,6 +229,6 @@ const menu1Selected = () => {
 const menu2Selected = () => {
   //advanced
   display = 3;
-  document.getElementById('advancedContainer').style.display = "block";
+  document.getElementById("advancedContainer").style.display = "block";
   document.getElementById("advancedContainer").classList.add("fadeIn");
 };

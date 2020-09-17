@@ -52,30 +52,84 @@
         <img src="images/parts/elements/back5.png" class="backIcon noClick" id="back5">
         <img src="https://img.icons8.com/metro/52/000000/chevron-left.png" class="icon clickable" onclick="menuLeft()">
         <div id="menuMain" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/bigIcons/cursor.png" class="mainIcon">
+            <img src="images/parts/graphicIcons/cursor.png" class="mainIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('play_title') %></span>
             <span class="light menuSubtitle"><%= __('play_subtitle') %></span>
         </div>
         <div id="menuEditor" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/bigIcons/editor.svg" class="shadowIcon" id="editorIcon">
+            <img src="images/parts/graphicIcons/editor.svg" class="shadowIcon" id="editorIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('editor_title') %></span>
             <span class="light menuSubtitle"><%= __('editor_subtitle') %></span>
         </div>
         <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/bigIcons/heart.png" class="shadowIcon" id="titleAdvancedIcon">
+            <img src="images/parts/graphicIcons/heart.png" class="shadowIcon" id="titleAdvancedIcon">
             <div id="Hline"></div>
             <span class="menuTitle"><%= __('advanced_title') %></span>
             <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
         </div>
         <img src="https://img.icons8.com/metro/52/000000/chevron-right.png" class="icon clickable" onclick="menuRight()">
     </div>
-    <div id="selectContainer">
+    <div id="selectContainer" class="containers">
+        <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
         <span>this is select section, welcome!</span>
     </div>
     <div id="advancedContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
+        <h1 id="advancedTitle"><strong>URLATE</strong> ADVANCED</h1>
+        <p class="advancedDescription"><%= __('advanced_description_1') %><br><%= __('advanced_description_2') %><br><strong><%= __('advanced_description_3') %></strong></p>
+        <p class="advancedSubtitle"><%= __('advanced_subtitle_1') %></p>
+        <p class="advancedDescription"><%= __('advanced_description_4') %><br><%= __('advanced_description_5') %><br><%= __('advanced_description_6') %></p>
+        <p class="advancedSubtitle"><span id="subtitleHighlight"><%= __('advanced_subtitle_2') %></span></p>
+        <p class="advancedDescription"><%= __('advanced_description_7') %></p>
+        <div id="advancedIconsContainer">
+            <div id="advancedIconsInnerContainer">
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_1.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_1') %><br><%= __('advanced_wicon_description_2') %></span>
+                </div>
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_2.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_3') %><br><%= __('advanced_wicon_description_4') %></span>
+                </div>
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_3.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_5') %><br><%= __('advanced_wicon_description_6') %><br><span class="additionalDescription"><%= __('advanced_additional_description_1') %></span></span>
+                </div>
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_4.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_7') %><br><%= __('advanced_wicon_description_8') %><br><span class="additionalDescription"><%= __('advanced_additional_description_2') %></span></span>
+                </div>
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_5.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_9') %><br><%= __('advanced_wicon_description_10') %></span>
+                </div>
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_6.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_11') %><br><%= __('advanced_wicon_description_12') %><br><%= __('advanced_wicon_description_13') %></span>
+                </div>
+                <div class="advancedIconWithDescription">
+                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_7.png">
+                    <span class="advancedIconDescription"><%= __('advanced_wicon_description_14') %><br><%= __('advanced_wicon_description_15') %></span>
+                </div>
+            </div>
+        </div>
+        <p class="advancedSubtitle"><%= __('advanced_subtitle_3') %></p>
+        <p class="advancedDescription"><%= __('advanced_description_8') %><br><strong><%= __('advanced_description_9') %></strong></p>
+        <select id="advancedSelector" onchange="advancedSelected(this)">
+            <option selected>5900₩ / Mo.</option>
+            <option>7900₩ / Mo.</option>
+            <option>9900₩ / Mo.</option>
+            <option>14900₩ / Mo.</option>
+            <option>19900₩ / Mo.</option>
+            <option>49900₩ / Yr.</option>
+            <option>99000₩ / Yr.</option>
+            <option>149000₩ / Yr.</option>
+            <option>199000₩ / Yr.</option>
+        </select>
+        <br>
+        <input type="button" id="registerBtn" value="<%= __('register') %>">
     </div>
     <div id="infoContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">

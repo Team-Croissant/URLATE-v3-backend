@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Heebo:200,400,500,600,800&display=swap');
 @import url('https://cdn.rhyga.me/fonts/Metropolis/style.css');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
@@ -529,4 +529,82 @@ body {
 @keyframes shortFadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+#advancedContainer {
+  background-color: #FFF;
+  background-image: url('/images/backgrounds/advanced_decorations.png');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#advancedTitle {
+  font-size: 5vh;
+  margin-top: 4vh;
+  padding: 0;
+  font-weight: 100;
+}
+
+.advancedDescription {
+  font-size: 2vh;
+  margin: 4.5vh 0 0 0;
+  padding: 0;
+}
+
+.advancedSubtitle {
+  font-size: 3vh;
+  font-weight: 600;
+  margin: 7vh 0 0 0;
+  padding: 0;
+}
+
+#advancedIconsContainer {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.advancedIconWithDescription {
+  margin-top: 4.5vh;
+  display: flex;
+  text-align: left;
+  align-items: center;
+}
+
+.advancedIconDescription {
+  font-size: 2vh;
+  margin-left: 2vw;
+}
+
+#subtitleHighlight {
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgb(255,255,255) 0%, rgb(255,255,255) 49%, rgb(235,235,235) 50%, rgb(235,235,235) 100%);
+}
+
+#advancedSelector {
+  margin-top: 4.5vh;
+  font-family: 'Metropolis', Arial;
+  background: none;
+  padding: 1.5vh 1.5vw;
+  font-size: 2vh;
+  border: 2px solid #666;
+  color: #333;
+  border-radius: 15px;
+}
+
+#registerBtn {
+  cursor: pointer;
+  margin: 4.5vh;
+  font-family: 'Metropolis', 'Noto Sans KR', Arial;
+  width: 13vw;
+  height: 7vh;
+  border-radius: 15px;
+  border: none;
+  background: linear-gradient(135deg, rgba(59,137,236,1) 0%, rgba(187,62,254,1) 100%);
+  font-size: 3vh;
+  color: white;
+  filter: drop-shadow(0 0 10px rgba(50,50,50,0.3));
 }
