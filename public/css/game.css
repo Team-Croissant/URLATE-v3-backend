@@ -388,14 +388,9 @@ body {
   height: 100vw;
   overflow-x: hidden;
   overflow-y: hidden;
-  opacity: 0.3;
+  opacity: 0.5;
   transform: scaleX(1.2);
   transition-duration: 0.3s;
-}
-
-#visualizer.boom {
-  opacity: 0.7;
-  transition-duration: 0s;
 }
 
 .backIcon {

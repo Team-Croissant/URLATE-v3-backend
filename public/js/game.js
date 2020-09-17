@@ -3,6 +3,9 @@ let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 let display = 0;
 let username = '';
 let analyser, dataArray;
+let canvas = document.getElementById("renderer");
+let ctx = canvas.getContext("2d");
+let bars = 100;
 
 //volume need to 0.1~0.8
 const songs = new Howl({
@@ -12,8 +15,14 @@ const songs = new Howl({
   onend: () => {}
 });
 
+const initialize = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+};
+
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
+  initialize();
 };
 
 const drawBar = (x1, y1, x2, y2, width, frequency) => {
@@ -32,40 +41,22 @@ const drawBar = (x1, y1, x2, y2, width, frequency) => {
   ctx.stroke();
 };
 
-let milis = 0;
-let isBoom = false;
 const animationLooper = () => {
-  bars = 100;
-  barWidth = window.innerHeight / bars;
-  canvas = document.getElementById("renderer");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx = canvas.getContext("2d");  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let barWidth = window.innerHeight / bars;
   analyser.getByteFrequencyData(dataArray);
   dataLimit = 130 + Howler.volume() * 110;
-  d = new Date();
-  if(dataArray[1] > dataLimit && d.getTime() - milis > 100 && isBoom == false) {
-    milis = d.getTime();
-    document.getElementById('visualizer').classList.toggle("boom");
-    isBoom = true;
-  } else if(dataArray[1] < dataLimit && d.getTime() - milis && isBoom == true) {
-    milis = d.getTime();
-    document.getElementById('visualizer').classList.toggle("boom");
-    isBoom = false;
+  for(let i = 0; i < bars; i++) {
+    let barHeight = dataArray[i] * window.innerHeight / 500;
+    let y = barWidth * i;
+    let x_end = barHeight / 1.3;
+    drawBar(0, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
-  for(let i = 0; i < bars; i++){
-    barHeight = dataArray[i] * window.innerHeight / 500;
-    y = barWidth * i;
-    x = 0;
-    x_end = barHeight / 1.3;
-    drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
-  }
-  for(let i = 0; i < bars; i++){
-    barHeight = dataArray[i] * window.innerHeight / 500;
-    y = window.innerHeight - barWidth * i;
-    x = window.innerWidth;
-    x_end = window.innerWidth - (barHeight / 1.3);
-    drawBar(x, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
+  for(let i = 0; i < bars; i++) {
+    let barHeight = dataArray[i] * window.innerHeight / 500;
+    let y = window.innerHeight - barWidth * i;
+    let x_end = window.innerWidth - (barHeight / 1.3);
+    drawBar(window.innerWidth, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
   window.requestAnimationFrame(animationLooper);
 };
@@ -232,3 +223,5 @@ const menu2Selected = () => {
   document.getElementById("advancedContainer").style.display = "block";
   document.getElementById("advancedContainer").classList.add("fadeIn");
 };
+
+window.addEventListener("resize", initialize);
