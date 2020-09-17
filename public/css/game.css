@@ -585,7 +585,7 @@ body {
 }
 
 #advancedSelector {
-  margin-top: 4.5vh;
+  margin-top: 10vh;
   font-family: 'Metropolis', Arial;
   background: none;
   padding: 1.5vh 1.5vw;
@@ -597,7 +597,8 @@ body {
 
 #registerBtn {
   cursor: pointer;
-  margin: 4.5vh;
+  margin: 10vh;
+  font-weight: 600;
   font-family: 'Metropolis', 'Noto Sans KR', Arial;
   width: 13vw;
   height: 7vh;
