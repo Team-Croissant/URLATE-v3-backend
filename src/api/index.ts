@@ -4,6 +4,7 @@ import signale = require('signale');
 import http = require('http');
 import express = require('express');
 import session = require('express-session');
+import fetch = require('node-fetch');
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 
