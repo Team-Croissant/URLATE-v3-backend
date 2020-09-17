@@ -6,7 +6,7 @@ let analyser, dataArray;
 
 //volume need to 0.1~0.8
 const songs = new Howl({
-  src: [`${cdn}/tracks/192kbps/urlate_theme.mp3`],
+  src: [`${cdn}/tracks/192kbps/uqrlate_theme.mp3`],
   autoplay: false,
   loop: true,
   onend: () => {}
@@ -185,7 +185,6 @@ const displayClose = () => {
     document.getElementById("advancedContainer").classList.toggle("fadeOut");
     setTimeout(() => {
       document.getElementById("advancedContainer").classList.remove("fadeOut");
-      advancedInit();
     }, 500);
   } else if(display == 4) {
     //Info
@@ -193,29 +192,10 @@ const displayClose = () => {
     document.getElementById("infoContainer").classList.toggle("fadeOut");
     setTimeout(() => {
       document.getElementById("infoContainer").classList.remove("fadeOut");
-      infoInit();
+      document.getElementById('infoContainer').style.display = "none";
     }, 500);
   }
   display = 0;
-};
-
-const advancedInit = () => {
-  document.getElementById('advancedContainer').style.display = "none";
-  document.getElementById('advancedContainer').style.opacity = "0";
-  document.getElementById('advancedIcon').style.marginTop = "10vh";
-  document.getElementById('advancedIcon').style.opacity = "0";
-  document.getElementById('advancedDescription').style.opacity = "0";
-  document.getElementById('advancedSupport').style.opacity = "0";
-  document.getElementById('supportDetails').style.opacity = "0";
-  document.getElementById('advancedDetails').style.opacity = "0";
-  document.getElementById('tableContainer').style.opacity = "0";
-  for (let i = 0; i < document.getElementsByClassName('advancedDetails').length; i++) {
-    document.getElementsByClassName('advancedDetails')[i].style.opacity = "0";
-  }
-};
-
-const infoInit = () => {
-  document.getElementById('infoContainer').style.display = "none";
 };
 
 const menuSelected = () => {
@@ -239,45 +219,9 @@ const menu1Selected = () => {
   window.location.href = `${url}/editor`;
 };
 
-const menu2Selected = async () => {
+const menu2Selected = () => {
   //advanced
-  advancedInit();
   display = 3;
   document.getElementById('advancedContainer').style.display = "block";
-  await new Promise((resolve) => {
-    document.getElementById("advancedContainer").classList.add("fadeIn");
-    setTimeout(resolve, 500);
-  });
-  await new Promise((resolve) => {
-    document.getElementById('advancedIcon').style.marginTop = "5vh";
-    document.getElementById('advancedIcon').style.opacity = 1;
-    setTimeout(resolve, 1000);
-  });
-  await new Promise((resolve) => {
-    document.getElementById("advancedDescription").classList.add("fadeIn");
-    setTimeout(resolve, 500);
-  });
-  await new Promise((resolve) => {
-    document.getElementById("advancedSupport").classList.add("shortFadeIn");
-    setTimeout(resolve, 200);
-  });
-  await new Promise((resolve) => {
-    document.getElementById("supportDetails").classList.add("shortFadeIn");
-    setTimeout(resolve, 200);
-  });
-  await new Promise((resolve) => {
-    document.getElementById("advancedDetails").classList.add("shortFadeIn");
-    setTimeout(resolve, 200);
-  });
-  await new Promise((resolve) => {
-    document.getElementById("tableContainer").classList.add("shortFadeIn");
-    setTimeout(resolve, 200);
-  });
-
-  const advancedDetails = document.getElementsByClassName('advancedDetails');
-  for (let i = 0; i < advancedDetails.length; i++) {
-    setTimeout(() => {
-      advancedDetails[i].classList.add("shortFadeIn");
-    }, 200 * i);
-  }
+  document.getElementById("advancedContainer").classList.add("fadeIn");
 };
