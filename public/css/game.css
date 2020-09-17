@@ -548,3 +548,8 @@ body {
   color: white;
   filter: drop-shadow(0 0 10px rgba(50,50,50,0.3));
 }
+
+.additionalDescription {
+  color: #666;
+  font-size: 1.5vh;
+}
