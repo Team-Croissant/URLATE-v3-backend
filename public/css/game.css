@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:100,300,400,700&display=swap');
-@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+@import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
+@import url('https://cdn.rhyga.me/fonts/Metropolis/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 body {
-  cursor: url('/images/parts/cursor/blueCursor.cur'), default;
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: 'Heebo', 'Spoqa Han Sans KR', 'Spoqa Han Sans', '나눔바른고딕', arial;
+  font-family: 'Heebo', 'Noto Sans KR', '나눔바른고딕', arial;
   letter-spacing: -1px;
   overflow-x: hidden;
   overflow-y: hidden;
