@@ -176,6 +176,11 @@ const infoScreen = () => {
 const displayClose = () => {
   if(display == 1) {
     //PLAY
+    document.getElementById("selectContainer").classList.remove("fadeIn");
+    document.getElementById("selectContainer").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("selectContainer").classList.remove("fadeOut");
+    }, 500);
   } else if(display == 2) {
     //Settings
   } else if(display == 3) {
@@ -211,7 +216,9 @@ const menuSelected = () => {
 };
 
 const menu0Selected = () => {
-  window.location.href = `${url}/proto?track=Chatty%20Bones%202018&difficulty=1`;
+  display = 1;
+  document.getElementById("selectContainer").style.display = "block";
+  document.getElementById("selectContainer").classList.add("fadeIn");
 };
 
 const menu1Selected = () => {
