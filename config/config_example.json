@@ -22,5 +22,11 @@
   "google" : {
     "clientId" : "GOOGLE CLIENT ID",
     "clientSecret" : "GOOGLE CLIENT SECRET"
+  },
+  "xsolla" : {
+    "merchantId": "XSOLLA MERCHANT ID",
+    "apiKey": "XSOLLA API KEY",
+    "projectId": "XSOLLA PROJECT ID",
+    "basicKey": "XSOLLA BASIC KEY"
   }
 }

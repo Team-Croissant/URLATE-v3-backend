@@ -27,6 +27,7 @@
     "googleapis": "^44.0.0",
     "i18n": "^0.8.4",
     "knex": "^0.21.1",
+    "node-fetch": "^2.6.1",
     "node-forge": ">=0.10.0",
     "nodemailer": "^6.4.2",
     "pbkdf2-password": "^1.2.1",

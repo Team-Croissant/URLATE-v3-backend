@@ -108,7 +108,7 @@ window.onload = () => {
 };
 
 Pace.on('done', () => {
-  songs.play();
+  // songs.play();
   const nameStyle = window.getComputedStyle(document.getElementById("name"), null);
   const nameWidth = parseFloat(nameStyle.getPropertyValue("width"));
   if(nameWidth > 265) {
@@ -228,9 +228,12 @@ const menu2Selected = () => {
 const getAdvanced = () => {
   advancedPurchasing.style.pointerEvents = "all";
   advancedPurchasing.style.opacity = "1";
-  fetch(`${api}/purchase/getToken`, {
+  fetch(`${api}/xsolla/getToken`, {
     method: 'POST',
     credentials: 'include',
+    body: JSON.stringify({
+      type: 'advanced'
+    }),
     headers: {
       'Content-Type': 'application/json'
     }

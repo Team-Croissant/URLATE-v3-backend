@@ -42,6 +42,7 @@ var signale = require("signale");
 var http = require("http");
 var express = require("express");
 var session = require("express-session");
+var fetch = require("node-fetch");
 var MySQLStore = require('express-mysql-session')(session);
 var hasher = require("pbkdf2-password")();
 var config = require(__dirname + '/../../config/config.json');
@@ -253,6 +254,58 @@ app.get("/getTracks", function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
+app.post('/xsolla/getToken', function (req, res) {
+    if (req.body.type == 'advanced') {
+        fetch("https://api.xsolla.com/merchant/v2/merchants/" + config.xsolla.merchantId + "/token", {
+            method: 'post',
+            body: JSON.stringify({
+                "user": {
+                    "id": {
+                        "value": req.session.userid
+                    },
+                    "email": {
+                        "value": req.session.email
+                    }
+                },
+                "settings": {
+                    "project_id": config.xsolla.projectId,
+                    "mode": "sandbox" //NEED TO DELETE ON RELEASE
+                }
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Basic " + config.xsolla.basicKey
+            },
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (json) {
+            res.status(200).json({ result: "success", token: json.token });
+        });
+    }
+});
+app.post('/xsolla/webhook', function (req, res) {
+    switch (req.body.notification_type) {
+        case 'user_validation':
+            console.log('user_validation');
+            break;
+        case 'payment':
+            console.log('payment');
+            break;
+        case 'create_subscription':
+            console.log('create_subscription');
+            break;
+        case 'update_subscription':
+            console.log('update_subscription');
+            break;
+        case 'cancel_subscription':
+            console.log('cancel_subscription');
+            break;
+        case 'refund':
+            console.log('refund');
+            break;
+    }
+    res.end();
+});
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

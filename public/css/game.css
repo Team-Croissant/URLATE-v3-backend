@@ -550,7 +550,7 @@ body {
 }
 
 #license {
-  font-size: 0.8em;
+  font-size: 1.2em;
   font-weight: 400;
 }
 
@@ -572,4 +572,8 @@ body {
   font-weight: 500;
   transition-duration: 1s;
   opacity: 0;
+}
+
+#licenseMain {
+  font-weight: 500;
 }

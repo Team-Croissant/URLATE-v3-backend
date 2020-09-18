@@ -4,6 +4,7 @@ import signale = require('signale');
 import http = require('http');
 import express = require('express');
 import session = require('express-session');
+import fetch = require('node-fetch');
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 
@@ -15,7 +16,6 @@ const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
-import { settings } from 'cluster';
 
 const app = express();
 app.locals.pretty = true;
@@ -192,6 +192,60 @@ app.get("/getTracks", async (req, res) => {
   }
   
   res.status(200).json({result: "success", tracks: results});
+});
+
+app.post('/xsolla/getToken', (req, res) => {
+  if(req.body.type == 'advanced') {
+    fetch(`https://api.xsolla.com/merchant/v2/merchants/${config.xsolla.merchantId}/token`, {
+        method: 'post',
+        body: JSON.stringify({
+          "user": {
+            "id": {
+              "value": req.session.userid
+            },
+            "email": {
+              "value": req.session.email
+            }
+          },
+          "settings": {
+            "project_id": config.xsolla.projectId,
+            "mode": "sandbox" //NEED TO DELETE ON RELEASE
+          }
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${config.xsolla.basicKey}`
+        },
+    })
+    .then(res => res.json())
+    .then(json => {
+      res.status(200).json({result: "success", token: json.token});
+    });
+  }
+});
+
+app.post('/xsolla/webhook', (req, res) => {
+  switch(req.body.notification_type) {
+    case 'user_validation':
+      console.log('user_validation');
+      break;
+    case 'payment':
+      console.log('payment');
+      break;
+    case 'create_subscription':
+      console.log('create_subscription');
+      break;
+    case 'update_subscription':
+      console.log('update_subscription');
+      break;
+    case 'cancel_subscription':
+      console.log('cancel_subscription');
+      break;
+    case 'refund':
+      console.log('refund');
+      break;
+  }
+  res.end();
 });
 
 app.get('/logout', (req, res) => {
