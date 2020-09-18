@@ -548,3 +548,8 @@ body {
   color: #666;
   font-size: 1.5vh;
 }
+
+#license {
+  font-size: 0.8em;
+  font-weight: 400;
+}
