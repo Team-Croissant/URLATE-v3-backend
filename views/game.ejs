@@ -76,6 +76,9 @@
         <span>this is select section, welcome!</span>
     </div>
     <div id="advancedContainer" class="containers">
+        <div id="advancedPurchasing">
+            <span>잠시만 기다려주십시오,<br>결제가 끝나면 자동으로 새로고침됩니다..</span>
+        </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
         <h1 id="advancedTitle"><strong>URLATE</strong> ADVANCED</h1>
         <p class="advancedDescription"><%= __('advanced_description_1') %><br><%= __('advanced_description_2') %><br><strong><%= __('advanced_description_3') %></strong></p>
@@ -124,7 +127,7 @@
             <option>49900₩ / Mo.</option>
         </select>
         <br>
-        <input type="button" id="registerBtn" value="<%= __('register') %>">
+        <input type="button" id="registerBtn" value="<%= __('register') %>" onclick="getAdvanced()">
     </div>
     <div id="infoContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">

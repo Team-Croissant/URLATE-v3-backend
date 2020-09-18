@@ -225,4 +225,24 @@ const menu2Selected = () => {
   document.getElementById("advancedContainer").classList.add("fadeIn");
 };
 
+const getAdvanced = () => {
+  advancedPurchasing.style.pointerEvents = "all";
+  advancedPurchasing.style.opacity = "1";
+  fetch(`${api}/purchase/getToken`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then((data) => {
+    window.open(`https://sandbox-secure.xsolla.com/paystation3/?access_token=${data.token}`, "PopupWin", `width=${window.innerWidth / 2},height=${window.innerHeight / 1.5}`);
+  }).catch((error) => {
+    advancedPurchasing.style.pointerEvents = "none";
+    advancedPurchasing.style.opacity = "0";
+    alert(`Error occured.\n${error}`);
+  });
+};
+
 window.addEventListener("resize", initialize);

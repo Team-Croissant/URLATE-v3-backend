@@ -4,7 +4,7 @@ import signale = require('signale');
 import http = require('http');
 import express = require('express');
 import session = require('express-session');
-import fetch = require('node-fetch');
+const Xsolla = require('xsolla').default;
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 
@@ -16,6 +16,7 @@ const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
+import { settings } from 'cluster';
 
 const app = express();
 app.locals.pretty = true;
@@ -36,6 +37,11 @@ const sessionStore = new MySQLStore({
   user: config.database.user,
   password: config.database.password,
   database: config.database.db
+});
+
+const xsollaClient = new Xsolla({
+  merchantId: config.xsolla.merchantId,
+  apiKey: config.xsolla.apiKey
 });
 
 app.use(session({
@@ -93,7 +99,7 @@ app.post('/login', (req, res) => {
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: 'me', auth: oauth2Client }, (err, response) => {
       req.session.userid = response.data.id;
-      req.session.tempEmail = response.data.emails[0].value;
+      req.session.email = response.data.emails[0].value;
       req.session.tempName = response.data.displayName;
       req.session.accessToken = access_token;
       req.session.refreshToken = refresh_token;
@@ -130,12 +136,11 @@ app.post("/join", async (req, res) => {
         salt: salt,
         secondary: hash,
         date: new Date(),
-        email: req.session.tempEmail,
+        email: req.session.email,
         settings: JSON.stringify(settingsConfig)
       });
   
       delete req.session.tempName;
-      delete req.session.tempEmail;
       req.session.save(() => {
         res.status(200).json(createSuccessResponse('success'));
       });
@@ -201,7 +206,7 @@ app.get('/logout', (req, res) => {
   delete req.session.refreshToken;
   delete req.session.userid;
   delete req.session.tempName;
-  delete req.session.tempEmail;
+  delete req.session.email;
   delete req.session.vaildChecked;
   req.session.save(() => {
     if(req.query.redirect == 'true') {

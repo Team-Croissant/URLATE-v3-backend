@@ -42,6 +42,7 @@ var signale = require("signale");
 var http = require("http");
 var express = require("express");
 var session = require("express-session");
+var Xsolla = require('xsolla').default;
 var MySQLStore = require('express-mysql-session')(session);
 var hasher = require("pbkdf2-password")();
 var config = require(__dirname + '/../../config/config.json');
@@ -67,6 +68,10 @@ var sessionStore = new MySQLStore({
     user: config.database.user,
     password: config.database.password,
     database: config.database.db
+});
+var xsollaClient = new Xsolla({
+    merchantId: config.xsolla.merchantId,
+    apiKey: config.xsolla.apiKey
 });
 app.use(session({
     key: config.session.key,
@@ -122,7 +127,7 @@ app.post('/login', function (req, res) {
         oauth2Client.setCredentials({ access_token: access_token, refresh_token: refresh_token });
         plus.people.get({ userId: 'me', auth: oauth2Client }, function (err, response) {
             req.session.userid = response.data.id;
-            req.session.tempEmail = response.data.emails[0].value;
+            req.session.email = response.data.emails[0].value;
             req.session.tempName = response.data.displayName;
             req.session.accessToken = access_token;
             req.session.refreshToken = refresh_token;
@@ -164,13 +169,12 @@ app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0,
                                         salt: salt,
                                         secondary: hash,
                                         date: new Date(),
-                                        email: req.session.tempEmail,
+                                        email: req.session.email,
                                         settings: JSON.stringify(settingsConfig)
                                     })];
                                 case 1:
                                     _a.sent();
                                     delete req.session.tempName;
-                                    delete req.session.tempEmail;
                                     req.session.save(function () {
                                         res.status(200).json(api_response_1.createSuccessResponse('success'));
                                     });
@@ -260,7 +264,7 @@ app.get('/logout', function (req, res) {
     delete req.session.refreshToken;
     delete req.session.userid;
     delete req.session.tempName;
-    delete req.session.tempEmail;
+    delete req.session.email;
     delete req.session.vaildChecked;
     req.session.save(function () {
         if (req.query.redirect == 'true') {
