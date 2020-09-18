@@ -3,7 +3,7 @@
     "type": "git",
     "url": "https://github.com/Team-Croissant/URLATE"
   },
-  "name": "URLATE",
+  "name": "urlate",
   "version": "1.0.0",
   "description": "Avoid & Get on the tempo, URLATE",
   "main": "src/",
