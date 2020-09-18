@@ -42,7 +42,6 @@ var signale = require("signale");
 var http = require("http");
 var express = require("express");
 var session = require("express-session");
-var Xsolla = require('xsolla').default;
 var MySQLStore = require('express-mysql-session')(session);
 var hasher = require("pbkdf2-password")();
 var config = require(__dirname + '/../../config/config.json');
@@ -68,10 +67,6 @@ var sessionStore = new MySQLStore({
     user: config.database.user,
     password: config.database.password,
     database: config.database.db
-});
-var xsollaClient = new Xsolla({
-    merchantId: config.xsolla.merchantId,
-    apiKey: config.xsolla.apiKey
 });
 app.use(session({
     key: config.session.key,

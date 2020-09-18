@@ -77,7 +77,7 @@
     </div>
     <div id="advancedContainer" class="containers">
         <div id="advancedPurchasing">
-            <span>잠시만 기다려주십시오,<br>결제가 끝나면 자동으로 새로고침됩니다..</span>
+            <span><%= __('purchasing_1') %><br><%= __('purchasing_2') %></span>
         </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
         <h1 id="advancedTitle"><strong>URLATE</strong> ADVANCED</h1>
@@ -121,10 +121,10 @@
         <p class="advancedSubtitle"><%= __('advanced_subtitle_3') %></p>
         <p class="advancedDescription"><%= __('advanced_description_8') %><br><strong><%= __('advanced_description_9') %></strong></p>
         <select id="advancedSelector" onchange="advancedSelected(this)">
-            <option selected>6900₩ / Mo.</option>
-            <option>14900₩ / Mo.</option>
-            <option>24900₩ / Mo.</option>
-            <option>49900₩ / Mo.</option>
+            <option selected><%= __('advanced_price_1') %></option>
+            <option><%= __('advanced_price_2') %></option>
+            <option><%= __('advanced_price_3') %></option>
+            <option><%= __('advanced_price_4') %></option>
         </select>
         <br>
         <input type="button" id="registerBtn" value="<%= __('register') %>" onclick="getAdvanced()">
