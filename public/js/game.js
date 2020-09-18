@@ -171,6 +171,7 @@ const displayClose = () => {
     document.getElementById("selectContainer").classList.toggle("fadeOut");
     setTimeout(() => {
       document.getElementById("selectContainer").classList.remove("fadeOut");
+      document.getElementById("selectContainer").style.display = "none";
     }, 500);
   } else if(display == 2) {
     //Settings
