@@ -518,17 +518,6 @@ body {
   background: linear-gradient(180deg, rgb(255,255,255) 49%, rgb(235,235,235) 50%);
 }
 
-#advancedSelector {
-  margin-top: 10vh;
-  font-family: 'Metropolis', Arial;
-  background: none;
-  padding: 1.5vh 1.5vw;
-  font-size: 2vh;
-  border: 2px solid #666;
-  color: #333;
-  border-radius: 15px;
-}
-
 #registerBtn {
   cursor: pointer;
   margin: 10vh;

@@ -86,6 +86,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
           username = data.nickname;
           userid = data.userid;
           document.getElementById('name').textContent = username;
+          if(data.advanced) {
+            urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
+            registerBtn.disabled = true;
+            registerBtn.value = registered;
+            registerBtn.style.background = '#444';
+          }
           settingApply();
         } else {
           alert(`Error occured.\n${data.description}`);
@@ -240,7 +246,7 @@ const getAdvanced = () => {
   })
   .then(res => res.json())
   .then((data) => {
-    window.open(`https://sandbox-secure.xsolla.com/paystation3/?access_token=${data.token}`, "PopupWin", `width=${window.innerWidth / 2},height=${window.innerHeight / 1.5}`);
+    window.location.href = `https://sandbox-secure.xsolla.com/paystation3/?access_token=${data.token}`;
   }).catch((error) => {
     advancedPurchasing.style.pointerEvents = "none";
     advancedPurchasing.style.opacity = "0";

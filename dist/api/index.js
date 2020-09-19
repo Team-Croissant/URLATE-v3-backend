@@ -43,6 +43,7 @@ var http = require("http");
 var express = require("express");
 var session = require("express-session");
 var fetch = require("node-fetch");
+var sha1 = require("sha1");
 var MySQLStore = require('express-mysql-session')(session);
 var hasher = require("pbkdf2-password")();
 var config = require(__dirname + '/../../config/config.json');
@@ -166,6 +167,9 @@ app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0,
                                         secondary: hash,
                                         date: new Date(),
                                         email: req.session.email,
+                                        advanced: false,
+                                        advancedDate: new Date(),
+                                        advancedUpdatedDate: new Date(),
                                         settings: JSON.stringify(settingsConfig)
                                     })];
                                 case 1:
@@ -217,7 +221,7 @@ app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, vo
     });
 }); });
 app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var results, _a, settings, nickname;
+    var results, _a, settings, nickname, advanced;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -225,15 +229,15 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
                     return [2 /*return*/];
                 }
-                return [4 /*yield*/, knex('users').select('nickname', 'settings').where('userid', req.session.userid)];
+                return [4 /*yield*/, knex('users').select('nickname', 'settings', 'advanced').where('userid', req.session.userid)];
             case 1:
                 results = _b.sent();
                 if (!results.length) {
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
                     return [2 /*return*/];
                 }
-                _a = results[0], settings = _a.settings, nickname = _a.nickname;
-                res.status(200).json({ result: "success", settings: settings, nickname: nickname, userid: req.session.userid });
+                _a = results[0], settings = _a.settings, nickname = _a.nickname, advanced = _a.advanced;
+                res.status(200).json({ result: "success", settings: settings, nickname: nickname, userid: req.session.userid, advanced: advanced });
                 return [2 /*return*/];
         }
     });
@@ -283,29 +287,66 @@ app.post('/xsolla/getToken', function (req, res) {
         });
     }
 });
-app.post('/xsolla/webhook', function (req, res) {
-    switch (req.body.notification_type) {
-        case 'user_validation':
-            console.log('user_validation');
-            break;
-        case 'payment':
-            console.log('payment');
-            break;
-        case 'create_subscription':
-            console.log('create_subscription');
-            break;
-        case 'update_subscription':
-            console.log('update_subscription');
-            break;
-        case 'cancel_subscription':
-            console.log('cancel_subscription');
-            break;
-        case 'refund':
-            console.log('refund');
-            break;
-    }
-    res.end();
-});
+app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, result;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                console.log(req.body);
+                if (!(req.headers.authorization == "Signature " + sha1(JSON.stringify(req.body) + config.xsolla.projectKey))) return [3 /*break*/, 12];
+                _a = req.body.notification_type;
+                switch (_a) {
+                    case 'user_validation': return [3 /*break*/, 1];
+                    case 'payment': return [3 /*break*/, 3];
+                    case 'create_subscription': return [3 /*break*/, 4];
+                    case 'update_subscription': return [3 /*break*/, 6];
+                    case 'cancel_subscription': return [3 /*break*/, 8];
+                    case 'refund': return [3 /*break*/, 10];
+                }
+                return [3 /*break*/, 11];
+            case 1: return [4 /*yield*/, knex('users').select('userid').where('userid', req.body.user.id)];
+            case 2:
+                result = _b.sent();
+                if (result[0] && req.body.settings.project_id == config.xsolla.projectId && req.body.settings.merchant_id == config.xsolla.merchantId) {
+                    res.end();
+                    return [2 /*return*/];
+                }
+                res.status(400).json({ "error": {
+                        "code": "INVALID_USER",
+                        "message": "Invalid user"
+                    } });
+                return [2 /*return*/];
+            case 3:
+                console.log('payment');
+                return [3 /*break*/, 11];
+            case 4: return [4 /*yield*/, knex('users').update({ 'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
+            case 5:
+                _b.sent();
+                return [3 /*break*/, 11];
+            case 6: return [4 /*yield*/, knex('users').update({ 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
+            case 7:
+                _b.sent();
+                return [3 /*break*/, 11];
+            case 8: return [4 /*yield*/, knex('users').update({ 'advanced': false, 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
+            case 9:
+                _b.sent();
+                return [3 /*break*/, 11];
+            case 10:
+                console.log('refund');
+                return [3 /*break*/, 11];
+            case 11: return [3 /*break*/, 13];
+            case 12:
+                res.status(400).json({ "error": {
+                        "code": "INVALID_SIGNATURE",
+                        "message": "Invaild signature"
+                    } });
+                return [2 /*return*/];
+            case 13:
+                res.end();
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

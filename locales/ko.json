@@ -86,13 +86,14 @@
 	"advanced_wicon_description_14": "추후 업데이트될 신기능도 미리 체험해볼 수 있습니다.",
 	"advanced_wicon_description_15": "개발서버로 어서 오세요!",
 	"advanced_subtitle_3": "좋습니다, 마음에 들어요!",
-	"advanced_description_8": "금액을 정하고 아래 버튼을 누르면, 매월 금액이 결제됩니다.",
+	"advanced_description_8": "가입하기 버튼을 누르고, 가격을 정해보세요. 금액이 매월 자동으로 결제됩니다.",
 	"advanced_description_9": "언제든지 구독을 취소할 수 있어요!",
 	"register": "가입하기",
 	"purchasing_1": "잠시만 기다려주십시오,",
-	"purchasing_2": "결제가 끝나면 자동으로 새로고침됩니다..",
-	"advanced_price_1" : "6900₩ / Mo.",
-	"advanced_price_2" : "14900₩ / Mo.",
-	"advanced_price_3" : "24900₩ / Mo.",
-	"advanced_price_4" : "49900₩ / Mo."
+	"purchasing_2": "결제창으로 이동하고 있습니다..",
+	"advanced_price_1": "6900₩ / Mo.",
+	"advanced_price_2": "14900₩ / Mo.",
+	"advanced_price_3": "24900₩ / Mo.",
+	"advanced_price_4": "49900₩ / Mo.",
+	"registered": "이미 가입됨"
 }

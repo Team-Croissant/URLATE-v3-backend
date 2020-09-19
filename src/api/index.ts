@@ -5,6 +5,7 @@ import http = require('http');
 import express = require('express');
 import session = require('express-session');
 import fetch = require('node-fetch');
+import sha1 = require('sha1');
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 
@@ -131,9 +132,11 @@ app.post("/join", async (req, res) => {
         secondary: hash,
         date: new Date(),
         email: req.session.email,
+        advanced: false,
+        advancedDate: new Date(),
+        advancedUpdatedDate: new Date(),
         settings: JSON.stringify(settingsConfig)
       });
-  
       delete req.session.tempName;
       req.session.save(() => {
         res.status(200).json(createSuccessResponse('success'));
@@ -174,14 +177,14 @@ app.get("/getUser", async (req, res) => {
     return;
   }
 
-  const results = await knex('users').select('nickname', 'settings').where('userid', req.session.userid)
+  const results = await knex('users').select('nickname', 'settings', 'advanced').where('userid', req.session.userid)
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
     return;
   }
   
-  const { settings, nickname } = results[0];
-  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid});
+  const { settings, nickname, advanced } = results[0];
+  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid, advanced});
 });
 
 app.get("/getTracks", async (req, res) => {
@@ -224,26 +227,43 @@ app.post('/xsolla/getToken', (req, res) => {
   }
 });
 
-app.post('/xsolla/webhook', (req, res) => {
-  switch(req.body.notification_type) {
-    case 'user_validation':
-      console.log('user_validation');
-      break;
-    case 'payment':
-      console.log('payment');
-      break;
-    case 'create_subscription':
-      console.log('create_subscription');
-      break;
-    case 'update_subscription':
-      console.log('update_subscription');
-      break;
-    case 'cancel_subscription':
-      console.log('cancel_subscription');
-      break;
-    case 'refund':
-      console.log('refund');
-      break;
+app.post('/xsolla/webhook', async (req, res) => {
+  console.log(req.body);
+  if(req.headers.authorization == `Signature ${sha1(JSON.stringify(req.body) + config.xsolla.projectKey)}`) {
+    switch(req.body.notification_type) {
+      case 'user_validation':
+        const result = await knex('users').select('userid').where('userid', req.body.user.id);
+        if(result[0] && req.body.settings.project_id == config.xsolla.projectId && req.body.settings.merchant_id == config.xsolla.merchantId) {
+          res.end();
+          return;
+        }
+        res.status(400).json({"error": {
+          "code": "INVALID_USER",
+          "message": "Invalid user"
+        }});
+        return;
+      case 'payment':
+        console.log('payment');
+        break;
+      case 'create_subscription':
+        await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
+        break;
+      case 'update_subscription':
+        await knex('users').update({'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
+        break;
+      case 'cancel_subscription':
+        await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
+        break;
+      case 'refund':
+        console.log('refund');
+        break;
+    }
+  } else {
+    res.status(400).json({"error": {
+      "code": "INVALID_SIGNATURE",
+      "message": "Invaild signature"
+    }});
+    return;
   }
   res.end();
 });

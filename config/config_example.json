@@ -27,6 +27,7 @@
     "merchantId": "XSOLLA MERCHANT ID",
     "apiKey": "XSOLLA API KEY",
     "projectId": "XSOLLA PROJECT ID",
-    "basicKey": "XSOLLA BASIC KEY"
+    "basicKey": "XSOLLA BASIC KEY",
+    "projectKey": "XSOLLA PROJECT SECRET KEY"
   }
 }

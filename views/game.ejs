@@ -120,12 +120,6 @@
         </div>
         <p class="advancedSubtitle"><%= __('advanced_subtitle_3') %></p>
         <p class="advancedDescription"><%= __('advanced_description_8') %><br><strong><%= __('advanced_description_9') %></strong></p>
-        <select id="advancedSelector" onchange="advancedSelected(this)">
-            <option selected><%= __('advanced_price_1') %></option>
-            <option><%= __('advanced_price_2') %></option>
-            <option><%= __('advanced_price_3') %></option>
-            <option><%= __('advanced_price_4') %></option>
-        </select>
         <br>
         <input type="button" id="registerBtn" value="<%= __('register') %>" onclick="getAdvanced()">
     </div>
@@ -149,6 +143,7 @@
         const cdn = "<%= cdn %>";
         const url = "<%= url %>";
         const api = "<%= api %>";
+        const registered = "<%= __('registered') %>";
     </script>
     <script src="js/game.js"></script>
 </body>

@@ -1,8 +1,4 @@
 {
-  "private" : {
-    "advancedStatus" : 0,
-    "advancedDate" : ""
-  },
   "display" : {
     "FPScounter" : true,
     "elementsRes" : "auto",
