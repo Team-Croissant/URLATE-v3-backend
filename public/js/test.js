@@ -69,6 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if(data.result == 'success') {
           userName = data.nickname;
           settings = JSON.parse(data.settings);
+          if(data.advanced) {
+            urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
+            registerBtn.disabled = true;
+            registerBtn.value = registered;
+            registerBtn.style.background = '#444';
+          }
           settingApply();
         } else {
           alert(`Error occured.\n${data.description}`);
