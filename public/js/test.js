@@ -71,9 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
           settings = JSON.parse(data.settings);
           if(data.advanced) {
             urlate.innerHTML = '<strong>URLATE</strong> Advanced';
-            registerBtn.disabled = true;
-            registerBtn.value = registered;
-            registerBtn.style.background = '#444';
           }
           settingApply();
         } else {
