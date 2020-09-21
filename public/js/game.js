@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
           document.getElementById('name').textContent = username;
           if(data.advanced) {
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
-            registerBtn.disabled = true;
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
           }
