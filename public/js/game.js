@@ -245,7 +245,7 @@ const getAdvanced = () => {
   })
   .then(res => res.json())
   .then((data) => {
-    window.location.href = `https://sandbox-secure.xsolla.com/paystation3/?access_token=${data.token}`;
+    window.location.href = `https://sandbox-secure.xsolla.com/paystation3/desktop/subscription/?access_token=${data.token}`;
   }).catch((error) => {
     advancedPurchasing.style.pointerEvents = "none";
     advancedPurchasing.style.opacity = "0";
