@@ -292,7 +292,6 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                console.log(req.body);
                 if (!(req.headers.authorization == "Signature " + sha1(JSON.stringify(req.body) + config.xsolla.projectKey))) return [3 /*break*/, 12];
                 _a = req.body.notification_type;
                 switch (_a) {

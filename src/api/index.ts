@@ -228,7 +228,6 @@ app.post('/xsolla/getToken', (req, res) => {
 });
 
 app.post('/xsolla/webhook', async (req, res) => {
-  console.log(req.body);
   if(req.headers.authorization == `Signature ${sha1(JSON.stringify(req.body) + config.xsolla.projectKey)}`) {
     switch(req.body.notification_type) {
       case 'user_validation':

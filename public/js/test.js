@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
           userName = data.nickname;
           settings = JSON.parse(data.settings);
           if(data.advanced) {
-            urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
+            urlate.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.disabled = true;
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
