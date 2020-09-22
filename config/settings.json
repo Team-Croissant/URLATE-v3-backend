@@ -1,22 +1,40 @@
 {
-  "display" : {
-    "FPScounter" : true,
-    "elementsRes" : "auto",
-    "autoImg" : true,
-    "genEffect" : true,
-    "lightEffect" : true
+  "display": {
+    "canvasRes": 100,
+    "albumRes": 80
   },
-  "ingame" : {
-    "brightness" : 25,
-    "blur" : 60,
-    "genEffect" : true,
-    "comEffect" : true,
-    "lightEffect" : true
+  "sound": {
+    "volume": {
+      "master": 0.5,
+      "music": 1,
+      "hitSound": 1
+    },
+    "offset": 0,
+    "res": "128kbps"
   },
-  "sound" : {
-    "quality" : "128kbps",
-    "musicVolume" : 30,
-    "effectVolume" : 20,
-    "offset" : 0
+  "input": {
+    "sens": 1,
+    "keys": 0,
+    "mouse": true
+  },
+  "game": {
+    "skin": "general",
+    "size": 1,
+    "judgeSkin": true,
+    "applyJudge": {
+      "Perfect": true,
+      "Great": true,
+      "Good": true,
+      "Bad": true,
+      "Miss": true,
+      "Bullet": true
+    },
+    "counter": true,
+    "comboAlert": true,
+    "comboCount": 50
+  },
+  "editor": {
+    "denySkin": true,
+    "denyAtTest": false
   }
 }
