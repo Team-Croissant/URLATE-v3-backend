@@ -1,4 +1,7 @@
 {
+  "general": {
+    "detailLang": "original"
+  },
   "display": {
     "canvasRes": 100,
     "albumRes": 80
