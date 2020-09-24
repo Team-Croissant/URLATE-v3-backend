@@ -119,7 +119,27 @@ body {
   0% { transform: rotate(0deg); transform: rotate(0deg); }
   100% { transform: rotate(360deg); transform: rotate(360deg); }
 }
-  
+
+p {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #cecece;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5a5a5a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #353535;
+}
+
 #loadingContainer {
     opacity: 1;
     display: flex;
@@ -565,4 +585,160 @@ body {
 
 #licenseMain {
   font-weight: 500;
+}
+
+#optionContainer {
+  background-color: #FFF;
+  background-image: url('/images/backgrounds/option_decorations.png');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#optionTitle {
+  font-size: 5vh;
+  margin-top: 4vh;
+  padding: 0;
+  font-weight: 600;
+}
+
+#optionElementsContainer {
+  position: fixed;
+  height: 72vh;
+  width: 100vw;
+  top: 16vh;
+}
+
+#optionSelectorContainer {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  height: 72vh;
+  width: 12vw;
+  float: left;
+  border-right: solid #BBB 3px;
+  padding-right: 3vw;
+}
+
+.optionSelectors {
+  cursor: pointer;
+  letter-spacing: -3px;
+  margin: 2vh;
+  color: #9B9B9B;
+  font-weight: 500;
+  font-size: 4vh;
+}
+
+.optionSelected {
+  cursor: default;
+  color: #404040;
+  font-weight: 600;
+}
+
+.optionContentsContainer {
+  display: none;
+  text-align: left;
+  padding-left: 3vw;
+  height: 72vh;
+  width: 80vw;
+  float: left;
+  overflow-y: auto;
+  scrollbar-color: #5a5a5a #cecece;
+  scrollbar-width: thin;
+}
+
+.optionTitle {
+  margin-top: 4vh;
+  font-weight: 600;
+  color: #404040;
+  font-size: 3.3vh;
+}
+
+.optionSemiTitle {
+  font-weight: 600;
+  color: #404040;
+  font-size: 2.5vh;
+  margin-right: 1vw;
+}
+
+.optionValueContainer {
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.optionValue {
+  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-weight: 400;
+  color: #404040;
+  font-size: 2vh;
+}
+
+.optionSelect {
+  cursor: pointer;
+  font-weight: 500;
+  padding-left: 1vw;
+  width: 10vw;
+  height: 5vh;
+  font-size: 2vh;
+  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  letter-spacing: -1px;
+  color: #fff;
+  background-color: #666;
+  border-radius: 10px;
+}
+
+.optionShow {
+  display: initial;
+}
+
+.optionSlider {
+  margin-right: 0.5vw;
+  -webkit-appearance: none;
+  width: 10vw;
+  height: 3px;
+  background: #616161;
+  outline: none;
+}
+
+.optionSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 1000px;
+  background: #363636;
+  cursor: pointer;
+}
+
+.optionSlider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 1000px;
+  background: #363636;
+  cursor: pointer;
+}
+
+.optionButton {
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+  padding: 1.5vh 3vw 1.5vh 3vw;
+  font-size: 2vh;
+  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  letter-spacing: -1px;
+  color: #fff;
+  text-decoration: none;
+  background-color: #666;
+  border-radius: 10px;
+}
+
+.optionCheckbox {
+  margin-right: 2vw;
+  border: solid #666 5px;
+  width: 1vw;
+  height: 1vw;
 }

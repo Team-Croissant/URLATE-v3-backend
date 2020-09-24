@@ -40,7 +40,7 @@
         <div id="headerRight">
             <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable" onclick="infoScreen()">
             <div id="line"></div>
-            <img src="https://img.icons8.com/windows/64/000000/settings.png" class="icon clickable">
+            <img src="https://img.icons8.com/windows/64/000000/settings.png" class="icon clickable" onclick="optionScreen()">
         </div>
     </div>
     <div id="menuContainer">
@@ -135,14 +135,192 @@
         <div id="infoLineContainer"><div id="infoLine"></div></div>
         <img src="images/logos/croissant.png" id="croissantLogo">
     </div>
+    <div id="optionContainer" class="containers">
+        <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
+        <h1 id="optionTitle"><%= __('option') %></h1>
+        <div id="optionElementsContainer">
+            <div id="optionSelectorContainer">
+                <span class="optionSelectors optionSelected" onclick="optionSelect(0)"><%= __('general') %></span>
+                <span class="optionSelectors" onclick="optionSelect(1)"><%= __('screen') %></span>
+                <span class="optionSelectors" onclick="optionSelect(2)"><%= __('sound') %></span>
+                <span class="optionSelectors" onclick="optionSelect(3)"><%= __('input') %></span>
+                <span class="optionSelectors" onclick="optionSelect(4)"><%= __('game') %></span>
+                <span class="optionSelectors" onclick="optionSelect(5)"><%= __('editor_title') %></span>
+            </div>
+            <div class="optionContentsContainer optionShow" id="optionGeneral">
+                <p class="optionTitle"><%= __('my_info') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('namePlaceholder') %></p>
+                    <p class="optionValue" id="optionName">USERNAME</p>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle">ADVANCED</p>
+                    <p class="optionValue" id="optionAdvanced"><%= __('disabled') %></p>
+                </div>
+                <p class="optionTitle"><%= __('language') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('general_language') %></p>
+                    <select class="optionSelect">
+                        <option>한국어</option>
+                        <option>English</option>
+                    </select>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('music_artist') %></p>
+                    <select class="optionSelect">
+                        <option><%= __('show_original') %></option>
+                        <option><%= __('show_english') %></option>
+                    </select>
+                </div>
+            </div>
+            <div class="optionContentsContainer" id="optionDisplay">
+                <p class="optionTitle"><%= __('resolution') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('canvas') %></p>
+                    <select class="optionSelect">
+                        <option>100%</option>
+                        <option>75%</option>
+                        <option>50%</option>
+                        <option>25%</option>
+                    </select>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('album_art') %></p>
+                    <select class="optionSelect">
+                        <option>100%</option>
+                        <option>75%</option>
+                        <option>50%</option>
+                    </select>
+                </div>
+            </div>
+            <div class="optionContentsContainer" id="optionSound">
+                <p class="optionTitle"><%= __('volume') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('volume_all') %></p>
+                    <input type="range" min="0" max="80" value="50" id="volumeAll" class="optionSlider">
+                    <p class="optionValue">50%</p>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('volume_song') %></p>
+                    <input type="range" min="0" max="100" value="100" id="volumeSong" class="optionSlider">
+                    <p class="optionValue">100%</p>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('volume_hitsound') %></p>
+                    <input type="range" min="0" max="100" value="100" id="volumeHit" class="optionSlider">
+                    <p class="optionValue">100%</p>
+                </div>
+                <p class="optionTitle"><%= __('details') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('offset') %></p>
+                    <a class="optionButton" onclick="offsetSetting()">0ms</a>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('resolution') %></p>
+                    <select class="optionSelect">
+                        <option>96kbps</option>
+                        <option>128kbps</option>
+                        <option style="display: none;">192kbps</option>
+                    </select>
+                </div>
+            </div>
+            <div class="optionContentsContainer" id="optionInput">
+                <p class="optionTitle"><%= __('mouse') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('sensitivity') %></p>
+                    <input type="range" min="10" max="200" value="100" id="inputSensitive" class="optionSlider">
+                    <p class="optionValue">1x</p>
+                </div>
+                <p class="optionTitle"><%= __('keyboard') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('input_key') %></p>
+                    <select class="optionSelect">
+                        <option><%= __('all_key') %></option>
+                        <option><%= __('alphabet_key') %></option>
+                        <option><%= __('zx_key') %></option>
+                    </select>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('click_with_mouse') %></p>
+                    <input type="checkbox" class="optionCheckbox">
+                </div>
+            </div>
+            <div class="optionContentsContainer" id="optionGame">
+                <p class="optionTitle"><%= __('visual') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('skin') %></p>
+                    <select class="optionSelect">
+                        <option><%= __('general') %></option>
+                    </select>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('apply_to_judge') %></p>
+                    <input type="checkbox" class="optionCheckbox" checked>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('cursor_size') %></p>
+                    <input type="range" min="5" max="20" value="10" id="inputSize" class="optionSlider">
+                    <p class="optionValue">1x</p>
+                </div>
+                <p class="optionTitle"><%= __('hide_judge') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle">Perfect</p>
+                    <input type="checkbox" class="optionCheckbox">
+                    <p class="optionSemiTitle">Great</p>
+                    <input type="checkbox" class="optionCheckbox">
+                    <p class="optionSemiTitle">Good</p>
+                    <input type="checkbox" class="optionCheckbox">
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle">Bad</p>
+                    <input type="checkbox" class="optionCheckbox">
+                    <p class="optionSemiTitle">Miss</p>
+                    <input type="checkbox" class="optionCheckbox">
+                    <p class="optionSemiTitle">Bullet</p>
+                    <input type="checkbox" class="optionCheckbox">
+                </div>
+                <p class="optionTitle"><%= __('info') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('frame_counter') %></p>
+                    <input type="checkbox" class="optionCheckbox" checked>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('combo_alert') %></p>
+                    <input type="checkbox" class="optionCheckbox" checked>
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('alert_interval') %></p>
+                    <select class="optionSelect">
+                        <option>10x</option>
+                        <option>25x</option>
+                        <option>50x</option>
+                        <option>100x</option>
+                        <option>200x</option>
+                    </select>
+                </div>
+            </div>
+            <div class="optionContentsContainer" id="optionInput">
+                <p class="optionTitle"><%= __('personalize') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('ignore_at_editor') %></p>
+                    <input type="checkbox" class="optionCheckbox">
+                </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('ignore_at_test') %></p>
+                    <input type="checkbox" class="optionCheckbox">
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="visualizer"><canvas id="renderer"></canvas></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script> -->
     <script>
         var settings = [];
         const cdn = "<%= cdn %>";
         const url = "<%= url %>";
         const api = "<%= api %>";
+        const enabled = "<%= __('enabled') %>";
         const registered = "<%= __('registered') %>";
     </script>
     <script src="js/game.js"></script>

@@ -86,7 +86,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
           username = data.nickname;
           userid = data.userid;
           document.getElementById('name').textContent = username;
+          document.getElementById('optionName').textContent = username;
           if(data.advanced) {
+            document.getElementById('optionAdvanced').textContent = enabled;
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
@@ -169,6 +171,12 @@ const infoScreen = () => {
   document.getElementById("infoContainer").classList.toggle("fadeIn");
 };
 
+const optionScreen = () => {
+  display = 2;
+  document.getElementById("optionContainer").style.display = "block";
+  document.getElementById("optionContainer").classList.toggle("fadeIn");
+};
+
 const displayClose = () => {
   if(display == 1) {
     //PLAY
@@ -179,7 +187,13 @@ const displayClose = () => {
       document.getElementById("selectContainer").style.display = "none";
     }, 500);
   } else if(display == 2) {
-    //Settings
+    //PLAY
+    document.getElementById("optionContainer").classList.remove("fadeIn");
+    document.getElementById("optionContainer").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("optionContainer").classList.remove("fadeOut");
+      document.getElementById("optionContainer").style.display = "none";
+    }, 500);
   } else if(display == 3) {
     //ADVANCED
     document.getElementById("advancedContainer").classList.remove("fadeIn");
@@ -251,6 +265,13 @@ const getAdvanced = () => {
     advancedPurchasing.style.opacity = "0";
     alert(`Error occured.\n${error}`);
   });
+};
+
+const optionSelect = n => {
+  document.getElementsByClassName('optionSelected')[0].classList.remove('optionSelected');
+  document.getElementsByClassName('optionSelectors')[n].classList.add('optionSelected');
+  document.getElementsByClassName('optionShow')[0].classList.remove('optionShow');
+  document.getElementsByClassName('optionContentsContainer')[n].classList.add('optionShow');
 };
 
 window.addEventListener("resize", initialize);
