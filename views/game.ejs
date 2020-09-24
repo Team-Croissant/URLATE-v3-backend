@@ -160,16 +160,16 @@
                 <p class="optionTitle"><%= __('language') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('general_language') %></p>
-                    <select class="optionSelect">
-                        <option>한국어</option>
-                        <option>English</option>
+                    <select class="optionSelect" id="langSelector" onchange="langChanged(this)">
+                        <option value="ko">한국어</option>
+                        <option value="en">English</option>
                     </select>
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('music_artist') %></p>
-                    <select class="optionSelect">
-                        <option><%= __('show_original') %></option>
-                        <option><%= __('show_english') %></option>
+                    <select class="optionSelect" id="langDetailSelector" onchange="settingChanged(this, 'detailLang')">
+                        <option value="original"><%= __('show_original') %></option>
+                        <option value="english"><%= __('show_english') %></option>
                     </select>
                 </div>
             </div>
@@ -177,19 +177,19 @@
                 <p class="optionTitle"><%= __('resolution') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('canvas') %></p>
-                    <select class="optionSelect">
-                        <option>100%</option>
-                        <option>75%</option>
-                        <option>50%</option>
-                        <option>25%</option>
+                    <select class="optionSelect" id="canvasResSelector" onchange="settingChanged(this, 'canvasRes')">
+                        <option value="100">100%</option>
+                        <option value="75">75%</option>
+                        <option value="50">50%</option>
+                        <option value="25">25%</option>
                     </select>
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('album_art') %></p>
-                    <select class="optionSelect">
-                        <option>100%</option>
-                        <option>75%</option>
-                        <option>50%</option>
+                    <select class="optionSelect" id="albumResSelector" onchange="settingChanged(this, 'albumRes')">
+                        <option value="100">100%</option>
+                        <option value="75">75%</option>
+                        <option value="50">50%</option>
                     </select>
                 </div>
             </div>
@@ -322,6 +322,7 @@
         const api = "<%= api %>";
         const enabled = "<%= __('enabled') %>";
         const registered = "<%= __('registered') %>";
+        const lang = "<%= __('lang') %>";
     </script>
     <script src="js/game.js"></script>
 </body>

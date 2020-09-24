@@ -22,6 +22,27 @@ const initialize = () => {
 
 const settingApply = () => {
   Howler.volume(settings.sound.musicVolume / 100);
+  if(settings.general.detailLang == "original") {
+    langDetailSelector.getElementsByTagName('option')[0].selected = true;
+  } else if(settings.general.detailLang == "english") {
+    langDetailSelector.getElementsByTagName('option')[1].selected = true;
+  }
+  if(settings.display.canvasRes == 100) {
+    canvasResSelector.getElementsByTagName('option')[0].selected = true;
+  } else if(settings.display.canvasRes == 75) {
+    canvasResSelector.getElementsByTagName('option')[1].selected = true;
+  } else if(settings.display.canvasRes == 50) {
+    canvasResSelector.getElementsByTagName('option')[2].selected = true;
+  } else if(settings.display.canvasRes == 25) {
+    canvasResSelector.getElementsByTagName('option')[3].selected = true;
+  }
+  if(settings.display.albumRes == 100) {
+    albumResSelector.getElementsByTagName('option')[0].selected = true;
+  } else if(settings.display.albumRes == 75) {
+    albumResSelector.getElementsByTagName('option')[1].selected = true;
+  } else if(settings.display.albumRes == 50) {
+    albumResSelector.getElementsByTagName('option')[2].selected = true;
+  }
   initialize();
 };
 
@@ -87,6 +108,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
           userid = data.userid;
           document.getElementById('name').textContent = username;
           document.getElementById('optionName').textContent = username;
+          if(lang == 'ko') {
+            langSelector.getElementsByTagName('option')[0].selected = true;
+          } else if(lang == 'en') {
+            langSelector.getElementsByTagName('option')[1].selected = true;
+          }
           if(data.advanced) {
             document.getElementById('optionAdvanced').textContent = enabled;
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
@@ -272,6 +298,20 @@ const optionSelect = n => {
   document.getElementsByClassName('optionSelectors')[n].classList.add('optionSelected');
   document.getElementsByClassName('optionShow')[0].classList.remove('optionShow');
   document.getElementsByClassName('optionContentsContainer')[n].classList.add('optionShow');
+};
+
+const langChanged = e => {
+  window.location.href = `${url}/${e.value}`;
+};
+
+const settingChanged = (e, v) => {
+  if(v == 'detailLang') {
+    settings.general.detailLang = e.value;
+  } else if(v == 'canvasRes') {
+    settings.display.canvasRes = Number(e.value);
+  } else if(v == 'albumRes') {
+    settings.display.albumRes = Number(e.value);
+  }
 };
 
 window.addEventListener("resize", initialize);
