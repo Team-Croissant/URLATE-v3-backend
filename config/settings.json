@@ -8,7 +8,7 @@
   },
   "sound": {
     "volume": {
-      "master": 0.5,
+      "master": 0.4,
       "music": 1,
       "hitSound": 1
     },

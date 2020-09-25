@@ -197,27 +197,27 @@
                 <p class="optionTitle"><%= __('volume') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('volume_all') %></p>
-                    <input type="range" min="0" max="80" value="50" id="volumeAll" class="optionSlider">
-                    <p class="optionValue">50%</p>
+                    <input type="range" min="0" max="80" value="50" id="volumeMaster" class="optionSlider" oninput="settingChanged(this, 'volumeMaster')">
+                    <p class="optionValue" id="volumeMasterValue">50%</p>
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('volume_song') %></p>
-                    <input type="range" min="0" max="100" value="100" id="volumeSong" class="optionSlider">
-                    <p class="optionValue">100%</p>
+                    <input type="range" min="0" max="100" value="100" id="volumeSong" class="optionSlider" oninput="settingChanged(this, 'volumeSong')">
+                    <p class="optionValue" id="volumeSongValue">100%</p>
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('volume_hitsound') %></p>
-                    <input type="range" min="0" max="100" value="100" id="volumeHit" class="optionSlider">
-                    <p class="optionValue">100%</p>
+                    <input type="range" min="0" max="100" value="100" id="volumeHit" class="optionSlider" oninput="settingChanged(this, 'volumeHitsound')">
+                    <p class="optionValue" id="volumeHitValue">100%</p>
                 </div>
                 <p class="optionTitle"><%= __('details') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('offset') %></p>
-                    <a class="optionButton" onclick="offsetSetting()">0ms</a>
+                    <a class="optionButton" onclick="offsetSetting()" id="offsetButton">0ms</a>
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('resolution') %></p>
-                    <select class="optionSelect">
+                    <select class="optionSelect" id="soundResSelector" onchange="settingChanged(this, 'soundRes')">
                         <option>96kbps</option>
                         <option>128kbps</option>
                         <option style="display: none;">192kbps</option>
@@ -231,6 +231,7 @@
                     <input type="range" min="10" max="200" value="100" id="inputSensitive" class="optionSlider">
                     <p class="optionValue">1x</p>
                 </div>
+                <p class="optionValue"><%= __('sensitivity_warning') %></p>
                 <p class="optionTitle"><%= __('keyboard') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('input_key') %></p>

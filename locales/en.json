@@ -115,5 +115,6 @@
 	"alert_interval": "Alert interval",
 	"personalize": "Personalize",
 	"ignore_at_editor": "Ignore in editor",
-	"ignore_at_test": "Ignore in test"
+	"ignore_at_test": "Ignore in test",
+	"sensitivity_warning": "*Applies only to in-game cursors."
 }

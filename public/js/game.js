@@ -43,6 +43,20 @@ const settingApply = () => {
   } else if(settings.display.albumRes == 50) {
     albumResSelector.getElementsByTagName('option')[2].selected = true;
   }
+  if(settings.sound.res == "96kbps") {
+    soundResSelector.getElementsByTagName('option')[0].selected = true;
+  } else if(settings.sound.res == "128kbps") {
+    soundResSelector.getElementsByTagName('option')[1].selected = true;
+  } else if(settings.sound.res == "192kbps") {
+    soundResSelector.getElementsByTagName('option')[2].selected = true;
+  }
+  volumeMaster.value = settings.sound.volume.master * 100;
+  volumeSong.value = settings.sound.volume.music * 100;
+  volumeHit.value = settings.sound.volume.hitSound * 100;
+  volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
+  volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
+  volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
+  offsetButton.textContent = settings.sound.offset + 'ms';
   initialize();
 };
 
@@ -118,6 +132,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
+            soundResSelector.getElementsByTagName('option')[2].style.display = 'initial';
           }
           settingApply();
         } else {
@@ -311,6 +326,17 @@ const settingChanged = (e, v) => {
     settings.display.canvasRes = Number(e.value);
   } else if(v == 'albumRes') {
     settings.display.albumRes = Number(e.value);
+  } else if(v == 'volumeMaster') {
+    settings.sound.volume.master = e.value / 80;
+    volumeMasterValue.textContent = Math.round(e.value * 1.25) + '%';
+  } else if(v == 'volumeSong') {
+    settings.sound.volume.music = e.value / 100;
+    volumeSongValue.textContent = e.value + '%';
+  } else if(v == 'volumeHitsound') {
+    settings.sound.volume.hitSound = e.value / 100;
+    volumeHitValue.textContent = e.value + '%';
+  } else if(v == 'soundRes') {
+    settings.sound.res = e.value;
   }
 };
 
