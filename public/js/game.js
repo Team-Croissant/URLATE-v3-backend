@@ -54,7 +54,7 @@ const settingApply = () => {
   volumeMaster.value = settings.sound.volume.master * 100;
   volumeSong.value = settings.sound.volume.music * 100;
   volumeHit.value = settings.sound.volume.hitSound * 100;
-  inputSensitive.value = settings.input.sens;
+  inputSensitive.value = settings.input.sens * 100;
   mouseCheck.checked = settings.input.mouse;
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
@@ -342,9 +342,8 @@ const settingChanged = (e, v) => {
   } else if(v == 'soundRes') {
     settings.sound.res = e.value;
   } else if(v == 'sensitive') {
-    settings.input.sens = e.value;
-    inputSensitive.value = e.value;
-    sensitiveValue.textContent = e.value + 'x';
+    settings.input.sens = e.value / 100;
+    sensitiveValue.textContent = e.value / 100 + 'x';
   } else if(v == 'inputKey') {
     settings.input.keys = Number(e.value);
   } else if(v == 'inputMouse') {
