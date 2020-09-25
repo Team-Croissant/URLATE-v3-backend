@@ -228,22 +228,22 @@
                 <p class="optionTitle"><%= __('mouse') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('sensitivity') %></p>
-                    <input type="range" min="10" max="200" value="100" id="inputSensitive" class="optionSlider">
-                    <p class="optionValue">1x</p>
+                    <input type="range" min="10" max="200" value="100" id="inputSensitive" class="optionSlider" oninput="settingChanged(this, 'sensitive')">
+                    <p id="sensitiveValue" class="optionValue">1x</p>
                 </div>
                 <p class="optionValue"><%= __('sensitivity_warning') %></p>
                 <p class="optionTitle"><%= __('keyboard') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('input_key') %></p>
-                    <select class="optionSelect">
-                        <option><%= __('all_key') %></option>
-                        <option><%= __('alphabet_key') %></option>
-                        <option><%= __('zx_key') %></option>
+                    <select class="optionSelect" id="inputSelector" onchange="settingChanged(this, 'inputKey')">
+                        <option value="0"><%= __('all_key') %></option>
+                        <option value="1"><%= __('alphabet_key') %></option>
+                        <option value="2"><%= __('zx_key') %></option>
                     </select>
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('click_with_mouse') %></p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="mouseCheck" onchange="settingChanged(this, 'inputMouse')">
                 </div>
             </div>
             <div class="optionContentsContainer" id="optionGame">

@@ -50,13 +50,17 @@ const settingApply = () => {
   } else if(settings.sound.res == "192kbps") {
     soundResSelector.getElementsByTagName('option')[2].selected = true;
   }
+  inputSelector.getElementsByTagName('option')[Number(settings.input.keys)].selected = true;
   volumeMaster.value = settings.sound.volume.master * 100;
   volumeSong.value = settings.sound.volume.music * 100;
   volumeHit.value = settings.sound.volume.hitSound * 100;
+  inputSensitive.value = settings.input.sens;
+  mouseCheck.checked = settings.input.mouse;
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
   offsetButton.textContent = settings.sound.offset + 'ms';
+  sensitiveValue.textContent = settings.input.sens + 'x';
   initialize();
 };
 
@@ -337,6 +341,14 @@ const settingChanged = (e, v) => {
     volumeHitValue.textContent = e.value + '%';
   } else if(v == 'soundRes') {
     settings.sound.res = e.value;
+  } else if(v == 'sensitive') {
+    settings.input.sens = e.value;
+    inputSensitive.value = e.value;
+    sensitiveValue.textContent = e.value + 'x';
+  } else if(v == 'inputKey') {
+    settings.input.keys = Number(e.value);
+  } else if(v == 'inputMouse') {
+    settings.input.mouse = e.checked;
   }
 };
 
