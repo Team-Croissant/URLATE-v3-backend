@@ -76,7 +76,8 @@ const settingApply = () => {
   judgeMiss.checked = settings.game.applyJudge.Miss;
   judgeBullet.checked = settings.game.applyJudge.Bullet;
   frameCheck.checked = settings.game.counter;
-  comboAlertCheck.checked = settings.game.comboAlert;
+  ignoreEditorCheck.checked = settings.editor.denySkin;
+  ignoreTestCheck.checked = settings.editor.denyAtTest;
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
@@ -394,6 +395,10 @@ const settingChanged = (e, v) => {
     settings.game.comboAlert = e.checked;
   } else if(v == 'comboCount') {
     settings.game.comboCount = Number(e.value);
+  } else if(v == 'ignoreEditor') {
+    settings.editor.denySkin = e.checked;
+  } else if(v == 'ignoreTest') {
+    settings.editor.denyAtTest = e.checked;
   }
 };
 
