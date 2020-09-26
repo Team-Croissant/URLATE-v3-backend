@@ -349,6 +349,33 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
         }
     });
 }); });
+app.put('/update/settings', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!req.session.userid) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+                    return [2 /*return*/];
+                }
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                console.log(req.body.settings);
+                return [4 /*yield*/, knex('users').update({ 'settings': JSON.stringify(req.body.settings) }).where('userid', req.session.userid)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                e_1 = _a.sent();
+                res.status(400).json(api_response_1.createErrorResponse('failed', 'Error occured while updating', e_1));
+                return [2 /*return*/];
+            case 4:
+                res.status(200).json(api_response_1.createSuccessResponse('success'));
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

@@ -264,7 +264,27 @@ const displayClose = () => {
       document.getElementById("selectContainer").style.display = "none";
     }, 500);
   } else if(display == 2) {
-    //PLAY
+    //OPTION
+    fetch(`${api}/update/settings`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify({
+        settings: settings
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result == 'success') {
+        alert('settings updated!');
+      } else {
+        alert(`Error occured.\n${data.error}`);
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+    });
     document.getElementById("optionContainer").classList.remove("fadeIn");
     document.getElementById("optionContainer").classList.toggle("fadeOut");
     setTimeout(() => {

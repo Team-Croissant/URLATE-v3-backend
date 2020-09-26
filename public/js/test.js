@@ -130,7 +130,7 @@ const settingApply = () => {
   .then((data) => {
     if(data.result == 'success') {
       song = new Howl({
-        src: [`${cdn}/tracks/${settings.sound.quality}/${fileName}.mp3`],
+        src: [`${cdn}/tracks/${settings.sound.res}/${fileName}.mp3`],
         autoplay: false,
         loop: false,
         onend: () => {

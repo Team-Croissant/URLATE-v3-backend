@@ -270,6 +270,21 @@ app.post('/xsolla/webhook', async (req, res) => {
   res.end();
 });
 
+app.put('/update/settings', async (req, res) => {
+  if(!req.session.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
+  }
+  try {
+    console.log(req.body.settings);
+    await knex('users').update({'settings': JSON.stringify(req.body.settings)}).where('userid', req.session.userid);
+  } catch(e) {
+    res.status(400).json(createErrorResponse('failed', 'Error occured while updating', e));
+    return;
+  }
+  res.status(200).json(createSuccessResponse('success'));
+});
+
 app.get('/logout', (req, res) => {
   delete req.session.authorized;
   delete req.session.accessToken;

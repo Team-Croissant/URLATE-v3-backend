@@ -147,7 +147,7 @@ const dataLoaded = (event) => {
 
 const songSelected = (isLoaded) => {
   song = new Howl({
-    src: [`${cdn}/tracks/${settings.sound.quality}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
+    src: [`${cdn}/tracks/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
     autoplay: false,
     loop: false,
     onend: () => {
