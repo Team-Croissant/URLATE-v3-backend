@@ -220,7 +220,7 @@
                     <select class="optionSelect" id="soundResSelector" onchange="settingChanged(this, 'soundRes')">
                         <option>96kbps</option>
                         <option>128kbps</option>
-                        <option style="display: none;">192kbps</option>
+                        <option calss="advancedOnly">192kbps</option>
                     </select>
                 </div>
             </div>
@@ -250,48 +250,47 @@
                 <p class="optionTitle"><%= __('visual') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('skin') %></p>
-                    <select class="optionSelect">
-                        <option><%= __('general') %></option>
+                    <select class="optionSelect" id="skinSelector" onchange="settingChanged(this, 'skin')">
                     </select>
                 </div>
                 <div class="optionValueContainer">
-                    <p class="optionSemiTitle"><%= __('apply_to_judge') %></p>
-                    <input type="checkbox" class="optionCheckbox" checked>
-                </div>
-                <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('cursor_size') %></p>
-                    <input type="range" min="5" max="20" value="10" id="inputSize" class="optionSlider">
-                    <p class="optionValue">1x</p>
+                    <input type="range" min="5" max="20" value="10" id="inputSize" class="optionSlider" oninput="settingChanged(this, 'inputSize')">
+                    <p id="inputSizeValue" class="optionValue">1x</p>
                 </div>
-                <p class="optionTitle"><%= __('hide_judge') %></p>
-                <div class="optionValueContainer">
+                <div class="optionValueContainer advancedOnly">
+                    <p class="optionSemiTitle"><%= __('apply_to_judge') %></p>
+                    <input type="checkbox" class="optionCheckbox" id="judgeSkin" onchange="settingChanged(this, 'judgeSkin')">
+                </div>
+                <p class="optionTitle advancedOnly"><%= __('hide_judge') %></p>
+                <div class="optionValueContainer advancedOnly">
                     <p class="optionSemiTitle">Perfect</p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="judgePerfect" onchange="settingChanged(this, 'Perfect')">
                     <p class="optionSemiTitle">Great</p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="judgeGreat" onchange="settingChanged(this, 'Great')">
                     <p class="optionSemiTitle">Good</p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="judgeGood" onchange="settingChanged(this, 'Good')">
                 </div>
-                <div class="optionValueContainer">
+                <div class="optionValueContainer advancedOnly">
                     <p class="optionSemiTitle">Bad</p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="judgeBad" onchange="settingChanged(this, 'Bad')">
                     <p class="optionSemiTitle">Miss</p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="judgeMiss" onchange="settingChanged(this, 'Miss')">
                     <p class="optionSemiTitle">Bullet</p>
-                    <input type="checkbox" class="optionCheckbox">
+                    <input type="checkbox" class="optionCheckbox" id="judgeBullet" onchange="settingChanged(this, 'Bullet')">
                 </div>
                 <p class="optionTitle"><%= __('info') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('frame_counter') %></p>
-                    <input type="checkbox" class="optionCheckbox" checked>
+                    <input type="checkbox" class="optionCheckbox" id="frameCheck" onchange="settingChanged(this, 'frameCounter')">
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('combo_alert') %></p>
-                    <input type="checkbox" class="optionCheckbox" checked>
+                    <input type="checkbox" class="optionCheckbox" id="comboAlertCheck" onchange="settingChanged(this, 'comboAlert')">
                 </div>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('alert_interval') %></p>
-                    <select class="optionSelect">
+                    <select class="optionSelect" id="comboSelector" onchange="settingChanged(this, 'comboCount')">
                         <option>10x</option>
                         <option>25x</option>
                         <option>50x</option>

@@ -50,17 +50,39 @@ const settingApply = () => {
   } else if(settings.sound.res == "192kbps") {
     soundResSelector.getElementsByTagName('option')[2].selected = true;
   }
+  if(settings.game.comboCount == 10) {
+    comboSelector.getElementsByTagName('option')[0].selected = true;
+  } else if(settings.game.comboCount == 25) {
+    comboSelector.getElementsByTagName('option')[1].selected = true;
+  } else if(settings.game.comboCount == 50) {
+    comboSelector.getElementsByTagName('option')[2].selected = true;
+  } else if(settings.game.comboCount == 100) {
+    comboSelector.getElementsByTagName('option')[3].selected = true;
+  } else if(settings.game.comboCount == 200) {
+    comboSelector.getElementsByTagName('option')[4].selected = true;
+  }
   inputSelector.getElementsByTagName('option')[Number(settings.input.keys)].selected = true;
   volumeMaster.value = settings.sound.volume.master * 100;
   volumeSong.value = settings.sound.volume.music * 100;
   volumeHit.value = settings.sound.volume.hitSound * 100;
   inputSensitive.value = settings.input.sens * 100;
+  inputSize.value = settings.game.size * 10;
   mouseCheck.checked = settings.input.mouse;
+  judgeSkin.checked = settings.game.judgeSkin;
+  judgePerfect.checked = settings.game.applyJudge.Perfect;
+  judgeGreat.checked = settings.game.applyJudge.Great;
+  judgeGood.checked = settings.game.applyJudge.Good;
+  judgeBad.checked = settings.game.applyJudge.Bad;
+  judgeMiss.checked = settings.game.applyJudge.Miss;
+  judgeBullet.checked = settings.game.applyJudge.Bullet;
+  frameCheck.checked = settings.game.counter;
+  comboAlertCheck.checked = settings.game.comboAlert;
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
   offsetButton.textContent = settings.sound.offset + 'ms';
   sensitiveValue.textContent = settings.input.sens + 'x';
+  inputSizeValue.textContent = settings.game.size + 'x';
   initialize();
 };
 
@@ -136,7 +158,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
-            soundResSelector.getElementsByTagName('option')[2].style.display = 'initial';
+            let elements = document.getElementsByClassName('advancedOnly');
+            for(let i = 0; i < elements.length; i++) {
+              elements[i].style.display = 'flex';
+            }
+          }
+          let skins = JSON.parse(data.skins).skins;
+          for(let i = 0; i < skins.length; i++) {
+            let option = document.createElement('option');
+            option.appendChild(document.createTextNode(skins[i]));
+            skinSelector.appendChild(option); 
           }
           settingApply();
         } else {
@@ -348,6 +379,21 @@ const settingChanged = (e, v) => {
     settings.input.keys = Number(e.value);
   } else if(v == 'inputMouse') {
     settings.input.mouse = e.checked;
+  } else if(v == 'skin') {
+    settings.game.skin = e.value;
+  } else if(v == 'judgeSkin') {
+    settings.game.judgeSkin = e.checked;
+  } else if(v == 'inputSize') {
+    settings.game.size = e.value / 10;
+    inputSizeValue.textContent = e.value / 10 + 'x';
+  } else if(v == 'Perfect' || v == 'Great' || v == 'Good' || v == 'Bad' || v == 'Miss' || v == 'Bullet') {
+    settings.game.applyJudge[v] = e.checked;
+  } else if(v == 'frameCounter') {
+    settings.game.counter = e.checked;
+  } else if(v == 'comboAlert') {
+    settings.game.comboAlert = e.checked;
+  } else if(v == 'comboCount') {
+    settings.game.comboCount = Number(e.value);
   }
 };
 

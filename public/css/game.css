@@ -459,7 +459,7 @@ p {
 }
 
 .fadeIn {
-  animation: fadeIn .5s linear forwards;
+  animation: fadeIn .3s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
@@ -468,7 +468,7 @@ p {
 }
 
 .fadeOut {
-  animation: fadeOut .5s linear forwards;
+  animation: fadeOut .3s ease-in-out forwards;
 }
 
 @keyframes fadeOut {
@@ -741,4 +741,8 @@ p {
   border: solid #666 5px;
   width: 1vw;
   height: 1vw;
+}
+
+.advancedOnly {
+  display: none;
 }

@@ -135,7 +135,10 @@ app.post("/join", async (req, res) => {
         advanced: false,
         advancedDate: new Date(),
         advancedUpdatedDate: new Date(),
-        settings: JSON.stringify(settingsConfig)
+        settings: JSON.stringify(settingsConfig),
+        skins: JSON.stringify({
+          "skins": ["Default"]
+        })
       });
       delete req.session.tempName;
       req.session.save(() => {
@@ -177,14 +180,14 @@ app.get("/getUser", async (req, res) => {
     return;
   }
 
-  const results = await knex('users').select('nickname', 'settings', 'advanced').where('userid', req.session.userid)
+  const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced').where('userid', req.session.userid)
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
     return;
   }
   
-  const { settings, nickname, advanced } = results[0];
-  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid, advanced});
+  const { settings, nickname, advanced, skins } = results[0];
+  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid, advanced, skins});
 });
 
 app.get("/getTracks", async (req, res) => {
