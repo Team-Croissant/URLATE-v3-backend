@@ -7,7 +7,6 @@ let canvas = document.getElementById("renderer");
 let ctx = canvas.getContext("2d");
 let bars = 100;
 
-//volume need to 0.1~0.8
 const songs = new Howl({
   src: [`${cdn}/tracks/192kbps/urlate_theme.mp3`],
   autoplay: false,
@@ -21,7 +20,7 @@ const initialize = () => {
 };
 
 const settingApply = () => {
-  Howler.volume(settings.sound.musicVolume / 100);
+  Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(settings.general.detailLang == "original") {
     langDetailSelector.getElementsByTagName('option')[0].selected = true;
   } else if(settings.general.detailLang == "english") {
@@ -192,7 +191,7 @@ window.onload = () => {
 };
 
 Pace.on('done', () => {
-  // songs.play();
+  songs.play();
   const nameStyle = window.getComputedStyle(document.getElementById("name"), null);
   const nameWidth = parseFloat(nameStyle.getPropertyValue("width"));
   if(nameWidth > 265) {
@@ -277,9 +276,7 @@ const displayClose = () => {
     })
     .then(res => res.json())
     .then((data) => {
-      if(data.result == 'success') {
-        alert('settings updated!');
-      } else {
+      if(data.result != 'success') {
         alert(`Error occured.\n${data.error}`);
       }
     }).catch((error) => {
@@ -385,9 +382,11 @@ const settingChanged = (e, v) => {
   } else if(v == 'volumeMaster') {
     settings.sound.volume.master = e.value / 80;
     volumeMasterValue.textContent = Math.round(e.value * 1.25) + '%';
+    Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   } else if(v == 'volumeSong') {
     settings.sound.volume.music = e.value / 100;
     volumeSongValue.textContent = e.value + '%';
+    Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   } else if(v == 'volumeHitsound') {
     settings.sound.volume.hitSound = e.value / 100;
     volumeHitValue.textContent = e.value + '%';

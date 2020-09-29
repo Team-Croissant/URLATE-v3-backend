@@ -47,7 +47,7 @@ const sortAsTiming = (a, b) => {
 };
 
 const settingApply = () => {
-  Howler.volume(settings.sound.musicVolume / 100);
+  Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   sync = parseInt(settings.sound.offset);
   if(localStorage.pattern) {
     pattern = JSON.parse(localStorage.pattern);
