@@ -376,6 +376,22 @@ app.put('/update/settings', function (req, res) { return __awaiter(void 0, void 
         }
     });
 }); });
+app.get("/getSkin/:skinName", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, knex('skins').select('data').where('name', req.params.skinName)];
+            case 1:
+                results = _a.sent();
+                if (!results.length) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load skin data.'));
+                    return [2 /*return*/];
+                }
+                res.status(200).json({ result: "success", data: results[0] });
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;
