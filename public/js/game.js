@@ -8,7 +8,7 @@ let ctx = canvas.getContext("2d");
 let bars = 100;
 
 const songs = new Howl({
-  src: [`${cdn}/tracks/192kbps/urlate_theme.mp3`],
+  src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
   autoplay: false,
   loop: true,
   onend: () => {}

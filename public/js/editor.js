@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
           userName = data.nickname;
           settings = JSON.parse(data.settings);
           settingApply();
+          initialize();
         } else {
           alert(`Error occured.\n${data.description}`);
           console.error(`Error occured.\n${data.description}`);
@@ -116,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  initialize();
 });
 
 const newEditor = () => {
@@ -305,8 +305,8 @@ const eraseTml = () => {
 }
 
 const initialize = () => {
-  cntCanvas.width = window.innerWidth * 0.6 * window.devicePixelRatio;
-  cntCanvas.height = window.innerHeight * 0.65 * window.devicePixelRatio;
+  cntCanvas.width = window.innerWidth * 0.6 * window.devicePixelRatio * settings.display.canvasRes / 100;
+  cntCanvas.height = window.innerHeight * 0.65 * window.devicePixelRatio * settings.display.canvasRes / 100;
   tmlCanvas.height = window.innerHeight * 0.27 * window.devicePixelRatio;
   if(isSettingsOpened) {
     tmlCanvas.width = window.innerWidth * 0.8 * window.devicePixelRatio;
@@ -350,8 +350,8 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   if(mode != 2 && mouseMode == 0) {
     if(pointingCntElement.i == '') { //MEMO: this line rejects overlap of tracking
       const seek = song.seek() - (offset + sync) / 1000;
-      const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
-      const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
+      const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio * settings.display.canvasRes / 100;
+      const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio * settings.display.canvasRes / 100;
       switch(v1) {
         case 0:
           const p = ((bpm * 14 / speed) - (pattern.patterns[i].ms - (seek * 1000))) / (bpm * 14 / speed) * 100;
