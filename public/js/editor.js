@@ -48,7 +48,7 @@ const sortAsTiming = (a, b) => {
 
 const settingApply = () => {
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-  sync = parseInt(settings.sound.offset);
+  sync = settings.sound.offset;
   if(localStorage.pattern) {
     pattern = JSON.parse(localStorage.pattern);
     for(let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
@@ -216,6 +216,19 @@ const changeMode = (n) => {
   document.getElementsByClassName('menuIcon')[mode].classList.toggle('clickable');
   mode = n;
 } 
+
+const drawCursor = () => {
+  cntCtx.beginPath();
+  let w = cntCanvas.width / 70;
+  x = cntCanvas.width / 200 * (mouseX + 100);
+  y = cntCanvas.height / 200 * (mouseY + 100);
+  let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+  grd.addColorStop(0, `rgb(174, 102, 237)`);
+  grd.addColorStop(1, `rgb(102, 183, 237)`);
+  cntCtx.fillStyle = grd;
+  cntCtx.arc(x, y, w, 0, 2 * Math.PI);
+  cntCtx.fill();
+};
 
 const drawNote = (p, x, y, s) => {
   p = Math.max(p, 0);
@@ -817,6 +830,7 @@ const cntRender = () => {
     }
   }
   tmlRender();
+  drawCursor();
 };
 
 const songPlayPause = () => {
