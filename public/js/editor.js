@@ -19,7 +19,7 @@ let pixelRatio = window.devicePixelRatio;
 let bulletsOverlapNum = 1;
 let triggersOverlapNum = 2;
 let isTextboxFocused = false;
-let skin;
+let skin, denyCursor, denySkin;
 
 let pattern = {
   "information": {
@@ -50,6 +50,8 @@ const sortAsTiming = (a, b) => {
 const settingApply = () => {
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   sync = settings.sound.offset;
+  denyCursor = settings.editor.denyCursor;
+  denySkin = settings.editor.denySkin;
   fetch(`${api}/getSkin/${settings.game.skin}`, {
     method: 'GET',
     credentials: 'include'
@@ -239,10 +241,22 @@ const drawCursor = () => {
   let w = cntCanvas.width / 70;
   x = cntCanvas.width / 200 * (mouseX + 100);
   y = cntCanvas.height / 200 * (mouseY + 100);
-  let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
-  grd.addColorStop(0, `rgb(174, 102, 237)`);
-  grd.addColorStop(1, `rgb(102, 183, 237)`);
-  cntCtx.fillStyle = grd;
+  if(!denySkin) {
+    if(skin.cursor.type == 'gradient') {
+      let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+      for(let i = 0; i < skin.cursor.stops.length; i++) {
+        grd.addColorStop(skin.cursor.stops[i].percentage / 100, `#${skin.cursor.stops[i].color}`);
+      }
+      cntCtx.fillStyle = grd;
+    } else if(skin.cursor.type == 'color') {
+      cntCtx.fillStyle = `#${skin.cursor.color}`;
+    }
+  } else {
+    let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+    grd.addColorStop(0, `rgb(174, 102, 237)`);
+    grd.addColorStop(1, `rgb(102, 183, 237)`);
+    cntCtx.fillStyle = grd;
+  }
   cntCtx.arc(x, y, w, 0, 2 * Math.PI);
   cntCtx.fill();
 };
@@ -252,20 +266,33 @@ const drawNote = (p, x, y, s) => {
   x = cntCanvas.width / 200 * (x + 100);
   y = cntCanvas.height / 200 * (y + 100);
   let w = cntCanvas.width / 40;
-  let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
-  let opacity = 1;
+  let opacity = 'FF';
   if(p > 100) {
-    opacity = (130 - p) / 130;
+    opacity = `${parseInt((130 - p) * 3.333)}`.padStart(2, '0');
   }
   if(s == true) {
-    grd.addColorStop(0, `rgba(235, 213, 52, ${opacity})`);
-    grd.addColorStop(1, `rgba(235, 213, 52, ${opacity})`);
+    cntCtx.fillStyle = `#ebd534${opacity.toString(16)}`;
+    cntCtx.strokeStyle = `#ebd534${opacity.toString(16)}`;
   } else {
-    grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
-    grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
+    if(!denySkin) {
+      if(skin.note.type == 'gradient') {
+        let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+        for(let i = 0; i < skin.note.stops.length; i++) {
+          grd.addColorStop(skin.note.stops[i].percentage / 100, `#${skin.note.stops[i].color}${opacity.toString(16)}`);
+        }
+        cntCtx.fillStyle = grd;
+        cntCtx.strokeStyle = grd;
+      } else if(skin.note.type == 'color') {
+        cntCtx.fillStyle = `#${skin.note.color}${opacity.toString(16)}`;
+      }
+    } else {
+      let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+      grd.addColorStop(0, `#fb4934${opacity})`);
+      grd.addColorStop(1, `#ebd934${opacity})`);
+      cntCtx.fillStyle = grd;
+      cntCtx.strokeStyle = grd;
+    }
   }
-  cntCtx.strokeStyle = grd;
-  cntCtx.fillStyle = grd;
   cntCtx.lineWidth = Math.round(cntCanvas.width / 500);
   cntCtx.beginPath();
   cntCtx.arc(x, y, w, 0, p / 50 * Math.PI);
@@ -280,11 +307,25 @@ const drawBullet = (n, x, y, a, s) => {
   y = cntCanvas.height / 200 * (y + 100);
   let w = cntCanvas.width / 80;
   if(s == true) {
-    cntCtx.fillStyle = "#ebd534";
-    cntCtx.strokeStyle = "#ebd534";
+    cntCtx.fillStyle = `#ebd534`;
+    cntCtx.strokeStyle = `#ebd534`;
   } else {
-    cntCtx.fillStyle = "#555";
-    cntCtx.strokeStyle = "#555";
+    if(!denySkin) {
+      if(skin.bullet.type == 'gradient') {
+        let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
+        for(let i = 0; i < skin.bullet.stops.length; i++) {
+          grd.addColorStop(skin.bullet.stops[i].percentage / 100, `#${skin.bullet.stops[i].color}`);
+        }
+        cntCtx.fillStyle = grd;
+        cntCtx.strokeStyle = grd;
+      } else if(skin.bullet.type == 'color') {
+        cntCtx.fillStyle = `#${skin.bullet.color}`;
+        cntCtx.strokeStyle = `#${skin.bullet.color}`;
+      }
+    } else {
+      cntCtx.fillStyle = "#555";
+      cntCtx.strokeStyle = "#555";
+    }
   }
   cntCtx.beginPath();
   switch(n) {
@@ -847,7 +888,7 @@ const cntRender = () => {
     }
   }
   tmlRender();
-  if(mouseMode == 0) drawCursor();
+  if(mouseMode == 0 && !denyCursor) drawCursor();
 };
 
 const songPlayPause = () => {
