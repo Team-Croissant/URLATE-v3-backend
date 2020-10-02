@@ -287,8 +287,8 @@ const drawNote = (p, x, y, s) => {
       }
     } else {
       let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
-      grd.addColorStop(0, `#fb4934${opacity})`);
-      grd.addColorStop(1, `#ebd934${opacity})`);
+      grd.addColorStop(0, `#fb4934${opacity}`);
+      grd.addColorStop(1, `#ebd934${opacity}`);
       cntCtx.fillStyle = grd;
       cntCtx.strokeStyle = grd;
     }
