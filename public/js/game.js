@@ -379,6 +379,10 @@ const langChanged = e => {
   window.location.href = `${url}/${e.value}`;
 };
 
+const logout = e => {
+  window.location.href = `${api}/logout?redirect=true`;
+};
+
 const settingChanged = (e, v) => {
   if(v == 'detailLang') {
     settings.general.detailLang = e.value;
