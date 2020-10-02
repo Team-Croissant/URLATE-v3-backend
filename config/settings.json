@@ -25,18 +25,19 @@
     "size": 1,
     "judgeSkin": true,
     "applyJudge": {
-      "Perfect": true,
-      "Great": true,
-      "Good": true,
-      "Bad": true,
-      "Miss": true,
-      "Bullet": true
+      "Perfect": false,
+      "Great": false,
+      "Good": false,
+      "Bad": false,
+      "Miss": false,
+      "Bullet": false
     },
     "counter": true,
     "comboAlert": true,
     "comboCount": 50
   },
   "editor": {
+    "denyCursor": false,
     "denySkin": true,
     "denyAtTest": false
   }

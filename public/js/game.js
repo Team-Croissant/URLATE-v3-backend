@@ -7,8 +7,8 @@ let canvas = document.getElementById("renderer");
 let ctx = canvas.getContext("2d");
 let bars = 100;
 
-const songs = new Howl({
-  src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
+let songs = new Howl({
+  src: [`${cdn}/tracks/128kbps/urlate_theme.mp3`],
   autoplay: false,
   loop: true,
   onend: () => {}
@@ -20,6 +20,12 @@ const initialize = () => {
 };
 
 const settingApply = () => {
+  songs = new Howl({
+    src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
+    autoplay: false,
+    loop: true,
+    onend: () => {}
+  });
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(settings.general.detailLang == "original") {
     langDetailSelector.getElementsByTagName('option')[0].selected = true;
@@ -75,6 +81,7 @@ const settingApply = () => {
   judgeMiss.checked = settings.game.applyJudge.Miss;
   judgeBullet.checked = settings.game.applyJudge.Bullet;
   frameCheck.checked = settings.game.counter;
+  ignoreCursorCheck.checked = settings.editor.denyCursor;
   ignoreEditorCheck.checked = settings.editor.denySkin;
   ignoreTestCheck.checked = settings.editor.denyAtTest;
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
@@ -414,6 +421,8 @@ const settingChanged = (e, v) => {
     settings.game.comboAlert = e.checked;
   } else if(v == 'comboCount') {
     settings.game.comboCount = Number(e.value);
+  } else if(v == 'ignoreCursor') {
+    settings.editor.denyCursor = e.checked;
   } else if(v == 'ignoreEditor') {
     settings.editor.denySkin = e.checked;
   } else if(v == 'ignoreTest') {

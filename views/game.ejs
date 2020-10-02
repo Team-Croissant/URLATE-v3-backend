@@ -302,6 +302,10 @@
             <div class="optionContentsContainer" id="optionInput">
                 <p class="optionTitle"><%= __('personalize') %></p>
                 <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('ignore_cursor_at_editor') %></p>
+                    <input type="checkbox" class="optionCheckbox" id="ignoreCursorCheck" onchange="settingChanged(this, 'ignoreCursor')">
+                </div>
+                <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('ignore_at_editor') %></p>
                     <input type="checkbox" class="optionCheckbox" id="ignoreEditorCheck" onchange="settingChanged(this, 'ignoreEditor')">
                 </div>
