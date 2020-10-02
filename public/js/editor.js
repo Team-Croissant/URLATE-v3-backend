@@ -830,7 +830,7 @@ const cntRender = () => {
     }
   }
   tmlRender();
-  drawCursor();
+  if(mouseMode == 0) drawCursor();
 };
 
 const songPlayPause = () => {
