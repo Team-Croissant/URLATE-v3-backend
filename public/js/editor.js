@@ -178,6 +178,7 @@ const songSelected = (isLoaded) => {
     onload: () => {
     }
   });
+  Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(!isLoaded) {
     pattern.information = {
       "version": "1.0",
