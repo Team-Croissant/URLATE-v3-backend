@@ -19,6 +19,7 @@ let pixelRatio = window.devicePixelRatio;
 let bulletsOverlapNum = 1;
 let triggersOverlapNum = 2;
 let isTextboxFocused = false;
+let skin;
 
 let pattern = {
   "information": {
@@ -49,6 +50,22 @@ const sortAsTiming = (a, b) => {
 const settingApply = () => {
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   sync = settings.sound.offset;
+  fetch(`${api}/getSkin/${settings.game.skin}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == 'success') {
+      skin = JSON.parse(data.data);
+    } else {
+      alert(`Error occured.\n${data.description}`);
+      console.error(`Error occured.\n${data.description}`);
+    }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
   if(localStorage.pattern) {
     pattern = JSON.parse(localStorage.pattern);
     for(let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {

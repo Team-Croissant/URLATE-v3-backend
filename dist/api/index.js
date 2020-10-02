@@ -387,7 +387,7 @@ app.get("/getSkin/:skinName", function (req, res) { return __awaiter(void 0, voi
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load skin data.'));
                     return [2 /*return*/];
                 }
-                res.status(200).json({ result: "success", data: results[0] });
+                res.status(200).json({ result: "success", data: results[0].data });
                 return [2 /*return*/];
         }
     });

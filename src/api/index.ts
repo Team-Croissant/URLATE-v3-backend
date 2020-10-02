@@ -291,7 +291,7 @@ app.get("/getSkin/:skinName", async (req, res) => {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load skin data.'));
     return;
   }
-  res.status(200).json({result: "success", data: results[0]});
+  res.status(200).json({result: "success", data: results[0].data});
 });
 
 app.get('/logout', (req, res) => {
