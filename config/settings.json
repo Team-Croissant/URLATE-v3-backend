@@ -21,7 +21,7 @@
     "mouse": true
   },
   "game": {
-    "skin": "general",
+    "skin": "Default",
     "size": 1,
     "judgeSkin": true,
     "applyJudge": {
