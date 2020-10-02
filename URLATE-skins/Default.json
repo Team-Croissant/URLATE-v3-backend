@@ -1,0 +1,58 @@
+{
+  "cursor": {
+    "type": "gradient",
+    "stops": 2,
+    "0": {
+      "percentage": 0,
+      "color": "ae66ed"
+    },
+    "1": {
+      "percentage": 100,
+      "color": "66b7ed"
+    }
+  },
+  "note": {
+    "type": "gradient",
+    "stops": 2,
+    "0": {
+      "percentage": 0,
+      "color": "fb4934"
+    },
+    "1": {
+      "percentage": 100,
+      "color": "ebd934"
+    }
+  },
+  "bullet": {
+    "type": "color",
+    "color": "555"
+  },
+  "perfect": {
+    "type": "gradient",
+    "stops": 2,
+    "0": {
+      "percentage": 0,
+      "color": "57d147"
+    },
+    "1": {
+      "percentage": 100,
+      "color": "43a7e0"
+    }
+  },
+  "great": {
+    "type": "color",
+    "color": "57d147"
+  },
+  "good": {
+    "type": "color",
+    "color": "43a7e0"
+  },
+  "bad": {
+    "type": "color",
+    "color": "b0675a"
+  },
+  "miss": {
+    "type": "color",
+    "color": "333"
+  }
+}
