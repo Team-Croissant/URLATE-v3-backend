@@ -29,6 +29,8 @@ let frameArray = [];
 let fps = 0;
 let missPoint = [];
 let sens = 1, denySkin = false, skin, cursorZoom, inputMode;
+let comboAlert = false, comboCount = 50;
+let comboAlertMs = 0, comboAlertCount = 0;
 let hide = {}, frameCounter;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -117,6 +119,8 @@ const settingApply = () => {
   denySkin = settings.editor.denyAtTest;
   cursorZoom = settings.game.size;
   inputMode = settings.input.keys;
+  comboAlert = settings.game.comboAlert;
+  comboCount = settings.game.comboCount;
   hide.perfect = settings.game.applyJudge.Perfect;
   hide.great = settings.game.applyJudge.Great;
   hide.good = settings.game.applyJudge.Good;
@@ -204,6 +208,7 @@ const getJudgeStyle = (j, p, x, y) => {
     }
   } else {
     p = parseInt(255 - p * 2.55).toString(16).padStart(2, '0');
+    if(p <= 0) p = '00';
     if(skin[j].type == 'gradient') {
       let grd = ctx.createLinearGradient(x - 50, y - 20, x + 50, y + 20);
       for(let i = 0; i < skin[j].stops.length; i++) {
@@ -309,6 +314,7 @@ const drawNote = (p, x, y) => {
   if(p > 100) {
     opacity = `${parseInt((130 - p) * 3.333)}`.padStart(2, '0');
   }
+  if(p <= 0) p = '00';
   if(!denySkin) {
     if(skin.note.type == 'gradient') {
       let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
@@ -456,6 +462,24 @@ const cntRender = () => {
     initialize(false);
   }
   try {
+    if(comboAlert) {
+      let comboOpacity = 0;
+      let fontSize = 20;
+      if(comboAlertMs + 300 > Date.now()) {
+        comboOpacity = 1 - (comboAlertMs + 300 - Date.now()) / 300;
+      } else if(comboAlertMs + 300 <= Date.now() && comboAlertMs + 600 > Date.now()) {
+        comboOpacity = 1;
+      } else if(comboAlertMs + 600 <= Date.now() && comboAlertMs + 900 > Date.now()) {
+        comboOpacity = (comboAlertMs + 900 - Date.now()) / 900;
+      }
+      fontSize = 30 - (comboAlertMs + 900 - Date.now()) / 90;
+      ctx.beginPath();
+      ctx.font = `${fontSize}vh Metropolis`;
+      ctx.fillStyle = `rgba(200,200,200,${comboOpacity}`;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      ctx.fillText(comboAlertCount, canvas.width / 2, canvas.height / 2);
+    }
     pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
     const seek = song.seek() - (offset + sync) / 1000;
     let start = lowerBound(pattern.triggers, seek * 1000 - 2000);
@@ -751,6 +775,10 @@ const calculateScore = (judge, i, isMissed) => {
   } else {
     combo = 0;
     score += 50;
+  }
+  if(combo % comboCount == 0 && combo != 0) {
+    comboAlertMs = Date.now();
+    comboAlertCount = combo;
   }
 };
 
