@@ -90,6 +90,7 @@ const settingApply = () => {
   ignoreCursorCheck.checked = settings.editor.denyCursor;
   ignoreEditorCheck.checked = settings.editor.denySkin;
   ignoreTestCheck.checked = settings.editor.denyAtTest;
+  comboAlertCheck.checked = settings.game.comboAlert;
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
