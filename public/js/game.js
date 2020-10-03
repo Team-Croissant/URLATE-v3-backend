@@ -66,6 +66,12 @@ const settingApply = () => {
   } else if(settings.game.comboCount == 200) {
     comboSelector.getElementsByTagName('option')[4].selected = true;
   }
+  for(let i = 0; i < skinSelector.getElementsByTagName('option').length; i++) {
+    if(skinSelector.getElementsByTagName('option')[i].value == settings.game.skin) {
+      skinSelector.getElementsByTagName('option')[i].selected = true;
+      break;
+    }
+  }
   inputSelector.getElementsByTagName('option')[Number(settings.input.keys)].selected = true;
   volumeMaster.value = settings.sound.volume.master * 100;
   volumeSong.value = settings.sound.volume.music * 100;
