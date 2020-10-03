@@ -430,7 +430,7 @@ const settingChanged = (e, v) => {
   } else if(v == 'comboAlert') {
     settings.game.comboAlert = e.checked;
   } else if(v == 'comboCount') {
-    settings.game.comboCount = Number(e.value);
+    settings.game.comboCount = parseInt(e.value);
   } else if(v == 'ignoreCursor') {
     settings.editor.denyCursor = e.checked;
   } else if(v == 'ignoreEditor') {
