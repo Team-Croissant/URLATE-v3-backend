@@ -135,5 +135,6 @@
 	"ignore_at_test": "테스트 모드에서 스킨 무시",
 	"sensitivity_warning": "*게임 내 커서에만 적용됩니다.",
 	"ignore_cursor_at_editor": "에디터에서 커서 무시",
-	"logout": "로그아웃"
+	"logout": "로그아웃",
+	"cursor_size_warning": "*판정 범위에는 영향을 미치지 않습니다."
 }

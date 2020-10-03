@@ -28,6 +28,8 @@ let isResultShowing = false;
 let frameArray = [];
 let fps = 0;
 let missPoint = [];
+let sens = 1, denySkin = false, skin, cursorZoom;
+let hide = {}, frameCounter;
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
@@ -69,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if(data.result == 'success') {
           userName = data.nickname;
           settings = JSON.parse(data.settings);
+          initialize(true);
           if(data.advanced) {
             urlate.innerHTML = '<strong>URLATE</strong> Advanced';
           }
@@ -86,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  initialize(true);
 });
 
 const initialize = (isFirstCalled) => {
@@ -101,8 +103,8 @@ const initialize = (isFirstCalled) => {
     bpm = pattern.information.bpm;
     speed = pattern.information.speed;
   }
-  canvas.width = window.innerWidth * pixelRatio;
-  canvas.height = window.innerHeight * pixelRatio;
+  canvas.width = window.innerWidth * pixelRatio * settings.display.canvasRes / 100;
+  canvas.height = window.innerHeight * pixelRatio * settings.display.canvasRes / 100;
   missCanvas.width = window.innerWidth * 0.2 * pixelRatio;
   missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
 };
@@ -111,6 +113,15 @@ const settingApply = () => {
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   sync = parseInt(settings.sound.offset);
   document.getElementById('loadingContainer').style.opacity = 1;
+  sens = settings.input.sens;
+  denySkin = settings.editor.denyAtTest;
+  cursorZoom = settings.game.size;
+  hide.perfect = settings.game.applyJudge.Perfect;
+  hide.great = settings.game.applyJudge.Great;
+  hide.good = settings.game.applyJudge.Good;
+  hide.bad = settings.game.applyJudge.Bad;
+  hide.miss = settings.game.applyJudge.Miss;
+  frameCounter = settings.game.counter;
   let fileName = '';
   for(let i = 0; i < tracks.length; i++) {
     if(tracks[i].name == pattern.information.track) {
@@ -122,6 +133,22 @@ const settingApply = () => {
       break;
     }
   }
+  fetch(`${api}/getSkin/${settings.game.skin}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == 'success') {
+      skin = JSON.parse(data.data);
+    } else {
+      alert(`Error occured.\n${data.description}`);
+      console.error(`Error occured.\n${data.description}`);
+    }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
   fetch(`${api}/getTracks`, {
     method: 'GET',
     credentials: 'include'
@@ -141,6 +168,7 @@ const settingApply = () => {
         onload: () => {
         }
       });
+      Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
     } else {
       alert('Failed to load song list.');
     }
@@ -151,7 +179,41 @@ const settingApply = () => {
 
 const eraseCnt = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
+};
+
+const getJudgeStyle = (j, p, x, y) => {
+  p = `${parseInt(p)}`.padStart(2, '0');
+  if(p <= 0) p = 0;
+  if(denySkin) {
+    if(j == 'miss') {
+      return `rgba(237, 78, 50, ${1 - p / 100})`;
+    } else if(j == 'perfect') {
+      let grd = ctx.createLinearGradient(x - 50, y - 20, x + 50, y + 20);
+      grd.addColorStop(0, `rgba(87, 209, 71, ${1 - p / 100})`);
+      grd.addColorStop(1, `rgba(67, 167, 224, ${1 - p / 100})`);
+      return grd;
+    } else if(j == 'great') {
+      return `rgba(87, 209, 71, ${1 - p / 100})`;
+    } else if(j == 'good') {
+      return `rgba(67, 167, 224, ${1 - p / 100})`;
+    } else if(j == 'bad') {
+      return `rgba(176, 103, 90, ${1 - p / 100})`;
+    } else {
+      return `rgba(50, 50, 50, ${1 - p / 100})`;
+    }
+  } else {
+    p = parseInt(255 - p * 2.55).toString(16).padStart(2, '0');
+    if(skin[j].type == 'gradient') {
+      let grd = ctx.createLinearGradient(x - 50, y - 20, x + 50, y + 20);
+      for(let i = 0; i < skin[j].stops.length; i++) {
+        grd.addColorStop(skin[j].stops[i].percentage / 100, `#${skin[j].stops[i].color}${p.toString(16)}`);
+      }
+      return grd;
+    } else if(skin[j].type == 'color') {
+      return `#${skin[j].color}${p.toString(16)}`;
+    }
+  }
+};
 
 const drawParticle = (n, x, y, j) => {
   let cx = canvas.width / 200 * (x + 100);
@@ -205,46 +267,35 @@ const drawParticle = (n, x, y, j) => {
     };
     raf(canvas.width / 70 + canvas.width / 400, Date.now());
   } else if(n == 3) { //Judge
-    const raf = (y, s) => {
+    if(!hide[j.toLowerCase()]) {
+      const raf = (y, s) => {
+        ctx.beginPath();
+        let p = 100 - ((s + 300 - Date.now()) / 3);
+        let newY = cy - Math.round(p / 10);
+        ctx.fillStyle = getJudgeStyle(j.toLowerCase(), p, cx, newY);
+        ctx.font = "3vh Metropolis";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(j, cx, newY);
+        if(p < 100) {
+          requestAnimationFrame(() => {
+            raf(cy, s);
+          });
+        }
+      };
+      raf(cy, Date.now());
+    }
+  } else if(n == 4) { //judge:miss
+    if(!hide.miss) {
       ctx.beginPath();
-      let p = 100 - ((s + 300 - Date.now()) / 3);
+      let p = 100 - ((missParticles[j].s + 300 - Date.now()) / 3);
       let newY = cy - Math.round(p / 10);
-      if(j == 'Miss') {
-        ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
-      } else if(j == 'Perfect') {
-        let grd = ctx.createLinearGradient(cx - 50, newY - 20, cx + 50, newY + 20);
-        grd.addColorStop(0, `rgba(87, 209, 71, ${1 - p / 100})`);
-        grd.addColorStop(1, `rgba(67, 167, 224, ${1 - p / 100})`);
-        ctx.fillStyle = grd;
-      } else if(j == 'Great') {
-        ctx.fillStyle = `rgba(87, 209, 71, ${1 - p / 100})`;
-      } else if(j == 'Good') {
-        ctx.fillStyle = `rgba(67, 167, 224, ${1 - p / 100})`;
-      } else if(j == 'Bad') {
-        ctx.fillStyle = `rgba(176, 103, 90, ${1 - p / 100})`;
-      } else {
-        ctx.fillStyle = `rgba(50, 50, 50, ${1 - p / 100})`;
-      }
+      ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
       ctx.font = "3vh Metropolis";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(j, cx, newY);
-      if(p < 100) {
-        requestAnimationFrame(() => {
-          raf(cy, s);
-        });
-      }
-    };
-    raf(cy, Date.now());
-  } else if(n == 4) { //judge:miss
-    ctx.beginPath();
-    let p = 100 - ((missParticles[j].s + 300 - Date.now()) / 3);
-    let newY = cy - Math.round(p / 10);
-    ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
-    ctx.font = "3vh Metropolis";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText('Miss', cx, newY);
+      ctx.fillText('Miss', cx, newY);
+    }
   }
 };
 
@@ -253,15 +304,28 @@ const drawNote = (p, x, y) => {
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
   let w = canvas.width / 40;
-  let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
-  let opacity = 1;
+  let opacity = 'FF';
   if(p > 100) {
-    opacity = (130 - p) / 130;
+    opacity = `${parseInt((130 - p) * 3.333)}`.padStart(2, '0');
   }
-  grd.addColorStop(0, `rgba(251, 73, 52, ${opacity})`);
-  grd.addColorStop(1, `rgba(235, 217, 52, ${opacity})`);
-  ctx.strokeStyle = grd;
-  ctx.fillStyle = grd;
+  if(!denySkin) {
+    if(skin.note.type == 'gradient') {
+      let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+      for(let i = 0; i < skin.note.stops.length; i++) {
+        grd.addColorStop(skin.note.stops[i].percentage / 100, `#${skin.note.stops[i].color}${opacity.toString(16)}`);
+      }
+      ctx.fillStyle = grd;
+      ctx.strokeStyle = grd;
+    } else if(skin.note.type == 'color') {
+      ctx.fillStyle = `#${skin.note.color}${opacity.toString(16)}`;
+    }
+  } else {
+    let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+    grd.addColorStop(0, `#fb4934${opacity}`);
+    grd.addColorStop(1, `#ebd934${opacity}`);
+    ctx.fillStyle = grd;
+    ctx.strokeStyle = grd;
+  }
   ctx.lineWidth = Math.round(canvas.width / 500);
   ctx.beginPath();
   ctx.arc(x, y, w, 0, p / 50 * Math.PI);
@@ -273,7 +337,7 @@ const drawNote = (p, x, y) => {
 
 const drawCursor = () => {
   ctx.beginPath();
-  let w = canvas.width / 70;
+  let w = canvas.width / 70 * cursorZoom;
   if(mouseClickedMs == -1) {
     mouseClickedMs = Date.now() - 100;
   }
@@ -290,10 +354,22 @@ const drawCursor = () => {
   }
   x = canvas.width / 200 * (mouseX + 100);
   y = canvas.height / 200 * (mouseY + 100);
-  let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
-  grd.addColorStop(0, `rgb(174, 102, 237)`);
-  grd.addColorStop(1, `rgb(102, 183, 237)`);
-  ctx.fillStyle = grd;
+  if(!denySkin) {
+    if(skin.cursor.type == 'gradient') {
+      let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+      for(let i = 0; i < skin.cursor.stops.length; i++) {
+        grd.addColorStop(skin.cursor.stops[i].percentage / 100, `#${skin.cursor.stops[i].color}`);
+      }
+      ctx.fillStyle = grd;
+    } else if(skin.cursor.type == 'color') {
+      ctx.fillStyle = `#${skin.cursor.color}`;
+    }
+  } else {
+    let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+    grd.addColorStop(0, `rgb(174, 102, 237)`);
+    grd.addColorStop(1, `rgb(102, 183, 237)`);
+    ctx.fillStyle = grd;
+  }
   ctx.arc(x, y, w, 0, 2 * Math.PI);
   ctx.fill();
 };
@@ -302,8 +378,22 @@ const drawBullet = (n, x, y, a) => {
   x = canvas.width / 200 * (x + 100);
   y = canvas.height / 200 * (y + 100);
   let w = canvas.width / 80;
-  ctx.fillStyle = "#555";
-  ctx.strokeStyle = "#555";
+  if(!denySkin) {
+    if(skin.bullet.type == 'gradient') {
+      let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
+      for(let i = 0; i < skin.bullet.stops.length; i++) {
+        grd.addColorStop(skin.bullet.stops[i].percentage / 100, `#${skin.bullet.stops[i].color}`);
+      }
+      ctx.fillStyle = grd;
+      ctx.strokeStyle = grd;
+    } else if(skin.bullet.type == 'color') {
+      ctx.fillStyle = `#${skin.bullet.color}`;
+      ctx.strokeStyle = `#${skin.bullet.color}`;
+    }
+  } else {
+    ctx.fillStyle = "#555";
+    ctx.strokeStyle = "#555";
+  }
   ctx.beginPath();
   switch(n) {
     case 0:
@@ -479,25 +569,27 @@ const cntRender = () => {
   drawCursor();
 
   //fps counter
-  frameArray.push(1000 / (Date.now() - frameCounterMs));
-  if(frameArray.length == 5) {
-    fps = (frameArray[0] + frameArray[1] + frameArray[2] + frameArray[3] + frameArray[4]) / 5;
-    frameArray = [];
+  if(frameCounter) {
+    frameArray.push(1000 / (Date.now() - frameCounterMs));
+    if(frameArray.length == 5) {
+      fps = (frameArray[0] + frameArray[1] + frameArray[2] + frameArray[3] + frameArray[4]) / 5;
+      frameArray = [];
+    }
+    ctx.font = "2.5vh Heebo";
+    ctx.fillStyle = "#555";
+    ctx.textBaseline = "bottom";
+    ctx.fillText(fps.toFixed(), canvas.width / 2, canvas.height - canvas.height / 70);
+    frameCounterMs = Date.now();
   }
-  ctx.font = "2.5vh Heebo";
-  ctx.fillStyle = "#555";
-  ctx.textBaseline = "bottom";
-  ctx.fillText(fps.toFixed(), canvas.width / 2, canvas.height - canvas.height / 70);
   drawCursor();
-  frameCounterMs = Date.now();
   requestAnimationFrame(cntRender);
 };
 
 const trackMousePos = () => {
   let x = event.clientX / canvasContainer.offsetWidth * 200 - 100;
   let y = event.clientY / canvasContainer.offsetHeight * 200 - 100;
-  mouseX = x;
-  mouseY = y;
+  mouseX = (x * sens >= 100) ? 100 : (x * sens <= -100) ? -100 : x * sens;
+  mouseY = (y * sens >= 100) ? 100 : (y * sens <= -100) ? -100 : y * sens;
 };
 
 const calculateResult = () => {
@@ -559,8 +651,8 @@ const calculateResult = () => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio;
-  const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio;
+  const powX = (mouseX - x) * canvasContainer.offsetWidth / 200 * pixelRatio * settings.display.canvasRes / 100;
+  const powY = (mouseY - y) * canvasContainer.offsetHeight / 200 * pixelRatio * settings.display.canvasRes / 100;
   switch(v1) {
     case 0:
       if(Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 + canvas.width / 70) {
@@ -587,7 +679,10 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   }
 };
 
-const compClicked = () => {
+const compClicked = (isTyped) => {
+  if(!isTyped && !settings.input.mouse || !(!isMenuOpened && menuAllowed)) {
+    return;
+  }
   mouseClicked = true;
   mouseClickedMs = Date.now();
   for(let i = 0; i < pointingCntElement.length; i++) {
@@ -744,9 +839,7 @@ document.onkeydown = e => {
       }
       return;
     }
-    if(!isMenuOpened && menuAllowed) {
-      compClicked();
-    }
+    compClicked(true);
   } else {
     if(confirm(returnToEditor)) {
       editor();

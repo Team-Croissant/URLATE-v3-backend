@@ -118,5 +118,6 @@
 	"ignore_at_test": "Ignore in test",
 	"sensitivity_warning": "*Applies only to in-game cursors.",
 	"ignore_cursor_at_editor": "Ignore cursor in editor",
-	"logout": "Logout"
+	"logout": "Logout",
+	"cursor_size_warning": "*It does not affect the judgment range."
 }

@@ -261,6 +261,7 @@
                     <input type="range" min="5" max="20" value="10" id="inputSize" class="optionSlider" oninput="settingChanged(this, 'inputSize')">
                     <p id="inputSizeValue" class="optionValue">1x</p>
                 </div>
+                <p class="optionValue"><%= __('cursor_size_warning') %></p>
                 <div class="optionValueContainer advancedOnly">
                     <p class="optionSemiTitle"><%= __('apply_to_judge') %></p>
                     <input type="checkbox" class="optionCheckbox" id="judgeSkin" onchange="settingChanged(this, 'judgeSkin')">
@@ -279,8 +280,8 @@
                     <input type="checkbox" class="optionCheckbox" id="judgeBad" onchange="settingChanged(this, 'Bad')">
                     <p class="optionSemiTitle">Miss</p>
                     <input type="checkbox" class="optionCheckbox" id="judgeMiss" onchange="settingChanged(this, 'Miss')">
-                    <p class="optionSemiTitle">Bullet</p>
-                    <input type="checkbox" class="optionCheckbox" id="judgeBullet" onchange="settingChanged(this, 'Bullet')">
+                    <!-- <p class="optionSemiTitle">Bullet</p>
+                    <input type="checkbox" class="optionCheckbox" id="judgeBullet" onchange="settingChanged(this, 'Bullet')"> -->
                 </div>
                 <p class="optionTitle"><%= __('info') %></p>
                 <div class="optionValueContainer">

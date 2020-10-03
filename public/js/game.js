@@ -79,7 +79,7 @@ const settingApply = () => {
   judgeGood.checked = settings.game.applyJudge.Good;
   judgeBad.checked = settings.game.applyJudge.Bad;
   judgeMiss.checked = settings.game.applyJudge.Miss;
-  judgeBullet.checked = settings.game.applyJudge.Bullet;
+  // judgeBullet.checked = settings.game.applyJudge.Bullet;
   frameCheck.checked = settings.game.counter;
   ignoreCursorCheck.checked = settings.editor.denyCursor;
   ignoreEditorCheck.checked = settings.editor.denySkin;
