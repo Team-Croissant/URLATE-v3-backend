@@ -37,7 +37,7 @@
     "comboCount": 50
   },
   "editor": {
-    "denyCursor": false,
+    "denyCursor": true,
     "denySkin": true,
     "denyAtTest": false
   }
