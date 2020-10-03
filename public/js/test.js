@@ -28,7 +28,7 @@ let isResultShowing = false;
 let frameArray = [];
 let fps = 0;
 let missPoint = [];
-let sens = 1, denySkin = false, skin, cursorZoom;
+let sens = 1, denySkin = false, skin, cursorZoom, inputMode;
 let hide = {}, frameCounter;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -116,6 +116,7 @@ const settingApply = () => {
   sens = settings.input.sens;
   denySkin = settings.editor.denyAtTest;
   cursorZoom = settings.game.size;
+  inputMode = settings.input.keys;
   hide.perfect = settings.game.applyJudge.Perfect;
   hide.great = settings.game.applyJudge.Great;
   hide.good = settings.game.applyJudge.Good;
@@ -837,6 +838,11 @@ document.onkeydown = e => {
           song.play();
         }
       }
+      return;
+    }
+    if(inputMode == 1 && !/^[a-z]{1}$/i.test(e.key)) {
+      return;
+    } else if(inputMode == 2 && !/^[zx]{1}$/i.test(e.key)) {
       return;
     }
     compClicked(true);
