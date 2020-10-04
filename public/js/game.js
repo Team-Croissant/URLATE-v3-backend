@@ -399,7 +399,7 @@ const settingChanged = (e, v) => {
   } else if(v == 'albumRes') {
     settings.display.albumRes = Number(e.value);
   } else if(v == 'volumeMaster') {
-    settings.sound.volume.master = e.value / 80;
+    settings.sound.volume.master = e.value / 100;
     volumeMasterValue.textContent = Math.round(e.value * 1.25) + '%';
     Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   } else if(v == 'volumeSong') {
