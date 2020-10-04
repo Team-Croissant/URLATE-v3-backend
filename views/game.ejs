@@ -213,6 +213,11 @@
                     <input type="range" min="0" max="100" value="100" id="volumeHit" class="optionSlider" oninput="settingChanged(this, 'volumeHitsound')">
                     <p class="optionValue" id="volumeHitValue">100%</p>
                 </div>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('volume_effect') %></p>
+                    <input type="range" min="0" max="100" value="100" id="volumeEft" class="optionSlider" oninput="settingChanged(this, 'volumeEffect')">
+                    <p class="optionValue" id="volumeEftValue">100%</p>
+                </div>
                 <p class="optionTitle"><%= __('details') %></p>
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('offset') %></p>

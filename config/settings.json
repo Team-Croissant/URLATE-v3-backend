@@ -10,7 +10,8 @@
     "volume": {
       "master": 0.4,
       "music": 1,
-      "hitSound": 1
+      "hitSound": 1,
+      "effect": 1
     },
     "offset": 0,
     "res": "128kbps"

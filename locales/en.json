@@ -119,5 +119,6 @@
 	"sensitivity_warning": "*Applies only to in-game cursors.",
 	"ignore_cursor_at_editor": "Ignore cursor in editor",
 	"logout": "Logout",
-	"cursor_size_warning": "*It does not affect the judgment range."
+	"cursor_size_warning": "*It does not affect the judgment range.",
+	"volume_effect": "Effect"
 }

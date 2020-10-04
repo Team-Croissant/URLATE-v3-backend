@@ -94,6 +94,7 @@ const settingApply = () => {
   volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
+  volumeEftValue.textContent = settings.sound.volume.effect * 100 + '%';
   offsetButton.textContent = settings.sound.offset + 'ms';
   sensitiveValue.textContent = settings.input.sens + 'x';
   inputSizeValue.textContent = settings.game.size + 'x';
@@ -408,6 +409,9 @@ const settingChanged = (e, v) => {
   } else if(v == 'volumeHitsound') {
     settings.sound.volume.hitSound = e.value / 100;
     volumeHitValue.textContent = e.value + '%';
+  } else if(v == 'volumeEffect') {
+    settings.sound.volume.effect = e.value / 100;
+    volumeEftValue.textContent = e.value + '%';
   } else if(v == 'soundRes') {
     settings.sound.res = e.value;
   } else if(v == 'sensitive') {
