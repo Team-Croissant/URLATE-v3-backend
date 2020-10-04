@@ -361,7 +361,6 @@ app.put('/update/settings', function (req, res) { return __awaiter(void 0, void 
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                console.log(req.body.settings);
                 return [4 /*yield*/, knex('users').update({ 'settings': JSON.stringify(req.body.settings) }).where('userid', req.session.userid)];
             case 2:
                 _a.sent();

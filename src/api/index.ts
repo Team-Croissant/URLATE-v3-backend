@@ -276,7 +276,6 @@ app.put('/update/settings', async (req, res) => {
     return;
   }
   try {
-    console.log(req.body.settings);
     await knex('users').update({'settings': JSON.stringify(req.body.settings)}).where('userid', req.session.userid);
   } catch(e) {
     res.status(400).json(createErrorResponse('failed', 'Error occured while updating', e));
