@@ -37,6 +37,11 @@ let tick = new Howl({
   autoplay: false,
   loop: false
 });
+let resultEffect = new Howl({
+  src: [`${cdn}/tracks/result.mp3`],
+  autoplay: false,
+  loop: false
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
@@ -118,6 +123,7 @@ const initialize = (isFirstCalled) => {
 
 const settingApply = () => {
   tick.volume(settings.sound.volume.master * settings.sound.volume.hitSound);
+  resultEffect.volume(settings.sound.volume.master * settings.sound.volume.effect);
   sync = parseInt(settings.sound.offset);
   document.getElementById('loadingContainer').style.opacity = 1;
   sens = settings.input.sens;
@@ -623,6 +629,7 @@ const trackMousePos = () => {
 };
 
 const calculateResult = () => {
+  resultEffect.play();
   perfectResult.textContent = perfect;
   greatResult.textContent = great;
   goodResult.textContent = good;
