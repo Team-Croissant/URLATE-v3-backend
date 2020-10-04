@@ -32,6 +32,11 @@ let sens = 1, denySkin = false, skin, cursorZoom, inputMode;
 let comboAlert = false, comboCount = 50;
 let comboAlertMs = 0, comboAlertCount = 0;
 let hide = {}, frameCounter;
+let tick = new Howl({
+  src: [`/sounds/tick.mp3`],
+  autoplay: false,
+  loop: false
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
@@ -112,7 +117,7 @@ const initialize = (isFirstCalled) => {
 };
 
 const settingApply = () => {
-  Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+  tick.volume(settings.sound.volume.master * settings.sound.volume.hitSound);
   sync = parseInt(settings.sound.offset);
   document.getElementById('loadingContainer').style.opacity = 1;
   sens = settings.input.sens;
@@ -173,7 +178,7 @@ const settingApply = () => {
         onload: () => {
         }
       });
-      Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+      song.volume(settings.sound.volume.master * settings.sound.volume.music);
     } else {
       alert('Failed to load song list.');
     }
@@ -314,7 +319,7 @@ const drawNote = (p, x, y) => {
   if(p > 100) {
     opacity = `${parseInt((130 - p) * 3.333)}`.padStart(2, '0');
   }
-  if(p <= 0) p = '00';
+  if(opacity <= 0) opacity = '00';
   if(!denySkin) {
     if(skin.note.type == 'gradient') {
       let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
@@ -762,6 +767,7 @@ const calculateScore = (judge, i, isMissed) => {
     combo = 0;
     return;
   }
+  tick.play();
   combo++;
   if(maxCombo < combo) {
     maxCombo = combo;
