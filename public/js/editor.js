@@ -202,7 +202,7 @@ const songSelected = (isLoaded) => {
   speed = pattern.information.speed;
   document.getElementById('percentage').innerText = '100%';
   rate = 1;
-  document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${tracks[songSelectBox.selectedIndex].fileName}.png)`;
+  document.getElementById('canvasBackgroundImage').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';

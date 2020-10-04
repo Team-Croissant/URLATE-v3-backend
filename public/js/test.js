@@ -131,10 +131,10 @@ const settingApply = () => {
   for(let i = 0; i < tracks.length; i++) {
     if(tracks[i].name == pattern.information.track) {
       fileName = tracks[i].fileName;
-      document.getElementById("album").src = `${cdn}/albums/${fileName}.png`;
-      document.getElementById('canvasBackgroundImage').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
-      document.getElementById('scoreBackground').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
-      document.getElementById('scoreAlbum').style.backgroundImage = `url(${cdn}/albums/${fileName}.png)`;
+      document.getElementById("album").src = `${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png`;
+      document.getElementById('canvasBackgroundImage').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+      document.getElementById('scoreBackground').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+      document.getElementById('scoreAlbum').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       break;
     }
   }
