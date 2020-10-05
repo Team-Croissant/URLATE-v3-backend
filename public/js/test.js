@@ -737,7 +737,7 @@ const compClicked = (isTyped) => {
         calculateScore('perfect', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Perfect');
         perfect++;
-      } else if(seek < ms + greatJudge && seek < ms - greatJudge) {
+      } else if(seek < ms + greatJudge && seek > ms - greatJudge) {
         calculateScore('great', pointingCntElement[i].i);
         drawParticle(3, x, y, 'Great');
         great++;
