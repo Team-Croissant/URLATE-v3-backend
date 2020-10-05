@@ -88,6 +88,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
+  transition-duration: .7s;
 }
 
 #componentCanvas {
@@ -352,10 +353,10 @@ body {
   height: 30vh;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 #result {
+  margin-top: 10vh;
   color: #F3F3F3;
   font-weight: 600;
   font-size: 5vh;
@@ -511,5 +512,36 @@ body {
   }
   100% {
     filter: hue-rotate(360deg);
+  }
+}
+
+#floatingResultContainer {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  top: 0vh;
+  width: 100vw;
+  flex-direction: column;
+  align-items: center;
+}
+
+#floatingResult {
+  color: #333;
+  font-weight: 600;
+  font-size: 5vh;
+}
+
+.resultFade {
+  animation: resultFade 1.5s ease-out forwards;
+}
+
+@keyframes resultFade {
+  0% {
+    opacity: 0;
+    top: 0vh;
+  }
+  100% {
+    opacity: 1;
+    top: 10vh;
   }
 }

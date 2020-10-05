@@ -25,6 +25,7 @@ let mouseClickedMs = -1;
 let frameCounterMs = Date.now();
 let isMenuOpened = false;
 let isResultShowing = false;
+let resultMs = 0;
 let frameArray = [];
 let fps = 0;
 let missPoint = [];
@@ -177,9 +178,11 @@ const settingApply = () => {
         autoplay: false,
         loop: false,
         onend: () => {
-          isResultShowing = true;
-          menuAllowed = false;
-          calculateResult();
+          setTimeout(() => {
+            isResultShowing = true;
+            menuAllowed = false;
+            calculateResult();
+          }, 1000);
         },
         onload: () => {
         }
@@ -472,6 +475,12 @@ const cntRender = () => {
     pixelRatio = window.devicePixelRatio;
     initialize(false);
   }
+  if(isResultShowing) {
+    if(resultMs == 0) {
+      resultMs = Date.now();
+    }
+  }
+  if(resultMs != 0 && resultMs + 500 <= Date.now()) return;
   try {
     if(comboAlert) {
       let comboOpacity = 0;
@@ -486,7 +495,7 @@ const cntRender = () => {
       fontSize = 30 - (comboAlertMs + 900 - Date.now()) / 90;
       ctx.beginPath();
       ctx.font = `${fontSize}vh Metropolis`;
-      ctx.fillStyle = `rgba(200,200,200,${comboOpacity}`;
+      ctx.fillStyle = `rgba(200,200,200,${comboOpacity})`;
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
       ctx.fillText(comboAlertCount, canvas.width / 2, canvas.height / 2);
@@ -629,6 +638,8 @@ const trackMousePos = () => {
 };
 
 const calculateResult = () => {
+  document.getElementById('wallLeft').style.left = '-10vw';
+  document.getElementById('wallRight').style.right = '-10vw';
   resultEffect.play();
   perfectResult.textContent = perfect;
   greatResult.textContent = great;
@@ -657,10 +668,18 @@ const calculateResult = () => {
   }
   rankImg.src = `/images/parts/elements/${rank}.png`;
   scoreInfoRank.style.setProperty('--background', `url('/images/parts/elements/${rank}back.png')`);
-
-  scoreContainer.style.opacity = '1';
-  scoreContainer.style.pointerEvents = 'all';
-
+  setTimeout(() => {
+    document.getElementById('componentCanvas').classList.add('opacity0');
+    document.getElementById('componentCanvas').classList.remove('opacity1');
+  }, 500);
+  setTimeout(() => {
+    floatingResultContainer.style.display = 'flex';
+    floatingResultContainer.classList.toggle('resultFade');
+  }, 1000);
+  setTimeout(() => {
+    scoreContainer.style.opacity = '1';
+    scoreContainer.style.pointerEvents = 'all';
+  }, 2000);
   missCtx.beginPath();
   missCtx.fillStyle = '#FFF';
   missCtx.strokeStyle = '#FFF';
