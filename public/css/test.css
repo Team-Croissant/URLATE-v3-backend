@@ -525,6 +525,16 @@ body {
   align-items: center;
 }
 
+#floatingArrowContainer {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  top: 0vh;
+  width: 100vw;
+  flex-direction: column;
+  align-items: center;
+}
+
 #floatingResult {
   color: #333;
   font-weight: 600;
@@ -532,7 +542,7 @@ body {
 }
 
 .resultFade {
-  animation: resultFade 1.5s ease-out forwards;
+  animation: resultFade 1s ease-out forwards;
 }
 
 @keyframes resultFade {
@@ -543,5 +553,20 @@ body {
   100% {
     opacity: 1;
     top: 10vh;
+  }
+}
+
+.arrowFade {
+  animation: arrowFade 1s ease-out forwards;
+}
+
+@keyframes arrowFade {
+  0% {
+    opacity: 0;
+    top: 5vh;
+  }
+  100% {
+    opacity: 1;
+    top: 15vh;
   }
 }

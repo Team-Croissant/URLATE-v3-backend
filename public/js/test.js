@@ -673,9 +673,13 @@ const calculateResult = () => {
     document.getElementById('componentCanvas').classList.remove('opacity1');
   }, 500);
   setTimeout(() => {
+    floatingArrowContainer.style.display = 'flex';
+    floatingArrowContainer.classList.toggle('arrowFade');
+  }, 1000);
+  setTimeout(() => {
     floatingResultContainer.style.display = 'flex';
     floatingResultContainer.classList.toggle('resultFade');
-  }, 1000);
+  }, 1300);
   setTimeout(() => {
     scoreContainer.style.opacity = '1';
     scoreContainer.style.pointerEvents = 'all';
