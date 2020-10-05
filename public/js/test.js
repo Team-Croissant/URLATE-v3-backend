@@ -29,7 +29,7 @@ let resultMs = 0;
 let frameArray = [];
 let fps = 0;
 let missPoint = [];
-let sens = 1, denySkin = false, skin, cursorZoom, inputMode;
+let sens = 1, denySkin = false, skin, cursorZoom, inputMode, judgeSkin;
 let comboAlert = false, comboCount = 50;
 let comboAlertMs = 0, comboAlertCount = 0;
 let hide = {}, frameCounter;
@@ -133,6 +133,7 @@ const settingApply = () => {
   inputMode = settings.input.keys;
   comboAlert = settings.game.comboAlert;
   comboCount = settings.game.comboCount;
+  judgeSkin = settings.game.judgeSkin;
   hide.perfect = settings.game.applyJudge.Perfect;
   hide.great = settings.game.applyJudge.Great;
   hide.good = settings.game.applyJudge.Good;
@@ -203,7 +204,7 @@ const eraseCnt = () => {
 const getJudgeStyle = (j, p, x, y) => {
   p = `${parseInt(p)}`.padStart(2, '0');
   if(p <= 0) p = 0;
-  if(denySkin) {
+  if(denySkin || !judgeSkin) {
     if(j == 'miss') {
       return `rgba(237, 78, 50, ${1 - p / 100})`;
     } else if(j == 'perfect') {
