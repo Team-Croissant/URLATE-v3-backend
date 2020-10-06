@@ -1,4 +1,3 @@
-alert("Game still developing, since the music playback part is currently being developed, there is no music.");
 let selection = 0;
 let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 let display = 0;
@@ -7,26 +6,30 @@ let analyser, dataArray;
 let canvas = document.getElementById("renderer");
 let ctx = canvas.getContext("2d");
 let bars = 100;
+let loaded = 0;
 
-let songs = new Howl({
-  src: [`${cdn}/tracks/128kbps/urlate_theme.mp3`],
-  autoplay: false,
-  loop: true,
-  onend: () => {}
-});
+let songs;
 
 const initialize = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 };
 
+function convertWordArrayToUint8Array(wordArray) {
+  let arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
+  let length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
+  let uInt8Array = new Uint8Array(length), index=0, word, i;
+  for(i = 0; i < length; i++) {
+      word = arrayOfWords[i];
+      uInt8Array[index++] = word >> 24;
+      uInt8Array[index++] = (word >> 16) & 0xff;
+      uInt8Array[index++] = (word >> 8) & 0xff;
+      uInt8Array[index++] = word & 0xff;
+  }
+  return uInt8Array;
+}
+
 const settingApply = () => {
-  songs = new Howl({
-    src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
-    autoplay: false,
-    loop: true,
-    onend: () => {}
-  });
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(settings.general.detailLang == "original") {
     langDetailSelector.getElementsByTagName('option')[0].selected = true;
@@ -100,6 +103,34 @@ const settingApply = () => {
   sensitiveValue.textContent = settings.input.sens + 'x';
   inputSizeValue.textContent = settings.game.size + 'x';
   initialize();
+  fetch(`${cdn}/getTrack/${settings.sound.res}/urlate_theme.mp3`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == "success") {
+      let key = "1234567887654321";
+      let decrypted = CryptoJS.AES.decrypt(data.data, key);
+      let typedArray = convertWordArrayToUint8Array(decrypted);
+      let fileDec = new Blob([typedArray.buffer]);
+      let url = window.URL.createObjectURL(fileDec);
+      songs = new Howl({
+        src: [url],
+        format: ['mp3'],
+        autoplay: false,
+        loop: true,
+        onload: () => {
+          if(loaded) {
+            gameLoaded();
+          }
+          loaded = 1;
+          songs.play();
+          window.URL.revokeObjectURL(url);
+        }
+      });
+    }
+  });
 };
 
 const drawBar = (x1, y1, x2, y2, width, frequency) => {
@@ -198,27 +229,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
-window.onload = () => {
-  analyser = Howler.ctx.createAnalyser();
-  Howler.masterGain.connect(analyser);
-  analyser.connect(Howler.ctx.destination);
-  dataArray = new Uint8Array(analyser.frequencyBinCount);
-  animationLooper();
-};
-
-Pace.on('done', () => {
-  songs.play();
-  const nameStyle = window.getComputedStyle(document.getElementById("name"), null);
-  const nameWidth = parseFloat(nameStyle.getPropertyValue("width"));
-  if(nameWidth > 265) {
-    document.getElementById("name").style.fontSize = "2.2vh";
-    document.getElementById("name").style.paddingLeft = "2.5vw";
-  } else if(nameWidth > 200) {
-    document.getElementById("name").style.fontSize = "2.3vh";
-    document.getElementById("name").style.paddingLeft = "4vw";
-  } else if(nameWidth > 180) {
-    document.getElementById("name").style.fontSize = "2.5vh";
-  }
+const gameLoaded = () => {
   document.getElementById("menuContainer").style.display = "flex";
   document.getElementById("loadingContainer").classList.toggle("fadeOut");
   setTimeout(() => {
@@ -237,6 +248,29 @@ Pace.on('done', () => {
     });
     document.getElementById("footerLeft").classList.toggle("fadeIn");
   }, 500);
+  analyser = Howler.ctx.createAnalyser();
+  Howler.masterGain.connect(analyser);
+  analyser.connect(Howler.ctx.destination);
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+  animationLooper();
+};
+
+Pace.on('done', () => {
+  const nameStyle = window.getComputedStyle(document.getElementById("name"), null);
+  const nameWidth = parseFloat(nameStyle.getPropertyValue("width"));
+  if(nameWidth > 265) {
+    document.getElementById("name").style.fontSize = "2.2vh";
+    document.getElementById("name").style.paddingLeft = "2.5vw";
+  } else if(nameWidth > 200) {
+    document.getElementById("name").style.fontSize = "2.3vh";
+    document.getElementById("name").style.paddingLeft = "4vw";
+  } else if(nameWidth > 180) {
+    document.getElementById("name").style.fontSize = "2.5vh";
+  }
+  if(loaded) {
+    gameLoaded();
+  }
+  loaded = 1;
 });
 
 const menuLeft = () => {
