@@ -2,7 +2,12 @@ const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');
 const tmlCtx = tmlCanvas.getContext("2d");
-let settings, tracks, song, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1, split = 2;
+let settings, tracks, bpm = 130, speed = 2, offset = 0, sync = 0, rate = 1, split = 2;
+let song = new Howl({
+  src: ['/sounds/tick.mp3'],
+  format: ['mp3'],
+  autoplay: false
+});
 let mouseX = 0, mouseY = 0, mouseMode = 0;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
@@ -165,18 +170,32 @@ const dataLoaded = (event) => {
 };
 
 const songSelected = (isLoaded) => {
-  song = new Howl({
-    src: [`${cdn}/tracks/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`],
-    autoplay: false,
-    loop: false,
-    onend: () => {
-      document.getElementById('controlBtn').classList.remove('timeline-play');
-      document.getElementById('controlBtn').classList.remove('timeline-pause');
-      document.getElementById('controlBtn').classList.add('timeline-play');
-      song.stop();
-    },
-    onload: () => {
+  fetch(`${cdn}/getTrack/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == "success") {
+      let key = "1234567887654321";
+      let decrypted = CryptoJS.AES.decrypt(data.data, key);
+      let typedArray = convertWordArrayToUint8Array(decrypted);
+      let fileDec = new Blob([typedArray.buffer]);
+      let url = window.URL.createObjectURL(fileDec);
+      song = new Howl({
+        src: [url],
+        format: ['mp3'],
+        autoplay: false,
+        loop: false,
+        onload: () => {
+          window.URL.revokeObjectURL(url);
+        }
+      });
+    } else {
+      alert('Error occured while loading songs.');
     }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
   });
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(!isLoaded) {

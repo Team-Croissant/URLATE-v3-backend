@@ -129,7 +129,11 @@ const settingApply = () => {
           window.URL.revokeObjectURL(url);
         }
       });
+    } else {
+      alert('Error occured while loading songs.');
     }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
   });
 };
 

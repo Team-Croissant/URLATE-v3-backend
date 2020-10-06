@@ -33,6 +33,7 @@ let sens = 1, denySkin = false, skin, cursorZoom, inputMode, judgeSkin;
 let comboAlert = false, comboCount = 50;
 let comboAlertMs = 0, comboAlertCount = 0;
 let hide = {}, frameCounter;
+let load = 0;
 let tick = new Howl({
   src: [`/sounds/tick.mp3`],
   autoplay: false,
@@ -174,21 +175,45 @@ const settingApply = () => {
   .then(res => res.json())
   .then((data) => {
     if(data.result == 'success') {
-      song = new Howl({
-        src: [`${cdn}/tracks/${settings.sound.res}/${fileName}.mp3`],
-        autoplay: false,
-        loop: false,
-        onend: () => {
-          setTimeout(() => {
-            isResultShowing = true;
-            menuAllowed = false;
-            calculateResult();
-          }, 1000);
-        },
-        onload: () => {
+      fetch(`${cdn}/getTrack/${settings.sound.res}/${fileName}.mp3`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if(data.result == "success") {
+          let key = "1234567887654321";
+          let decrypted = CryptoJS.AES.decrypt(data.data, key);
+          let typedArray = convertWordArrayToUint8Array(decrypted);
+          let fileDec = new Blob([typedArray.buffer]);
+          let url = window.URL.createObjectURL(fileDec);
+          song = new Howl({
+            src: [url],
+            format: ['mp3'],
+            autoplay: false,
+            loop: false,
+            onend: () => {
+              setTimeout(() => {
+                isResultShowing = true;
+                menuAllowed = false;
+                calculateResult();
+              }, 1000);
+            },
+            onload: () => {
+              song.volume(settings.sound.volume.master * settings.sound.volume.music);
+              window.URL.revokeObjectURL(url);
+              if(load) {
+                doneLoading();
+              }
+              load = 1;
+            }
+          });
+        } else {
+          alert('Error occured while loading songs.');
         }
+      }).catch((error) => {
+        alert(`Error occured.\n${error}`);
       });
-      song.volume(settings.sound.volume.master * settings.sound.volume.music);
     } else {
       alert('Failed to load song list.');
     }
@@ -820,6 +845,13 @@ const calculateScore = (judge, i, isMissed) => {
 };
 
 Pace.on('done', () => {
+  if(load) {
+    doneLoading();
+  }
+  load = 1;
+});
+
+const doneLoading = () => {
   setTimeout(() => {
     cntRender();
     document.getElementById('componentCanvas').classList.add('opacity1');
@@ -833,7 +865,7 @@ Pace.on('done', () => {
     }, 1000);
     setTimeout(songPlayPause, 4000);
   }, 1000);
-});
+};
 
 const songPlayPause = () => {
   if(song.playing()) {
