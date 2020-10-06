@@ -11,6 +11,7 @@
     "auto-build": "watch tsc src",
     "start-api-server": "supervisor dist/api/index.js",
     "start-web-server": "supervisor dist/frontEnd/index.js",
+    "start-cdn-server": "supervisor dist/cdn/index.js",
     "start-game-server": "supervisor dist/game/index.js",
     "start-socket-server": "supervisor dist/socket/index.js"
   },

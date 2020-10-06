@@ -1,3 +1,4 @@
+alert("Game still developing, since the music playback part is currently being developed, there is no music.");
 const canvas = document.getElementById('componentCanvas');
 const ctx = canvas.getContext("2d");
 const missCanvas = document.getElementById('missPointCanvas');

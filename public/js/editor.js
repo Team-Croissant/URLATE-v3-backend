@@ -1,3 +1,4 @@
+alert("Game still developing, since the music playback part is currently being developed, there is no music.");
 const cntCanvas = document.getElementById('componentCanvas');
 const cntCtx = cntCanvas.getContext("2d");
 const tmlCanvas = document.getElementById('timelineCanvas');

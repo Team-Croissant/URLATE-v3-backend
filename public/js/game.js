@@ -1,3 +1,4 @@
+alert("Game still developing, since the music playback part is currently being developed, there is no music.");
 let selection = 0;
 let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
 let display = 0;
