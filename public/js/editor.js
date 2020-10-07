@@ -169,18 +169,8 @@ const dataLoaded = (event) => {
   reader.readAsText(file);
 };
 
-const songSelected = (isLoaded) => {
-  if(!isLoaded) {
-    pattern.information = {
-      "version": "1.0",
-      "track": tracks[songSelectBox.selectedIndex].name,
-      "producer": tracks[songSelectBox.selectedIndex].producer,
-      "author": userName,
-      "bpm": tracks[songSelectBox.selectedIndex].bpm,
-      "speed": 2,
-      "offset": 0
-    };
-  } else {
+const songSelected = (isLoaded, withoutSong) => {
+  if(!withoutSong) {
     fetch(`${cdn}/getTrack/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`, {
       method: 'GET',
       credentials: 'include'
@@ -209,6 +199,17 @@ const songSelected = (isLoaded) => {
     }).catch((error) => {
       alert(`Error occured.\n${error}`);
     });
+  }
+  if(!isLoaded) {
+    pattern.information = {
+      "version": "1.0",
+      "track": tracks[songSelectBox.selectedIndex].name,
+      "producer": tracks[songSelectBox.selectedIndex].producer,
+      "author": userName,
+      "bpm": tracks[songSelectBox.selectedIndex].bpm,
+      "speed": 2,
+      "offset": 0
+    };
   }
   songName.innerText = pattern.information.track;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = pattern.information.track;
@@ -409,6 +410,11 @@ const initialize = () => {
 
 const gotoMain = (isCalledByMain) => {
   if(isCalledByMain || confirm(rusure)) {
+    song = new Howl({
+      src: ['/sounds/tick.mp3'],
+      format: ['mp3'],
+      autoplay: false
+    });
     localStorage.temp = JSON.stringify(pattern);
     localStorage.clear(pattern);
     if(!isCalledByMain) song.stop();
@@ -1964,7 +1970,7 @@ document.onkeydown = e => {
         {"ms": 60/bpm*34000, "value": 5, x: -90, y: -90, align: "left", "text": "opacity:1", "time": 60/bpm*4000, "size": "16px"},
       ]
     };
-    songSelected();
+    songSelected(false, true);
   }
   if(!isTextboxFocused) {
     if(e.code == 'Space') {
