@@ -170,34 +170,6 @@ const dataLoaded = (event) => {
 };
 
 const songSelected = (isLoaded) => {
-  fetch(`${cdn}/getTrack/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`, {
-    method: 'GET',
-    credentials: 'include'
-  })
-  .then(res => res.json())
-  .then((data) => {
-    if(data.result == "success") {
-      let key = "1234567887654321";
-      let decrypted = CryptoJS.AES.decrypt(data.data, key);
-      let typedArray = convertWordArrayToUint8Array(decrypted);
-      let fileDec = new Blob([typedArray.buffer]);
-      let url = window.URL.createObjectURL(fileDec);
-      song = new Howl({
-        src: [url],
-        format: ['mp3'],
-        autoplay: false,
-        loop: false,
-        onload: () => {
-          window.URL.revokeObjectURL(url);
-        }
-      });
-    } else {
-      alert('Error occured while loading songs.');
-    }
-  }).catch((error) => {
-    alert(`Error occured.\n${error}`);
-  });
-  Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(!isLoaded) {
     pattern.information = {
       "version": "1.0",
@@ -208,6 +180,35 @@ const songSelected = (isLoaded) => {
       "speed": 2,
       "offset": 0
     };
+  } else {
+    fetch(`${cdn}/getTrack/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result == "success") {
+        let key = "1234567887654321";
+        let decrypted = CryptoJS.AES.decrypt(data.data, key);
+        let typedArray = convertWordArrayToUint8Array(decrypted);
+        let fileDec = new Blob([typedArray.buffer]);
+        let url = window.URL.createObjectURL(fileDec);
+        song = new Howl({
+          src: [url],
+          format: ['mp3'],
+          autoplay: false,
+          loop: false,
+          onload: () => {
+            Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+            window.URL.revokeObjectURL(url);
+          }
+        });
+      } else {
+        alert('Error occured while loading songs.');
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+    });
   }
   songName.innerText = pattern.information.track;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = pattern.information.track;
