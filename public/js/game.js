@@ -30,7 +30,6 @@ function convertWordArrayToUint8Array(wordArray) {
 }
 
 const settingApply = () => {
-  Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   if(settings.general.detailLang == "original") {
     langDetailSelector.getElementsByTagName('option')[0].selected = true;
   } else if(settings.general.detailLang == "english") {
@@ -125,6 +124,7 @@ const settingApply = () => {
             gameLoaded();
           }
           loaded = 1;
+          Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
           songs.play();
           window.URL.revokeObjectURL(url);
         }
