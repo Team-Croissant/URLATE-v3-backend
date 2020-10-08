@@ -54,6 +54,9 @@ app.get('/test', function (req, res) {
 app.get('/accessDenined', function (req, res) {
     res.render('accessDenined');
 });
+app.get('/info', function (req, res) {
+    res.render('information');
+});
 http.createServer(app).listen(port, function () {
     signale.success("HTTP Server running at port " + port + ".");
 });

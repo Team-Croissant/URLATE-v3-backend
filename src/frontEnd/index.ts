@@ -61,6 +61,10 @@ app.get('/accessDenined', (req, res) => {
   res.render('accessDenined');
 });
 
+app.get('/info', (req, res) => {
+  res.render('information');
+});
+
 http.createServer(app).listen(port, () => {
   signale.success(`HTTP Server running at port ${port}.`);
 });
