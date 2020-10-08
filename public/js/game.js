@@ -94,7 +94,7 @@ const settingApply = () => {
   ignoreEditorCheck.checked = settings.editor.denySkin;
   ignoreTestCheck.checked = settings.editor.denyAtTest;
   comboAlertCheck.checked = settings.game.comboAlert;
-  volumeMasterValue.textContent = Math.round(settings.sound.volume.master * 125) + '%';
+  volumeMasterValue.textContent = settings.sound.volume.master * 100 + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
   volumeEftValue.textContent = settings.sound.volume.effect * 100 + '%';
@@ -254,7 +254,6 @@ const gameLoaded = () => {
   }, 500);
   analyser = Howler.ctx.createAnalyser();
   Howler.masterGain.connect(analyser);
-  analyser.connect(Howler.ctx.destination);
   dataArray = new Uint8Array(analyser.frequencyBinCount);
   animationLooper();
 };
@@ -439,7 +438,7 @@ const settingChanged = (e, v) => {
     settings.display.albumRes = Number(e.value);
   } else if(v == 'volumeMaster') {
     settings.sound.volume.master = e.value / 100;
-    volumeMasterValue.textContent = Math.round(e.value * 1.25) + '%';
+    volumeMasterValue.textContent = e.value + '%';
     Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   } else if(v == 'volumeSong') {
     settings.sound.volume.music = e.value / 100;
