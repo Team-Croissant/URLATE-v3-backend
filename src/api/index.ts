@@ -1,4 +1,3 @@
-import bodyParser = require('body-parser');
 import cookieParser = require('cookie-parser');
 import signale = require('signale');
 import http = require('http');
@@ -19,6 +18,7 @@ const plus = google.plus('v1');
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
 
 const app = express();
+const tokenRouter = require('./tokens');
 app.locals.pretty = true;
 
 const knex = require('knex')({
@@ -47,8 +47,8 @@ app.use(session({
   saveUninitialized: config.session.saveUninitialized
 }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use('/token', tokenRouter);
 app.use(cookieParser());
 
 const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) => new OAuth2(ClientId, ClientSecret, RedirectionUrl);

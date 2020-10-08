@@ -36,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var signale = require("signale");
 var http = require("http");
@@ -53,6 +52,7 @@ var OAuth2 = google.auth.OAuth2;
 var plus = google.plus('v1');
 var api_response_1 = require("./api-response");
 var app = express();
+var tokenRouter = require('./tokens');
 app.locals.pretty = true;
 var knex = require('knex')({
     client: 'mysql',
@@ -77,8 +77,8 @@ app.use(session({
     resave: config.session.resave,
     saveUninitialized: config.session.saveUninitialized
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use('/token', tokenRouter);
 app.use(cookieParser());
 var getOAuthClient = function (ClientId, ClientSecret, RedirectionUrl) { return new OAuth2(ClientId, ClientSecret, RedirectionUrl); };
 app.get('/', function (req, res) {

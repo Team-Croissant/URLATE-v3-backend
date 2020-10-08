@@ -9,6 +9,7 @@ let song = new Howl({
   autoplay: false
 });
 let mouseX = 0, mouseY = 0, mouseMode = 0;
+let userid;
 let mode = 0; //0: move tool, 1: edit tool, 2: add tool
 let zoom = 1;
 let timelineYLoc = 0, timelineElementNum = 0, timelineScrollCount = 6;
@@ -105,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if(data.result == 'success') {
           userName = data.nickname;
           settings = JSON.parse(data.settings);
+          userid = data.userid;
           settingApply();
           initialize();
         } else {
@@ -171,27 +173,55 @@ const dataLoaded = (event) => {
 
 const songSelected = (isLoaded, withoutSong) => {
   if(!withoutSong) {
-    fetch(`${cdn}/getTrack/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`, {
-      method: 'GET',
-      credentials: 'include'
+    const asdf = Date.now();
+    fetch(`${api}/token/generate`, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({
+        bb: asdf
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     .then(res => res.json())
     .then((data) => {
       if(data.result == "success") {
-        let key = "1234567887654321";
-        let decrypted = CryptoJS.AES.decrypt(data.data, key);
-        let typedArray = convertWordArrayToUint8Array(decrypted);
-        let fileDec = new Blob([typedArray.buffer]);
-        let url = window.URL.createObjectURL(fileDec);
-        song = new Howl({
-          src: [url],
-          format: ['mp3'],
-          autoplay: false,
-          loop: false,
-          onload: () => {
-            Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-            window.URL.revokeObjectURL(url);
+        fetch(`${cdn}/getTrack/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`, {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({
+            bb: userid,
+            sth: asdf,
+            tok: data.tok
+          }),
+          headers: {
+            'Content-Type': 'application/json'
           }
+        })
+        .then(res => res.json())
+        .then((data) => {
+          if(data.result == "success") {
+            let key = asdf.toString();
+            let decrypted = CryptoJS.AES.decrypt(data.data, key);
+            let typedArray = convertWordArrayToUint8Array(decrypted);
+            let fileDec = new Blob([typedArray.buffer]);
+            let url = window.URL.createObjectURL(fileDec);
+            song = new Howl({
+              src: [url],
+              format: ['mp3'],
+              autoplay: false,
+              loop: false,
+              onload: () => {
+                Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+                window.URL.revokeObjectURL(url);
+              }
+            });
+          } else {
+            alert('Error occured while loading songs.');
+          }
+        }).catch((error) => {
+          alert(`Error occured.\n${error}`);
         });
       } else {
         alert('Error occured while loading songs.');

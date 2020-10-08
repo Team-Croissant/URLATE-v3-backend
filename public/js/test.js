@@ -4,7 +4,7 @@ const missCanvas = document.getElementById('missPointCanvas');
 const missCtx = missCanvas.getContext("2d");
 let pattern = {};
 let userName = '';
-let settings, sync, song, tracks, pixelRatio, offset, bpm, speed;
+let settings, sync, song, tracks, pixelRatio, offset, bpm, speed, userid;
 let pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
 let circleBulletAngles = [];
 let destroyParticles = [];
@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if(data.result == 'success') {
           userName = data.nickname;
+          userid = data.userid;
           settings = JSON.parse(data.settings);
           initialize(true);
           if(data.advanced) {
@@ -175,38 +176,66 @@ const settingApply = () => {
   .then(res => res.json())
   .then((data) => {
     if(data.result == 'success') {
-      fetch(`${cdn}/getTrack/${settings.sound.res}/${fileName}.mp3`, {
-        method: 'GET',
-        credentials: 'include'
+      const asdf = Date.now();
+      fetch(`${api}/token/generate`, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify({
+          bb: asdf
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
       .then(res => res.json())
       .then((data) => {
         if(data.result == "success") {
-          let key = "1234567887654321";
-          let decrypted = CryptoJS.AES.decrypt(data.data, key);
-          let typedArray = convertWordArrayToUint8Array(decrypted);
-          let fileDec = new Blob([typedArray.buffer]);
-          let url = window.URL.createObjectURL(fileDec);
-          song = new Howl({
-            src: [url],
-            format: ['mp3'],
-            autoplay: false,
-            loop: false,
-            onend: () => {
-              setTimeout(() => {
-                isResultShowing = true;
-                menuAllowed = false;
-                calculateResult();
-              }, 1000);
-            },
-            onload: () => {
-              song.volume(settings.sound.volume.master * settings.sound.volume.music);
-              window.URL.revokeObjectURL(url);
-              if(load) {
-                doneLoading();
-              }
-              load = 1;
+          fetch(`${cdn}/getTrack/${settings.sound.res}/${fileName}.mp3`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({
+              bb: userid,
+              sth: asdf,
+              tok: data.tok
+            }),
+            headers: {
+              'Content-Type': 'application/json'
             }
+          })
+          .then(res => res.json())
+          .then((data) => {
+            if(data.result == "success") {
+              let key = asdf.toString();
+              let decrypted = CryptoJS.AES.decrypt(data.data, key);
+              let typedArray = convertWordArrayToUint8Array(decrypted);
+              let fileDec = new Blob([typedArray.buffer]);
+              let url = window.URL.createObjectURL(fileDec);
+              song = new Howl({
+                src: [url],
+                format: ['mp3'],
+                autoplay: false,
+                loop: false,
+                onend: () => {
+                  setTimeout(() => {
+                    isResultShowing = true;
+                    menuAllowed = false;
+                    calculateResult();
+                  }, 1000);
+                },
+                onload: () => {
+                  song.volume(settings.sound.volume.master * settings.sound.volume.music);
+                  window.URL.revokeObjectURL(url);
+                  if(load) {
+                    doneLoading();
+                  }
+                  load = 1;
+                }
+              });
+            } else {
+              alert('Error occured while loading songs.');
+            }
+          }).catch((error) => {
+            alert(`Error occured.\n${error}`);
           });
         } else {
           alert('Error occured while loading songs.');

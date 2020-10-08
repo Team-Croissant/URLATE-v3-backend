@@ -102,32 +102,60 @@ const settingApply = () => {
   sensitiveValue.textContent = settings.input.sens + 'x';
   inputSizeValue.textContent = settings.game.size + 'x';
   initialize();
-  fetch(`${cdn}/getTrack/${settings.sound.res}/urlate_theme.mp3`, {
-    method: 'GET',
-    credentials: 'include'
+  const asdf = Date.now();
+  fetch(`${api}/token/generate`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({
+      bb: asdf
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
   .then(res => res.json())
   .then((data) => {
     if(data.result == "success") {
-      let key = "1234567887654321";
-      let decrypted = CryptoJS.AES.decrypt(data.data, key);
-      let typedArray = convertWordArrayToUint8Array(decrypted);
-      let fileDec = new Blob([typedArray.buffer]);
-      let url = window.URL.createObjectURL(fileDec);
-      songs = new Howl({
-        src: [url],
-        format: ['mp3'],
-        autoplay: false,
-        loop: true,
-        onload: () => {
-          if(loaded) {
-            gameLoaded();
-          }
-          loaded = 1;
-          Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-          songs.play();
-          window.URL.revokeObjectURL(url);
+      fetch(`${cdn}/getTrack/${settings.sound.res}/urlate_theme.mp3`, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify({
+          bb: userid,
+          sth: asdf,
+          tok: data.tok
+        }),
+        headers: {
+          'Content-Type': 'application/json'
         }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if(data.result == "success") {
+          let key = asdf.toString();
+          let decrypted = CryptoJS.AES.decrypt(data.data, key);
+          let typedArray = convertWordArrayToUint8Array(decrypted);
+          let fileDec = new Blob([typedArray.buffer]);
+          let url = window.URL.createObjectURL(fileDec);
+          songs = new Howl({
+            src: [url],
+            format: ['mp3'],
+            autoplay: false,
+            loop: true,
+            onload: () => {
+              if(loaded) {
+                gameLoaded();
+              }
+              loaded = 1;
+              Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+              songs.play();
+              window.URL.revokeObjectURL(url);
+            }
+          });
+        } else {
+          alert('Error occured while loading songs.');
+        }
+      }).catch((error) => {
+        alert(`Error occured.\n${error}`);
       });
     } else {
       alert('Error occured while loading songs.');
