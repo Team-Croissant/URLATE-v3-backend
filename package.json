@@ -33,6 +33,7 @@
     "node-forge": ">=0.10.0",
     "nodemailer": "^6.4.2",
     "pbkdf2-password": "^1.2.1",
+    "redis": "^3.0.2",
     "request": "^2.88.0",
     "sha1": "^1.1.1",
     "socket.io": "^2.3.0",
