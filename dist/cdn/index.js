@@ -58,7 +58,9 @@ app.post('/getTrack/:quality/:songName', function (req, res) {
             body: JSON.stringify({
                 bb: req.body.bb,
                 sth: req.body.sth,
-                tok: req.body.tok
+                tok: req.body.tok,
+                ip: req.headers['x-real-ip'],
+                d: req.body.d
             }),
             headers: {
                 'Content-Type': 'application/json'

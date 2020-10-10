@@ -122,7 +122,8 @@ const settingApply = () => {
         body: JSON.stringify({
           bb: userid,
           sth: asdf,
-          tok: data.tok
+          tok: data.tok,
+          d: d
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -222,6 +223,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .then(res => res.json())
       .then((data) => {
         if(data.result == 'success') {
+          if(d == 'err') {
+            alert('Oops! Error occured while loading songs.');
+          }
           settings = JSON.parse(data.settings);
           username = data.nickname;
           userid = data.userid;
