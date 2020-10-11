@@ -1,0 +1,32 @@
+@import url('https://cdn.rhyga.me/fonts/Metropolis/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+body {
+  background-color: #eeeeee;
+  color: #222;
+  font-family: 'Metropolis', 'Noto Sans KR', arial, cursive;
+}
+
+p {
+  font-size: 1.6em;
+}
+
+a {
+  text-decoration: none;
+  color: #3f95af;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 5px;
+  margin: 0px;
+  border: 1px solid black;
+}
+
+.descriptions {
+  font-size: 1.3em;
+}
