@@ -190,18 +190,13 @@ const animationLooper = () => {
   ctx.clearRect(0, 0, width, height);
   let barWidth = wHeight / bars;
   analyser.getByteFrequencyData(dataArray);
-  dataLimit = 130 + Howler.volume() * 110;
   for(let i = 0; i < bars; i++) {
-    let barHeight = dataArray[i] * wHieght / 500;
+    let barHeight = dataArray[i] * wHeight / 500;
     let y = barWidth * i;
     let x_end = barHeight / 1.3;
     drawBar(0, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
-  }
-  for(let i = 0; i < bars; i++) {
-    let barHeight = dataArray[i] * wHeight / 500;
-    let y = wHeight - barWidth * i;
-    let x_end = wWidth - (barHeight / 1.3);
-    drawBar(wWidth, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
+    y = wHeight - barWidth * i;
+    drawBar(wWidth, y, wWidth - x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
   requestAnimationFrame(animationLooper);
 };
