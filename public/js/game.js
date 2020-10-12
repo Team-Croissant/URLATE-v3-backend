@@ -183,23 +183,27 @@ const drawBar = (x1, y1, x2, y2, width, frequency) => {
 };
 
 const animationLooper = () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  let barWidth = window.innerHeight / bars;
+  let width = canvas.width;
+  let height = canvas.height;
+  let wWidth = window.innerWidth;
+  let wHeight = window.innerHeight;
+  ctx.clearRect(0, 0, width, height);
+  let barWidth = wHeight / bars;
   analyser.getByteFrequencyData(dataArray);
   dataLimit = 130 + Howler.volume() * 110;
   for(let i = 0; i < bars; i++) {
-    let barHeight = dataArray[i] * window.innerHeight / 500;
+    let barHeight = dataArray[i] * wHieght / 500;
     let y = barWidth * i;
     let x_end = barHeight / 1.3;
     drawBar(0, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
   for(let i = 0; i < bars; i++) {
-    let barHeight = dataArray[i] * window.innerHeight / 500;
-    let y = window.innerHeight - barWidth * i;
-    let x_end = window.innerWidth - (barHeight / 1.3);
-    drawBar(window.innerWidth, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
+    let barHeight = dataArray[i] * wHeight / 500;
+    let y = wHeight - barWidth * i;
+    let x_end = wWidth - (barHeight / 1.3);
+    drawBar(wWidth, y, x_end, y, barWidth - (barWidth / 2), dataArray[i]);
   }
-  window.requestAnimationFrame(animationLooper);
+  requestAnimationFrame(animationLooper);
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
