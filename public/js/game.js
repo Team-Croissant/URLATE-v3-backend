@@ -541,10 +541,28 @@ const showProfile = name => {
                           <span id="quote">${info[0].quote}</span>
                      </div>`;
     for(let i = 1; i < info.length; i++) {
+      let link = '';
+      if(info[i].icon.indexOf("soundcloud") != -1) {
+        link = `https://soundcloud.com/${info[i].content}`;
+      } else if(info[i].icon.indexOf("youtube") != -1) {
+        if(info[i].link != undefined) {
+          link = info[i].link;
+        }
+      } else if(info[i].icon.indexOf("web") != -1) {
+        link = `https://${info[i].content}`;
+      } else if(info[i].icon.indexOf("github") != -1) {
+        link = `https://github.com/${info[i].content}`;
+      } else if(info[i].icon.indexOf("twitter") != -1) {
+        link = `https://twitter.com/${info[i].content}`;
+      } else if(info[i].icon.indexOf("telegram") != -1) {
+        link = `https://t.me/${info[i].content}`;
+      } else if(info[i].icon.indexOf("email") != -1) {
+        link = `mailto:${info[i].content}`;
+      }
       innerHTML += `
                     <div class="infoProfilePart">
                         <img src="https://img.icons8.com/${info[i].icon.split('/')[0]}/64/333333/${info[i].icon.split('/')[1]}.png" class="infoIcon">
-                        <span>${info[i].content}</span>
+                        ${link == '' ? `<span>` : `<a class="blackLink" href="${link}">`}${info[i].content}${link == '' ? `</span>` : `</a>`}
                     </div>`;
     }
     infoProfileBottom.innerHTML = innerHTML;

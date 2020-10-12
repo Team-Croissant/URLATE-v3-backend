@@ -29,6 +29,11 @@ body {
   color: #2196F3;
 }
 
+.blackLink {
+  text-decoration: none;
+  color: #333;
+}
+
 .gray {
   color: #888;
   font-style: italic;
