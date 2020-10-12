@@ -447,6 +447,11 @@ p {
 }
 
 .profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2vh;
+  font-weight: 600;
   background-position: center;
   background-size: cover;
   float: left;
@@ -510,6 +515,14 @@ p {
   background-image: url('/images/credits/lightqp.jpg');
 }
 
+#profileJoon {
+  background-image: url('/images/credits/joon.png');
+}
+
+#profileHanu {
+  background-image: url('/images/credits/hanukoon.png');
+}
+
 #infoProfileContainer {
   z-index: 101;
 }
@@ -563,7 +576,7 @@ p {
 }
 
 #quote {
-  font-size: 4vh;
+  font-size: 3.5vh;
   font-weight: 700;
 }
 
