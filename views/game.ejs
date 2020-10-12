@@ -121,19 +121,79 @@
         <p class="advancedSubtitle"><%= __('advanced_subtitle_3') %></p>
         <p class="advancedDescription"><%= __('advanced_description_8') %><br><strong><%= __('advanced_description_9') %></strong></p>
         <br>
-        <input type="button" id="registerBtn" value="<%= __('register') %>" onclick="getAdvanced()">
+        <input type="button" id="registerBtn" class="clickable" value="<%= __('register') %>" onclick="getAdvanced()">
     </div>
     <div id="infoContainer" class="containers">
+        <div id="infoProfileContainer" class="containers">
+            <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
+            <div id="infoProfileLeft">
+                <img src="" id="infoProfileImg">
+            </div>
+            <div id="infoProfileRight">
+                <div id="infoProfileTop">
+                    <span id="infoProfileName"></span>
+                    <br>
+                    <span id="infoProfilePosition"></span>
+                </div>
+                <div id="infoProfileBottom">
+                </div>
+            </div>
+        </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <img src="images/logos/URLATE.png" id="infoLogo">
-        <span id="license"><br><span id="licenseMain">URLATE is under the MIT license.</span>
+        <img src="images/logos/URLATE_NO_CIRCLE.png" id="infoLogo">
+        <br>
+        <span id="license">
+            <span id="licenseMain">URLATE is under the MIT license.</span>
+            <br><br>
+            Copyright notices for resources included in the game are located at <a href="https://rhyga.me/info" target="_blank" class="link">rhyga.me/info</a>.
             <br>
-            Copyright notices for icons, songs, designs, resources, etc. included in the game are located at <a href="https://rhyga.me/info" target="_blank" class="link">rhyga.me/info</a>.
+            All copyrights of the resources included in URLATE are owned by Team Croissant and,
             <br>
-            All copyrights of the resources included in URLATE are owned by Team Croissant and, apart from the MIT license, use without permission may result in legal liability.
+            apart from the MIT license, use without permission may result in legal liability.
+            <br>
         </span>
         <div id="infoLineContainer"><div id="infoLine"></div></div>
-        <img src="images/logos/croissant.png" id="croissantLogo">
+        <span id="infoTitle">TEAM CROISSANT</span>
+        <br>
+        <span id="infoSubtitle">(Click to show details)</span>
+        <br>
+        <div class="profileContainer">
+            <div class="profile" id="profileCoupy">
+                <div class="profileHover" onclick="showProfile('coupy')">Coupy</div>
+            </div>
+            <div class="profile" id="profileAlta">
+                <div class="profileHover" onclick="showProfile('altadex')">AlTaDex</div>
+            </div>
+            <div class="profile" id="profileShd">
+                <div class="profileHover" onclick="showProfile('sancheon')">SH:D_</div>
+            </div>
+            <div class="profile" id="profileGreenstar">
+                <div class="profileHover" onclick="showProfile('greenstar')">Greenstar</div>
+            </div>
+            <div class="profile" id="profileRanol">
+                <div class="profileHover" onclick="showProfile('ranolp')">Ranol☆P</div>
+            </div>
+        </div>
+        <div class="profileContainer">
+            <div class="profile" id="profileKiwi">
+                <div class="profileHover" onclick="showProfile('kiwiyou')">kiwiyou</div>
+            </div>
+            <div class="profile" id="profilePine">
+                <div class="profileHover" onclick="showProfile('pine')">Pine</div>
+            </div>
+            <div class="profile" id="profileSkylight">
+                <div class="profileHover" onclick="showProfile('skylineqp')">SkylineQP</div>
+            </div>
+        </div>
+        <span id="infoTitle">THANKS TO</span>
+        <br>
+        <span id="infoSubtitle">(Click to show details)</span>
+        <br>
+        <div class="profileContainer">
+            <div class="profile" id="profileGeoplex">Geoplex</div>
+            <div class="profile" id="profileVictorSaw">Victor<br>&<br>Saw</div>
+            <div class="profile" id="profileYou">..and You</div>
+        </div>
     </div>
     <div id="optionContainer" class="containers">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">

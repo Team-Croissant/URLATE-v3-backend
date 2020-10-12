@@ -389,6 +389,16 @@ const displayClose = () => {
       document.getElementById("infoContainer").classList.remove("fadeOut");
       document.getElementById("infoContainer").style.display = "none";
     }, 500);
+  } else if(display == 5) {
+    //Info Profile
+    document.getElementById("infoProfileContainer").classList.remove("fadeIn");
+    document.getElementById("infoProfileContainer").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("infoProfileContainer").classList.remove("fadeOut");
+      document.getElementById("infoProfileContainer").style.display = "none";
+    }, 500);
+    display = 4;
+    return;
   }
   display = 0;
 };
@@ -513,6 +523,37 @@ const settingChanged = (e, v) => {
   } else if(v == 'ignoreTest') {
     settings.editor.denyAtTest = e.checked;
   }
+};
+
+const showProfile = name => {
+  fetch(`${api}/getProfile/${name}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    let info = JSON.parse(data.data);
+    infoProfileName.textContent = info[0].name;
+    infoProfilePosition.textContent = info[0].position;
+    infoProfileImg.src = `images/credits/${info[0].profile}`;
+    let innerHTML = `<div class="infoProfilePart">
+                          <img src="https://img.icons8.com/small/64/333333/comma.png" class="infoIcon">
+                          <span id="quote">${info[0].quote}</span>
+                     </div>`;
+    for(let i = 1; i < info.length; i++) {
+      innerHTML += `
+                    <div class="infoProfilePart">
+                        <img src="https://img.icons8.com/${info[i].icon.split('/')[0]}/64/333333/${info[i].icon.split('/')[1]}.png" class="infoIcon">
+                        <span>${info[i].content}</span>
+                    </div>`;
+    }
+    infoProfileBottom.innerHTML = innerHTML;
+    display = 5;
+    document.getElementById("infoProfileContainer").style.display = "flex";
+    document.getElementById("infoProfileContainer").classList.toggle("fadeIn");
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+  });
 };
 
 window.addEventListener("resize", initialize);
