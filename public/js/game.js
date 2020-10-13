@@ -573,4 +573,23 @@ const showProfile = name => {
   });
 };
 
+document.onkeydown = e => {
+  e = e || window.event;
+  let key = e.key.toLowerCase();
+  console.log(key);
+  if(key == 'escape') {
+    displayClose();
+    return;
+  }
+  if(display == 0) {
+    if(key == 'arrowleft') {
+      menuLeft();
+    } else if(key == 'arrowright') {
+      menuRight();
+    } else if(key == 'enter' || key == ' ') {
+      menuSelected();
+    }
+  }
+};
+
 window.addEventListener("resize", initialize);
