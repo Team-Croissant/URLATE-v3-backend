@@ -799,8 +799,15 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 };
 
 const compClicked = (isTyped) => {
-  if(!isTyped && !settings.input.mouse || !(!isMenuOpened && menuAllowed)) {
+  if(!isTyped && !settings.input.mouse || isMenuOpened || !menuAllowed) {
     return;
+  }
+  if(!song.playing()) {
+    floatingResumeContainer.style.opacity = 0;
+    setTimeout(() => {
+      floatingResumeContainer.style.display = 'none';
+    }, 300);
+    song.play();
   }
   mouseClicked = true;
   mouseClickedMs = Date.now();
@@ -913,7 +920,8 @@ const songPlayPause = () => {
 const resume = () => {
   menuContainer.style.display = 'none';
   isMenuOpened = false;
-  song.play();
+  floatingResumeContainer.style.display = 'flex';
+  floatingResumeContainer.style.opacity = 1;
 };
 
 const retry = () => {
@@ -959,13 +967,13 @@ document.onkeydown = e => {
       e.preventDefault();
       if(menuAllowed) {
         if(menuContainer.style.display == 'none') {
+          floatingResumeContainer.style.opacity = 0;
+          floatingResumeContainer.style.display = 'none';
           isMenuOpened = true;
           menuContainer.style.display = 'flex';
           song.pause();
         } else {
-          isMenuOpened = false;
-          menuContainer.style.display = 'none';
-          song.play();
+          resume();
         }
       }
       return;

@@ -570,3 +570,40 @@ body {
     top: 15vh;
   }
 }
+
+#floatingResumeContainer {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: -2vh;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  animation: floatResume 1s ease-in-out infinite;
+  animation-direction: alternate;
+  transition-duration: .3s;
+}
+
+#floatingResume {
+  background-color: white;
+  padding: .5em;
+  border-radius: 10px;
+  position: fixed;
+  font-size: 3vh;
+  font-weight: 600;
+}
+
+@keyframes floatResume {
+  0% {
+    top: -2vh;
+    color: #333;
+  }
+  100% {
+    top: 2vh;
+  }
+}
