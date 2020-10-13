@@ -925,31 +925,7 @@ const resume = () => {
 };
 
 const retry = () => {
-  song.seek(0);
-  pattern = {};
-  pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
-  circleBulletAngles = [];
-  destroyParticles = [];
-  destroyedBullets = new Set([]);
-  destroyedNotes = new Set([]);
-  mouseX = 0, mouseY = 0;
-  bpm = 0, speed = 0;
-  score = 0, combo = 0, displayScore = 0;
-  perfect = 0;
-  great = 0;
-  good = 0;
-  bad = 0;
-  miss = 0;
-  bullet = 0;
-  mouseClicked = false;
-  menuAllowed = false;
-  mouseClickedMs = -1;
-  frameCounterMs = Date.now();
-  menuContainer.style.display = 'none';
-  isMenuOpened = false;
-  initialize(true);
-  settingApply();
-  setTimeout(songPlayPause, 4000);
+  location.reload();
 };
 
 const editor = () => {
