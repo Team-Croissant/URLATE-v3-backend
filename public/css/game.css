@@ -532,6 +532,10 @@ p {
   background-image: url('/images/credits/geoplex.png');
 }
 
+#profileDanu {
+  background-image: url('/images/credits/danuel.jpg');
+}
+
 #infoProfileContainer {
   z-index: 101;
 }
