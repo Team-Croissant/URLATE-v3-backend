@@ -561,7 +561,7 @@ const showProfile = name => {
       innerHTML += `
                     <div class="infoProfilePart">
                         <img src="https://img.icons8.com/${info[i].icon.split('/')[0]}/64/333333/${info[i].icon.split('/')[1]}.png" class="infoIcon">
-                        ${link == '' ? `<span>` : `<a class="blackLink" href="${link}">`}${info[i].content}${link == '' ? `</span>` : `</a>`}
+                        ${link == '' ? `<span>` : `<a class="blackLink" href="${link}" target="_blank">`}${info[i].content}${link == '' ? `</span>` : `</a>`}
                     </div>`;
     }
     infoProfileBottom.innerHTML = innerHTML;
