@@ -549,6 +549,8 @@ const showProfile = name => {
         link = `https://twitter.com/${info[i].content}`;
       } else if(info[i].icon.indexOf("telegram") != -1) {
         link = `https://t.me/${info[i].content}`;
+      } else if(info[i].icon.indexOf("instagram") != -1) {
+        link = `https://www.instagram.com/${info[i].content}`;
       } else if(info[i].icon.indexOf("email") != -1) {
         link = `mailto:${info[i].content}`;
       }
