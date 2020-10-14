@@ -541,6 +541,7 @@ p {
 }
 
 #infoProfileContainer {
+  overflow-y: hidden;
   z-index: 101;
 }
 
