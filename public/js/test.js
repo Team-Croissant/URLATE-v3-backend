@@ -814,7 +814,7 @@ const compClicked = (isTyped) => {
   for(let i = 0; i < pointingCntElement.length; i++) {
     if(pointingCntElement[i].v1 === 0 && !destroyedNotes.has(pointingCntElement[i].i)) {
       drawParticle(1, mouseX, mouseY);
-      let seek = song.seek() * 1000;
+      let seek = song.seek() * 1000 - (offset + sync);
       let ms = pattern.patterns[pointingCntElement[i].i].ms;
       let perfectJudge = 60000 / bpm / 8;
       let greatJudge = 60000 / bpm / 5;
@@ -857,7 +857,7 @@ const compReleased = () => {
 const calculateScore = (judge, i, isMissed) => {
   destroyedNotes.add(i);
   if(!isMissed) {
-    pattern.patterns[i].ms = song.seek() * 1000;
+    pattern.patterns[i].ms = song.seek() * 1000 - (offset + sync);
   }
   if(judge == 'miss') {
     combo = 0;
