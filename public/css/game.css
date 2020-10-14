@@ -602,7 +602,6 @@ p {
 }
 
 #visualizer {
-  mix-blend-mode: darken;
   filter: sepia(2%) saturate(6166%) hue-rotate(184deg) contrast(116%) brightness(120%);
   pointer-events: none;
   position: fixed;
