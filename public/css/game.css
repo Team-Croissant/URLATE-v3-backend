@@ -536,6 +536,10 @@ p {
   background-image: url('/images/credits/danuel.jpg');
 }
 
+#profileViktor {
+  background-image: url('/images/credits/viktor.png');
+}
+
 #infoProfileContainer {
   z-index: 101;
 }
