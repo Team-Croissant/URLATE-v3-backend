@@ -602,7 +602,7 @@ p {
 }
 
 #visualizer {
-  filter: sepia(2%) saturate(6166%) hue-rotate(184deg) contrast(116%) brightness(120%);
+  filter: invert(87%) sepia(3%) saturate(3117%) hue-rotate(186deg) brightness(101%) contrast(104%);
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -611,7 +611,6 @@ p {
   height: 100vw;
   overflow-x: hidden;
   overflow-y: hidden;
-  opacity: 0.5;
   transform: scaleX(1.2);
   transition-duration: 0.3s;
 }
