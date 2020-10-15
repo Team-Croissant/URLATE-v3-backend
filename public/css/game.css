@@ -540,6 +540,10 @@ p {
   background-image: url('/images/credits/viktor.png');
 }
 
+#profileSaw {
+  background-image: url('/images/credits/saw.png');
+}
+
 #infoProfileContainer {
   overflow-y: hidden;
   z-index: 101;
