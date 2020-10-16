@@ -145,6 +145,7 @@ const settingApply = () => {
   hide.bad = settings.game.applyJudge.Bad;
   hide.miss = settings.game.applyJudge.Miss;
   frameCounter = settings.game.counter;
+  volumeMaster.value = settings.sound.volume.master * 100;
   let fileName = '';
   for(let i = 0; i < tracks.length; i++) {
     if(tracks[i].name == pattern.information.track) {
@@ -919,6 +920,24 @@ const songPlayPause = () => {
 };
 
 const resume = () => {
+  fetch(`${api}/update/settings`, {
+    method: 'PUT',
+    credentials: 'include',
+    body: JSON.stringify({
+      settings: settings
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result != 'success') {
+      alert(`Error occured.\n${data.error}`);
+    }
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+  });
   menuContainer.style.display = 'none';
   isMenuOpened = false;
   floatingResumeContainer.style.display = 'flex';
@@ -935,6 +954,15 @@ const editor = () => {
 
 const home = () => {
   window.location.href = url;
+};
+
+const settingChanged = (e, v) => {
+  if(v == 'volumeMaster') {
+    settings.sound.volume.master = e.value / 100;
+    song.volume(settings.sound.volume.master * settings.sound.volume.music);
+    tick.volume(settings.sound.volume.master * settings.sound.volume.hitSound);
+    resultEffect.volume(settings.sound.volume.master * settings.sound.volume.effect);
+  }
 };
 
 document.onkeydown = e => {
