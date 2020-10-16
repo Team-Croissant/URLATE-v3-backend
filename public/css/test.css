@@ -214,17 +214,22 @@ body {
 }
 
 .menuBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 500;
-  padding: 1vh 4vw 1vh 4vw;
+  width: 20vw;
+  height: 10vh;
   font-size: 4vh;
-  transition-duration: .5s;
+  transition-duration: .2s;
   cursor: pointer;
   border-radius: 50vh;
   background-size: cover;
 }
 
 .menuBtn:hover {
-  padding: 3vh 6vw 3vh 6vw;
+  width: 23vw;
+  height: 11vh;
   color: white;
 }
 
