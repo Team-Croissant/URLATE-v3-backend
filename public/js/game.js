@@ -411,7 +411,7 @@ const menuSelected = () => {
 
 const menu0Selected = () => {
   display = 1;
-  document.getElementById("selectContainer").style.display = "block";
+  document.getElementById("selectContainer").style.display = "flex";
   document.getElementById("selectContainer").classList.add("fadeIn");
 };
 

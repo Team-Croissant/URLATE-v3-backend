@@ -137,5 +137,8 @@
 	"ignore_cursor_at_editor": "에디터에서 커서 무시",
 	"logout": "로그아웃",
 	"cursor_size_warning": "*판정 범위에는 영향을 미치지 않습니다.",
-	"volume_effect": "이펙트"
+	"volume_effect": "이펙트",
+	"bullet_density": "총알 밀도",
+	"note_density": "노트 밀도",
+	"speed": "속도"
 }

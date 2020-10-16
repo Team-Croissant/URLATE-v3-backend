@@ -120,5 +120,8 @@
 	"ignore_cursor_at_editor": "Ignore cursor in editor",
 	"logout": "Logout",
 	"cursor_size_warning": "*It does not affect the judgment range.",
-	"volume_effect": "Effect"
+	"volume_effect": "Effect",
+	"bullet_density": "Bullet density",
+	"note_density": "Note density",
+	"speed": "Speed"
 }
