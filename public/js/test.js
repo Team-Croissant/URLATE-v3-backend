@@ -369,7 +369,8 @@ const drawParticle = (n, x, y, j) => {
       ctx.beginPath();
       let p = 100 - ((missParticles[j].s + 300 - Date.now()) / 3);
       let newY = cy - Math.round(p / 10);
-      ctx.fillStyle = `rgba(237, 78, 50, ${1 - p / 100})`;
+      ctx.fillStyle = getJudgeStyle('miss', p);
+      console.log(getJudgeStyle('miss', p));
       ctx.font = "3vh Metropolis";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
