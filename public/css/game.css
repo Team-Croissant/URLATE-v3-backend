@@ -1153,7 +1153,7 @@ p {
   font-size: 3.5vh;
   cursor: pointer;
   margin-right: 2vw;
-  opacity: 0.5;
+  opacity: 0.3;
   font-weight: 300;
 }
 
@@ -1174,6 +1174,6 @@ p {
 
 .medals {
   width: 5vh;
-  opacity: 0.3;
+  opacity: 0.1;
   margin-right: 0.5vw;
 }
