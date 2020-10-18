@@ -297,6 +297,8 @@ p {
   height: 100vh;
   background-image: url('/images/backgrounds/track.png');
   background-repeat: no-repeat;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #menuContainer {
@@ -977,13 +979,14 @@ p {
 }
 
 #selectContainerLeft {
+  padding-left: 2vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 10vh;
   height: 90vh;
-  width: 50vw;
+  width: 60vw;
   float: left;
 }
 
@@ -1102,7 +1105,7 @@ p {
 }
 
 #selectContainerInfo {
-  padding-top: 3vh;
+  padding-top: 7%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1138,13 +1141,6 @@ p {
   border-radius: 10px;
 }
 
-#selectContainerRight {
-  margin-top: 10vh;
-  height: 90vh;
-  width: 50vw;
-  float: left;
-}
-
 .selectInfoContentsContainer {
   margin-top: 1vh;
 }
@@ -1176,4 +1172,49 @@ p {
   width: 5vh;
   opacity: 0.1;
   margin-right: 0.5vw;
+}
+
+.nomargin {
+  margin: 0;
+}
+
+#selectContainerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding-right: 8vw;
+  padding-top: 5vh;
+  margin-top: 10vh;
+  height: 90vh;
+  width: 40vw;
+  float: left;
+}
+
+#selectContainerRightTitles {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  height: 3%;
+  width: 100%;
+  text-align: right;
+  margin-bottom: 2%;
+}
+
+.selectContainerRightTitle {
+  font-size: 3vh;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+#selectSongContainer {
+  width: 100%;
+  height: 90%;
+}
+
+#selectContainerRightRank {
+  margin-left: 1vw;
+  width: 5vw;
+  text-align: center;
 }
