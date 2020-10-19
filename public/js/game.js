@@ -305,22 +305,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const songSelected = n => {
-  songNameText.textContent = tracks[n].name;
-  songs[n].volume(1);
-  if(songSelection != -1) {
-    let i = songSelection;
-    songs[i].fade(1, 0, 200);
-    setTimeout(() => {
-      songs[i].stop();
-    }, 200);
+  if(!(songSelection == -1 && tracks[n].name == "URLATE Theme")) {
+    songNameText.textContent = tracks[n].name;
+    songs[n].volume(1);
+    if(songSelection != -1) {
+      let i = songSelection;
+      songs[i].fade(1, 0, 200);
+      setTimeout(() => {
+        songs[i].stop();
+      }, 200);
+    }
+    if(themeSong.playing()) {
+      themeSong.fade(1, 0, 500);
+      setTimeout(() => {
+        themeSong.stop();
+      }, 500);
+    }
+    songs[n].play();
   }
-  if(themeSong.playing()) {
-    themeSong.fade(1, 0, 500);
-    setTimeout(() => {
-      themeSong.stop();
-    }, 500);
-  }
-  songs[n].play();
   if(document.getElementsByClassName('songSelected')[0]) {
     document.getElementsByClassName('songSelected')[0].classList.remove('songSelected');
   }
@@ -334,6 +336,13 @@ const songSelected = n => {
   selectArtist.textContent = tracks[n].producer;
   selectAlbum.src = `https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png`;
   selectBackground.style.backgroundImage = `url("https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png")`;
+  let upperLimit = document.getElementsByClassName('songSelectionContainer')[n < 2 ? 5 : n - 2].offsetHeight * n;
+  let underLimit = upperLimit - selectSongContainer.offsetHeight + document.getElementsByClassName('songSelectionContainer')[n].offsetHeight;
+  if(selectSongContainer.scrollTop > upperLimit) {
+    selectSongContainer.scrollTop = upperLimit;
+  } else if(selectSongContainer.scrollTop < underLimit) {
+    selectSongContainer.scrollTop = underLimit + selectSongContainer.offsetHeight / 50;
+  }
   songSelection = n;
 };
 
