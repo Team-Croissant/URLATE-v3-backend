@@ -960,7 +960,6 @@ p {
   pointer-events: none;
   background-size: cover;
   background-position: center;
-  background-image: url("https://cdn.rhyga.me/albums/50/zenith (Custom).png");
   position: fixed;
   top: 0;
   left: 0;
@@ -1009,7 +1008,8 @@ p {
 }
 
 #selectTitle {
-  font-size: 6vh;
+  text-align: left;
+  font-size: 5vh;
   font-weight: 200;
 }
 

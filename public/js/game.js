@@ -246,6 +246,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
             skinSelector.appendChild(option); 
           }
           settingApply();
+          fetch(`${api}/getTracks`, {
+            method: 'GET',
+            credentials: 'include'
+          })
+          .then(res => res.json())
+          .then((data) => {
+            if(data.result == 'success') {
+              tracks = data.tracks;
+              tracks.sort(sortAsName);
+              let songList = '';
+              for(let i = 0; i < tracks.length; i++) {
+                songs[i] = new Howl({
+                  src: [`https://cdn.rhyga.me/preview/${tracks[i].fileName}.mp3`],
+                  format: ['mp3'],
+                  autoplay: false,
+                  loop: true
+                });
+                songList += `<div class="songSelectionContainer" onclick="songSelected(${i})">
+                                <div class="songSelectionInfo">
+                                    <span class="songSelectionTitle">${tracks[i].name}</span>
+                                    <span class="songSelectionArtist">${tracks[i].producer}</span>
+                                </div>
+                                <div class="songSelectionRank">
+                                    <span class="rankQ"></span>
+                                </div>
+                            </div>`;
+              }
+              Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+              selectSongContainer.innerHTML = songList;
+            } else {
+              alert('Failed to load song list.');
+              console.error('Failed to load song list.');
+            }
+          }).catch((error) => {
+            alert(`Error occured.\n${error}`);
+            console.error(`Error occured.\n${error}`);
+          });
         } else {
           alert(`Error occured.\n${data.description}`);
         }
