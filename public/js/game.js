@@ -305,6 +305,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const songSelected = n => {
+  songNameText.textContent = tracks[n].name;
   songs[n].volume(1);
   if(songSelection != -1) {
     let i = songSelection;
