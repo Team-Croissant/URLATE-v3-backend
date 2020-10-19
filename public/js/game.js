@@ -7,8 +7,12 @@ let canvas = document.getElementById("renderer");
 let ctx = canvas.getContext("2d");
 let bars = 100;
 let loaded = 0;
+let songSelection = -1;
+let difficultySelection = 0;
+let difficulties = [1,5,10];
 
-let songs;
+let themeSong;
+let songs = [];
 
 const initialize = () => {
   canvas.width = window.innerWidth;
@@ -137,7 +141,7 @@ const settingApply = () => {
           let typedArray = convertWordArrayToUint8Array(decrypted);
           let fileDec = new Blob([typedArray.buffer]);
           let url = window.URL.createObjectURL(fileDec);
-          songs = new Howl({
+          themeSong = new Howl({
             src: [url],
             format: ['mp3'],
             autoplay: false,
@@ -148,7 +152,7 @@ const settingApply = () => {
               }
               loaded = 1;
               Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-              songs.play();
+              themeSong.play();
               window.URL.revokeObjectURL(url);
             }
           });
@@ -193,6 +197,11 @@ const animationLooper = () => {
     drawBar(wWidth, y, wWidth - x_end, y, barWidth - (barWidth / 2));
   }
   requestAnimationFrame(animationLooper);
+};
+
+const sortAsName = (a, b) => {
+  if(a.name == b.name) return 0;
+  return a.name > b.name ? 1 : -1;
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -294,6 +303,38 @@ document.addEventListener("DOMContentLoaded", (event) => {
     alert(`Error occured.\n${error}`);
   });
 });
+
+const songSelected = n => {
+  songs[n].volume(1);
+  if(songSelection != -1) {
+    let i = songSelection;
+    songs[i].fade(1, 0, 200);
+    setTimeout(() => {
+      songs[i].stop();
+    }, 200);
+  }
+  if(themeSong.playing()) {
+    themeSong.fade(1, 0, 500);
+    setTimeout(() => {
+      themeSong.stop();
+    }, 500);
+  }
+  songs[n].play();
+  if(document.getElementsByClassName('songSelected')[0]) {
+    document.getElementsByClassName('songSelected')[0].classList.remove('songSelected');
+  }
+  document.getElementsByClassName('songSelectionContainer')[n].classList.add('songSelected');
+  selectTitle.textContent = tracks[n].name;
+  if(selectTitle.offsetWidth > window.innerWidth / 4) {
+    selectTitle.style.fontSize = '4vh';
+  } else {
+    selectTitle.style.fontSize = '5vh';
+  }
+  selectArtist.textContent = tracks[n].producer;
+  selectAlbum.src = `https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png`;
+  selectBackground.style.backgroundImage = `url("https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png")`;
+  songSelection = n;
+};
 
 const gameLoaded = () => {
   document.getElementById("menuContainer").style.display = "flex";
@@ -448,6 +489,11 @@ const menuSelected = () => {
 
 const menu0Selected = () => {
   display = 1;
+  if(songSelection == -1) {
+    let min = Math.ceil(0);
+    let max = Math.floor(tracks.length);
+    songSelected(Math.floor(Math.random() * (max - min)) + min);
+  }
   document.getElementById("selectContainer").style.display = "flex";
   document.getElementById("selectContainer").classList.add("fadeIn");
 };
