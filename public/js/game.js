@@ -336,12 +336,20 @@ const songSelected = n => {
   selectArtist.textContent = tracks[n].producer;
   selectAlbum.src = `https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png`;
   selectBackground.style.backgroundImage = `url("https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png")`;
-  let upperLimit = document.getElementsByClassName('songSelectionContainer')[n < 2 ? 5 : n - 2].offsetHeight * n;
-  let underLimit = upperLimit - selectSongContainer.offsetHeight + document.getElementsByClassName('songSelectionContainer')[n].offsetHeight;
+  let songSelectionContainer = document.getElementsByClassName('songSelectionContainer');
+  let upperLimit = (songSelectionContainer[n < 2 ? 5 : n - 2].offsetHeight != 0 ? songSelectionContainer[n < 2 ? 5 : n - 2].offsetHeight : window.innerHeight / 12.5) * n;
+  let containerHeight = selectSongContainer.offsetHeight != 0 ? selectSongContainer.offsetHeight : window.innerHeight / 1.39;
+  let underLimit = upperLimit - containerHeight + (songSelectionContainer[n].offsetHeight != 0 ? songSelectionContainer[n].offsetHeight : window.innerHeight / 13);
+  upperLimit = Math.round(upperLimit);
+  underLimit = Math.round(underLimit);
+  console.log(selectSongContainer.scrollTop, upperLimit, underLimit);
   if(selectSongContainer.scrollTop > upperLimit) {
     selectSongContainer.scrollTop = upperLimit;
   } else if(selectSongContainer.scrollTop < underLimit) {
-    selectSongContainer.scrollTop = underLimit + selectSongContainer.offsetHeight / 50;
+    console.log(Math.round(underLimit + containerHeight / 50));
+    setTimeout(() => {
+      selectSongContainer.scrollTop = Math.round(underLimit + containerHeight / 50);
+    }, songSelection == -1 ? 200 : 0);
   }
   songSelection = n;
 };
