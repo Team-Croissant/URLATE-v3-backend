@@ -662,11 +662,22 @@ document.onkeydown = e => {
   }
   if(display == 0) {
     if(key == 'arrowleft') {
+      e.preventDefault();
       menuLeft();
     } else if(key == 'arrowright') {
+      e.preventDefault();
       menuRight();
     } else if(key == 'enter' || key == ' ') {
+      e.preventDefault();
       menuSelected();
+    }
+  } else if(display == 1) {
+    if(key == 'arrowup') {
+      e.preventDefault();
+      if(songSelection != 0) songSelected(songSelection - 1);
+    } else if(key == 'arrowdown') {
+      e.preventDefault();
+      if(songSelection < tracks.length - 1) songSelected(songSelection + 1);
     }
   }
 };
