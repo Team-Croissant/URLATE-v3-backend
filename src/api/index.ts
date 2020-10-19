@@ -200,7 +200,7 @@ app.get("/getTracks", async (req, res) => {
   res.status(200).json({result: "success", tracks: results});
 });
 
-app.get("/getTracks/:name", async (req, res) => {
+app.get("/getTrackInfo/:name", async (req, res) => {
   const results = await knex('patternInfo').select('bpm', 'bullet_density', 'note_density', 'speed').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load track data. It may be a problem with the DB.'));

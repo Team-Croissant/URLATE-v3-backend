@@ -261,7 +261,7 @@ app.get("/getTracks", function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-app.get("/getTracks/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/getTrackInfo/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
