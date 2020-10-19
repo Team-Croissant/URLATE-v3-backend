@@ -342,11 +342,9 @@ const songSelected = n => {
   let underLimit = upperLimit - containerHeight + (songSelectionContainer[n].offsetHeight != 0 ? songSelectionContainer[n].offsetHeight : window.innerHeight / 13);
   upperLimit = Math.round(upperLimit);
   underLimit = Math.round(underLimit);
-  console.log(selectSongContainer.scrollTop, upperLimit, underLimit);
   if(selectSongContainer.scrollTop > upperLimit) {
     selectSongContainer.scrollTop = upperLimit;
   } else if(selectSongContainer.scrollTop < underLimit) {
-    console.log(Math.round(underLimit + containerHeight / 50));
     setTimeout(() => {
       selectSongContainer.scrollTop = Math.round(underLimit + containerHeight / 50);
     }, songSelection == -1 ? 200 : 0);
