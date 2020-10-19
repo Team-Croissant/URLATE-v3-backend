@@ -139,15 +139,15 @@ p {
 }
 
 ::-webkit-scrollbar-track {
-  background: #cecece;
+  background: #8f8f8f;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #5a5a5a;
+  background: #dddddd;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #353535;
+  background: #ffffff;
 }
 
 #loadingContainer {
@@ -985,7 +985,7 @@ p {
   align-items: center;
   justify-content: center;
   margin-top: 10vh;
-  height: 90vh;
+  height: 80vh;
   width: 60vw;
   float: left;
 }
@@ -1186,7 +1186,7 @@ p {
   padding-right: 8vw;
   padding-top: 5vh;
   margin-top: 10vh;
-  height: 90vh;
+  height: 80vh;
   width: 40vw;
   float: left;
 }
@@ -1200,6 +1200,7 @@ p {
   width: 100%;
   text-align: right;
   margin-bottom: 2%;
+  margin-right: 10px;
 }
 
 .selectContainerRightTitle {
@@ -1209,6 +1210,8 @@ p {
 }
 
 #selectSongContainer {
+  overflow-x: hidden;
+  overflow-y: scroll;
   width: 100%;
   height: 90%;
 }
@@ -1217,4 +1220,108 @@ p {
   margin-left: 1vw;
   width: 5vw;
   text-align: center;
+}
+
+.songSelectionContainer {
+  --artist-display: initial;
+  --title-weight: 300;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  transition-duration: .2s;
+}
+
+.songSelectionInfo {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  margin-right: 1vw;
+}
+
+.songSelectionTitle {
+  font-size: 3.5vh;
+  font-weight: var(--title-weight);
+}
+
+.songSelectionArtist {
+  display: var(--artist-display);
+  font-size: 2.5vh;
+  font-weight: 600;
+}
+
+.songSelectionRank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5vw;
+}
+
+.rankSS:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #faeb1f;
+  content: "SS";
+}
+
+.rankS:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #faeb1f;
+  content: "S";
+}
+
+.rankA:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #42e24f;
+  content: "A";
+}
+
+.rankB:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #22c7f0;
+  content: "B";
+}
+
+.rankC:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #f14b66;
+  content: "C";
+}
+
+.rankF:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #c0c0c0;
+  content: "F";
+}
+
+.rankQ:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #fff;
+  opacity: 0.2;
+  content: "?";
+}
+
+.songSelected:before {
+  content: url("https://img.icons8.com/material-rounded/30/ffffff/give-way.png");
+  margin-right: 1vw;
+  transform: rotate(-90deg) scale(0.9);
+}
+
+.songSelected {
+  padding-top: 1.5vh;
+  padding-bottom: 1.5vh;
+  --artist-display: none;
+  --title-weight: 600;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.5));
 }
