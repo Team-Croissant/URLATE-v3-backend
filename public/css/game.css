@@ -966,7 +966,7 @@ p {
   width: 100vw;
   height: 100vh;
   filter: blur(20px);
-  opacity: 0.7;
+  opacity: 0.5;
   transform: scale(1.1);
 }
 
