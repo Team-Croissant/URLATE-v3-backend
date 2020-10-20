@@ -140,5 +140,6 @@
 	"volume_effect": "이펙트",
 	"bullet_density": "총알 밀도",
 	"note_density": "노트 밀도",
-	"speed": "속도"
+	"speed": "속도",
+	"detail_lang_warning": "*재접속 전까지 정상 동작하지 않을 수 있습니다."
 }

@@ -123,5 +123,6 @@
 	"volume_effect": "Effect",
 	"bullet_density": "Bullet density",
 	"note_density": "Note density",
-	"speed": "Speed"
+	"speed": "Speed",
+	"detail_lang_warning": "*It may not operate normally until reconnection."
 }
