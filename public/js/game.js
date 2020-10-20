@@ -10,6 +10,10 @@ let loaded = 0;
 let songSelection = -1;
 let difficultySelection = 0;
 let difficulties = [1,5,10];
+let bulletDensities = [10,50,100];
+let noteDensities = [10,50,100];
+let speeds = [1,2,3];
+let bpm = 130;
 
 let themeSong;
 let songs = [];
@@ -349,6 +353,22 @@ const songSelected = n => {
       selectSongContainer.scrollTop = Math.round(underLimit + containerHeight / 50);
     }, songSelection == -1 ? 200 : 0);
   }
+  fetch(`${api}/getTrackInfo/${tracks[n].name}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    data = data.info[0];
+    difficulties = JSON.parse(tracks[n].difficulty);
+    bulletDensities = JSON.parse(data.bullet_density);
+    noteDensities = JSON.parse(data.note_density);
+    speeds = JSON.parse(data.speed);
+    bpm = data.bpm;
+    updateDetails();
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+  });
   songSelection = n;
 };
 
@@ -668,6 +688,24 @@ const showProfile = name => {
   });
 };
 
+const updateDetails = () => {
+  bulletDensity.textContent = bulletDensities[difficultySelection];
+  bulletDensityValue.style.width = `${bulletDensities[difficultySelection]}%`;
+  noteDensity.textContent = noteDensities[difficultySelection];
+  noteDensityValue.style.width = `${noteDensities[difficultySelection]}%`;
+  bpmText.textContent = bpm;
+  bpmValue.style.width = `${bpm / 3}%`;
+  speed.textContent = speeds[difficultySelection];
+  speedValue.style.width = `${speeds[difficultySelection] / 5 * 100}%`;
+};
+
+const difficultySelected = n => {
+  difficultySelection = n;
+  document.getElementsByClassName('difficultySelected')[0].classList.remove('difficultySelected');
+  document.getElementsByClassName('difficulty')[n].classList.add('difficultySelected');
+  updateDetails();
+};
+
 document.onkeydown = e => {
   e = e || window.event;
   let key = e.key.toLowerCase();
@@ -694,6 +732,9 @@ document.onkeydown = e => {
     } else if(key == 'arrowdown') {
       e.preventDefault();
       if(songSelection < tracks.length - 1) songSelected(songSelection + 1);
+    } else if(key == 'tab') {
+      e.preventDefault();
+      difficultySelected(difficultySelection + 1 == 3 ? 0 : difficultySelection + 1);
     }
   }
 };

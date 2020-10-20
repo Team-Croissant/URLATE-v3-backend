@@ -101,10 +101,10 @@
                         <span><%= __('note_density') %></span>
                         <span id="noteDensity">83</span>
                     </div>
-                    <div class="trackStatLineContainer"><div class="trackStatLine" id="bpmValue"></div></div>
+                    <div class="trackStatLineContainer"><div class="trackStatLine" id="noteDensityValue"></div></div>
                     <div class="trackStatContainer">
                         <span>BPM</span>
-                        <span id="bpm">128</span>
+                        <span id="bpmText">128</span>
                     </div>
                     <div class="trackStatLineContainer"><div class="trackStatLine" id="bpmValue"></div></div>
                     <div class="trackStatContainer">
@@ -121,9 +121,9 @@
                         <span class="key">TAB</span>
                     </div>
                     <div class="selectInfoContentsContainer">
-                        <span class="difficulty difficultySelected">EZ</span>
-                        <span class="difficulty">MID</span>
-                        <span class="difficulty nomargin">HARD</span>
+                        <span class="difficulty difficultySelected" onclick="difficultySelected(0)">EZ</span>
+                        <span class="difficulty" onclick="difficultySelected(1)">MID</span>
+                        <span class="difficulty nomargin" onclick="difficultySelected(2)">HARD</span>
                     </div>
                     <span id="selectStars">★★★★★☆☆☆☆☆</span>
                 </div>
