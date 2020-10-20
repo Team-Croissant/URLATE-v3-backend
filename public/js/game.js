@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
                 songList += `<div class="songSelectionContainer" onclick="songSelected(${i})">
                                 <div class="songSelectionInfo">
-                                    <span class="songSelectionTitle">${tracks[i].name}</span>
+                                    <span class="songSelectionTitle">${(settings.general.detailLang == 'original') ? tracks[i].original_name : tracks[i].name}</span>
                                     <span class="songSelectionArtist">${tracks[i].producer}</span>
                                 </div>
                                 <div class="songSelectionRank">
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 const songSelected = n => {
   if(!(songSelection == -1 && tracks[n].name == "URLATE Theme")) {
-    songNameText.textContent = tracks[n].name;
+    songNameText.textContent = (settings.general.detailLang == 'original') ? tracks[n].original_name : tracks[n].name;
     songs[n].volume(1);
     if(songSelection != -1) {
       let i = songSelection;
@@ -331,7 +331,7 @@ const songSelected = n => {
     document.getElementsByClassName('songSelected')[0].classList.remove('songSelected');
   }
   document.getElementsByClassName('songSelectionContainer')[n].classList.add('songSelected');
-  selectTitle.textContent = tracks[n].name;
+  selectTitle.textContent = (settings.general.detailLang == 'original') ? tracks[n].original_name : tracks[n].name;
   if(selectTitle.offsetWidth > window.innerWidth / 4) {
     selectTitle.style.fontSize = '4vh';
   } else {
@@ -697,6 +697,14 @@ const updateDetails = () => {
   bpmValue.style.width = `${bpm / 3}%`;
   speed.textContent = speeds[difficultySelection];
   speedValue.style.width = `${speeds[difficultySelection] / 5 * 100}%`;
+  let starText = '';
+  for(let i = 0; i < difficulties[difficultySelection]; i++) {
+    starText += '★'
+  }
+  for(let i = difficulties[difficultySelection]; i < 10; i++) {
+    starText += '☆'
+  }
+  selectStars.textContent = starText;
 };
 
 const difficultySelected = n => {
