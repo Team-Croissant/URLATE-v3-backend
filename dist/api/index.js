@@ -249,7 +249,7 @@ app.get("/getTracks", function (req, res) { return __awaiter(void 0, void 0, voi
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, knex('tracks').select('name', 'fileName', 'producer', 'bpm')];
+            case 0: return [4 /*yield*/, knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty')];
             case 1:
                 results = _a.sent();
                 if (!results.length) {
