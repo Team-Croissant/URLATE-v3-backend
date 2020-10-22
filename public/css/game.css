@@ -138,16 +138,28 @@ p {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
+#selectSongContainer::-webkit-scrollbar-track {
   background: #8f8f8f;
 }
 
-::-webkit-scrollbar-thumb {
+#selectSongContainer::-webkit-scrollbar-thumb {
   background: #dddddd;
 }
 
-::-webkit-scrollbar-thumb:hover {
+#selectSongContainer::-webkit-scrollbar-thumb:hover {
   background: #ffffff;
+}
+
+::-webkit-scrollbar-track {
+  background: #dddddd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8f8f8f;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
 }
 
 #loadingContainer {
@@ -410,6 +422,7 @@ p {
 }
 
 #license {
+  line-height: 150%;
   letter-spacing: -1px;
   font-size: 2.5vh;
   font-weight: 400;
