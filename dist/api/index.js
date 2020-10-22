@@ -423,6 +423,38 @@ app.get("/getProfile/:name", function (req, res) { return __awaiter(void 0, void
         }
     });
 }); });
+app.get("/getRecord/:track/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track)];
+            case 1:
+                results = _a.sent();
+                if (!results.length) {
+                    res.status(200).json(api_response_1.createSuccessResponse('empty'));
+                    return [2 /*return*/];
+                }
+                res.status(200).json({ result: "success", results: results });
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get("/getRecords/:track/:order/:stat", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo').where('name', req.params.track).orderBy(req.params.order, req.params.stat)];
+            case 1:
+                results = _a.sent();
+                if (!results.length) {
+                    res.status(200).json(api_response_1.createSuccessResponse('empty'));
+                    return [2 /*return*/];
+                }
+                res.status(200).json({ result: "success", results: results });
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

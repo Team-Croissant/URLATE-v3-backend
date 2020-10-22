@@ -312,6 +312,24 @@ app.get("/getProfile/:name", async (req, res) => {
   res.status(200).json({result: "success", data: results[0].data});
 });
 
+app.get("/getRecord/:track/:name", async (req, res) => {
+  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track);
+  if (!results.length) {
+    res.status(200).json(createSuccessResponse('empty'));
+    return;
+  }
+  res.status(200).json({result: "success", results});
+});
+
+app.get("/getRecords/:track/:order/:stat", async (req, res) => {
+  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo').where('name', req.params.track).orderBy(req.params.order, req.params.stat);
+  if (!results.length) {
+    res.status(200).json(createSuccessResponse('empty'));
+    return;
+  }
+  res.status(200).json({result: "success", results});
+});
+
 app.get('/logout', (req, res) => {
   delete req.session.authorized;
   delete req.session.accessToken;

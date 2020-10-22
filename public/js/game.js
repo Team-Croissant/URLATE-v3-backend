@@ -15,6 +15,8 @@ let noteDensities = [10,50,100];
 let speeds = [1,2,3];
 let bpm = 130;
 
+let trackRecords = [];
+
 let themeSong;
 let songs = [];
 
@@ -165,12 +167,14 @@ const settingApply = () => {
         }
       }).catch((error) => {
         alert(`Error occured.\n${error}`);
+        console.error(`Error occured.\n${error}`);
       });
     } else {
       alert('Error occured while loading songs.');
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
 };
 
@@ -282,9 +286,36 @@ document.addEventListener("DOMContentLoaded", (event) => {
                                     <span class="songSelectionArtist">${tracks[i].producer}</span>
                                 </div>
                                 <div class="songSelectionRank">
-                                    <span class="rankQ"></span>
+                                    <span class="ranks rankQ"></span>
                                 </div>
                             </div>`;
+                fetch(`${api}/getRecord/${tracks[i].name}/${username}`, {
+                  method: 'GET',
+                  credentials: 'include'
+                })
+                .then(res => res.json())
+                .then((data) => {
+                  trackRecords[i] = [];
+                  if(data.result == "success") {
+                    for(let j = 0; j < 3; j++) {
+                      if(data.results[j] != undefined) {
+                        let value = data.results[j];
+                        document.getElementsByClassName('ranks')[i].className = "ranks";
+                        document.getElementsByClassName('ranks')[i].classList.add(`rank${value.rank}`);
+                        trackRecords[i][j] = {"rank": `rank${value.rank}`, "record": value.record, "medal": value.medal, "maxcombo": value.maxcombo};
+                      } else {
+                        trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                      }
+                    }
+                  } else {
+                    for(let j = 0; j < 3; j++) {
+                      trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                    }
+                  }
+                }).catch((error) => {
+                  alert(`Error occured.\n${error}`);
+                  console.error(`Error occured.\n${error}`);
+                });
               }
               Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
               selectSongContainer.innerHTML = songList;
@@ -301,10 +332,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
       }).catch((error) => {
         alert(`Error occured.\n${error}`);
+        console.error(`Error occured.\n${error}`);
       });
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
 });
 
@@ -353,6 +386,16 @@ const songSelected = n => {
       selectSongContainer.scrollTop = Math.round(underLimit + containerHeight / 50);
     }, songSelection == -1 ? 200 : 0);
   }
+  if(songSelection != -1) {
+    document.getElementsByClassName('ranks')[songSelection].className = "ranks";
+    if(trackRecords[songSelection][2].rank != 'rankQ') {
+      document.getElementsByClassName('ranks')[songSelection].classList.add(trackRecords[songSelection][2].rank);
+    } else if(trackRecords[songSelection][1].rank != 'rankQ') {
+      document.getElementsByClassName('ranks')[songSelection].classList.add(trackRecords[songSelection][1].rank);
+    } else {
+      document.getElementsByClassName('ranks')[songSelection].classList.add(trackRecords[songSelection][0].rank);
+    }
+  }
   fetch(`${api}/getTrackInfo/${tracks[n].name}`, {
     method: 'GET',
     credentials: 'include'
@@ -365,11 +408,16 @@ const songSelected = n => {
     noteDensities = JSON.parse(data.note_density);
     speeds = JSON.parse(data.speed);
     bpm = data.bpm;
-    updateDetails();
+    updateDetails(n);
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
   songSelection = n;
+};
+
+const numberWithCommas = x => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 const gameLoaded = () => {
@@ -473,6 +521,7 @@ const displayClose = () => {
       }
     }).catch((error) => {
       alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
     });
     document.getElementById("optionContainer").classList.remove("fadeIn");
     document.getElementById("optionContainer").classList.toggle("fadeOut");
@@ -565,6 +614,7 @@ const getAdvanced = () => {
     advancedPurchasing.style.pointerEvents = "none";
     advancedPurchasing.style.opacity = "0";
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
 };
 
@@ -685,10 +735,11 @@ const showProfile = name => {
     document.getElementById("infoProfileContainer").classList.toggle("fadeIn");
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
   });
 };
 
-const updateDetails = () => {
+const updateDetails = (n) => {
   bulletDensity.textContent = bulletDensities[difficultySelection];
   bulletDensityValue.style.width = `${bulletDensities[difficultySelection]}%`;
   noteDensity.textContent = noteDensities[difficultySelection];
@@ -705,13 +756,31 @@ const updateDetails = () => {
     starText += '☆'
   }
   selectStars.textContent = starText;
+  selectScoreValue.textContent = numberWithCommas(`${trackRecords[n][difficultySelection].record}`.padStart(9, '0'));
+  document.getElementsByClassName('ranks')[n].className = "ranks";
+  document.getElementsByClassName('ranks')[n].classList.add(trackRecords[n][difficultySelection].rank);
+  let recordMedal = trackRecords[n][difficultySelection].medal;
+  goldMedal.style.opacity = '0.1';
+  silverMedal.style.opacity = '0.1';
+  checkMedal.style.opacity = '0.1';
+  if(recordMedal >= 4) {
+    goldMedal.style.opacity = '1';
+    recordMedal -= 4;
+  }
+  if(trackRecords >= 2) {
+    silverMedal.style.opacity = '1';
+    recordMedal -= 2;
+  }
+  if(trackRecords >= 1) {
+    checkMedal.style.opacity = '1';
+  }
 };
 
 const difficultySelected = n => {
   difficultySelection = n;
   document.getElementsByClassName('difficultySelected')[0].classList.remove('difficultySelected');
   document.getElementsByClassName('difficulty')[n].classList.add('difficultySelected');
-  updateDetails();
+  updateDetails(songSelection);
 };
 
 document.onkeydown = e => {
