@@ -5,8 +5,6 @@ import http = require('http');
 import express = require('express');
 import i18n from './i18n';
 
-import { compare, getTime } from './secureModules';
-
 const config = require(__dirname + '/../../config/config.json');
 
 const app = express();
@@ -48,30 +46,15 @@ app.get('/authorize', (req, res) => {
 });
 
 app.get('/game', async (req, res) => {
-  if(compare(req)) {
-    const time = await getTime(req);
-    res.render('game', { cdn : config.project.cdn, url : config.project.url, api : config.project.api, time : time });
-  } else {
-    res.redirect(config.project.url);
-  }
+  res.render('game', { cdn : config.project.cdn, url : config.project.url, api : config.project.api});
 });
 
 app.get('/editor', async (req, res) => {
-  if(compare(req)) {
-    const time = await getTime(req);
-    res.render('editor', { cdn : config.project.cdn, url : config.project.url, api : config.project.api, time : time });
-  } else {
-    res.redirect(config.project.url);
-  }
+  res.render('editor', { cdn : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
 app.get('/test', async (req, res) => {
-  if(compare(req)) {
-    const time = await getTime(req);
-    res.render('test', { cdn : config.project.cdn, url : config.project.url, api : config.project.api, time : time });
-  } else {
-    res.redirect(config.project.url);
-  }
+  res.render('test', { cdn : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
 app.get('/accessDenined', (req, res) => {

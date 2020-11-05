@@ -52,7 +52,6 @@ var OAuth2 = google.auth.OAuth2;
 var plus = google.plus('v1');
 var api_response_1 = require("./api-response");
 var app = express();
-var tokenRouter = require('./tokens');
 app.locals.pretty = true;
 var knex = require('knex')({
     client: 'mysql',
@@ -78,7 +77,6 @@ app.use(session({
     saveUninitialized: config.session.saveUninitialized
 }));
 app.use(express.json());
-app.use('/token', tokenRouter);
 app.use(cookieParser());
 var getOAuthClient = function (ClientId, ClientSecret, RedirectionUrl) { return new OAuth2(ClientId, ClientSecret, RedirectionUrl); };
 app.get('/', function (req, res) {

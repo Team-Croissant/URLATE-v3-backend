@@ -14,10 +14,11 @@ const port = 1026;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/../../resources/public'));
+app.use(express.static(__dirname + '/../../resources/private'));
 app.use(express.json());
 app.use(cookieParser());
 
-app.post('/getTrack/:quality/:songName', (req, res) => {
+/* app.post('/getTrack/:quality/:songName', (req, res) => {
   if(req.body.bb && req.body.sth) {
     fetch(`${config.project.api}/token/verify`, {
       method: 'POST',
@@ -53,7 +54,7 @@ app.post('/getTrack/:quality/:songName', (req, res) => {
   } else {
     res.sendStatus(400);
   }
-});
+}); */
 
 http.createServer(app).listen(port, () => {
   signale.success(`CDN Server running at port ${port}.`);

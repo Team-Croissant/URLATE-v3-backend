@@ -112,69 +112,19 @@ const settingApply = () => {
   sensitiveValue.textContent = settings.input.sens + 'x';
   inputSizeValue.textContent = settings.game.size + 'x';
   initialize();
-  const asdf = Date.now();
-  fetch(`${api}/token/generate`, {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify({
-      bb: asdf
-    }),
-    headers: {
-      'Content-Type': 'application/json'
+  themeSong = new Howl({
+    src: [`${cdn}/tracks/${settings.sound.quality}/urlate_theme.mp3`],
+    format: ['mp3'],
+    autoplay: false,
+    loop: true,
+    onload: () => {
+      if(loaded) {
+        gameLoaded();
+      }
+      loaded = 1;
+      Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+      themeSong.play();
     }
-  })
-  .then(res => res.json())
-  .then((data) => {
-    if(data.result == "success") {
-      fetch(`${cdn}/getTrack/${settings.sound.res}/urlate_theme.mp3`, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify({
-          bb: userid,
-          sth: asdf,
-          tok: data.tok,
-          d: d
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(res => res.json())
-      .then((data) => {
-        if(data.result == "success") {
-          let key = asdf.toString();
-          let decrypted = CryptoJS.AES.decrypt(data.data, key);
-          let typedArray = convertWordArrayToUint8Array(decrypted);
-          let fileDec = new Blob([typedArray.buffer]);
-          let url = window.URL.createObjectURL(fileDec);
-          themeSong = new Howl({
-            src: [url],
-            format: ['mp3'],
-            autoplay: false,
-            loop: true,
-            onload: () => {
-              if(loaded) {
-                gameLoaded();
-              }
-              loaded = 1;
-              Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-              themeSong.play();
-              window.URL.revokeObjectURL(url);
-            }
-          });
-        } else {
-          alert('Error occured while loading songs.');
-        }
-      }).catch((error) => {
-        alert(`Error occured.\n${error}`);
-        console.error(`Error occured.\n${error}`);
-      });
-    } else {
-      alert('Error occured while loading songs.');
-    }
-  }).catch((error) => {
-    alert(`Error occured.\n${error}`);
-    console.error(`Error occured.\n${error}`);
   });
 };
 

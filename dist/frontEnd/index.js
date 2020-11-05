@@ -45,7 +45,6 @@ var signale = require("signale");
 var http = require("http");
 var express = require("express");
 var i18n_1 = __importDefault(require("./i18n"));
-var secureModules_1 = require("./secureModules");
 var config = require(__dirname + '/../../config/config.json');
 var app = express();
 app.locals.pretty = true;
@@ -80,57 +79,21 @@ app.get('/authorize', function (req, res) {
     }
 });
 app.get('/game', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var time;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!secureModules_1.compare(req)) return [3 /*break*/, 2];
-                return [4 /*yield*/, secureModules_1.getTime(req)];
-            case 1:
-                time = _a.sent();
-                res.render('game', { cdn: config.project.cdn, url: config.project.url, api: config.project.api, time: time });
-                return [3 /*break*/, 3];
-            case 2:
-                res.redirect(config.project.url);
-                _a.label = 3;
-            case 3: return [2 /*return*/];
-        }
+        res.render('game', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
+        return [2 /*return*/];
     });
 }); });
 app.get('/editor', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var time;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!secureModules_1.compare(req)) return [3 /*break*/, 2];
-                return [4 /*yield*/, secureModules_1.getTime(req)];
-            case 1:
-                time = _a.sent();
-                res.render('editor', { cdn: config.project.cdn, url: config.project.url, api: config.project.api, time: time });
-                return [3 /*break*/, 3];
-            case 2:
-                res.redirect(config.project.url);
-                _a.label = 3;
-            case 3: return [2 /*return*/];
-        }
+        res.render('editor', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
+        return [2 /*return*/];
     });
 }); });
 app.get('/test', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var time;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!secureModules_1.compare(req)) return [3 /*break*/, 2];
-                return [4 /*yield*/, secureModules_1.getTime(req)];
-            case 1:
-                time = _a.sent();
-                res.render('test', { cdn: config.project.cdn, url: config.project.url, api: config.project.api, time: time });
-                return [3 /*break*/, 3];
-            case 2:
-                res.redirect(config.project.url);
-                _a.label = 3;
-            case 3: return [2 /*return*/];
-        }
+        res.render('test', { cdn: config.project.cdn, url: config.project.url, api: config.project.api });
+        return [2 /*return*/];
     });
 }); });
 app.get('/accessDenined', function (req, res) {
