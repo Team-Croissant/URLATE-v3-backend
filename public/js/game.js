@@ -113,7 +113,7 @@ const settingApply = () => {
   inputSizeValue.textContent = settings.game.size + 'x';
   initialize();
   themeSong = new Howl({
-    src: [`${cdn}/tracks/${settings.sound.quality}/urlate_theme.mp3`],
+    src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
     format: ['mp3'],
     autoplay: false,
     loop: true,
@@ -183,9 +183,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .then(res => res.json())
       .then((data) => {
         if(data.result == 'success') {
-          if(d == 'err') {
-            alert('Oops! Error occured while loading songs.');
-          }
           settings = JSON.parse(data.settings);
           username = data.nickname;
           userid = data.userid;
@@ -225,7 +222,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
               let songList = '';
               for(let i = 0; i < tracks.length; i++) {
                 songs[i] = new Howl({
-                  src: [`https://cdn.rhyga.me/preview/${tracks[i].fileName}.mp3`],
+                  src: [`https://cdn.rhyga.me/tracks/preview/${tracks[i].fileName}.mp3`],
                   format: ['mp3'],
                   autoplay: false,
                   loop: true
@@ -352,6 +349,7 @@ const songSelected = n => {
   })
   .then(res => res.json())
   .then((data) => {
+    console.log(data);
     data = data.info[0];
     difficulties = JSON.parse(tracks[n].difficulty);
     bulletDensities = JSON.parse(data.bullet_density);
@@ -359,9 +357,6 @@ const songSelected = n => {
     speeds = JSON.parse(data.speed);
     bpm = data.bpm;
     updateDetails(n);
-  }).catch((error) => {
-    alert(`Error occured.\n${error}`);
-    console.error(`Error occured.\n${error}`);
   });
   songSelection = n;
 };
@@ -736,7 +731,7 @@ const difficultySelected = n => {
 document.onkeydown = e => {
   e = e || window.event;
   let key = e.key.toLowerCase();
-  console.log(key);
+  //console.log(key);
   if(key == 'escape') {
     displayClose();
     return;

@@ -83,9 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then((data) => {
         if(data.result == 'success') {
-          if(d == 'err') {
-            alert('Oops! Error occured while loading songs.');
-          }
           userName = data.nickname;
           userid = data.userid;
           settings = JSON.parse(data.settings);
@@ -173,86 +170,25 @@ const settingApply = () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  fetch(`${api}/getTracks`, {
-    method: 'GET',
-    credentials: 'include'
-  })
-  .then(res => res.json())
-  .then((data) => {
-    if(data.result == 'success') {
-      const asdf = Date.now();
-      fetch(`${api}/token/generate`, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify({
-          bb: asdf
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(res => res.json())
-      .then((data) => {
-        if(data.result == "success") {
-          fetch(`${cdn}/getTrack/${settings.sound.res}/${fileName}.mp3`, {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({
-              bb: userid,
-              sth: asdf,
-              tok: data.tok,
-              d: d
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(res => res.json())
-          .then((data) => {
-            if(data.result == "success") {
-              let key = asdf.toString();
-              let decrypted = CryptoJS.AES.decrypt(data.data, key);
-              let typedArray = convertWordArrayToUint8Array(decrypted);
-              let fileDec = new Blob([typedArray.buffer]);
-              let url = window.URL.createObjectURL(fileDec);
-              song = new Howl({
-                src: [url],
-                format: ['mp3'],
-                autoplay: false,
-                loop: false,
-                onend: () => {
-                  setTimeout(() => {
-                    isResultShowing = true;
-                    menuAllowed = false;
-                    calculateResult();
-                  }, 1000);
-                },
-                onload: () => {
-                  song.volume(settings.sound.volume.master * settings.sound.volume.music);
-                  window.URL.revokeObjectURL(url);
-                  if(load) {
-                    doneLoading();
-                  }
-                  load = 1;
-                }
-              });
-            } else {
-              alert('Error occured while loading songs.');
-            }
-          }).catch((error) => {
-            alert(`Error occured.\n${error}`);
-          });
-        } else {
-          alert('Error occured while loading songs.');
-        }
-      }).catch((error) => {
-        alert(`Error occured.\n${error}`);
-      });
-    } else {
-      alert('Failed to load song list.');
+  song = new Howl({
+    src: `${cdn}/tracks/${settings.sound.res}/${fileName}.mp3`,
+    format: ['mp3'],
+    autoplay: false,
+    loop: false,
+    onend: () => {
+      setTimeout(() => {
+        isResultShowing = true;
+        menuAllowed = false;
+        calculateResult();
+      }, 1000);
+    },
+    onload: () => {
+      song.volume(settings.sound.volume.master * settings.sound.volume.music);
+      if(load) {
+        doneLoading();
+      }
+      load = 1;
     }
-  }).catch((error) => {
-    alert(`Error occured.\n${error}`);
   });
 };
 

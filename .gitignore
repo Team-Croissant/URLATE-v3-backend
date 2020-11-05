@@ -8,15 +8,3 @@ node_modules/
 URLATE-skins/
 
 resources/
-
-src/api/secureModules.ts
-
-dist/api/secureModules.js
-
-src/frontEnd/secureModules.ts
-
-dist/frontEnd/secureModules.js
-
-src/api/tokens.ts
-
-dist/api/tokens.js
