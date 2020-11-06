@@ -712,11 +712,11 @@ const updateDetails = (n) => {
     goldMedal.style.opacity = '1';
     recordMedal -= 4;
   }
-  if(trackRecords >= 2) {
+  if(recordMedal >= 2) {
     silverMedal.style.opacity = '1';
     recordMedal -= 2;
   }
-  if(trackRecords >= 1) {
+  if(recordMedal >= 1) {
     checkMedal.style.opacity = '1';
   }
 };
