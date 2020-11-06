@@ -425,7 +425,7 @@ app.get("/getRecord/:track/:name", function (req, res) { return __awaiter(void 0
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track)];
+            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track).orderBy('difficulty', 'ASC')];
             case 1:
                 results = _a.sent();
                 if (!results.length) {

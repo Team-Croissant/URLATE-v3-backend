@@ -311,7 +311,7 @@ app.get("/getProfile/:name", async (req, res) => {
 });
 
 app.get("/getRecord/:track/:name", async (req, res) => {
-  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track);
+  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track).orderBy('difficulty', 'ASC');
   if (!results.length) {
     res.status(200).json(createSuccessResponse('empty'));
     return;
