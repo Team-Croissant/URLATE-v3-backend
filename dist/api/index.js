@@ -441,7 +441,7 @@ app.get("/getRecords/:track/:order/:stat", function (req, res) { return __awaite
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo').where('name', req.params.track).orderBy(req.params.order, req.params.stat)];
+            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).orderBy(req.params.order, req.params.stat)];
             case 1:
                 results = _a.sent();
                 if (!results.length) {
