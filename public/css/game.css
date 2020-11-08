@@ -387,6 +387,10 @@ p {
   right: 5vw;
 }
 
+.rankCloseBtn {
+  z-index: 200;
+}
+
 .containers {
   z-index: 100;
   position: fixed;
@@ -997,6 +1001,7 @@ p {
   align-items: center;
   justify-content: center;
   margin-top: 10vh;
+  padding-top: 2vh;
   height: 80vh;
   width: 60vw;
   float: left;
@@ -1217,7 +1222,7 @@ p {
 }
 
 .selectContainerRightTitle {
-  font-size: 3vh;
+  font-size: 2.5vh;
   font-weight: 700;
   opacity: 0.7;
 }
@@ -1337,4 +1342,101 @@ p {
   --artist-display: none;
   --title-weight: 600;
   background: linear-gradient(to right, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.5));
+}
+
+#selectRankContainer {
+  position: fixed;
+  padding-left: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12vh;
+  height: 80vh;
+  width: 54vw;
+  float: left;
+}
+
+#selectRankInnerContainer {
+  text-align: left;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  width: 80%;
+  height: 95%;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(20px);
+  border-radius: 5px;
+}
+
+#selectRankTitleContainer {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  flex-direction: row;
+}
+
+#selectRankTitleLeftContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 50%;
+  height: 100%;
+  float: left;
+  text-align: left;
+}
+
+#selectRankTitleRightContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 50%;
+  height: 100%;
+  float: left;
+  text-align: right;
+}
+
+#selectRankTitle {
+  font-size: 3vh;
+  color: white;
+  letter-spacing: 0.3em;
+}
+
+.rankGuide {
+  font-size: 2.5vh !important;
+  font-weight: 700 !important;
+  opacity: 0.7 !important;
+}
+
+.selectRank {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 4vh;
+}
+
+.selectRankNumber {
+  width: 3vw;
+  float: left;
+  font-size: 2.7vh;
+  font-weight: 700;
+}
+
+.selectRankName {
+  width: 17vw;
+  float: left;
+  font-size: 2.7vh;
+  font-weight: 600;
+}
+
+.selectRankScore {
+  width: 12vw;
+  float: left;
+  font-size: 2.7vh;
+  font-weight: 500;
+}
+
+#selectRankScoreContainer {
+  width: 100%;
+  height: 75%;
+  overflow-y: auto;
 }
