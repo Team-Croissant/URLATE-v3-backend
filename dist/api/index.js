@@ -437,11 +437,11 @@ app.get("/getRecord/:track/:name", function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-app.get("/getRecords/:track/:order/:stat", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/getRecords/:track/:difficulty/:order/:sort", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).orderBy(req.params.order, req.params.stat)];
+            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort)];
             case 1:
                 results = _a.sent();
                 if (!results.length) {

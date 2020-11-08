@@ -319,8 +319,8 @@ app.get("/getRecord/:track/:name", async (req, res) => {
   res.status(200).json({result: "success", results});
 });
 
-app.get("/getRecords/:track/:order/:stat", async (req, res) => {
-  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).orderBy(req.params.order, req.params.stat);
+app.get("/getRecords/:track/:difficulty/:order/:sort", async (req, res) => {
+  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort);
   if (!results.length) {
     res.status(200).json(createSuccessResponse('empty'));
     return;
