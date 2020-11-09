@@ -374,10 +374,12 @@ const updateRanks = () => {
   })
   .then(res => res.json())
   .then(data => {
-    selectRank.textContent = `#${data.rank}`;
-    console.log(data);
+    if(data.rank != 0) {
+      selectRank.textContent = `#${data.rank}`;
+    } else {
+      selectRank.textContent = `-`;
+    }
     data = data.results;
-    console.log(data);
     let innerContent = '';
     for(let i = 0; i < data.length; i++) {
       innerContent += `<br>
