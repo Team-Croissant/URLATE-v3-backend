@@ -319,13 +319,13 @@ app.get("/getRecord/:track/:name", async (req, res) => {
   res.status(200).json({result: "success", results});
 });
 
-app.get("/getRecords/:track/:difficulty/:order/:sort", async (req, res) => {
-  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort).limit(100);
+app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", async (req, res) => {
+  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort);
   if (!results.length) {
     res.status(200).json(createSuccessResponse('empty'));
     return;
   }
-  res.status(200).json({result: "success", results});
+  res.status(200).json({result: "success", results: results.slice(0, 100), rank: results.map(d => {return d['nickname']}).indexOf(req.params.nickname)});
 });
 
 app.get('/logout', (req, res) => {

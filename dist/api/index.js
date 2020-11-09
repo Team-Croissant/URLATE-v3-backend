@@ -437,18 +437,18 @@ app.get("/getRecord/:track/:name", function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-app.get("/getRecords/:track/:difficulty/:order/:sort", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort).limit(100)];
+            case 0: return [4 /*yield*/, knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort)];
             case 1:
                 results = _a.sent();
                 if (!results.length) {
                     res.status(200).json(api_response_1.createSuccessResponse('empty'));
                     return [2 /*return*/];
                 }
-                res.status(200).json({ result: "success", results: results });
+                res.status(200).json({ result: "success", results: results.slice(0, 100), rank: results.map(function (d) { return d['nickname']; }).indexOf(req.params.nickname) });
                 return [2 /*return*/];
         }
     });
