@@ -325,7 +325,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", async (req, res
     res.status(200).json(createSuccessResponse('empty'));
     return;
   }
-  res.status(200).json({result: "success", results: results.slice(0, 100), rank: results.map(d => {return d['nickname']}).indexOf(req.params.nickname)});
+  res.status(200).json({result: "success", results: results.slice(0, 100), rank: results.map(d => {return d['nickname']}).indexOf(req.params.nickname) + 1});
 });
 
 app.get('/logout', (req, res) => {

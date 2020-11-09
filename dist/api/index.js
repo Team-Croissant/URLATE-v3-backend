@@ -448,7 +448,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, 
                     res.status(200).json(api_response_1.createSuccessResponse('empty'));
                     return [2 /*return*/];
                 }
-                res.status(200).json({ result: "success", results: results.slice(0, 100), rank: results.map(function (d) { return d['nickname']; }).indexOf(req.params.nickname) });
+                res.status(200).json({ result: "success", results: results.slice(0, 100), rank: results.map(function (d) { return d['nickname']; }).indexOf(req.params.nickname) + 1 });
                 return [2 /*return*/];
         }
     });
