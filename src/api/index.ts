@@ -320,7 +320,7 @@ app.get("/getRecord/:track/:name", async (req, res) => {
 });
 
 app.get("/getRecords/:track/:difficulty/:order/:sort", async (req, res) => {
-  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort);
+  const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort).limit(100);
   if (!results.length) {
     res.status(200).json(createSuccessResponse('empty'));
     return;
