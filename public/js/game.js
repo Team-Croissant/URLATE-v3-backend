@@ -355,7 +355,6 @@ const songSelected = n => {
   })
   .then(res => res.json())
   .then((data) => {
-    console.log(data);
     data = data.info[0];
     difficulties = JSON.parse(tracks[n].difficulty);
     bulletDensities = JSON.parse(data.bullet_density);
@@ -365,6 +364,31 @@ const songSelected = n => {
     updateDetails(n);
   });
   songSelection = n;
+  updateRanks();
+};
+
+const updateRanks = () => {
+  fetch(`${api}/getRecords/${tracks[songSelection].name}/${difficultySelection + 1}/record/DESC/${username}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then(data => {
+    selectRank.textContent = `#${data.rank}`;
+    console.log(data);
+    data = data.results;
+    console.log(data);
+    let innerContent = '';
+    for(let i = 0; i < data.length; i++) {
+      innerContent += `<br>
+                        <div class="selectRank">
+                          <div class="selectRankNumber">${i + 1}</div>
+                          <div class="selectRankName">${data[i].nickname}</div>
+                          <div class="selectRankScore">${numberWithCommas(Number(data[i].record))}</div>
+                      </div>`;
+    }
+    selectRankScoreContainer.innerHTML = innerContent;
+  });
 };
 
 const numberWithCommas = x => {
@@ -740,6 +764,7 @@ const difficultySelected = n => {
   document.getElementsByClassName('difficultySelected')[0].classList.remove('difficultySelected');
   document.getElementsByClassName('difficulty')[n].classList.add('difficultySelected');
   updateDetails(songSelection);
+  updateRanks();
 };
 
 const showRank = () => {
