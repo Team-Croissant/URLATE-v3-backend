@@ -393,6 +393,7 @@ const initialize = () => {
 
 const gotoMain = (isCalledByMain) => {
   if(isCalledByMain || confirm(rusure)) {
+    song.stop();
     song = new Howl({
       src: ['/sounds/tick.mp3'],
       format: ['mp3'],
