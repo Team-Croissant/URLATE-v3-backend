@@ -14,6 +14,7 @@ let bulletDensities = [10,50,100];
 let noteDensities = [10,50,100];
 let speeds = [1,2,3];
 let bpm = 130;
+let isRankOpened = false;
 
 let trackRecords = [];
 
@@ -289,6 +290,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const songSelected = n => {
+  if(songSelection == n) {
+    //play
+    alert('play');
+    return;
+  }
   if(!(songSelection == -1 && tracks[n].name == "URLATE Theme")) {
     songNameText.textContent = (settings.general.detailLang == 'original') ? tracks[n].original_name : tracks[n].name;
     songs[n].volume(1);
@@ -499,6 +505,14 @@ const displayClose = () => {
       document.getElementById("infoProfileContainer").style.display = "none";
     }, 500);
     display = 4;
+    return;
+  } else if(display == 6) {
+    //PLAY Rank
+    document.getElementById("selectRankContainer").style.opacity = "0";
+    document.getElementById("selectRankContainer").style.pointerEvents = "none";
+    document.getElementById("selectRankInnerContainer").classList.remove("visible");
+    display = 1;
+    isRankOpened = false;
     return;
   }
   display = 0;
@@ -728,6 +742,14 @@ const difficultySelected = n => {
   updateDetails(songSelection);
 };
 
+const showRank = () => {
+  isRankOpened = true;
+  display = 6;
+  document.getElementById("selectRankContainer").style.opacity = "1";
+  document.getElementById("selectRankContainer").style.pointerEvents = "visible";
+  document.getElementById("selectRankInnerContainer").classList.add("visible");
+};
+
 document.onkeydown = e => {
   e = e || window.event;
   let key = e.key.toLowerCase();
@@ -747,7 +769,7 @@ document.onkeydown = e => {
       e.preventDefault();
       menuSelected();
     }
-  } else if(display == 1) {
+  } else if(display == 1 || display == 6) {
     if(key == 'arrowup') {
       e.preventDefault();
       if(songSelection != 0) songSelected(songSelection - 1);
@@ -757,6 +779,16 @@ document.onkeydown = e => {
     } else if(key == 'tab') {
       e.preventDefault();
       difficultySelected(difficultySelection + 1 == 3 ? 0 : difficultySelection + 1);
+    } else if(key == 'enter') {
+      e.preventDefault();
+      songSelected(songSelection);
+    } else if(key == 'f2') {
+      e.preventDefault();
+      if(isRankOpened) {
+        displayClose();
+      } else {
+        showRank();
+      }
     }
   }
 };
