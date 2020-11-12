@@ -284,6 +284,16 @@ app.put('/update/settings', async (req, res) => {
     return;
   }
   try {
+    let settings = req.body.settings;
+    if(settings.sound.res == "192kbps" ||
+    !settings.game.judgeSkin ||
+    JSON.stringify(settings.game.applyJudge) != `{"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false}`) {
+      const advanced = await knex('users').select('advanced').where('userid', req.session.userid);
+      if(!advanced[0].advanced) {
+        res.status(400).json(createErrorResponse('failed', 'Error occured while updating', 'wrong request'));
+        return;
+      }
+    }
     await knex('users').update({'settings': JSON.stringify(req.body.settings)}).where('userid', req.session.userid);
   } catch(e) {
     res.status(400).json(createErrorResponse('failed', 'Error occured while updating', e));

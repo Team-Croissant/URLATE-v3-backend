@@ -481,6 +481,29 @@ const displayClose = () => {
     }, 500);
   } else if(display == 2) {
     //OPTION
+    fetch(`${api}/getUser`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(!data.advanced) {
+        if(settings.sound.res == "192kbps" ||
+        !settings.game.judgeSkin ||
+        JSON.stringify(settings.game.applyJudge) != `{"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false}`) {
+          settings.sound.res = "128kbps";
+          settings.game.judgeSkin = true;
+          settings.game.applyJudge = {
+            "Perfect": false,
+            "Great": false,
+            "Good": false,
+            "Bad": false,
+            "Miss": false,
+            "Bullet": false
+          };
+        }
+      }
+    });
     fetch(`${api}/update/settings`, {
       method: 'PUT',
       credentials: 'include',

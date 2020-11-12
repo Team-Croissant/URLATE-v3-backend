@@ -364,7 +364,7 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
     });
 }); });
 app.put('/update/settings', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_1;
+    var settings, advanced, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -374,16 +374,28 @@ app.put('/update/settings', function (req, res) { return __awaiter(void 0, void 
                 }
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, knex('users').update({ 'settings': JSON.stringify(req.body.settings) }).where('userid', req.session.userid)];
+                _a.trys.push([1, 5, , 6]);
+                settings = req.body.settings;
+                if (!(settings.sound.res == "192kbps" ||
+                    !settings.game.judgeSkin ||
+                    JSON.stringify(settings.game.applyJudge) != "{\"Perfect\":false,\"Great\":false,\"Good\":false,\"Bad\":false,\"Miss\":false,\"Bullet\":false}")) return [3 /*break*/, 3];
+                return [4 /*yield*/, knex('users').select('advanced').where('userid', req.session.userid)];
             case 2:
+                advanced = _a.sent();
+                if (!advanced[0].advanced) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Error occured while updating', 'wrong request'));
+                    return [2 /*return*/];
+                }
+                _a.label = 3;
+            case 3: return [4 /*yield*/, knex('users').update({ 'settings': JSON.stringify(req.body.settings) }).where('userid', req.session.userid)];
+            case 4:
                 _a.sent();
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 6];
+            case 5:
                 e_1 = _a.sent();
                 res.status(400).json(api_response_1.createErrorResponse('failed', 'Error occured while updating', e_1));
                 return [2 /*return*/];
-            case 4:
+            case 6:
                 res.status(200).json(api_response_1.createSuccessResponse('success'));
                 return [2 /*return*/];
         }
