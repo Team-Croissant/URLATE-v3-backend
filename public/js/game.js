@@ -20,6 +20,7 @@ let offsetRate = 1;
 let offset = 0;
 let offsetInput = false;
 let offsetPrevInput = false;
+let offsetAverage = [];
 
 let trackRecords = [];
 
@@ -875,6 +876,16 @@ const offsetUpdate = () => {
   }
   if(offsetInput) {
     offsetInputCircle.style.backgroundColor = '#373737';
+    if(!offsetPrevInput) {
+      offsetAverage.push(parseInt(remain));
+      let avr = 0;
+      for(let i = offsetAverage.length - 1; i >= (offsetAverage.length - 4 < 0 ? 0 : offsetAverage.length - 4); i--) {
+        avr += offsetAverage[i];
+      }
+      avr = avr / (offsetAverage.length >= 4 ? 4 : offsetAverage.length);
+      offset = parseInt(avr);
+      offsetButtonText.textContent = offset + 'ms';
+    }
   } else {
     offsetInputCircle.style.backgroundColor = '#ffffff';
   }
@@ -883,8 +894,13 @@ const offsetUpdate = () => {
   } else {
     offsetOffsetCircle.style.backgroundColor = '#ffffff';
   }
+  offsetPrevInput = offsetInput;
   if(display == 7) {
     window.requestAnimationFrame(offsetUpdate);
+  } else {
+    offsetAverage = [];
+    offsetPrevInput = false;
+    offsetInput = false;
   }
 };
 
@@ -923,6 +939,15 @@ const offsetDown = () => {
 const offsetReset = () => {
   offset = 0;
   offsetButtonText.textContent = 'TAP';
+  offsetAverage = [];
+};
+
+const offsetButtonDown = () => {
+  offsetInput = true;
+};
+
+const offsetButtonUp = () => {
+  offsetInput = false;
 };
 
 document.onkeydown = e => {
