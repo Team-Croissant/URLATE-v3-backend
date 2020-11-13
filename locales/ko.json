@@ -146,5 +146,6 @@
 	"offset_description_1": "소리에 맞춰 ",
 	"offset_description_2": "키보드를 누르거나 버튼을 클릭",
 	"offset_description_3": "하세요.",
-	"reset": "초기화"
+	"reset": "초기화",
+	"offset_sub_description_1": "우측의 버튼으로 직접 조정할 수도 있습니다."
 }

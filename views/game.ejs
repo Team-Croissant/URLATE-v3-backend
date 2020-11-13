@@ -341,21 +341,22 @@
                 </div>
             </div>
             <span id="offsetDescription"><%= __('offset_description_1') %><strong><%= __('offset_description_2') %></strong><%= __('offset_description_3') %></span>
+            <span id="offsetSubDescription"><%= __('offset_sub_description_1') %></span>
             <div id="offsetButtonContainer">
                 <div class="offsetSideContainer">
-                    <img src="https://img.icons8.com/metro/50/373737/collapse-arrow.png" class="icon offsetSideIcon clickable">
+                    <img src="https://img.icons8.com/metro/50/373737/collapse-arrow.png" class="icon offsetSideIcon clickable" onclick="offsetSpeedUp()">
                     <span id="offsetSpeedText" class="metropolis">1x</span>
-                    <img src="https://img.icons8.com/metro/50/373737/expand-arrow.png" class="icon offsetSideIcon clickable">
+                    <img src="https://img.icons8.com/metro/50/373737/expand-arrow.png" class="icon offsetSideIcon clickable" onclick="offsetSpeedDown()">
                 </div>
                 <div id="offsetTapButton">
                     <span id="offsetButtonText" class="metropolis">TAP</span>
                 </div>
                 <div class="offsetSideContainer">
-                    <img src="https://img.icons8.com/metro/50/373737/plus-math.png" class="icon offsetSideIcon clickable">
-                    <img src="https://img.icons8.com/metro/50/373737/minus-math.png" class="icon offsetSideIcon clickable">
+                    <img src="https://img.icons8.com/metro/50/373737/plus-math.png" class="icon offsetSideIcon clickable" onclick="offsetUp()">
+                    <img src="https://img.icons8.com/metro/50/373737/minus-math.png" class="icon offsetSideIcon clickable" onclick="offsetDown()">
                 </div>
             </div>
-            <div id="offsetResetButton">
+            <div id="offsetResetButton" onclick="offsetReset()">
                 <span id="offsetResetButtonText" class="metropolis"><%= __('reset') %></span>
             </div>
         </div>

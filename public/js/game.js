@@ -16,6 +16,11 @@ let speeds = [1,2,3];
 let bpm = 130;
 let isRankOpened = false;
 
+let offsetRate = 1;
+let offset = 0;
+let offsetInput = false;
+let offsetPrevInput = false;
+
 let trackRecords = [];
 
 let themeSong;
@@ -118,6 +123,10 @@ const settingApply = () => {
   offsetButton.textContent = settings.sound.offset + 'ms';
   sensitiveValue.textContent = settings.input.sens + 'x';
   inputSizeValue.textContent = settings.game.size + 'x';
+  offset = settings.sound.offset;
+  if(offset != 0) {
+    offsetButtonText.textContent = offset + 'ms';
+  }
   initialize();
   themeSong = new Howl({
     src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
@@ -510,6 +519,7 @@ const displayClose = () => {
         }
       }
     });
+    settings.sound.offset = offset;
     fetch(`${api}/update/settings`, {
       method: 'PUT',
       credentials: 'include',
@@ -570,7 +580,8 @@ const displayClose = () => {
     isRankOpened = false;
     return;
   } else if(display == 7) {
-      //OPTION Offset
+    //OPTION Offset
+    offsetButton.textContent = offset + 'ms';
     document.getElementById("offsetContiner").classList.remove("fadeIn");
     document.getElementById("offsetContiner").classList.toggle("fadeOut");
     if(songSelection != -1) {
@@ -842,6 +853,76 @@ const offsetSetting = () => {
   }
   offsetSong.play();
   offsetSong.fade(0, 1, 500);
+  offsetUpdate();
+};
+
+const offsetUpdate = () => {
+  let beat = 60 / 110;
+  let remain = (offsetSong.seek() % beat <= beat / 2 ? offsetSong.seek() % beat : (offsetSong.seek() % beat) - beat) * 100;
+  if(-10 <= remain && remain <= -5) {
+    offsetNextCircle.style.backgroundColor = '#ffffff';
+    offsetPrevCircle.style.backgroundColor = '#373737';
+  } else if(0 <= remain && remain <= 5) {
+    offsetPrevCircle.style.backgroundColor = '#ffffff';
+    offsetTimingCircle.style.backgroundColor = '#373737';
+  } else if(10 <= remain && remain <= 15) {
+    offsetTimingCircle.style.backgroundColor = '#ffffff';
+    offsetNextCircle.style.backgroundColor = '#373737';
+  } else {
+    offsetTimingCircle.style.backgroundColor = '#ffffff';
+    offsetPrevCircle.style.backgroundColor = '#ffffff';
+    offsetNextCircle.style.backgroundColor = '#ffffff';
+  }
+  if(offsetInput) {
+    offsetInputCircle.style.backgroundColor = '#373737';
+  } else {
+    offsetInputCircle.style.backgroundColor = '#ffffff';
+  }
+  if(offset <= remain && remain <= offset + 5) {
+    offsetOffsetCircle.style.backgroundColor = '#373737';
+  } else {
+    offsetOffsetCircle.style.backgroundColor = '#ffffff';
+  }
+  if(display == 7) {
+    window.requestAnimationFrame(offsetUpdate);
+  }
+};
+
+const offsetSpeedUp = () => {
+  offsetRate = Number((offsetRate + 0.1).toFixed(1));
+  if(offsetRate > 2) offsetRate = 2;
+  offsetSong.rate(offsetRate);
+  offsetSpeedText.textContent = offsetRate + 'x';
+};
+
+const offsetSpeedDown = () => {
+  offsetRate = Number((offsetRate - 0.1).toFixed(1));
+  if(offsetRate <= 0) offsetRate = 0.1;
+  offsetSong.rate(offsetRate);
+  offsetSpeedText.textContent = offsetRate + 'x';
+};
+
+const offsetUp = () => {
+  offset += 1;
+  if(!offset) {
+    offsetButtonText.textContent = 'TAP';
+  } else {
+    offsetButtonText.textContent = offset + 'ms';
+  }
+};
+
+const offsetDown = () => {
+  offset -= 1;
+  if(!offset) {
+    offsetButtonText.textContent = 'TAP';
+  } else {
+    offsetButtonText.textContent = offset + 'ms';
+  }
+};
+
+const offsetReset = () => {
+  offset = 0;
+  offsetButtonText.textContent = 'TAP';
 };
 
 document.onkeydown = e => {
@@ -884,6 +965,16 @@ document.onkeydown = e => {
         showRank();
       }
     }
+  } else if(display == 7) {
+    offsetInput = true;
+  }
+};
+
+document.onkeyup = e => {
+  e = e || window.event;
+  //let key = e.key.toLowerCase();
+  if(display == 7) {
+    offsetInput = false;
   }
 };
 

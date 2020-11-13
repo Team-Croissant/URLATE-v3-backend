@@ -1533,6 +1533,12 @@ p {
   font-weight: 400;
 }
 
+#offsetSubDescription {
+  letter-spacing: -2px;
+  font-size: 2vh;
+  font-weight: 400;
+}
+
 #offsetButtonContainer {
   margin-top: 3vh;
   display: flex;
