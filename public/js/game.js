@@ -20,6 +20,12 @@ let trackRecords = [];
 
 let themeSong;
 let songs = [];
+let offsetSong = new Howl({
+  src: [`${cdn}/tracks/offset.mp3`],
+  format: ['mp3'],
+  autoplay: false,
+  loop: true
+});
 
 const initialize = () => {
   canvas.width = window.innerWidth;
@@ -564,7 +570,24 @@ const displayClose = () => {
     isRankOpened = false;
     return;
   } else if(display == 7) {
-    //OPTION Offset
+      //OPTION Offset
+    document.getElementById("offsetContiner").classList.remove("fadeIn");
+    document.getElementById("offsetContiner").classList.toggle("fadeOut");
+    if(songSelection != -1) {
+      songs[songSelection].play();
+      songs[songSelection].fade(0, 1, 500);
+    } else {
+      themeSong.play();
+      themeSong.fade(0, 1, 500);
+    }
+    offsetSong.fade(1, 0, 500);
+    setTimeout(() => {
+      document.getElementById("offsetContiner").classList.remove("fadeOut");
+      document.getElementById("offsetContiner").style.display = "none";
+      offsetSong.stop();
+    }, 500);
+    display = 2;
+    return;
   }
   display = 0;
 };
@@ -800,6 +823,25 @@ const showRank = () => {
   document.getElementById("selectRankContainer").style.opacity = "1";
   document.getElementById("selectRankContainer").style.pointerEvents = "visible";
   document.getElementById("selectRankInnerContainer").classList.add("visible");
+};
+
+const offsetSetting = () => {
+  display = 7;
+  document.getElementById("offsetContiner").style.display = "flex";
+  document.getElementById("offsetContiner").classList.toggle("fadeIn");
+  if(songSelection != -1) {
+    songs[songSelection].fade(1, 0, 500);
+    setTimeout(() => {
+      songs[songSelection].pause();
+    }, 500);
+  } else {
+    themeSong.fade(1, 0, 500);
+    setTimeout(() => {
+      themeSong.pause();
+    }, 500);
+  }
+  offsetSong.play();
+  offsetSong.fade(0, 1, 500);
 };
 
 document.onkeydown = e => {

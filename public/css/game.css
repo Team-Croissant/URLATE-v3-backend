@@ -1469,10 +1469,10 @@ p {
 }
 
 #offsetContiner {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
-  opacity: 1;
+  opacity: 0;
   z-index: 101;
   background-color: #FFF;
   background-image: url('/images/backgrounds/option_decorations.png');
@@ -1543,7 +1543,7 @@ p {
   height: 13vh;
 }
 
-#offsetButton {
+#offsetTapButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1552,7 +1552,7 @@ p {
   height: 100%;
   border-radius: 1em;
   cursor: pointer;
-  filter: drop-shadow(0 0 2vh rgba(20,20,20,0.5));
+  filter: drop-shadow(0 0 1vh rgba(50,50,50,0.3));
 }
 
 #offsetButtonText {
@@ -1590,7 +1590,7 @@ p {
   height: 4vh;
   border-radius: 0.5em;
   cursor: pointer;
-  filter: drop-shadow(0 0 2vh rgba(20,20,20,0.5));
+  filter: drop-shadow(0 0 1vh rgba(50,50,50,0.3));
 }
 
 #offsetResetButtonText {
