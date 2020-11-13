@@ -859,23 +859,25 @@ const offsetSetting = () => {
 
 const offsetUpdate = () => {
   let beat = 60 / 110;
-  let remain = (offsetSong.seek() % beat <= beat / 2 ? offsetSong.seek() % beat : (offsetSong.seek() % beat) - beat) * 100;
-  if(-10 <= remain && remain <= -5) {
+  let remain = (offsetSong.seek() % beat <= beat / 2 ? offsetSong.seek() % beat : (offsetSong.seek() % beat) - beat) * 1000;
+  let fillColor = '#373737';
+  if(offsetSong.seek() <= beat + 0.005) fillColor = '#e56464';
+  if(-50 <= remain && remain <= 0) {
     offsetNextCircle.style.backgroundColor = '#ffffff';
-    offsetPrevCircle.style.backgroundColor = '#373737';
-  } else if(0 <= remain && remain <= 5) {
+    offsetPrevCircle.style.backgroundColor = fillColor;
+  } else if(0 <= remain && remain <= 50) {
     offsetPrevCircle.style.backgroundColor = '#ffffff';
-    offsetTimingCircle.style.backgroundColor = '#373737';
-  } else if(10 <= remain && remain <= 15) {
+    offsetTimingCircle.style.backgroundColor = fillColor;
+  } else if(50 <= remain && remain <= 100) {
     offsetTimingCircle.style.backgroundColor = '#ffffff';
-    offsetNextCircle.style.backgroundColor = '#373737';
+    offsetNextCircle.style.backgroundColor = fillColor;
   } else {
     offsetTimingCircle.style.backgroundColor = '#ffffff';
     offsetPrevCircle.style.backgroundColor = '#ffffff';
     offsetNextCircle.style.backgroundColor = '#ffffff';
   }
   if(offsetInput) {
-    offsetInputCircle.style.backgroundColor = '#373737';
+    offsetInputCircle.style.backgroundColor = fillColor;
     if(!offsetPrevInput) {
       offsetAverage.push(parseInt(remain));
       let avr = 0;
@@ -889,8 +891,8 @@ const offsetUpdate = () => {
   } else {
     offsetInputCircle.style.backgroundColor = '#ffffff';
   }
-  if(offset <= remain && remain <= offset + 5) {
-    offsetOffsetCircle.style.backgroundColor = '#373737';
+  if(offset <= remain && remain <= offset + 50) {
+    offsetOffsetCircle.style.backgroundColor = fillColor;
   } else {
     offsetOffsetCircle.style.backgroundColor = '#ffffff';
   }
@@ -919,7 +921,7 @@ const offsetSpeedDown = () => {
 };
 
 const offsetUp = () => {
-  offset += 1;
+  offset += 5;
   if(!offset) {
     offsetButtonText.textContent = 'TAP';
   } else {
@@ -928,7 +930,7 @@ const offsetUp = () => {
 };
 
 const offsetDown = () => {
-  offset -= 1;
+  offset -= 5;
   if(!offset) {
     offsetButtonText.textContent = 'TAP';
   } else {
