@@ -71,7 +71,7 @@
         </div>
         <img src="https://img.icons8.com/metro/52/000000/chevron-right.png" class="icon clickable" onclick="menuRight()">
     </div>
-    <div id="selectContainer" class="containers">
+    <div id="selectContainer" class="containers metropolis">
         <div id="selectBackground"></div>
         <img src="https://img.icons8.com/windows/32/FFFFFF/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
         <img src="images/parts/elements/TRACKS.png" id="tracks">
@@ -222,9 +222,9 @@
         <p class="advancedSubtitle"><%= __('advanced_subtitle_3') %></p>
         <p class="advancedDescription"><%= __('advanced_description_8') %><br><strong><%= __('advanced_description_9') %></strong></p>
         <br>
-        <input type="button" id="registerBtn" class="clickable" value="<%= __('register') %>" onclick="getAdvanced()">
+        <input type="button" id="registerBtn" class="clickable metropolis" value="<%= __('register') %>" onclick="getAdvanced()">
     </div>
-    <div id="infoContainer" class="containers">
+    <div id="infoContainer" class="containers metropolis">
         <div id="infoProfileContainer" class="containers">
             <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
             <div id="infoProfileLeft">
@@ -313,6 +313,52 @@
         </div>
     </div>
     <div id="optionContainer" class="containers">
+        <div id="offsetContiner" class="containers">
+            <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
+            <h1 id="offsetTitle"><%= __('offset_setting') %></h1>
+            <div class="offsetPreviewContainer">
+                <div class="offsetViewContainer">
+                    <span class="offsetText"><%= __('input') %></span>
+                    <div id="offsetInputCircle" class="offsetCircle"></div>
+                </div>
+                <div class="offsetViewContainer">
+                    <span class="offsetText"><%= __('offset') %></span>
+                    <div id="offsetOffsetCircle" class="offsetCircle"></div>
+                </div>
+            </div>
+            <div class="offsetPreviewContainer">
+                <div class="offsetViewContainer">
+                    <div id="offsetPrevCircle" class="timingCircle"></div>
+                    <span class="timingText">-10ms</span>
+                </div>
+                <div class="offsetViewContainer">
+                    <div id="offsetTimingCircle" class="timingCircle"></div>
+                    <span class="timingText">0ms</span>
+                </div>
+                <div class="offsetViewContainer">
+                    <div id="offsetNextCircle" class="timingCircle"></div>
+                    <span class="timingText">10ms</span>
+                </div>
+            </div>
+            <span id="offsetDescription"><%= __('offset_description_1') %><strong><%= __('offset_description_2') %></strong><%= __('offset_description_3') %></span>
+            <div id="offsetButtonContainer">
+                <div class="offsetSideContainer">
+                    <img src="https://img.icons8.com/metro/50/373737/collapse-arrow.png" class="icon offsetSideIcon clickable">
+                    <span id="offsetSpeedText" class="metropolis">1x</span>
+                    <img src="https://img.icons8.com/metro/50/373737/expand-arrow.png" class="icon offsetSideIcon clickable">
+                </div>
+                <div id="offsetButton">
+                    <span id="offsetButtonText" class="metropolis">TAP</span>
+                </div>
+                <div class="offsetSideContainer">
+                    <img src="https://img.icons8.com/metro/50/373737/plus-math.png" class="icon offsetSideIcon clickable">
+                    <img src="https://img.icons8.com/metro/50/373737/minus-math.png" class="icon offsetSideIcon clickable">
+                </div>
+            </div>
+            <div id="offsetResetButton">
+                <span id="offsetResetButtonText" class="metropolis"><%= __('reset') %></span>
+            </div>
+        </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
         <h1 id="optionTitle"><%= __('option') %></h1>
         <div id="optionElementsContainer">

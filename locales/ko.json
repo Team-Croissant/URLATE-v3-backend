@@ -141,5 +141,10 @@
 	"bullet_density": "총알 밀도",
 	"note_density": "노트 밀도",
 	"speed": "속도",
-	"detail_lang_warning": "*재접속 전까지 정상 동작하지 않을 수 있습니다."
+	"detail_lang_warning": "*재접속 전까지 정상 동작하지 않을 수 있습니다.",
+	"offset_setting": "오프셋 설정",
+	"offset_description_1": "소리에 맞춰 ",
+	"offset_description_2": "키보드를 누르거나 버튼을 클릭",
+	"offset_description_3": "하세요.",
+	"reset": "초기화"
 }

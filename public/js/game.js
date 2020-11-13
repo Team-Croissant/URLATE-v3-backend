@@ -563,6 +563,8 @@ const displayClose = () => {
     display = 1;
     isRankOpened = false;
     return;
+  } else if(display == 7) {
+    //OPTION Offset
   }
   display = 0;
 };
