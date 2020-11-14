@@ -308,7 +308,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 const songSelected = n => {
   if(songSelection == n) {
     //play
-    alert('play');
+    localStorage.difficultySelection = difficultySelection;
+    localStorage.difficulty = JSON.parse(tracks[0].difficulty)[difficultySelection];
+    localStorage.songName = tracks[songSelection].fileName;
+    window.location.href = `${url}/play`;
     return;
   }
   if(!(songSelection == -1 && tracks[n].name == "URLATE Theme")) {
@@ -416,6 +419,8 @@ const numberWithCommas = x => {
 const gameLoaded = () => {
   document.getElementById("menuContainer").style.display = "flex";
   document.getElementById("loadingContainer").classList.toggle("fadeOut");
+  localStorage.clear('songName');
+  localStorage.clear('difficulty');
   setTimeout(() => {
     document.getElementById("loadingContainer").style.display = "none";
     document.getElementById("menuContainer").classList.toggle("loaded");

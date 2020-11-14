@@ -96,6 +96,12 @@ app.get('/test', function (req, res) { return __awaiter(void 0, void 0, void 0, 
         return [2 /*return*/];
     });
 }); });
+app.get('/play', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        res.render('play', { cdn: config.project.cdn, url: config.project.url, api: config.project.api, game: config.project.game });
+        return [2 /*return*/];
+    });
+}); });
 app.get('/accessDenined', function (req, res) {
     res.render('accessDenined');
 });

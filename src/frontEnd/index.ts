@@ -57,6 +57,10 @@ app.get('/test', async (req, res) => {
   res.render('test', { cdn : config.project.cdn, url : config.project.url, api : config.project.api });
 });
 
+app.get('/play', async (req, res) => {
+  res.render('play', { cdn : config.project.cdn, url : config.project.url, api : config.project.api, game : config.project.game });
+});
+
 app.get('/accessDenined', (req, res) => {
   res.render('accessDenined');
 });
