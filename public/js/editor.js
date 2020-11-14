@@ -932,6 +932,7 @@ const save = () => {
   let file = new Blob([JSON.stringify(pattern)], {type: 'application/json'});
   a.href = URL.createObjectURL(file);
   a.download = `${songName.innerText}.json`;
+  localStorage.pattern = JSON.stringify(pattern);
   a.click();
 };
 
