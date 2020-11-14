@@ -240,7 +240,6 @@ p {
 
 #songName {
   opacity: 0;
-  font-size: 2vh;
   transition-duration: 1s;
 }
 
