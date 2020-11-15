@@ -231,6 +231,7 @@ const toggleSettings = () => {
     tmlCanvas.width = window.innerWidth * 0.8;
   }
   isSettingsOpened = !isSettingsOpened;
+  initialize();
 };
 
 const changeMode = (n) => {
@@ -705,7 +706,7 @@ const tmlRender = () => {
     tmlCtx.textAlign = "right";
     tmlCtx.textBaseline = "top";
     tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY);
-    console.error(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`);
+    //console.error(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`);
   }
   if(pointingCntElement.i === '') {
     timelineContainer.style.cursor = "";
