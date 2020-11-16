@@ -807,11 +807,11 @@ const calculateScore = (judge, i, isMissed) => {
     maxCombo = combo;
   }
   if(judge == 'perfect') {
-    score += 200 + combo * 2;
+    score += 300 + combo * combo;
   } else if(judge == 'great') {
-    score += 150 + combo * 1.5;
+    score += 150 + combo * combo;
   } else if(judge == 'good') {
-    score += 100 + combo * 1;
+    score += 100 + combo * combo;
   } else {
     combo = 0;
     score += 50;
