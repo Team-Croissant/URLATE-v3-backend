@@ -864,7 +864,7 @@ const offsetSetting = () => {
 
 const offsetUpdate = () => {
   let beat = 60 / 110;
-  let remain = (offsetSong.seek() % beat <= beat / 2 ? offsetSong.seek() % beat : (offsetSong.seek() % beat) - beat) * 1000;
+  let remain = (offsetSong.seek() % beat <= beat / 1.5 ? offsetSong.seek() % beat : (offsetSong.seek() % beat) - beat) * 1000 / offsetRate;
   let fillColor = '#373737';
   if(offsetSong.seek() <= beat + 0.005) fillColor = '#e56464';
   if(-50 <= remain && remain <= 0) {
