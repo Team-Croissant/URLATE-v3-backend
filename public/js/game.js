@@ -884,6 +884,9 @@ const offsetUpdate = () => {
   if(offsetInput) {
     offsetInputCircle.style.backgroundColor = fillColor;
     if(!offsetPrevInput) {
+      if(offsetAverage[offsetAverage.length - 1] - remain >= 50 || offsetAverage[offsetAverage.length - 1] + remain <= -50) {
+        offsetAverage = [];
+      }
       offsetAverage.push(parseInt(remain));
       let avr = 0;
       for(let i = offsetAverage.length - 1; i >= (offsetAverage.length - 4 < 0 ? 0 : offsetAverage.length - 4); i--) {
