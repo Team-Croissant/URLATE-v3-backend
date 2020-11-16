@@ -1428,7 +1428,7 @@ const compClicked = () => {
     }
   } else if(mode == 2) {
     if(mouseMode != -1) {
-      const seek = song.seek() - (offset + sync) / 1000;
+      const seek = song.seek();
       if(mouseX < -80 || mouseX > 80) {
         let newElement = {"ms": parseInt(seek * 1000), "value": selectedValue, "direction": (mouseX < -80 ? "L" : "R"), "location": parseInt(mouseY), "angle": 0, "speed": 2};
         pattern.bullets.push(newElement);
