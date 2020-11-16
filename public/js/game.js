@@ -889,10 +889,10 @@ const offsetUpdate = () => {
       }
       offsetAverage.push(parseInt(remain));
       let avr = 0;
-      for(let i = offsetAverage.length - 1; i >= (offsetAverage.length - 4 < 0 ? 0 : offsetAverage.length - 4); i--) {
+      for(let i = offsetAverage.length - 1; i >= (offsetAverage.length - 10 < 0 ? 0 : offsetAverage.length - 10); i--) {
         avr += offsetAverage[i];
       }
-      avr = avr / (offsetAverage.length >= 4 ? 4 : offsetAverage.length);
+      avr = avr / (offsetAverage.length >= 10 ? 10 : offsetAverage.length);
       offset = parseInt(avr);
       offsetButtonText.textContent = offset + 'ms';
     }
