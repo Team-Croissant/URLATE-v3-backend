@@ -1252,6 +1252,7 @@ p {
 }
 
 .songSelectionContainer {
+  height: 6vh;
   --artist-display: initial;
   --title-weight: 300;
   padding-top: 1vh;
