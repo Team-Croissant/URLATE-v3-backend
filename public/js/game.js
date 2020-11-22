@@ -345,13 +345,15 @@ const songSelected = n => {
   selectArtist.textContent = tracks[n].producer;
   selectAlbum.src = `https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png`;
   selectBackground.style.backgroundImage = `url("https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png")`;
-  let underLimit = window.innerHeight * 0.08 * n + window.innerHeight * 0.09;
-  underLimit = parseInt(underLimit);
-  if(selectSongContainer.offsetHeight + selectSongContainer.scrollTop < underLimit) {
-    selectSongContainer.scrollTop = underLimit - selectSongContainer.offsetHeight;
-  } else if(underLimit - window.innerHeight * 0.09 < selectSongContainer.scrollTop) {
-    selectSongContainer.scrollTop = selectSongContainer.scrollTop - (selectSongContainer.scrollTop - underLimit) - window.innerHeight * 0.09;
-  }
+  setTimeout(() => {
+    let underLimit = window.innerHeight * 0.08 * n + window.innerHeight * 0.09;
+    underLimit = parseInt(underLimit);
+    if(selectSongContainer.offsetHeight + selectSongContainer.scrollTop < underLimit) {
+      selectSongContainer.scrollTop = underLimit - selectSongContainer.offsetHeight;
+    } else if(underLimit - window.innerHeight * 0.09 < selectSongContainer.scrollTop) {
+      selectSongContainer.scrollTop = selectSongContainer.scrollTop - (selectSongContainer.scrollTop - underLimit) - window.innerHeight * 0.09;
+    }
+  }, songSelection != -1 ? 0 : 200);
   if(songSelection != -1) {
     document.getElementsByClassName('ranks')[songSelection].className = "ranks";
     if(trackRecords[songSelection][2].rank != 'rankQ') {
