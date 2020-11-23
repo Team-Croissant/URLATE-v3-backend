@@ -568,6 +568,10 @@ p {
   background-image: url('/images/credits/saw.png');
 }
 
+#profileBasix {
+  background-image: url('/images/credits/basix.png');
+}
+
 #infoProfileContainer {
   overflow-y: hidden;
   z-index: 101;
