@@ -15,6 +15,8 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
+let whitelist = 'bjgumsun@gmail.com, kyungblog@gmail.com, bjgumsun@dimigo.hs.kr, pop06296347@gmail.com, dmitri0620@gmail.com, tamiya0407@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com';
+
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
 
 const app = express();
@@ -91,14 +93,18 @@ app.post('/login', (req, res) => {
     const { access_token, refresh_token } = tokens
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: 'me', auth: oauth2Client }, (err, response) => {
-      req.session.userid = response.data.id;
-      req.session.email = response.data.emails[0].value;
-      req.session.tempName = response.data.displayName;
-      req.session.accessToken = access_token;
-      req.session.refreshToken = refresh_token;
-      req.session.save(() => {
-        res.status(200).json(createSuccessResponse('success'));
-      });
+      if(whitelist.indexOf(response.data.emails[0].value) != -1) {
+        req.session.userid = response.data.id;
+        req.session.email = response.data.emails[0].value;
+        req.session.tempName = response.data.displayName;
+        req.session.accessToken = access_token;
+        req.session.refreshToken = refresh_token;
+        req.session.save(() => {
+          res.status(200).json(createSuccessResponse('success'));
+        });
+      } else {
+        res.status(400).json(createErrorResponse('failed', 'Not Whitelisted', 'Provided email is not whitelisted.'));
+      }
     });
   });
 });

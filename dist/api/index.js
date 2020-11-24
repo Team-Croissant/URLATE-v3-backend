@@ -50,6 +50,7 @@ var settingsConfig = require(__dirname + '/../../config/settings.json');
 var google = require('googleapis').google;
 var OAuth2 = google.auth.OAuth2;
 var plus = google.plus('v1');
+var whitelist = 'bjgumsun@gmail.com, kyungblog@gmail.com, bjgumsun@dimigo.hs.kr, pop06296347@gmail.com, dmitri0620@gmail.com, tamiya0407@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com';
 var api_response_1 = require("./api-response");
 var app = express();
 app.locals.pretty = true;
@@ -121,14 +122,19 @@ app.post('/login', function (req, res) {
         var access_token = tokens.access_token, refresh_token = tokens.refresh_token;
         oauth2Client.setCredentials({ access_token: access_token, refresh_token: refresh_token });
         plus.people.get({ userId: 'me', auth: oauth2Client }, function (err, response) {
-            req.session.userid = response.data.id;
-            req.session.email = response.data.emails[0].value;
-            req.session.tempName = response.data.displayName;
-            req.session.accessToken = access_token;
-            req.session.refreshToken = refresh_token;
-            req.session.save(function () {
-                res.status(200).json(api_response_1.createSuccessResponse('success'));
-            });
+            if (whitelist.indexOf(response.data.emails[0].value) != -1) {
+                req.session.userid = response.data.id;
+                req.session.email = response.data.emails[0].value;
+                req.session.tempName = response.data.displayName;
+                req.session.accessToken = access_token;
+                req.session.refreshToken = refresh_token;
+                req.session.save(function () {
+                    res.status(200).json(api_response_1.createSuccessResponse('success'));
+                });
+            }
+            else {
+                res.status(400).json(api_response_1.createErrorResponse('failed', 'Not Whitelisted', 'Provided email is not whitelisted.'));
+            }
         });
     });
 });
