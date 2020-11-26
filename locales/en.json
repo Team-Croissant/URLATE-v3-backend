@@ -124,5 +124,11 @@
 	"bullet_density": "Bullet density",
 	"note_density": "Note density",
 	"speed": "Speed",
-	"detail_lang_warning": "*It may not operate normally until reconnection."
+	"detail_lang_warning": "*It may not operate normally until reconnection.",
+	"offset_setting": "offset_setting",
+	"offset_description_1": "offset_description_1",
+	"offset_description_2": "offset_description_2",
+	"offset_description_3": "offset_description_3",
+	"offset_sub_description_1": "offset_sub_description_1",
+	"reset": "reset"
 }
