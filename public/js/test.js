@@ -269,8 +269,8 @@ const drawParticle = (n, x, y, j) => {
       let width = canvas.width / 60;
       let p = 100 - ((s + 300 - Date.now()) / 3);
       let grd = ctx.createLinearGradient(cx - w, cy - w, cx + w, cy + w);
-      grd.addColorStop(0, `rgba(174, 102, 237, ${0.2 - p / 500})`);
-      grd.addColorStop(1, `rgba(102, 183, 237, ${0.2 - p / 500})`);
+      grd.addColorStop(0, `rgba(174, 102, 237, ${0.5 - p / 200})`);
+      grd.addColorStop(1, `rgba(102, 183, 237, ${0.5 - p / 200})`);
       ctx.strokeStyle = grd;
       ctx.arc(cx, cy, w, 0, 2 * Math.PI);
       ctx.stroke();
