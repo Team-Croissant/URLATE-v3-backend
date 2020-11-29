@@ -1346,6 +1346,14 @@ p {
   content: "?";
 }
 
+.rankL:before {
+  font-size: 5vh;
+  font-weight: 800;
+  color: #fff;
+  opacity: 0.2;
+  content: "🔒";
+}
+
 .songSelected:before {
   content: url("https://img.icons8.com/material-rounded/30/ffffff/give-way.png");
   margin-right: 1vw;

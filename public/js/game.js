@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                   autoplay: false,
                   loop: true
                 });
-                songList += `<div class="songSelectionContainer" onclick="songSelected(${i})">
+                songList += `<div class="songSelectionContainer${tracks[i].type == 1 ? ' advancedSelection' : tracks[i].type == 2 ? ' dlcSelection' : ''}" onclick="songSelected(${i})">
                                 <div class="songSelectionInfo">
                                     <span class="songSelectionTitle">${(settings.general.detailLang == 'original') ? tracks[i].original_name : tracks[i].name}</span>
                                     <span class="songSelectionArtist">${tracks[i].producer}</span>
@@ -268,12 +268,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         document.getElementsByClassName('ranks')[i].classList.add(`rank${value.rank}`);
                         trackRecords[i][j] = {"rank": `rank${value.rank}`, "record": value.record, "medal": value.medal, "maxcombo": value.maxcombo};
                       } else {
-                        trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                        if(tracks[i].type) {
+                          trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
+                        } else {
+                          trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                        }
                       }
                     }
                   } else {
                     for(let j = 0; j < 3; j++) {
-                      trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                      if(tracks[i].type) {
+                        document.getElementsByClassName('ranks')[i].className = "ranks";
+                        document.getElementsByClassName('ranks')[i].classList.add('rankL');
+                        trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
+                      } else {
+                        trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                      }
                     }
                   }
                 }).catch((error) => {
@@ -308,10 +318,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 const songSelected = n => {
   if(songSelection == n) {
     //play
-    localStorage.difficultySelection = difficultySelection;
-    localStorage.difficulty = JSON.parse(tracks[0].difficulty)[difficultySelection];
-    localStorage.songName = tracks[songSelection].fileName;
-    window.location.href = `${url}/play`;
+    if(tracks[n].type) {
+      alert('NOT ALLOWED TO PLAY'); //TODO
+    } else {
+      localStorage.difficultySelection = difficultySelection;
+      localStorage.difficulty = JSON.parse(tracks[0].difficulty)[difficultySelection];
+      localStorage.songName = tracks[songSelection].fileName;
+      window.location.href = `${url}/play`;
+    }
     return;
   }
   if(!(songSelection == -1 && tracks[n].name == "URLATE Theme")) {
