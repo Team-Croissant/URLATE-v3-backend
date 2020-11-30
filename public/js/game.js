@@ -15,6 +15,7 @@ let noteDensities = [10,50,100];
 let speeds = [1,2,3];
 let bpm = 130;
 let isRankOpened = false;
+let isAdvanced = false;
 
 let offsetRate = 1;
 let offset = 0;
@@ -211,6 +212,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             langSelector.getElementsByTagName('option')[1].selected = true;
           }
           if(data.advanced) {
+            isAdvanced = true;
             document.getElementById('optionAdvanced').textContent = enabled;
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.value = registered;
@@ -268,7 +270,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         document.getElementsByClassName('ranks')[i].classList.add(`rank${value.rank}`);
                         trackRecords[i][j] = {"rank": `rank${value.rank}`, "record": value.record, "medal": value.medal, "maxcombo": value.maxcombo};
                       } else {
-                        if(tracks[i].type) {
+                        if((tracks[i].type == 1 && !isAdvanced) || tracks[i].type == 2) {
                           trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
                         } else {
                           trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
@@ -277,7 +279,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     }
                   } else {
                     for(let j = 0; j < 3; j++) {
-                      if(tracks[i].type) {
+                      if((tracks[i].type == 1 && !isAdvanced) || tracks[i].type == 2) {
                         document.getElementsByClassName('ranks')[i].className = "ranks";
                         document.getElementsByClassName('ranks')[i].classList.add('rankL');
                         trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
@@ -318,7 +320,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 const songSelected = n => {
   if(songSelection == n) {
     //play
-    if(tracks[n].type) {
+    if((tracks[n].type == 1 && !isAdvanced) || tracks[n].type == 2) {
       alert('NOT ALLOWED TO PLAY'); //TODO
     } else {
       localStorage.difficultySelection = difficultySelection;
