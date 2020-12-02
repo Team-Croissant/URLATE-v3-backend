@@ -661,9 +661,8 @@ const tmlRender = () => {
     tmlCtx.lineTo(lineX, startY);
     tmlCtx.stroke();
     tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#4286fc';
-    tmlCtx.strokeStyle = '#4286fc';
-    //let offsetLineX = tmlStartX + (baseMs - sync) * msToPx;
+    tmlCtx.fillStyle = '#2f91ed';
+    tmlCtx.strokeStyle = '#2f91ed';
     let offsetLineX = tmlStartX + parseInt(((seek * 1000 - sync) - renderStart) * msToPx);
     tmlCtx.moveTo(offsetLineX, endY);
     tmlCtx.lineTo(offsetLineX, startY);
