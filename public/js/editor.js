@@ -660,6 +660,14 @@ const tmlRender = () => {
     tmlCtx.moveTo(lineX, endY);
     tmlCtx.lineTo(lineX, startY);
     tmlCtx.stroke();
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#4286fc';
+    tmlCtx.strokeStyle = '#4286fc';
+    //let offsetLineX = tmlStartX + (baseMs - sync) * msToPx;
+    let offsetLineX = tmlStartX + parseInt(((seek * 1000 - sync) - renderStart) * msToPx);
+    tmlCtx.moveTo(offsetLineX, endY);
+    tmlCtx.lineTo(offsetLineX, startY);
+    tmlCtx.stroke();
   } catch (e) {
     tmlCtx.font = "18px Metropolis";
     tmlCtx.fillStyle = "#F55";
@@ -700,13 +708,14 @@ const tmlRender = () => {
       tmlCtx.fill();
     }
   }
+  tmlCtx.font = "18px Metropolis";
+  tmlCtx.fillStyle = "#555";
+  tmlCtx.textAlign = "right";
+  tmlCtx.textBaseline = "top";
   if(pixelRatio != 1) {
-    tmlCtx.font = "18px Metropolis";
-    tmlCtx.fillStyle = "#555";
-    tmlCtx.textAlign = "right";
-    tmlCtx.textBaseline = "top";
     tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY);
-    //console.error(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`);
+  } else if(sync >= 50 || sync <= -50) {
+    tmlCtx.fillText(syncAlert, endX, endY);
   }
   if(pointingCntElement.i === '') {
     timelineContainer.style.cursor = "";

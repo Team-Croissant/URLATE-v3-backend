@@ -148,5 +148,6 @@
 	"offset_description_3": "하세요.",
 	"reset": "초기화",
 	"offset_sub_description_1": "우측의 버튼으로 직접 조정할 수도 있습니다.",
-	"return_to_game": "메인으로 돌아가기"
+	"return_to_game": "메인으로 돌아가기",
+	"syncAlert": "설정된 사용자 오프셋이 ±50ms 이상이거나 이하입니다. 캔버스가 표시하는 오프셋 타이밍이 파란색으로 표시됩니다."
 }
