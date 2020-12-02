@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const missCanvas = document.getElementById('missPointCanvas');
 const missCtx = missCanvas.getContext("2d");
 let pattern = {};
+let patternLength = 0;
 let userName = '';
 let settings, sync, song, tracks, pixelRatio, offset, bpm, speed, userid;
 let pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
@@ -109,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const initialize = (isFirstCalled) => {
   if(isFirstCalled) {
     pattern = JSON.parse(localStorage.pattern);
+    patternLength = pattern.patterns.length;
     document.getElementById('title').textContent = pattern.information.track;
     document.getElementById('scoreTitle').textContent = pattern.information.track;
     document.getElementById('artist').textContent = pattern.information.producer;
@@ -806,14 +808,14 @@ const calculateScore = (judge, i, isMissed) => {
     maxCombo = combo;
   }
   if(judge == 'perfect') {
-    score += 300 + combo * combo;
+    score += Math.round(100000000 / patternLength) + (combo * 5);
   } else if(judge == 'great') {
-    score += 150 + combo * combo;
+    score += Math.round(100000000 / patternLength * 0.5) + (combo * 5);
   } else if(judge == 'good') {
-    score += 100 + combo * combo;
+    score += Math.round(100000000 / patternLength * 0.2) + (combo * 3);
   } else {
     combo = 0;
-    score += 50;
+    score += Math.round(100000000 / patternLength * 0.05);
   }
   if(combo % comboCount == 0 && combo != 0) {
     comboAlertMs = Date.now();
