@@ -583,6 +583,13 @@ const tmlRender = () => {
       triggersOverlap[parseInt(renderTriggers[j].ms / 100)]--;
       tmlCtx.fill();
     }
+    tmlCtx.beginPath();
+    tmlCtx.fillStyle = '#2f91ed';
+    tmlCtx.strokeStyle = '#2f91ed';
+    let offsetLineX = tmlStartX + parseInt(((seek * 1000 - sync) - renderStart) * msToPx);
+    tmlCtx.moveTo(offsetLineX, endY);
+    tmlCtx.lineTo(offsetLineX, startY);
+    tmlCtx.stroke();
     tmlCtx.fillStyle = '#FFF';
     tmlCtx.fillRect(0, 0, tmlStartX, endY);
     tmlCtx.beginPath();
@@ -659,13 +666,6 @@ const tmlRender = () => {
     let lineX = tmlStartX + baseMs * (endX - tmlStartX) / 5000;
     tmlCtx.moveTo(lineX, endY);
     tmlCtx.lineTo(lineX, startY);
-    tmlCtx.stroke();
-    tmlCtx.beginPath();
-    tmlCtx.fillStyle = '#2f91ed';
-    tmlCtx.strokeStyle = '#2f91ed';
-    let offsetLineX = tmlStartX + parseInt(((seek * 1000 - sync) - renderStart) * msToPx);
-    tmlCtx.moveTo(offsetLineX, endY);
-    tmlCtx.lineTo(offsetLineX, startY);
     tmlCtx.stroke();
   } catch (e) {
     tmlCtx.font = "18px Metropolis";
