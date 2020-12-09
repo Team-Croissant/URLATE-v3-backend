@@ -93,7 +93,7 @@ app.post('/login', (req, res) => {
     const { access_token, refresh_token } = tokens
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: 'me', auth: oauth2Client }, (err, response) => {
-      if(whitelist.indexOf(response.data.emails[0].value) != -1 || true) {
+      if(whitelist.indexOf(response.data.emails[0].value) != -1) {
         req.session.userid = response.data.id;
         req.session.email = response.data.emails[0].value;
         req.session.tempName = response.data.displayName;
@@ -229,7 +229,7 @@ app.post('/xsolla/getToken', (req, res) => {
           },
           "settings": {
             "project_id": config.xsolla.projectId,
-            "mode": "sandbox" //NEED TO DELETE ON RELEASE
+            "mode": "sandbox" //TODO: NEED TO DELETE ON RELEASE
           }
         }),
         headers: {
@@ -270,8 +270,8 @@ app.post('/xsolla/webhook', async (req, res) => {
       case 'cancel_subscription':
         await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
         break;
-      case 'refund':
-        console.log('refund');
+      case 'refund': //TODO: NEED TO CHANGE FT.PAYMENT
+        await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
         break;
     }
   } else {

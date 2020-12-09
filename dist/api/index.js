@@ -122,7 +122,7 @@ app.post('/login', function (req, res) {
         var access_token = tokens.access_token, refresh_token = tokens.refresh_token;
         oauth2Client.setCredentials({ access_token: access_token, refresh_token: refresh_token });
         plus.people.get({ userId: 'me', auth: oauth2Client }, function (err, response) {
-            if (whitelist.indexOf(response.data.emails[0].value) != -1 || true) {
+            if (whitelist.indexOf(response.data.emails[0].value) != -1) {
                 req.session.userid = response.data.id;
                 req.session.email = response.data.emails[0].value;
                 req.session.tempName = response.data.displayName;
@@ -296,7 +296,7 @@ app.post('/xsolla/getToken', function (req, res) {
                 },
                 "settings": {
                     "project_id": config.xsolla.projectId,
-                    "mode": "sandbox" //NEED TO DELETE ON RELEASE
+                    "mode": "sandbox" //TODO: NEED TO DELETE ON RELEASE
                 }
             }),
             headers: {
@@ -315,7 +315,7 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                if (!(req.headers.authorization == "Signature " + sha1(JSON.stringify(req.body) + config.xsolla.projectKey))) return [3 /*break*/, 12];
+                if (!(req.headers.authorization == "Signature " + sha1(JSON.stringify(req.body) + config.xsolla.projectKey))) return [3 /*break*/, 13];
                 _a = req.body.notification_type;
                 switch (_a) {
                     case 'user_validation': return [3 /*break*/, 1];
@@ -325,7 +325,7 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
                     case 'cancel_subscription': return [3 /*break*/, 8];
                     case 'refund': return [3 /*break*/, 10];
                 }
-                return [3 /*break*/, 11];
+                return [3 /*break*/, 12];
             case 1: return [4 /*yield*/, knex('users').select('userid').where('userid', req.body.user.id)];
             case 2:
                 result = _b.sent();
@@ -340,30 +340,32 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
                 return [2 /*return*/];
             case 3:
                 console.log('payment');
-                return [3 /*break*/, 11];
+                return [3 /*break*/, 12];
             case 4: return [4 /*yield*/, knex('users').update({ 'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
             case 5:
                 _b.sent();
-                return [3 /*break*/, 11];
+                return [3 /*break*/, 12];
             case 6: return [4 /*yield*/, knex('users').update({ 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
             case 7:
                 _b.sent();
-                return [3 /*break*/, 11];
+                return [3 /*break*/, 12];
             case 8: return [4 /*yield*/, knex('users').update({ 'advanced': false, 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
             case 9:
                 _b.sent();
-                return [3 /*break*/, 11];
-            case 10:
-                console.log('refund');
-                return [3 /*break*/, 11];
-            case 11: return [3 /*break*/, 13];
-            case 12:
+                return [3 /*break*/, 12];
+            case 10: //TODO: NEED TO CHANGE FT.PAYMENT
+            return [4 /*yield*/, knex('users').update({ 'advanced': false, 'advancedUpdatedDate': new Date() }).where('userid', req.body.user.id)];
+            case 11:
+                _b.sent();
+                return [3 /*break*/, 12];
+            case 12: return [3 /*break*/, 14];
+            case 13:
                 res.status(400).json({ "error": {
                         "code": "INVALID_SIGNATURE",
                         "message": "Invaild signature"
                     } });
                 return [2 /*return*/];
-            case 13:
+            case 14:
                 res.end();
                 return [2 /*return*/];
         }
