@@ -498,6 +498,7 @@ const cntRender = () => {
       ctx.textAlign = "center";
       ctx.fillText(comboAlertCount, canvas.width / 2, canvas.height / 2);
     }
+    ctx.lineWidth = 5;
     pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
     const seek = song.seek() - (offset + sync) / 1000;
     let start = lowerBound(pattern.triggers, seek * 1000 - 2000);
