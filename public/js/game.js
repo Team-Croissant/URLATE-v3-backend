@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                   autoplay: false,
                   loop: true
                 });
-                songList += `<div class="songSelectionContainer${tracks[i].type == 1 ? ' advancedSelection' : tracks[i].type == 2 ? ' dlcSelection' : ''}" onclick="songSelected(${i})">
+                songList += `<div class="songSelectionContainer${tracks[i].type == 1 && !isAdvanced ? ' advancedSelection' : tracks[i].type == 2 ? ' dlcSelection' : ''}" onclick="songSelected(${i})">
                                 <div class="songSelectionInfo">
                                     <span class="songSelectionTitle">${(settings.general.detailLang == 'original') ? tracks[i].original_name : tracks[i].name}</span>
                                     <span class="songSelectionArtist">${tracks[i].producer}</span>
