@@ -58,7 +58,7 @@ body {
 }
 
 .shadowIcon {
-  filter: drop-shadow(0 0 5px rgba(0,0,0,.5));
+  filter: drop-shadow(0 0 5px rgba(30,30,30,.3));
   height: 18vh;
 }
 
@@ -360,6 +360,10 @@ p {
 }
 
 #menuAdvanced {
+  display: none;
+}
+
+#menuStore {
   display: none;
 }
 

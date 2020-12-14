@@ -1,5 +1,5 @@
 let selection = 0;
-let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced'];
+let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced', 'menuStore'];
 let display = 0;
 let username = '';
 let analyser, dataArray;
@@ -624,36 +624,27 @@ const displayClose = () => {
 const menuSelected = () => {
   if(selection == 0) {
     //play
-    menu0Selected();
+    display = 1;
+    if(songSelection == -1) {
+      let min = Math.ceil(0);
+      let max = Math.floor(tracks.length);
+      songSelected(Math.floor(Math.random() * (max - min)) + min);
+    }
+    document.getElementById("selectContainer").style.display = "flex";
+    document.getElementById("selectContainer").classList.add("fadeIn");
   } else if(selection == 1) {
     //editor
-    menu1Selected();
+    window.location.href = `${url}/editor`;
   } else if(selection == 2) {
     //advanced
-    menu2Selected();
+    display = 3;
+    document.getElementById("advancedContainer").style.display = "block";
+    document.getElementById("advancedContainer").classList.add("fadeIn");
+  } else if(selection == 3) {
+    //store
+    alert('구현 예정인 기능입니다.');
+    display = 8;
   }
-};
-
-const menu0Selected = () => {
-  display = 1;
-  if(songSelection == -1) {
-    let min = Math.ceil(0);
-    let max = Math.floor(tracks.length);
-    songSelected(Math.floor(Math.random() * (max - min)) + min);
-  }
-  document.getElementById("selectContainer").style.display = "flex";
-  document.getElementById("selectContainer").classList.add("fadeIn");
-};
-
-const menu1Selected = () => {
-  window.location.href = `${url}/editor`;
-};
-
-const menu2Selected = () => {
-  //advanced
-  display = 3;
-  document.getElementById("advancedContainer").style.display = "block";
-  document.getElementById("advancedContainer").classList.add("fadeIn");
 };
 
 const getAdvanced = () => {
