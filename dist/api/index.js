@@ -133,6 +133,7 @@ app.post('/login', function (req, res) {
                 });
             }
             else {
+                signale.debug("User login blocked by whitelist : " + response.data.emails[0].value);
                 res.status(400).json(api_response_1.createErrorResponse('failed', 'Not Whitelisted', 'Provided email is not whitelisted.'));
             }
         });
