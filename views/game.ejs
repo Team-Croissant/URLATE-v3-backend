@@ -372,7 +372,7 @@
             </div>
         </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <h1 id="optionTitle"><%= __('option') %></h1>
+        <h1 class="containersTitle"><%= __('option') %></h1>
         <div id="optionElementsContainer">
             <div id="optionSelectorContainer">
                 <span class="optionSelectors optionSelected" onclick="optionSelect(0)"><%= __('general') %></span>
@@ -557,6 +557,136 @@
                 <div class="optionValueContainer">
                     <p class="optionSemiTitle"><%= __('ignore_at_test') %></p>
                     <input type="checkbox" class="optionCheckbox" id="ignoreTestCheck" onchange="settingChanged(this, 'ignoreTest')">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="storeContainer" class="containers metropolis">
+        <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
+        <h1 class="containersTitle"><%= __('store_title') %></h1>
+        <div id="optionElementsContainer">
+            <div id="optionSelectorContainer">
+                <img src="https://img.icons8.com/material/40/000000/musical--v1.png"  class="storeSelectors storeSelected" onclick="storeSelect(0)"/>
+                <img src="https://img.icons8.com/material/40/000000/paint-palette--v1.png" class="storeSelectors" onclick="storeSelect(1)"/>
+                <img src="https://img.icons8.com/fluent-systems-regular/40/000000/shopping-bag-full.png" class="storeSelectors" onclick="storeSelect(2)"/>
+            </div>
+            <div class="storeContentsContainer storeShow">
+                <div class="storeRowContainer">
+                    <div class="storeSongsContainer">
+                        <div class="storeSongsLeft">
+                            <img class="storeSongsAlbum" src="images/mainImage.png">
+                        </div>
+                        <div class="storeSongsRight">
+                            <div class="storeSongsTop">
+                                <span class="storeName">DLC Name</span>
+                                <span class="storeSongArtist">Composer Name</span>
+                            </div>
+                            <div class="storeSongsBottom">
+                                <span class="storePrice">구매함</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="storeSongsContainer">
+                        <div class="storeSongsLeft">
+                            <img class="storeSongsAlbum" src="images/mainImage.png">
+                        </div>
+                        <div class="storeSongsRight">
+                            <div class="storeSongsTop">
+                                <span class="storeName">DLC Name</span>
+                                <span class="storeSongArtist">Composer Name</span>
+                            </div>
+                            <div class="storeSongsBottom">
+                                <span class="storePrice">₩4,500</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="storeContentsContainer">
+                <div class="storeRowContainer">
+                    <div class="storeSkinsContainer">
+                        <div class="storeSkinTitleContainer">
+                            <span class="storeSkinName">Skin Name</span>
+                        </div>
+                        <div class="storeSkinContentContainer">
+                            <svg class="noteSvg" viewBox="0 0 107.999 108">
+                                <defs>
+                                  <linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
+                                    <stop offset="0"/>
+                                    <stop offset="1"/>
+                                  </linearGradient>
+                                </defs>
+                                <g id="note">
+                                  <circle id="inside" cx="36" cy="36" r="36" transform="translate(18 18)" fill="url(#linear-gradient)"/>
+                                  <path id="outside" d="M54,108A54.014,54.014,0,0,1,32.981,4.244,54.014,54.014,0,0,1,75.02,103.756,53.661,53.661,0,0,1,54,108ZM54,3a51,51,0,1,0,51,51A51.058,51.058,0,0,0,54,3Z" fill="url(#linear-gradient)"/>
+                                </g>
+                            </svg>
+                            <svg class="bulletSvg" viewBox="0 0 51.293 85.988">
+                                <defs>
+                                  <linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
+                                    <stop offset="0"/>
+                                    <stop offset="1"/>
+                                  </linearGradient>
+                                </defs>
+                                <path id="bullet" d="M7.512,78.477A25.476,25.476,0,0,1,0,60.342H0L25.646,0,51.292,60.342h0A25.647,25.647,0,0,1,7.512,78.477Z" fill="url(#linear-gradient)"/>
+                            </svg>
+                            <svg class="cursorSvg" viewBox="0 0 96 96">
+                                <defs>
+                                  <linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
+                                    <stop offset="0"/>
+                                    <stop offset="1"/>
+                                  </linearGradient>
+                                </defs>
+                                <circle id="cursor" cx="48" cy="48" r="48" fill="url(#linear-gradient)"/>
+                            </svg>
+                        </div>
+                        <div class="storeSkinPriceContainer">
+                            <span class="storePrice">₩5,000</span>
+                        </div>
+                    </div>
+                    <div class="storeSkinsContainer">
+                        <div class="storeSkinTitleContainer">
+                            <span class="storeSkinName">Skin Name</span>
+                        </div>
+                        <div class="storeSkinContentContainer">
+
+                        </div>
+                        <div class="storeSkinPriceContainer">
+                            <span class="storePrice">₩5,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="storeContentsContainer">
+                <div class="storeRowContainer">
+                    <div class="storeSongsContainer">
+                        <div class="storeSongsLeft">
+                            <img class="storeSongsAlbum" src="images/mainImage.png">
+                        </div>
+                        <div class="storeSongsRight">
+                            <div class="storeSongsTop">
+                                <span class="storeName">DLC Name</span>
+                                <span class="storeSongArtist">Composer Name</span>
+                            </div>
+                            <div class="storeSongsBottom">
+                                <span class="storePrice">구매함</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="storeSongsContainer">
+                        <div class="storeSongsLeft">
+                            <img class="storeSongsAlbum" src="images/mainImage.png">
+                        </div>
+                        <div class="storeSongsRight">
+                            <div class="storeSongsTop">
+                                <span class="storeName">DLC Name</span>
+                                <span class="storeSongArtist">Composer Name</span>
+                            </div>
+                            <div class="storeSongsBottom">
+                                <span class="storePrice">₩4,500</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

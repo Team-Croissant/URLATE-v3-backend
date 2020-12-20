@@ -835,7 +835,7 @@ p {
   background-attachment: fixed;
 }
 
-#optionTitle {
+.containersTitle {
   font-size: 5vh;
   margin-top: 4vh;
   padding: 0;
@@ -1620,4 +1620,174 @@ p {
   font-size: 2vh;
   color: #fff;
   font-weight: 500;
+}
+
+.storeSelectors {
+  height: 5vh;
+  cursor: pointer;
+  margin: 2vh;
+  opacity: 0.3;
+}
+
+.storeSelected {
+  cursor: default;
+  opacity: 1;
+}
+
+.storeContentsContainer {
+  display: none;
+  text-align: left;
+  padding-left: 3vw;
+  height: 72vh;
+  width: 64vw;
+  float: left;
+  overflow-y: auto;
+  scrollbar-color: #5a5a5a #cecece;
+  scrollbar-width: thin;
+}
+
+.storeShow {
+  display: initial;
+}
+
+.storeRowContainer {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.storeSongsContainer {
+  cursor: pointer;
+  padding: 2vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 27vw;
+  height: 20vh;
+  border-radius: 10px;
+  border: solid #d3d3d3 1px;
+  box-shadow: 0 0 20px rgba(50,50,50,0.1);
+}
+
+.storeSongsLeft {
+  width: 40%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.storeSongsAlbum {
+  height: 16vh;
+  width: 16vh;
+  border-radius: 10px;
+}
+
+.storeSongsRight {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeSongsTop {
+  width: 100%;
+  height: 13vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.storeSongsBottom {
+  width: 100%;
+  height: 3vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.storeName {
+  font-size: 4vh;
+  font-weight: 700;
+}
+
+.storeSkinName {
+  font-size: 4vh;
+  font-weight: 700;
+  margin-left: 1vw;
+}
+
+.storeSongArtist {
+  font-size: 2.3vh;
+  font-weight: 400;
+}
+
+.storePrice {
+  font-size: 3vh;
+  font-weight: 400;
+  margin-right: 1vw;
+}
+
+.storeSalePrice {
+  color: #B0B0B0;
+}
+
+.storeSkinsContainer {
+  cursor: pointer;
+  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 27vw;
+  height: 40vh;
+  border-radius: 10px;
+  border: solid #d3d3d3 1px;
+  box-shadow: 0 0 20px rgba(50,50,50,0.1);
+}
+
+.storeSkinTitleContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 5vh;
+}
+
+.storeSkinContentContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 26vh;
+}
+
+.storeSkinPriceContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+  height: 5vh;
+}
+
+.noteSvg {
+  height: 10vh;
+}
+
+.bulletSvg {
+  margin-left: 2vw;
+  height: 9vh;
+}
+
+.cursorSvg {
+  margin-left: 2vw;
+  height: 10vh;
+  filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.3));
 }

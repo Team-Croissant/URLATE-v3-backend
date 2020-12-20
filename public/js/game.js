@@ -617,6 +617,14 @@ const displayClose = () => {
     }, 500);
     display = 2;
     return;
+  } else if(display == 8) {
+    //STORE
+    document.getElementById("storeContainer").classList.remove("fadeIn");
+    document.getElementById("storeContainer").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("storeContainer").classList.remove("fadeOut");
+      document.getElementById("storeContainer").style.display = "none";
+    }, 500);
   }
   display = 0;
 };
@@ -642,7 +650,8 @@ const menuSelected = () => {
     document.getElementById("advancedContainer").classList.add("fadeIn");
   } else if(selection == 3) {
     //store
-    alert('구현 예정인 기능입니다.');
+    document.getElementById("storeContainer").style.display = "block";
+    document.getElementById("storeContainer").classList.add("fadeIn");
     display = 8;
   }
 };
@@ -676,6 +685,13 @@ const optionSelect = n => {
   document.getElementsByClassName('optionSelectors')[n].classList.add('optionSelected');
   document.getElementsByClassName('optionShow')[0].classList.remove('optionShow');
   document.getElementsByClassName('optionContentsContainer')[n].classList.add('optionShow');
+};
+
+const storeSelect = n => {
+  document.getElementsByClassName('storeSelected')[0].classList.remove('storeSelected');
+  document.getElementsByClassName('storeSelectors')[n].classList.add('storeSelected');
+  document.getElementsByClassName('storeShow')[0].classList.remove('storeShow');
+  document.getElementsByClassName('storeContentsContainer')[n].classList.add('storeShow');
 };
 
 const langChanged = e => {
