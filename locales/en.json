@@ -131,5 +131,8 @@
 	"offset_description_3": "offset_description_3",
 	"offset_sub_description_1": "offset_sub_description_1",
 	"reset": "reset",
-	"syncAlert": "The set user offset is greater or less than ±50 ms. The offset timing displayed by the canvas is displayed in blue."
+	"syncAlert": "The set user offset is greater or less than ±50 ms. The offset timing displayed by the canvas is displayed in blue.",
+	"store_title": "STORE",
+	"store_subtitle": "스토어",
+	"return_to_game": "Return to game"
 }

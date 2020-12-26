@@ -151,5 +151,6 @@
 	"return_to_game": "메인으로 돌아가기",
 	"syncAlert": "설정된 사용자 오프셋이 ±50ms 이상이거나 이하입니다. 캔버스가 표시하는 오프셋 타이밍이 파란색으로 표시됩니다.",
 	"store_title": "스토어",
-	"store_subtitle": "STORE"
+	"store_subtitle": "STORE",
+	"purchased": "purchased"
 }

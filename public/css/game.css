@@ -1660,6 +1660,30 @@ p {
   justify-content: space-around;
 }
 
+.storeColumnContainer {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.storeBasketsContainer {
+  cursor: pointer;
+  padding: 2vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 59vw;
+  height: 10vh;
+  border-radius: 10px;
+  border: solid #d3d3d3 1px;
+  box-shadow: 0 0 20px rgba(50,50,50,0.1);
+}
+
 .storeSongsContainer {
   cursor: pointer;
   padding: 2vh;
@@ -1684,6 +1708,12 @@ p {
 .storeSongsAlbum {
   height: 16vh;
   width: 16vh;
+  border-radius: 10px;
+}
+
+.storeBasketsAlbum {
+  height: 10vh;
+  width: 10vh;
   border-radius: 10px;
 }
 
@@ -1762,11 +1792,18 @@ p {
 
 .storeSkinContentContainer {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 26vh;
+}
+
+.storeSkin {
+  width: 20vw;
+}
+
+.storeBasketsSkin {
+  height: 6vh;
 }
 
 .storeSkinPriceContainer {
@@ -1790,4 +1827,33 @@ p {
   margin-left: 2vw;
   height: 10vh;
   filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.3));
+}
+
+.storeBasketsLeft {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.storeBasketsRight {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.storeBasketsInfo {
+  height: 100%;
+  padding-left: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#storeBasketsContainer {
+  height: 62vh;
 }

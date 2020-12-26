@@ -582,7 +582,7 @@
                                 <span class="storeSongArtist">Composer Name</span>
                             </div>
                             <div class="storeSongsBottom">
-                                <span class="storePrice">구매함</span>
+                                <span class="storePrice"><%= __('purchased') %></span>
                             </div>
                         </div>
                     </div>
@@ -609,36 +609,7 @@
                             <span class="storeSkinName">Skin Name</span>
                         </div>
                         <div class="storeSkinContentContainer">
-                            <svg class="noteSvg" viewBox="0 0 107.999 108">
-                                <defs>
-                                  <linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
-                                    <stop offset="0"/>
-                                    <stop offset="1"/>
-                                  </linearGradient>
-                                </defs>
-                                <g id="note">
-                                  <circle id="inside" cx="36" cy="36" r="36" transform="translate(18 18)" fill="url(#linear-gradient)"/>
-                                  <path id="outside" d="M54,108A54.014,54.014,0,0,1,32.981,4.244,54.014,54.014,0,0,1,75.02,103.756,53.661,53.661,0,0,1,54,108ZM54,3a51,51,0,1,0,51,51A51.058,51.058,0,0,0,54,3Z" fill="url(#linear-gradient)"/>
-                                </g>
-                            </svg>
-                            <svg class="bulletSvg" viewBox="0 0 51.293 85.988">
-                                <defs>
-                                  <linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
-                                    <stop offset="0"/>
-                                    <stop offset="1"/>
-                                  </linearGradient>
-                                </defs>
-                                <path id="bullet" d="M7.512,78.477A25.476,25.476,0,0,1,0,60.342H0L25.646,0,51.292,60.342h0A25.647,25.647,0,0,1,7.512,78.477Z" fill="url(#linear-gradient)"/>
-                            </svg>
-                            <svg class="cursorSvg" viewBox="0 0 96 96">
-                                <defs>
-                                  <linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
-                                    <stop offset="0"/>
-                                    <stop offset="1"/>
-                                  </linearGradient>
-                                </defs>
-                                <circle id="cursor" cx="48" cy="48" r="48" fill="url(#linear-gradient)"/>
-                            </svg>
+                            <img src="/images/skin.png" class="storeSkin">
                         </div>
                         <div class="storeSkinPriceContainer">
                             <span class="storePrice">₩5,000</span>
@@ -657,34 +628,31 @@
                     </div>
                 </div>
             </div>
-            <div class="storeContentsContainer">
-                <div class="storeRowContainer">
-                    <div class="storeSongsContainer">
-                        <div class="storeSongsLeft">
-                            <img class="storeSongsAlbum" src="images/mainImage.png">
-                        </div>
-                        <div class="storeSongsRight">
-                            <div class="storeSongsTop">
+            <div class="storeContentsContainer" id="storeBasketsContainer">
+                <div class="storeColumnContainer">
+                    <div class="storeBasketsContainer">
+                        <div class="storeBasketsLeft">
+                            <img class="storeBasketsAlbum" src="images/mainImage.png">
+                            <div class="storeBasketsInfo">
                                 <span class="storeName">DLC Name</span>
                                 <span class="storeSongArtist">Composer Name</span>
                             </div>
-                            <div class="storeSongsBottom">
-                                <span class="storePrice">구매함</span>
-                            </div>
+                        </div>
+                        <div class="storeBasketsRight">
+                            <span class="storePrice"></span>
                         </div>
                     </div>
-                    <div class="storeSongsContainer">
-                        <div class="storeSongsLeft">
-                            <img class="storeSongsAlbum" src="images/mainImage.png">
-                        </div>
-                        <div class="storeSongsRight">
-                            <div class="storeSongsTop">
+                </div>
+                <div class="storeColumnContainer">
+                    <div class="storeBasketsContainer">
+                        <div class="storeBasketsLeft">
+                            <img src="/images/skin.png" class="storeBasketsSkin">
+                            <div class="storeBasketsInfo">
                                 <span class="storeName">DLC Name</span>
-                                <span class="storeSongArtist">Composer Name</span>
                             </div>
-                            <div class="storeSongsBottom">
-                                <span class="storePrice">₩4,500</span>
-                            </div>
+                        </div>
+                        <div class="storeBasketsRight">
+                            <span class="storePrice"><%= __('purchased') %></span>
                         </div>
                     </div>
                 </div>
