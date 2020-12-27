@@ -39,7 +39,7 @@ const initialize = () => {
   canvas.height = window.innerHeight;
 };
 
-function convertWordArrayToUint8Array(wordArray) {
+const convertWordArrayToUint8Array = wordArray => {
   let arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
   let length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
   let uInt8Array = new Uint8Array(length), index=0, word, i;
@@ -51,7 +51,7 @@ function convertWordArrayToUint8Array(wordArray) {
       uInt8Array[index++] = word & 0xff;
   }
   return uInt8Array;
-}
+};
 
 const settingApply = () => {
   if(settings.general.detailLang == "original") {
