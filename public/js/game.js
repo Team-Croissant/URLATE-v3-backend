@@ -217,6 +217,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
+            headerLeft.style.backgroundImage = `url('/images/parts/elements/namespace_advanced.png')`;
             let elements = document.getElementsByClassName('advancedOnly');
             for(let i = 0; i < elements.length; i++) {
               elements[i].style.display = 'flex';
