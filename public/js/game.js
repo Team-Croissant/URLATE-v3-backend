@@ -141,7 +141,9 @@ const settingApply = () => {
       }
       loaded = 1;
       Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-      themeSong.play();
+      if(display == 0 && songSelection == -1) {
+        themeSong.play();
+      }
     }
   });
 };
@@ -341,12 +343,10 @@ const songSelected = n => {
         songs[i].stop();
       }, 200);
     }
-    if(themeSong.playing()) {
-      themeSong.fade(1, 0, 500);
-      setTimeout(() => {
-        themeSong.stop();
-      }, 500);
-    }
+    themeSong.fade(1, 0, 500);
+    setTimeout(() => {
+      themeSong.stop();
+    }, 500);
     songs[n].play();
   }
   if(document.getElementsByClassName('songSelected')[0]) {
