@@ -399,6 +399,13 @@ p {
   z-index: 200;
 }
 
+.storeInfoCloseBtn {
+  z-index: 200;
+  position: fixed;
+  top: 21vh;
+  right: 26vw;
+}
+
 .containers {
   z-index: 100;
   position: fixed;
@@ -839,7 +846,7 @@ p {
   font-size: 5vh;
   margin-top: 4vh;
   padding: 0;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 #optionElementsContainer {
@@ -1856,4 +1863,155 @@ p {
 
 #storeBasketsContainer {
   height: 62vh;
+}
+
+.storeInfoBackground {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.storeInfoContainer {
+  padding: 1vh 2vw 1vh 2vw;
+  background-color: white;
+  width: 50vw;
+  height: 65vh;
+  border-radius: 10px;
+}
+
+#DLCinfoTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10vh;
+  width: 50vw;
+}
+
+.storeInfoTitle {
+  font-size: 4vh;
+  font-weight: 700;
+}
+
+#DLCinfoContentsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#DLCInfoAlbum {
+  height: 35vh;
+  width: 35vh;
+  border-radius: 5px;
+}
+
+#DLCinfoSongsContainer {
+  width: calc(50vw - 35vh);
+  height: 35vh;
+  overflow-y: scroll;
+}
+
+.DLCinfoSongContainer {
+  padding-left: 2vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100% - 2vw);
+  height: 10vh;
+}
+
+.DLCinfoSongAlbum {
+  border-radius: 5px;
+  height: 7vh;
+  width: 7vh;
+}
+
+.DLCinfoSongAbout {
+  padding-left: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.DLCinfoSongName {
+  font-size: 3vh;
+  font-weight: 700;
+}
+
+.DLCinfoSongProd {
+  font-size: 2vh;
+  font-weight: 300;
+}
+
+#DLCinfoAboutContainer {
+  width: 50vw;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.storeInfoButtonContainer {
+  width: 50vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.storeButton {
+  cursor: pointer;
+  letter-spacing: -1px;
+  font-weight: 600;
+  width: 13vw;
+  height: 7vh;
+  border-radius: 15px;
+  font-size: 3vh;
+  color: black;
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #62C7FC, #AC67FE);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #fff inset;
+  filter: drop-shadow(0 0 20px rgba(50, 50, 50, 0.2));
+}
+
+.storeButtonDisabled {
+  background: #222;
+}
+
+#skinInfoTitleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 15vh;
+  width: 50vw;
+}
+
+#skinInfoSkinName {
+  font-size: 3vh;
+  font-weight: 500;
+}
+
+#skinInfoPreviewContainer {
+  width: 100%;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#skinInfoPreview {
+  height: 40vh;
 }

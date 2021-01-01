@@ -135,5 +135,9 @@
 	"store_title": "STORE",
 	"store_subtitle": "스토어",
 	"return_to_game": "Return to game",
+	"purchased": "Purchased",
+	"DLC_info": "DLC info",
+	"add_to_bag": "Add to bag",
+	"Skin_info": "Skin info",
 	"sound_volume_tip": "You can quickly adjust the volume by using Shift + Scroll in the game."
 }

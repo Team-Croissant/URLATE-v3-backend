@@ -564,7 +564,7 @@
     </div>
     <div id="storeContainer" class="containers metropolis">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <h1 class="containersTitle"><%= __('store_title') %></h1>
+        <h1 class="containersTitle">STORE</h1>
         <div id="optionElementsContainer">
             <div id="optionSelectorContainer">
                 <img src="https://img.icons8.com/material/40/000000/musical--v1.png"  class="storeSelectors storeSelected" onclick="storeSelect(0)"/>
@@ -656,6 +656,48 @@
                             <span class="storePrice"><%= __('purchased') %></span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="storeInfoBackground" id="storeDLCInfo">
+            <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable storeInfoCloseBtn" onclick="displayClose()">
+            <div class="storeInfoContainer">
+                <div id="DLCinfoTitleContainer">
+                    <span class="storeInfoTitle"><%= __('DLC_info') %></span>
+                </div>
+                <div id="DLCinfoContentsContainer">
+                    <img src="/images/mainImage.png" id="DLCInfoAlbum">
+                    <div id="DLCinfoSongsContainer">
+                        <div class="DLCinfoSongContainer">
+                            <img src="/images/mainImage.png" class="DLCinfoSongAlbum">
+                            <div class="DLCinfoSongAbout">
+                                <span class="DLCinfoSongName">SongName</span>
+                                <span class="DLCinfoSongProd">Producer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="DLCinfoAboutContainer">
+                    <span class="storeName">DLC Name</span>
+                    <span class="storeSongArtist">Composer Name</span>
+                </div>
+                <div id="DLCinfoButtonContainer">
+                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart()"><%= __('add_to_bag') %></button>
+                </div>
+            </div>
+        </div>
+        <div class="storeInfoBackground" id="storeSkinInfo">
+            <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable storeInfoCloseBtn" onclick="displayClose()">
+            <div class="storeInfoContainer">
+                <div id="skinInfoTitleContainer">
+                    <span class="storeInfoTitle"><%= __('Skin_info') %></span>
+                    <span id="skinInfoSkinName">Normal</span>
+                </div>
+                <div id="skinInfoPreviewContainer">
+                    <img src="/images/readme/play.jpg" id="skinInfoPreview">
+                </div>
+                <div class="storeInfoButtonContainer">
+                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart()"><%= __('add_to_bag') %></button>
                 </div>
             </div>
         </div>
