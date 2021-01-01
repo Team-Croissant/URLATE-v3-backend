@@ -17,6 +17,8 @@ let bpm = 130;
 let isRankOpened = false;
 let isAdvanced = false;
 
+let shiftDown = false;
+
 let offsetRate = 1;
 let offset = 0;
 let offsetInput = false;
@@ -980,6 +982,44 @@ const offsetButtonUp = () => {
   offsetInput = false;
 };
 
+const scrollEvent = e => {
+  if(shiftDown) {
+    e = window.event || e;
+    let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    if(delta == 1) { //UP
+      if(settings.sound.volume.master <= 0.95) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+      }
+    } else { //DOWN
+      if(settings.sound.volume.master >= 0.05) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+      }
+    }
+    volumeMaster.value = Math.round(settings.sound.volume.master * 100);
+    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
+    Howler.volume(settings.sound.volume.master);
+    fetch(`${api}/update/settings`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify({
+        settings: settings
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result != 'success') {
+        alert(`Error occured.\n${data.error}`);
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+    });
+  }
+};
+
 document.onkeydown = e => {
   e = e || window.event;
   let key = e.key.toLowerCase();
@@ -987,6 +1027,9 @@ document.onkeydown = e => {
   if(key == 'escape') {
     displayClose();
     return;
+  }
+  if(key == 'shift') {
+    shiftDown = true;
   }
   if(display == 0) {
     if(key == 'arrowleft') {
@@ -1027,10 +1070,15 @@ document.onkeydown = e => {
 
 document.onkeyup = e => {
   e = e || window.event;
-  //let key = e.key.toLowerCase();
+  let key = e.key.toLowerCase();
   if(display == 7) {
     offsetInput = false;
+  }
+  if(key == 'shift') {
+    shiftDown = false;
   }
 };
 
 window.addEventListener("resize", initialize);
+window.addEventListener("mousewheel", scrollEvent);
+window.addEventListener("DOMMouseScroll", scrollEvent);
