@@ -17,6 +17,7 @@ let bpm = 130;
 let isRankOpened = false;
 let isAdvanced = false;
 
+let overlayTime = 0;
 let shiftDown = false;
 
 let offsetRate = 1;
@@ -102,7 +103,10 @@ const settingApply = () => {
     }
   }
   inputSelector.getElementsByTagName('option')[Number(settings.input.keys)].selected = true;
-  volumeMaster.value = settings.sound.volume.master * 100;
+  for(let i = 0; i <= 1; i++) {
+    volumeMaster[i].value = settings.sound.volume.master * 100;
+    volumeMasterValue[i].textContent = settings.sound.volume.master * 100 + '%';
+  }
   volumeSong.value = settings.sound.volume.music * 100;
   volumeHit.value = settings.sound.volume.hitSound * 100;
   inputSensitive.value = settings.input.sens * 100;
@@ -120,7 +124,6 @@ const settingApply = () => {
   ignoreEditorCheck.checked = settings.editor.denySkin;
   ignoreTestCheck.checked = settings.editor.denyAtTest;
   comboAlertCheck.checked = settings.game.comboAlert;
-  volumeMasterValue.textContent = settings.sound.volume.master * 100 + '%';
   volumeSongValue.textContent = settings.sound.volume.music * 100 + '%';
   volumeHitValue.textContent = settings.sound.volume.hitSound * 100 + '%';
   volumeEftValue.textContent = settings.sound.volume.effect * 100 + '%';
@@ -714,7 +717,9 @@ const settingChanged = (e, v) => {
     settings.display.albumRes = Number(e.value);
   } else if(v == 'volumeMaster') {
     settings.sound.volume.master = e.value / 100;
-    volumeMasterValue.textContent = e.value + '%';
+    for(let i = 0; i <= 1; i++) {
+      volumeMasterValue[i].textContent = e.value + '%';
+    }
     Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   } else if(v == 'volumeSong') {
     settings.sound.volume.music = e.value / 100;
@@ -982,6 +987,14 @@ const offsetButtonUp = () => {
   offsetInput = false;
 };
 
+const overlayClose = s => {
+  if(s == 'volume') {
+    if(overlayTime + 1400 <= new Date().getTime()) {
+      volumeOverlay.classList.remove('overlayOpen');
+    }
+  }
+};
+
 const scrollEvent = e => {
   if(shiftDown) {
     e = window.event || e;
@@ -995,9 +1008,16 @@ const scrollEvent = e => {
         settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
       }
     }
-    volumeMaster.value = Math.round(settings.sound.volume.master * 100);
-    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
+    for(let i = 0; i <= 1; i++) {
+      volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+      volumeMasterValue[i].textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
+    }
     Howler.volume(settings.sound.volume.master);
+    volumeOverlay.classList.add('overlayOpen');
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
     fetch(`${api}/update/settings`, {
       method: 'PUT',
       credentials: 'include',

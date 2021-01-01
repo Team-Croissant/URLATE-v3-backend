@@ -702,6 +702,11 @@
             </div>
         </div>
     </div>
+    <div class="overlay" id="volumeOverlay">
+        <p class="optionSemiTitle"><%= __('volume') %></p>
+        <input type="range" min="0" max="100" value="50" id="volumeMaster" class="optionSlider" oninput="settingChanged(this, 'volumeMaster')">
+        <p class="optionValue" id="volumeMasterValue">50%</p>
+    </div>
     <div id="visualizer"><canvas id="renderer"></canvas></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>

@@ -2015,3 +2015,24 @@ p {
 #skinInfoPreview {
   height: 40vh;
 }
+
+.overlay {
+  transition-duration: 0.5s;
+  transform: translateY(10vh);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 10vh;
+  background-color: white;
+  filter: drop-shadow(0 0 10px rgba(67, 136, 201, 0.3));
+}
+
+.overlayOpen {
+  transform: translateY(0vh);
+}
