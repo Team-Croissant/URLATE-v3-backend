@@ -1006,10 +1006,14 @@ const scrollEvent = e => {
     if(delta == 1) { //UP
       if(settings.sound.volume.master <= 0.95) {
         settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 1;
       }
     } else { //DOWN
       if(settings.sound.volume.master >= 0.05) {
         settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 0;
       }
     }
     for(let i = 0; i <= 1; i++) {
