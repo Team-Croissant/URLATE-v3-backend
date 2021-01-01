@@ -720,6 +720,10 @@ const settingChanged = (e, v) => {
     for(let i = 0; i <= 1; i++) {
       volumeMasterValue[i].textContent = e.value + '%';
     }
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
     Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
   } else if(v == 'volumeSong') {
     settings.sound.volume.music = e.value / 100;
