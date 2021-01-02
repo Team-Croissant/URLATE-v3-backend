@@ -164,20 +164,22 @@ const drawBar = (x1, y1, x2, y2, width) => {
 };
 
 const animationLooper = () => {
-  let width = canvas.width;
-  let height = canvas.height;
-  let wWidth = window.innerWidth;
-  let wHeight = window.innerHeight;
-  ctx.clearRect(0, 0, width, height);
-  let barWidth = wHeight / bars;
-  analyser.getByteFrequencyData(dataArray);
-  for(let i = 0; i < bars; i++) {
-    let barHeight = dataArray[i] * wHeight / 550;
-    let y = barWidth * i;
-    let x_end = barHeight / 1.3;
-    drawBar(0, y, x_end, y, barWidth - (barWidth / 2));
-    y = wHeight - y;
-    drawBar(wWidth, y, wWidth - x_end, y, barWidth - (barWidth / 2));
+  if(display == 0) {
+    let width = canvas.width;
+    let height = canvas.height;
+    let wWidth = window.innerWidth;
+    let wHeight = window.innerHeight;
+    ctx.clearRect(0, 0, width, height);
+    let barWidth = wHeight / bars;
+    analyser.getByteFrequencyData(dataArray);
+    for(let i = 0; i < bars; i++) {
+      let barHeight = dataArray[i] * wHeight / 550;
+      let y = barWidth * i;
+      let x_end = barHeight / 1.3;
+      drawBar(0, y, x_end, y, barWidth - (barWidth / 2));
+      y = wHeight - y;
+      drawBar(wWidth, y, wWidth - x_end, y, barWidth - (barWidth / 2));
+    }
   }
   requestAnimationFrame(animationLooper);
 };
