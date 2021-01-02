@@ -897,14 +897,77 @@ const home = () => {
 const settingChanged = (e, v) => {
   if(v == 'volumeMaster') {
     settings.sound.volume.master = e.value / 100;
-    song.volume(settings.sound.volume.master * settings.sound.volume.music);
-    tick.volume(settings.sound.volume.master * settings.sound.volume.hitSound);
-    resultEffect.volume(settings.sound.volume.master * settings.sound.volume.effect);
+    volumeMasterValue.textContent = e.value + '%';
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
+    Howler.volume(settings.sound.volume.master);
+  }
+};
+
+const overlayClose = s => {
+  if(s == 'volume') {
+    if(overlayTime + 1400 <= new Date().getTime()) {
+      volumeOverlay.classList.remove('overlayOpen');
+    }
+  }
+};
+
+const globalScrollEvent = e => {
+  if(shiftDown) {
+    e = window.event || e;
+    let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    if(delta == 1) { //UP
+      if(settings.sound.volume.master <= 0.95) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 1;
+      }
+    } else { //DOWN
+      if(settings.sound.volume.master >= 0.05) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 0;
+      }
+    }
+    for(let i = 0; i <= 1; i++) {
+      volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+    }
+    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
+    Howler.volume(settings.sound.volume.master);
+    volumeOverlay.classList.add('overlayOpen');
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
+    fetch(`${api}/update/settings`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify({
+        settings: settings
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result != 'success') {
+        alert(`Error occured.\n${data.error}`);
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+    });
   }
 };
 
 document.onkeydown = e => {
   e = e || window.event;
+  if(e.key == 'Shift') {
+    shiftDown = true;
+  }
   if(!isResultShowing) {
     if(e.key == 'Escape') {
       e.preventDefault();
@@ -938,6 +1001,8 @@ document.onkeyup = e => {
   e = e || window.event;
   if(e.key == 'Escape') {
     return;
+  } else if(e.key == 'Shift') {
+    shiftDown = false;
   }
   mouseClicked = false;
   mouseClickedMs = Date.now();
@@ -946,3 +1011,6 @@ document.onkeyup = e => {
 window.addEventListener("resize", () => {
   initialize(false);
 });
+
+window.addEventListener("mousewheel", globalScrollEvent);
+window.addEventListener("DOMMouseScroll", globalScrollEvent);

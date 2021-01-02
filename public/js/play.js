@@ -36,6 +36,8 @@ let comboAlert = false, comboCount = 50;
 let comboAlertMs = 0, comboAlertCount = 0;
 let hide = {}, frameCounter;
 let load = 0;
+let overlayTime = 0;
+let shiftDown = false;
 let tick = new Howl({
   src: [`/sounds/tick.mp3`],
   autoplay: false,
@@ -169,7 +171,8 @@ const initialize = (isFirstCalled) => {
           }, 1000);
         },
         onload: () => {
-          song.volume(settings.sound.volume.master * settings.sound.volume.music);
+          Howler.volume(settings.sound.volume.master);
+          song.volume(settings.sound.volume.music);
           if(load) {
             doneLoading();
           }
@@ -188,8 +191,8 @@ const initialize = (isFirstCalled) => {
 };
 
 const settingApply = () => {
-  tick.volume(settings.sound.volume.master * settings.sound.volume.hitSound);
-  resultEffect.volume(settings.sound.volume.master * settings.sound.volume.effect);
+  tick.volume(settings.sound.volume.hitSound);
+  resultEffect.volume(settings.sound.volume.effect);
   sync = parseInt(settings.sound.offset);
   document.getElementById('loadingContainer').style.opacity = 1;
   sens = settings.input.sens;
@@ -204,7 +207,10 @@ const settingApply = () => {
   hide.bad = settings.game.applyJudge.Bad;
   hide.miss = settings.game.applyJudge.Miss;
   frameCounter = settings.game.counter;
-  volumeMaster.value = settings.sound.volume.master * 100;
+  for(let i = 0; i <= 1; i++) {
+    volumeMaster[i].value = settings.sound.volume.master * 100;
+  }
+  volumeMasterValue.textContent = settings.sound.volume.master * 100 + '%';
 };
 
 const eraseCnt = () => {
@@ -885,14 +891,78 @@ const home = () => {
 const settingChanged = (e, v) => {
   if(v == 'volumeMaster') {
     settings.sound.volume.master = e.value / 100;
-    song.volume(settings.sound.volume.master * settings.sound.volume.music);
-    tick.volume(settings.sound.volume.master * settings.sound.volume.hitSound);
-    resultEffect.volume(settings.sound.volume.master * settings.sound.volume.effect);
+    volumeMasterValue.textContent = e.value + '%';
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
+    Howler.volume(settings.sound.volume.master);
   }
 };
 
+const overlayClose = s => {
+  if(s == 'volume') {
+    if(overlayTime + 1400 <= new Date().getTime()) {
+      volumeOverlay.classList.remove('overlayOpen');
+    }
+  }
+};
+
+const globalScrollEvent = e => {
+  if(shiftDown) {
+    e = window.event || e;
+    let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    if(delta == 1) { //UP
+      if(settings.sound.volume.master <= 0.95) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 1;
+      }
+    } else { //DOWN
+      if(settings.sound.volume.master >= 0.05) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 0;
+      }
+    }
+    for(let i = 0; i <= 1; i++) {
+      volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+    }
+    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
+    Howler.volume(settings.sound.volume.master);
+    volumeOverlay.classList.add('overlayOpen');
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
+    fetch(`${api}/update/settings`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify({
+        settings: settings
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result != 'success') {
+        alert(`Error occured.\n${data.error}`);
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+    });
+  }
+};
+
+
 document.onkeydown = e => {
   e = e || window.event;
+  if(e.key == 'Shift') {
+    shiftDown = true;
+  }
   if(!isResultShowing) {
     if(e.key == 'Escape') {
       e.preventDefault();
@@ -926,6 +996,8 @@ document.onkeyup = e => {
   e = e || window.event;
   if(e.key == 'Escape') {
     return;
+  } else if(e.key == 'Shift') {
+    shiftDown = false;
   }
   mouseClicked = false;
   mouseClickedMs = Date.now();
@@ -934,3 +1006,6 @@ document.onkeyup = e => {
 window.addEventListener("resize", () => {
   initialize(false);
 });
+
+window.addEventListener("mousewheel", globalScrollEvent);
+window.addEventListener("DOMMouseScroll", globalScrollEvent);

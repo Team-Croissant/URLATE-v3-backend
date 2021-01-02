@@ -652,3 +652,31 @@ body {
   background: #363636;
   cursor: pointer;
 }
+
+.overlay {
+  transition-duration: 0.5s;
+  transform: translateY(10vh);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 8vh;
+  background-color: white;
+  filter: drop-shadow(0 0 10px rgba(67, 136, 201, 0.3));
+}
+
+.overlayOpen {
+  transform: translateY(0vh);
+}
+
+.optionValue {
+  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-weight: 400;
+  color: #404040;
+  font-size: 2vh;
+}
