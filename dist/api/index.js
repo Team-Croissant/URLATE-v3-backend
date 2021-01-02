@@ -227,7 +227,7 @@ app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, vo
     });
 }); });
 app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var results, _a, settings, nickname, advanced, skins;
+    var results, _a, settings, nickname, advanced, skins, DLCs;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -235,15 +235,15 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
                     return [2 /*return*/];
                 }
-                return [4 /*yield*/, knex('users').select('nickname', 'settings', 'skins', 'advanced').where('userid', req.session.userid)];
+                return [4 /*yield*/, knex('users').select('nickname', 'settings', 'skins', 'advanced', 'DLCs').where('userid', req.session.userid)];
             case 1:
                 results = _b.sent();
                 if (!results.length) {
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
                     return [2 /*return*/];
                 }
-                _a = results[0], settings = _a.settings, nickname = _a.nickname, advanced = _a.advanced, skins = _a.skins;
-                res.status(200).json({ result: "success", settings: settings, nickname: nickname, userid: req.session.userid, advanced: advanced, skins: skins });
+                _a = results[0], settings = _a.settings, nickname = _a.nickname, advanced = _a.advanced, skins = _a.skins, DLCs = _a.DLCs;
+                res.status(200).json({ result: "success", settings: settings, nickname: nickname, userid: req.session.userid, advanced: advanced, skins: skins, DLCs: DLCs });
                 return [2 /*return*/];
         }
     });

@@ -183,14 +183,14 @@ app.get("/getUser", async (req, res) => {
     return;
   }
 
-  const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced').where('userid', req.session.userid)
+  const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced', 'DLCs').where('userid', req.session.userid)
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
     return;
   }
   
-  const { settings, nickname, advanced, skins } = results[0];
-  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid, advanced, skins});
+  const { settings, nickname, advanced, skins, DLCs } = results[0];
+  res.status(200).json({result: "success", settings, nickname, userid: req.session.userid, advanced, skins, DLCs});
 });
 
 app.get("/getTracks", async (req, res) => {
