@@ -480,19 +480,7 @@ app.get("/getStore/DLC/:locale", function (req, res) { return __awaiter(void 0, 
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
                     return [2 /*return*/];
                 }
-                if (req.params.locale == "ko") {
-                    results[0].name = results[0].name[0];
-                    results[0].price = results[0].price[0];
-                }
-                else if (req.params.locale == "ja") {
-                    results[0].name = results[0].name[1];
-                    results[0].price = results[0].price[1];
-                }
-                else if (req.params.locale == "en") {
-                    results[0].name = results[0].name[2];
-                    results[0].price = results[0].price[2];
-                }
-                res.status(200).json({ result: "success", data: results[0].data });
+                res.status(200).json({ result: "success", data: results });
                 return [2 /*return*/];
         }
     });
