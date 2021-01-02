@@ -408,6 +408,11 @@
       <span class="clickable" id="split" onclick="changeSplit();">1/2</span>
     </div>
   </div>
+  <div class="overlay" id="volumeOverlay">
+    <p class="optionSemiTitle"><%= __('volume') %></p>
+    <input type="range" min="0" max="100" value="50" id="volumeMaster" class="optionSlider" oninput="settingChanged(this, 'volumeMaster')">
+    <p class="optionValue" id="volumeMasterValue">50%</p>
+  </div>
   <script>
     const zoomAlert = "<%= __('zoomAlert') %>";
     const syncAlert = "<%- __('syncAlert') %>";

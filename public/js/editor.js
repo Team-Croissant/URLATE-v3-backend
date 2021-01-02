@@ -15,6 +15,7 @@ let zoom = 1;
 let timelineYLoc = 0, timelineElementNum = 0, timelineScrollCount = 6;
 let selectedValue = 0; //same with spec value
 let isSettingsOpened = false;
+let overlayTime = 0;
 let mouseDown = false, ctrlDown = false, shiftDown = false;
 let userName = '';
 let patternSeek = -1;
@@ -55,6 +56,8 @@ const sortAsTiming = (a, b) => {
 
 const settingApply = () => {
   Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+  volumeMaster.value = settings.sound.volume.master * 100;
+  volumeMasterValue.textContent = settings.sound.volume.master * 100 + '%';
   sync = settings.sound.offset;
   denyCursor = settings.editor.denyCursor;
   denySkin = settings.editor.denySkin;
@@ -1790,8 +1793,77 @@ const textBlurred = () => {
   isTextboxFocused = false;
 };
 
+const settingChanged = (e, v) => {
+  if(v == 'volumeMaster') {
+    settings.sound.volume.master = e.value / 100;
+    volumeMasterValue.textContent = e.value + '%';
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
+    Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+  }
+};
+
+const overlayClose = s => {
+  if(s == 'volume') {
+    if(overlayTime + 1400 <= new Date().getTime()) {
+      volumeOverlay.classList.remove('overlayOpen');
+    }
+  }
+};
+
+const globalScrollEvent = e => {
+  if(shiftDown) {
+    e = window.event || e;
+    let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    if(delta == 1) { //UP
+      if(settings.sound.volume.master <= 0.95) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 1;
+      }
+    } else { //DOWN
+      if(settings.sound.volume.master >= 0.05) {
+        settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+      } else {
+        settings.sound.volume.master = 0;
+      }
+    }
+    volumeMaster.value = Math.round(settings.sound.volume.master * 100);
+    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
+    Howler.volume(settings.sound.volume.master);
+    volumeOverlay.classList.add('overlayOpen');
+    overlayTime = new Date().getTime();
+    setTimeout(() => {
+      overlayClose('volume');
+    }, 1500);
+    fetch(`${api}/update/settings`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify({
+        settings: settings
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result != 'success') {
+        alert(`Error occured.\n${data.error}`);
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+    });
+  }
+};
+
 document.getElementById('timelineContainer').addEventListener("mousewheel", scrollEvent);
 document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollEvent);
+window.addEventListener("mousewheel", globalScrollEvent);
+window.addEventListener("DOMMouseScroll", globalScrollEvent);
 window.addEventListener("resize", initialize);
 
 window.addEventListener("beforeunload", e => {
