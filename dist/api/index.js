@@ -176,7 +176,8 @@ app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0,
                                         advancedDate: new Date(),
                                         advancedUpdatedDate: new Date(),
                                         settings: JSON.stringify(settingsConfig),
-                                        skins: ["Default"]
+                                        skins: ["Default"],
+                                        DLCs: []
                                     })];
                                 case 1:
                                     _a.sent();

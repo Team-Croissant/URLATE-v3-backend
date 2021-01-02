@@ -16,6 +16,7 @@ let speeds = [1,2,3];
 let bpm = 130;
 let isRankOpened = false;
 let isAdvanced = false;
+let skins = [], DLCs = [];
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -232,7 +233,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
               elements[i].style.display = 'flex';
             }
           }
-          let skins = JSON.parse(data.skins);
+          skins = JSON.parse(data.skins);
+          DLCs = JSON.parse(data.DLCs);
           for(let i = 0; i < skins.length; i++) {
             let option = document.createElement('option');
             option.appendChild(document.createTextNode(skins[i]));
@@ -637,6 +639,55 @@ const displayClose = () => {
   display = 0;
 };
 
+const updateStore = () => {
+  let langCode = 0;
+  if(lang == 'ko') {
+    langCode = 0;
+  } else if(lang == 'ja') {
+    langCode = 1;
+  } else if(lang == 'en') {
+    langCode = 2;
+  }
+  fetch(`${api}/getStore/DLC/${lang}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    data = data.data;
+    document.getElementsByClassName('storeContentsContainer')[0].innerHTML = '';
+    let elements = '';
+    for(let i = 0; i < data.length / 2; i++) {
+      elements += '<div class="storeRowContainer">';
+      for(let j = 0; j < 2; j++) {
+        if(data[i * 2 + j]) {
+          elements += `<div class="storeSongsContainer">
+                        <div class="storeSongsLeft">
+                          <img class="storeSongsAlbum" src="${cdn}/dlc/${data[i * 2 + j].previewFile}.png">
+                        </div>
+                        <div class="storeSongsRight">
+                          <div class="storeSongsTop">
+                            <span class="storeName">${data[i * 2 + j].name}</span>
+                            <span class="storeSongArtist">${data[i * 2 + j].composer}</span>
+                          </div>
+                          <div class="storeSongsBottom">
+                            <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                          </div>
+                        </div>
+                      </div>`;
+        } else {
+          elements += `<div class="storeSongsContainer"></div>`;
+        }
+      }
+      elements += '</div>';
+    }
+    document.getElementsByClassName('storeContentsContainer')[0].innerHTML = elements;
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
+};
+
 const menuSelected = () => {
   if(selection == 0) {
     //play
@@ -660,6 +711,7 @@ const menuSelected = () => {
     //store
     document.getElementById("storeContainer").style.display = "block";
     document.getElementById("storeContainer").classList.add("fadeIn");
+    updateStore();
     display = 8;
   }
 };

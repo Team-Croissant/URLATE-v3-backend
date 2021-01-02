@@ -139,5 +139,6 @@
 	"DLC_info": "DLC info",
 	"add_to_bag": "Add to bag",
 	"Skin_info": "Skin info",
-	"sound_volume_tip": "You can quickly adjust the volume by using Shift + Scroll in the game."
+	"sound_volume_tip": "You can quickly adjust the volume by using Shift + Scroll in the game.",
+	"currency": "$"
 }
