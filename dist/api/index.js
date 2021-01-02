@@ -471,6 +471,34 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, 
         }
     });
 }); });
+app.get("/getStore/DLC/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, knex('storeDLC').select('name', 'previewFile', 'price', 'composer')];
+            case 1:
+                results = _a.sent();
+                if (!results.length) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
+                    return [2 /*return*/];
+                }
+                if (req.params.locale == "ko") {
+                    results[0].name = results[0].name[0];
+                    results[0].price = results[0].price[0];
+                }
+                else if (req.params.locale == "ja") {
+                    results[0].name = results[0].name[1];
+                    results[0].price = results[0].price[1];
+                }
+                else if (req.params.locale == "en") {
+                    results[0].name = results[0].name[2];
+                    results[0].price = results[0].price[2];
+                }
+                    res.status(200).json({ result: "success", data: results[0].data });
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;
