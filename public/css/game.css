@@ -499,7 +499,7 @@ p {
   height: 10vw;
   border-radius: 10px;
   background-color: #fff;
-  filter: drop-shadow(0 0 10px #33333333);
+  filter: drop-shadow(0 0 5px rgba(50, 50, 50, 0.2));
   margin-left: 1vw;
   margin-right: 1vw;
 }
