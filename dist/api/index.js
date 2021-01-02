@@ -176,9 +176,7 @@ app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0,
                                         advancedDate: new Date(),
                                         advancedUpdatedDate: new Date(),
                                         settings: JSON.stringify(settingsConfig),
-                                        skins: JSON.stringify({
-                                            "skins": ["Default"]
-                                        })
+                                        skins: ["Default"]
                                     })];
                                 case 1:
                                     _a.sent();
@@ -494,7 +492,7 @@ app.get("/getStore/DLC/:locale", function (req, res) { return __awaiter(void 0, 
                     results[0].name = results[0].name[2];
                     results[0].price = results[0].price[2];
                 }
-                    res.status(200).json({ result: "success", data: results[0].data });
+                res.status(200).json({ result: "success", data: results[0].data });
                 return [2 /*return*/];
         }
     });

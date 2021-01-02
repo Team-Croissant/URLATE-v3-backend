@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
               elements[i].style.display = 'flex';
             }
           }
-          let skins = JSON.parse(data.skins).skins;
+          let skins = JSON.parse(data.skins);
           for(let i = 0; i < skins.length; i++) {
             let option = document.createElement('option');
             option.appendChild(document.createTextNode(skins[i]));

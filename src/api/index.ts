@@ -141,9 +141,7 @@ app.post("/join", async (req, res) => {
         advancedDate: new Date(),
         advancedUpdatedDate: new Date(),
         settings: JSON.stringify(settingsConfig),
-        skins: JSON.stringify({
-          "skins": ["Default"]
-        })
+        skins: ["Default"]
       });
       delete req.session.tempName;
       req.session.save(() => {
