@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then((data) => {
         if(data.result == 'success') {
+          data = data.user;
           userName = data.nickname;
           userid = data.userid;
           settings = JSON.parse(data.settings);

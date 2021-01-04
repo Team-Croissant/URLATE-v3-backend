@@ -211,8 +211,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       })
       .then(res => res.json())
       .then((data) => {
-        console.log(data);
         if(data.result == 'success') {
+          data = data.user;
           settings = JSON.parse(data.settings);
           username = data.nickname;
           userid = data.userid;
@@ -532,6 +532,7 @@ const displayClose = () => {
     })
     .then(res => res.json())
     .then((data) => {
+      data = data.user;
       if(!data.advanced) {
         if(settings.sound.res == "192kbps" ||
         !settings.game.judgeSkin ||
