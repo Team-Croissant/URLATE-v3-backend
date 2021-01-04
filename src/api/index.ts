@@ -54,11 +54,11 @@ app.use(cookieParser());
 const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) => new OAuth2(ClientId, ClientSecret, RedirectionUrl);
 
 app.get('/', (req, res) => {
-  res.end('Welcome to MyRhy API!');
+  res.end('Welcome to URLATE API!');
 });
 
 app.post('/', (req, res) => {
-  res.end('Welcome to MyRhy API!');
+  res.end('Welcome to URLATE API!');
 });
 
 app.get('/getStatus', async (req, res) => {

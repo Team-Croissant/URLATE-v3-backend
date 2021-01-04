@@ -81,10 +81,10 @@ app.use(express.json());
 app.use(cookieParser());
 var getOAuthClient = function (ClientId, ClientSecret, RedirectionUrl) { return new OAuth2(ClientId, ClientSecret, RedirectionUrl); };
 app.get('/', function (req, res) {
-    res.end('Welcome to MyRhy API!');
+    res.end('Welcome to URLATE API!');
 });
 app.post('/', function (req, res) {
-    res.end('Welcome to MyRhy API!');
+    res.end('Welcome to URLATE API!');
 });
 app.get('/getStatus', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var hasToken, results;
