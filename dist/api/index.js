@@ -489,7 +489,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, 
         }
     });
 }); });
-app.get("/getStore/DLC/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/store/getDLC/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {

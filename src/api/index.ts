@@ -354,7 +354,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", async (req, res
   res.status(200).json({result: "success", results: results.slice(0, 100), rank: rank});
 });
 
-app.get("/getStore/DLC/:locale", async (req, res) => {
+app.get("/store/getDLC/:locale", async (req, res) => {
   const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));

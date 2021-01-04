@@ -689,7 +689,7 @@ const updateStore = () => {
   } else if(lang == 'en') {
     langCode = 2;
   }
-  fetch(`${api}/getStore/DLC/${lang}`, {
+  fetch(`${api}/store/getDLC/${lang}`, {
     method: 'GET',
     credentials: 'include'
   })
