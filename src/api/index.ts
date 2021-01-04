@@ -204,6 +204,16 @@ app.get("/getTracks", async (req, res) => {
   res.status(200).json({result: "success", tracks: results});
 });
 
+app.get("/getTrack/:name", async (req, res) => {
+  const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'original_name', 'type').where('name', req.params.name);
+  if (!results.length) {
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load track. It may be a problem with the DB.'));
+    return;
+  }
+  
+  res.status(200).json({result: "success", track: results});
+});
+
 app.get("/getTrackInfo/:name", async (req, res) => {
   const results = await knex('patternInfo').select('bpm', 'bullet_density', 'note_density', 'speed').where('name', req.params.name);
   if (!results.length) {
@@ -342,7 +352,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", async (req, res
 });
 
 app.get("/getStore/DLC/:locale", async (req, res) => {
-  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer');
+  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
     return;

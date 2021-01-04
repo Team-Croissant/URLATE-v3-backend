@@ -17,6 +17,7 @@ let bpm = 130;
 let isRankOpened = false;
 let isAdvanced = false;
 let skins = [], DLCs = [];
+let DLCdata = [];
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -369,8 +370,8 @@ const songSelected = n => {
     selectTitle.style.fontSize = '5vh';
   }
   selectArtist.textContent = tracks[n].producer;
-  selectAlbum.src = `https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png`;
-  selectBackground.style.backgroundImage = `url("https://cdn.rhyga.me/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png")`;
+  selectAlbum.src = `${cdn}/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png`;
+  selectBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[n].fileName} (Custom).png")`;
   setTimeout(() => {
     let underLimit = window.innerHeight * 0.08 * n + window.innerHeight * 0.09;
     underLimit = parseInt(underLimit);
@@ -635,8 +636,44 @@ const displayClose = () => {
       document.getElementById("storeContainer").classList.remove("fadeOut");
       document.getElementById("storeContainer").style.display = "none";
     }, 500);
+  } else if(display == 9) {
+    //DLC info
+    document.getElementById("storeDLCInfo").classList.remove("fadeIn");
+    document.getElementById("storeDLCInfo").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("storeDLCInfo").classList.remove("fadeOut");
+      document.getElementById("storeDLCInfo").style.display = "none";
+    }, 500);
   }
   display = 0;
+};
+
+const showDLCinfo = (n) => {
+  DLCInfoAlbum.src = document.getElementsByClassName('storeSongsAlbum')[n].src;
+  DLCinfoSongsContainer.innerHTML = '';
+  for(let i = 0; i < DLCdata[n].length; i++) {
+    fetch(`${api}/getTrack/${DLCdata[n][i]}`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(res => res.json())
+    .then((data) => {
+      data = data.track[0];
+      DLCinfoSongsContainer.innerHTML += `<div class="DLCinfoSongContainer">
+                      <img src="${cdn}/albums/${settings.display.albumRes}/${data.fileName} (Custom).png" class="DLCinfoSongAlbum">
+                      <div class="DLCinfoSongAbout">
+                          <span class="DLCinfoSongName">${(settings.general.detailLang == 'original') ? data.original_name : data.name}</span>
+                          <span class="DLCinfoSongProd">${data.producer}</span>
+                      </div>
+                  </div>`;
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+    });
+  }
+  document.getElementById("storeDLCInfo").style.display = "flex";
+  document.getElementById("storeDLCInfo").classList.add("fadeIn");
+  display = 9;
 };
 
 const updateStore = () => {
@@ -654,6 +691,7 @@ const updateStore = () => {
   })
   .then(res => res.json())
   .then((data) => {
+    DLCdata = [];
     data = data.data;
     document.getElementsByClassName('storeContentsContainer')[0].innerHTML = '';
     let elements = '';
@@ -661,7 +699,8 @@ const updateStore = () => {
       elements += '<div class="storeRowContainer">';
       for(let j = 0; j < 2; j++) {
         if(data[i * 2 + j]) {
-          elements += `<div class="storeSongsContainer">
+          DLCdata[i * 2 + j] = JSON.parse(data[i * 2 + j].songs);
+          elements += `<div class="storeSongsContainer" onclick="showDLCinfo(${i * 2 + j})">
                         <div class="storeSongsLeft">
                           <img class="storeSongsAlbum" src="${cdn}/dlc/${data[i * 2 + j].previewFile}.png">
                         </div>
