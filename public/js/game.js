@@ -644,6 +644,8 @@ const displayClose = () => {
       document.getElementById("storeDLCInfo").classList.remove("fadeOut");
       document.getElementById("storeDLCInfo").style.display = "none";
     }, 500);
+    display = 8;
+    return;
   }
   display = 0;
 };
