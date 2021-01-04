@@ -87,7 +87,7 @@ const settingApply = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetch(`${api}/getStatus`, {
+  fetch(`${api}/auth/getStatus`, {
     method: 'GET',
     credentials: 'include'
   })

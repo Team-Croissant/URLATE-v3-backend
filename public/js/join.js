@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-    fetch(`${api}/getStatus`, {
+    fetch(`${api}/auth/getStatus`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -49,7 +49,7 @@ const check = () => {
             document.getElementById('pw').classList.add("show");
         } else {
             document.getElementById('pw').classList.remove("show");
-            fetch(`${api}/join`, {
+            fetch(`${api}/auth/join`, {
               method: 'POST',
               credentials: 'include',
               body: JSON.stringify({

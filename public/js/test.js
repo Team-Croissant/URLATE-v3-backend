@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  fetch(`${api}/getStatus`, {
+  fetch(`${api}/auth/getStatus`, {
     method: 'GET',
     credentials: 'include'
   })

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-  fetch(`${api}/getStatus`, {
+  fetch(`${api}/auth/getStatus`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -36,7 +36,7 @@ const loginTrigger = () => {
 
 const signInCallback = (authResult) => {
   if (authResult['code']) {
-    fetch(`${api}/login`, {
+    fetch(`${api}/auth/login`, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify({

@@ -61,7 +61,7 @@ app.post('/', (req, res) => {
   res.end('Welcome to URLATE API!');
 });
 
-app.get('/getStatus', async (req, res) => {
+app.get('/auth/getStatus', async (req, res) => {
   const hasToken = req.session.accessToken && req.session.refreshToken;
   if (!hasToken) {
     res.status(200).json(createStatusResponse('Not logined'));
@@ -82,7 +82,7 @@ app.get('/getStatus', async (req, res) => {
   res.status(200).json(createStatusResponse('logined'));
 });
 
-app.post('/login', (req, res) => {
+app.post('/auth/login', (req, res) => {
   var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
   oauth2Client.getToken(req.body.code, (err, tokens) => {
     if (err) {
@@ -110,7 +110,7 @@ app.post('/login', (req, res) => {
   });
 });
 
-app.post("/join", async (req, res) => {
+app.post("/auth/join", async (req, res) => {
   const hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken
   if (!hasToken) {
     res.status(400).json(createErrorResponse('failed', 'Wrong Request', 'You need to login first.'));
@@ -141,8 +141,8 @@ app.post("/join", async (req, res) => {
         advancedDate: new Date(),
         advancedUpdatedDate: new Date(),
         settings: JSON.stringify(settingsConfig),
-        skins: ["Default"],
-        DLCs: []
+        skins: '["Default"]',
+        DLCs: '[]'
       });
       delete req.session.tempName;
       req.session.save(() => {
@@ -155,7 +155,7 @@ app.post("/join", async (req, res) => {
 });
 
 const passwordPattern = /^[0-9]{4,6}$/;
-app.post("/authorize", async (req, res) => {
+app.post("/auth/authorize", async (req, res) => {
   if (!passwordPattern.test(req.body.secondaryPassword)) {
     res.status(400).json(createErrorResponse('failed', 'Wrong Format', 'Wrong password format.'));
     return;
@@ -186,7 +186,7 @@ app.get("/getUser", async (req, res) => {
 
   const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced', 'DLCs').where('userid', req.session.userid)
   if (!results.length) {
-    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use auth/getStatus to check your status.'));
     return;
   }
   

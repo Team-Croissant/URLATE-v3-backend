@@ -192,7 +192,7 @@ const sortAsName = (a, b) => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  fetch(`${api}/getStatus`, {
+  fetch(`${api}/auth/getStatus`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       })
       .then(res => res.json())
       .then((data) => {
+        console.log(data);
         if(data.result == 'success') {
           settings = JSON.parse(data.settings);
           username = data.nickname;

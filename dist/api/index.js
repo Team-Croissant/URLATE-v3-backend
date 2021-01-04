@@ -86,7 +86,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     res.end('Welcome to URLATE API!');
 });
-app.get('/getStatus', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/auth/getStatus', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var hasToken, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -112,7 +112,7 @@ app.get('/getStatus', function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-app.post('/login', function (req, res) {
+app.post('/auth/login', function (req, res) {
     var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
     oauth2Client.getToken(req.body.code, function (err, tokens) {
         if (err) {
@@ -139,7 +139,7 @@ app.post('/login', function (req, res) {
         });
     });
 });
-app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/auth/join", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var hasToken, namePattern, passPattern, isValidated, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -176,8 +176,8 @@ app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0,
                                         advancedDate: new Date(),
                                         advancedUpdatedDate: new Date(),
                                         settings: JSON.stringify(settingsConfig),
-                                        skins: ["Default"],
-                                        DLCs: []
+                                        skins: '["Default"]',
+                                        DLCs: '[]'
                                     })];
                                 case 1:
                                     _a.sent();
@@ -198,7 +198,7 @@ app.post("/join", function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); });
 var passwordPattern = /^[0-9]{4,6}$/;
-app.post("/authorize", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/auth/authorize", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -240,7 +240,7 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
             case 1:
                 results = _b.sent();
                 if (!results.length) {
-                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use /getStatus to check your status.'));
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load settings. Use auth/getStatus to check your status.'));
                     return [2 /*return*/];
                 }
                 _a = results[0], settings = _a.settings, nickname = _a.nickname, advanced = _a.advanced, skins = _a.skins, DLCs = _a.DLCs;
