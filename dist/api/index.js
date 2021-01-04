@@ -322,8 +322,12 @@ app.post('/xsolla/getToken', function (req, res) {
             .then(function (res) { return res.json(); })
             .then(function (json) {
             res.status(200).json({ result: "success", token: json.token });
+        }).catch(function (error) {
+            res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load token. It may be a problem with xsolla.'));
         });
+        return;
     }
+    res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong access', 'You accessed the wrong address.'));
 });
 app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, result;
@@ -440,7 +444,7 @@ app.get("/getSkin/:skinName", function (req, res) { return __awaiter(void 0, voi
         }
     });
 }); });
-app.get("/getProfile/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/getTeamProfile/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -501,7 +505,7 @@ app.get("/getStore/DLC/:locale", function (req, res) { return __awaiter(void 0, 
         }
     });
 }); });
-app.get('/logout', function (req, res) {
+app.get('/auth/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;
     delete req.session.refreshToken;

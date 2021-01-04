@@ -802,7 +802,7 @@ const langChanged = e => {
 };
 
 const logout = e => {
-  window.location.href = `${api}/logout?redirect=true`;
+  window.location.href = `${api}/auth/logout?redirect=true`;
 };
 
 const settingChanged = (e, v) => {
@@ -866,7 +866,7 @@ const settingChanged = (e, v) => {
 };
 
 const showProfile = name => {
-  fetch(`${api}/getProfile/${name}`, {
+  fetch(`${api}/getTeamProfile/${name}`, {
     method: 'GET',
     credentials: 'include'
   })

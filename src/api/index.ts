@@ -249,8 +249,12 @@ app.post('/xsolla/getToken', (req, res) => {
     .then(res => res.json())
     .then(json => {
       res.status(200).json({result: "success", token: json.token});
+    }).catch((error) => {
+      res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load token. It may be a problem with xsolla.'));
     });
+    return;
   }
+  res.status(400).json(createErrorResponse('failed', 'Wrong access', 'You accessed the wrong address.'));
 });
 
 app.post('/xsolla/webhook', async (req, res) => {
@@ -326,7 +330,7 @@ app.get("/getSkin/:skinName", async (req, res) => {
   res.status(200).json({result: "success", data: results[0].data});
 });
 
-app.get("/getProfile/:name", async (req, res) => {
+app.get("/getTeamProfile/:name", async (req, res) => {
   const results = await knex('teamProfiles').select('data').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load data.'));
@@ -359,7 +363,7 @@ app.get("/getStore/DLC/:locale", async (req, res) => {
   res.status(200).json({result: "success", data: results});
 });
 
-app.get('/logout', (req, res) => {
+app.get('/auth/logout', (req, res) => {
   delete req.session.authorized;
   delete req.session.accessToken;
   delete req.session.refreshToken;
