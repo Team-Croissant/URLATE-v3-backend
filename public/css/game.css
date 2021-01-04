@@ -327,6 +327,7 @@ p {
   align-items: center;
   justify-content: center;
   transition-duration: 1s;
+  background: aliceblue;
   background-image: url('/images/backgrounds/main.png');
 }
 
