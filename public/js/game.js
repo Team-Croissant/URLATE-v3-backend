@@ -663,7 +663,7 @@ const displayClose = () => {
   display = 0;
 };
 
-const showDLCinfo = n => {
+const showDLCinfo = async n => {
   DLCInfoDLCName.textContent = document.getElementsByClassName('storeName')[n].textContent;
   DLCinfoArtistName.textContent = document.getElementsByClassName('storeSongArtist')[n].textContent;
   DLCInfoAlbum.src = document.getElementsByClassName('storeSongsAlbum')[n].src;
@@ -676,16 +676,16 @@ const showDLCinfo = n => {
     DLCbasketButton.disabled = false;
     DLCbasketButton.textContent = addToBag;
   }
-  DLCinfoSongsContainer.innerHTML = '';
+  let elements = '';
   for(let i = 0; i < DLCdata[n].length; i++) {
-    fetch(`${api}/track/${DLCdata[n][i]}`, {
+    await fetch(`${api}/track/${DLCdata[n][i]}`, {
       method: 'GET',
       credentials: 'include'
     })
     .then(res => res.json())
     .then((data) => {
       data = data.track[0];
-      DLCinfoSongsContainer.innerHTML += `<div class="DLCinfoSongContainer">
+      elements += `<div class="DLCinfoSongContainer">
                       <img src="${cdn}/albums/50/${data.fileName} (Custom).png" class="DLCinfoSongAlbum">
                       <div class="DLCinfoSongAbout">
                           <span class="DLCinfoSongName">${(settings.general.detailLang == 'original') ? data.originalName : data.name}</span>
@@ -697,6 +697,7 @@ const showDLCinfo = n => {
       console.error(`Error occured.\n${error}`);
     });
   }
+  DLCinfoSongsContainer.innerHTML = elements;
   document.getElementById("storeDLCInfo").style.display = "flex";
   document.getElementById("storeDLCInfo").classList.add("fadeIn");
   display = 9;
@@ -740,7 +741,6 @@ const updateCart = async cart => {
       console.error(`Error occured.\n${error}`);
     });
   }
-  storeBasketsContainer.innerHTML = '';
   let elements = '';
   for(let i = 0; i < cart.length; i++) {
     elements += `<div class="storeColumnContainer">
@@ -786,7 +786,6 @@ const updateStore = () => {
   .then((data) => {
     DLCdata = [];
     data = data.data;
-    document.getElementsByClassName('storeContentsContainer')[0].innerHTML = '';
     let elements = '';
     for(let i = 0; i < data.length / 2; i++) {
       elements += '<div class="storeRowContainer">';
@@ -826,7 +825,6 @@ const updateStore = () => {
   .then((data) => {
     skinData = [];
     data = data.data;
-    document.getElementsByClassName('storeContentsContainer')[1].innerHTML = '';
     let elements = '';
     for(let i = 0; i < data.length / 2; i++) {
       elements += '<div class="storeRowContainer">';
