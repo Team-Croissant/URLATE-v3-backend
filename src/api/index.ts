@@ -355,7 +355,7 @@ app.get("/records/:track/:difficulty/:order/:sort/:nickname", async (req, res) =
   res.status(200).json({result: "success", results: results.slice(0, 100), rank: rank});
 });
 
-app.get("/store/DLCs/:locale", async (req, res) => {
+app.get("/store/DLCs", async (req, res) => {
   const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
@@ -364,13 +364,31 @@ app.get("/store/DLCs/:locale", async (req, res) => {
   res.status(200).json({result: "success", data: results});
 });
 
-app.get("/store/skins/:locale", async (req, res) => {
+app.get("/store/DLC/:name", async (req, res) => {
+  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs').where('name', req.params.name);
+  if (!results.length) {
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
+    return;
+  }
+  res.status(200).json({result: "success", data: results[0]});
+});
+
+app.get("/store/skins", async (req, res) => {
   const results = await knex('storeSkin').select('name', 'previewFile', 'price');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load Skin data.'));
     return;
   }
   res.status(200).json({result: "success", data: results});
+});
+
+app.get("/store/skin/:name", async (req, res) => {
+  const results = await knex('storeSkin').select('name', 'previewFile', 'price').where('name', req.params.name);
+  if (!results.length) {
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load Skin data.'));
+    return;
+  }
+  res.status(200).json({result: "success", data: results[0]});
 });
 
 app.post("/store/bag", async (req, res) => {
