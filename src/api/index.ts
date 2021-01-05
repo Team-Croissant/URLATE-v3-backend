@@ -393,23 +393,23 @@ app.post("/store/bag", async (req, res) => {
 });
 
 app.get("/store/bag", async (req, res) => {
-    if(req.session.bag) {
-      res.status(200).json({result: "success", bag: req.session.bag});
-    } else {
-      res.status(200).json({result: "success", bag: []});
-    }
+  if(req.session.bag) {
+    res.status(200).json({result: "success", bag: req.session.bag});
+  } else {
+    res.status(200).json({result: "success", bag: []});
+  }
 });
 
 app.delete("/store/bag", async (req, res) => {
-    if(req.session.bag) {
-      if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
-        req.session.bag.splice(req.session.bag.indexOf(req.body), 1);
-      } else {
-        res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item ${req.body.type} doesn't exist.`));
-      }
+  if(req.session.bag) {
+    if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
+      req.session.bag.splice(req.session.bag.indexOf(req.body), 1);
     } else {
-      res.status(400).json(createErrorResponse('failed', 'Bag empty', 'Bag is empty.'));
+      res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item ${req.body.type} doesn't exist.`));
     }
+  } else {
+    res.status(400).json(createErrorResponse('failed', 'Bag empty', 'Bag is empty.'));
+  }
 });
 
 app.get('/auth/logout', (req, res) => {
