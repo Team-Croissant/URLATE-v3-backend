@@ -686,7 +686,7 @@ const showDLCinfo = n => {
     .then((data) => {
       data = data.track[0];
       DLCinfoSongsContainer.innerHTML += `<div class="DLCinfoSongContainer">
-                      <img src="${cdn}/albums/${settings.display.albumRes}/${data.fileName} (Custom).png" class="DLCinfoSongAlbum">
+                      <img src="${cdn}/albums/50/${data.fileName} (Custom).png" class="DLCinfoSongAlbum">
                       <div class="DLCinfoSongAbout">
                           <span class="DLCinfoSongName">${(settings.general.detailLang == 'original') ? data.originalName : data.name}</span>
                           <span class="DLCinfoSongProd">${data.producer}</span>
@@ -719,7 +719,57 @@ const showSkinInfo = n => {
   display = 10;
 };
 
+const updateCart = async cart => {
+  if(!cart) {
+    await fetch(`${api}/store/bag`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result == 'success') {
+        cart = data.bag;
+      } else {
+        alert(`Error occured.\n${data.error}`);
+      }
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+    });
+  }
+  storeBasketsContainer.innerHTML = '';
+  let elements = '';
+  for(let i = 0; i < cart.length; i++) {
+    elements += `<div class="storeColumnContainer">
+                    <div class="storeBasketsContainer">
+                        <div class="storeBasketsLeft">`;
+    if(cart[i].type == 'DLC') {
+      elements += `<img class="storeBasketsAlbum" src="images/mainImage.png">
+                    <div class="storeBasketsInfo">
+                        <span class="storeName">DLC Name</span>
+                        <span class="storeSongArtist">Composer Name</span>
+                    </div>`;
+    } else if(cart[i].type == 'Skin') {
+      elements += `<img src="/images/skin.png" class="storeBasketsSkin">
+                    <div class="storeBasketsInfo">
+                        <span class="storeName">DLC Name</span>
+                    </div>`;
+    }
+    elements += `</div>
+                  <div class="storeBasketsRight">
+                      <span class="storePrice"></span>
+                  </div>
+              </div>
+          </div>`;
+  }
+  storeBasketsContainer.innerHTML = elements;
+};
+
 const updateStore = () => {
+  updateCart();
   let langCode = 0;
   if(lang == 'ko') {
     langCode = 0;
@@ -824,7 +874,7 @@ const addToCart = s => {
     if(data.result != 'success') {
       alert(`Error occured.\n${data.error}`);
     } else {
-      console.log(data.bag);
+      updateCart(data.bag);
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
