@@ -444,24 +444,24 @@ const numberWithCommas = x => {
 
 const gameLoaded = () => {
   document.getElementById("menuContainer").style.display = "flex";
-  document.getElementById("loadingContainer").classList.toggle("fadeOut");
+  document.getElementById("loadingContainer").classList.add("fadeOut");
   localStorage.clear('songName');
   localStorage.clear('difficulty');
   setTimeout(() => {
     document.getElementById("loadingContainer").style.display = "none";
-    document.getElementById("menuContainer").classList.toggle("loaded");
+    document.getElementById("menuContainer").classList.add("loaded");
     document.getElementById("urlateText").style.fontSize = "1.5vh";
     document.getElementById("urlateText").style.marginBottom = "0";
     document.getElementById("songName").style.fontSize = "3vh";
-    document.getElementById("header").classList.toggle("fadeIn");
+    document.getElementById("header").classList.add("fadeIn");
     setTimeout(() => {
       let backIcons = document.getElementsByClassName("backIcon");
       for (let i = 0; i < backIcons.length; i++) {
         backIcons[i].classList.add('show');
       }
-      document.getElementById("songName").classList.toggle("fadeIn");
+      document.getElementById("songName").classList.add("fadeIn");
     });
-    document.getElementById("footerLeft").classList.toggle("fadeIn");
+    document.getElementById("footerLeft").classList.add("fadeIn");
   }, 500);
   analyser = Howler.ctx.createAnalyser();
   Howler.masterGain.connect(analyser);
@@ -508,7 +508,7 @@ const menuRight = () => {
 const infoScreen = () => {
   display = 4;
   document.getElementById("infoContainer").style.display = "block";
-  document.getElementById("infoContainer").classList.toggle("fadeIn");
+  document.getElementById("infoContainer").classList.add("fadeIn");
 };
 
 const optionScreen = () => {
@@ -521,7 +521,7 @@ const displayClose = () => {
   if(display == 1) {
     //PLAY
     document.getElementById("selectContainer").classList.remove("fadeIn");
-    document.getElementById("selectContainer").classList.toggle("fadeOut");
+      document.getElementById("selectContainer").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("selectContainer").classList.remove("fadeOut");
       document.getElementById("selectContainer").style.display = "none";
@@ -573,7 +573,7 @@ const displayClose = () => {
       console.error(`Error occured.\n${error}`);
     });
     document.getElementById("optionContainer").classList.remove("fadeIn");
-    document.getElementById("optionContainer").classList.toggle("fadeOut");
+      document.getElementById("optionContainer").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("optionContainer").classList.remove("fadeOut");
       document.getElementById("optionContainer").style.display = "none";
@@ -581,7 +581,7 @@ const displayClose = () => {
   } else if(display == 3) {
     //ADVANCED
     document.getElementById("advancedContainer").classList.remove("fadeIn");
-    document.getElementById("advancedContainer").classList.toggle("fadeOut");
+      document.getElementById("advancedContainer").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("advancedContainer").classList.remove("fadeOut");
       document.getElementById("advancedContainer").style.display = "none";
@@ -589,7 +589,7 @@ const displayClose = () => {
   } else if(display == 4) {
     //Info
     document.getElementById("infoContainer").classList.remove("fadeIn");
-    document.getElementById("infoContainer").classList.toggle("fadeOut");
+      document.getElementById("infoContainer").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("infoContainer").classList.remove("fadeOut");
       document.getElementById("infoContainer").style.display = "none";
@@ -597,7 +597,7 @@ const displayClose = () => {
   } else if(display == 5) {
     //Info Profile
     document.getElementById("infoProfileContainer").classList.remove("fadeIn");
-    document.getElementById("infoProfileContainer").classList.toggle("fadeOut");
+      document.getElementById("infoProfileContainer").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("infoProfileContainer").classList.remove("fadeOut");
       document.getElementById("infoProfileContainer").style.display = "none";
@@ -616,7 +616,7 @@ const displayClose = () => {
     //OPTION Offset
     offsetButton.textContent = offset + 'ms';
     document.getElementById("offsetContiner").classList.remove("fadeIn");
-    document.getElementById("offsetContiner").classList.toggle("fadeOut");
+      document.getElementById("offsetContiner").classList.add("fadeOut");
     if(songSelection != -1) {
       songs[songSelection].play();
       songs[songSelection].fade(0, 1, 500);
@@ -635,7 +635,7 @@ const displayClose = () => {
   } else if(display == 8) {
     //STORE
     document.getElementById("storeContainer").classList.remove("fadeIn");
-    document.getElementById("storeContainer").classList.toggle("fadeOut");
+      document.getElementById("storeContainer").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("storeContainer").classList.remove("fadeOut");
       document.getElementById("storeContainer").style.display = "none";
@@ -643,7 +643,7 @@ const displayClose = () => {
   } else if(display == 9) {
     //DLC info
     document.getElementById("storeDLCInfo").classList.remove("fadeIn");
-    document.getElementById("storeDLCInfo").classList.toggle("fadeOut");
+      document.getElementById("storeDLCInfo").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("storeDLCInfo").classList.remove("fadeOut");
       document.getElementById("storeDLCInfo").style.display = "none";
@@ -653,7 +653,7 @@ const displayClose = () => {
   } else if(display == 10) {
     //Skin info
     document.getElementById("storeSkinInfo").classList.remove("fadeIn");
-    document.getElementById("storeSkinInfo").classList.toggle("fadeOut");
+      document.getElementById("storeSkinInfo").classList.add("fadeOut");
     setTimeout(() => {
       document.getElementById("storeSkinInfo").classList.remove("fadeOut");
       document.getElementById("storeSkinInfo").style.display = "none";
@@ -1126,7 +1126,7 @@ const showProfile = name => {
     infoProfileBottom.innerHTML = innerHTML;
     display = 5;
     document.getElementById("infoProfileContainer").style.display = "flex";
-    document.getElementById("infoProfileContainer").classList.toggle("fadeIn");
+    document.getElementById("infoProfileContainer").classList.add("fadeIn");
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
@@ -1189,7 +1189,7 @@ const showRank = () => {
 const offsetSetting = () => {
   display = 7;
   document.getElementById("offsetContiner").style.display = "flex";
-  document.getElementById("offsetContiner").classList.toggle("fadeIn");
+  document.getElementById("offsetContiner").classList.add("fadeIn");
   if(songSelection != -1) {
     songs[songSelection].fade(1, 0, 500);
     setTimeout(() => {
