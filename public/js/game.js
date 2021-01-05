@@ -758,23 +758,56 @@ const updateCart = async cart => {
                     <div class="storeBasketsContainer">
                         <div class="storeBasketsLeft">`;
     if(cart[i].type == 'DLC') {
-      elements += `<img class="storeBasketsAlbum" src="images/mainImage.png">
-                    <div class="storeBasketsInfo">
-                        <span class="storeName">DLC Name</span>
-                        <span class="storeSongArtist">Composer Name</span>
-                    </div>`;
+      await fetch(`${api}/store/DLC/${cart[i].item}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if(data.result == 'success') {
+          data = data.data;
+          elements += `<img class="storeBasketsAlbum" src="${cdn}/dlc/${data.previewFile}.png">
+                        <div class="storeBasketsInfo">
+                            <span class="storeName">${data.name}</span>
+                            <span class="storeSongArtist">${data.composer}</span>
+                        </div>`;
+        } else {
+          alert(`Error occured.\n${data.error}`);
+        }
+      }).catch((error) => {
+        alert(`Error occured.\n${error}`);
+        console.error(`Error occured.\n${error}`);
+      });
     } else if(cart[i].type == 'Skin') {
-      elements += `<img src="/images/skin.png" class="storeBasketsSkin">
-                    <div class="storeBasketsInfo">
-                        <span class="storeName">DLC Name</span>
-                    </div>`;
+      await fetch(`${api}/store/skin/${cart[i].item}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if(data.result == 'success') {
+          data = data.data;
+          elements += `<img src="${cdn}/skins/${data.previewFile}.png" class="storeBasketsSkin">
+                        <div class="storeBasketsInfo">
+                            <span class="storeName">${data.name}</span>
+                        </div>`;
+        } else {
+          alert(`Error occured.\n${data.error}`);
+        }
+      });
     }
     elements += `</div>
-                  <div class="storeBasketsRight">
-                      <span class="storePrice"></span>
-                  </div>
-              </div>
-          </div>`;
+                <div class="storeBasketsRight">
+                    <span class="storePrice"></span>
+                </div>
+            </div>
+        </div>`;
   }
   storeBasketsContainer.innerHTML = elements;
   if(cart.length == 0) {
@@ -792,7 +825,7 @@ const updateStore = () => {
   } else if(lang == 'en') {
     langCode = 2;
   }
-  fetch(`${api}/store/DLCs/${lang}`, {
+  fetch(`${api}/store/DLCs`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -831,7 +864,7 @@ const updateStore = () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  fetch(`${api}/store/skins/${lang}`, {
+  fetch(`${api}/store/skins`, {
     method: 'GET',
     credentials: 'include'
   })
