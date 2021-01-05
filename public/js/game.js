@@ -777,6 +777,9 @@ const updateCart = async cart => {
           </div>`;
   }
   storeBasketsContainer.innerHTML = elements;
+  if(cart.length == 0) {
+    storeBasketsContainer.innerHTML = `<div id="nothingHere"><span>${nothingHere.split('/')[0]}</span><span>${nothingHere.split('/')[1]}<strong>DLC</strong>${nothingHere.split('/')[2]}<strong>${nothingHere.split('/')[3]}</strong>${nothingHere.split('/')[4]}</span></div>`;
+  }
   updateStore();
 };
 

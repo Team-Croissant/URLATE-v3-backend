@@ -580,31 +580,33 @@
             </div>
             <div class="storeContentsContainer storeShow"></div>
             <div class="storeContentsContainer"></div>
-            <div class="storeContentsContainer" id="storeBasketsContainer">
-                <div class="storeColumnContainer">
-                    <div class="storeBasketsContainer">
-                        <div class="storeBasketsLeft">
-                            <img class="storeBasketsAlbum" src="images/mainImage.png">
-                            <div class="storeBasketsInfo">
-                                <span class="storeName">DLC Name</span>
-                                <span class="storeSongArtist">Composer Name</span>
+            <div class="storeContentsContainer">
+                <div id="storeBasketsContainer">
+                    <div class="storeColumnContainer">
+                        <div class="storeBasketsContainer">
+                            <div class="storeBasketsLeft">
+                                <img class="storeBasketsAlbum" src="images/mainImage.png">
+                                <div class="storeBasketsInfo">
+                                    <span class="storeName">DLC Name</span>
+                                    <span class="storeSongArtist">Composer Name</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="storeBasketsRight">
-                            <span class="storePrice"></span>
+                            <div class="storeBasketsRight">
+                                <span class="storePrice"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="storeColumnContainer">
-                    <div class="storeBasketsContainer">
-                        <div class="storeBasketsLeft">
-                            <img src="/images/skin.png" class="storeBasketsSkin">
-                            <div class="storeBasketsInfo">
-                                <span class="storeName">DLC Name</span>
+                    <div class="storeColumnContainer">
+                        <div class="storeBasketsContainer">
+                            <div class="storeBasketsLeft">
+                                <img src="/images/skin.png" class="storeBasketsSkin">
+                                <div class="storeBasketsInfo">
+                                    <span class="storeName">DLC Name</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="storeBasketsRight">
-                            <span class="storePrice"><%= __('purchased') %></span>
+                            <div class="storeBasketsRight">
+                                <span class="storePrice"><%= __('purchased') %></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -621,8 +623,8 @@
                     <div id="DLCinfoSongsContainer"></div>
                 </div>
                 <div id="DLCinfoAboutContainer">
-                    <span class="storeName" id="DLCInfoDLCName">DLC Name</span>
-                    <span class="storeSongArtist" id="DLCinfoArtistName">Composer Name</span>
+                    <span class="storeName" id="DLCInfoDLCName"></span>
+                    <span class="storeSongArtist" id="DLCinfoArtistName"></span>
                 </div>
                 <div id="DLCinfoButtonContainer">
                     <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('DLC')" id="DLCbasketButton"><%= __('add_to_bag') %></button>
@@ -634,7 +636,7 @@
             <div class="storeInfoContainer">
                 <div id="skinInfoTitleContainer">
                     <span class="storeInfoTitle"><%= __('Skin_info') %></span>
-                    <span id="SkinInfoSkinName">Normal</span>
+                    <span id="SkinInfoSkinName"></span>
                 </div>
                 <div id="skinInfoPreviewContainer">
                     <img src="" id="skinInfoPreview">
@@ -666,6 +668,7 @@
         const purchased = "<%= __('purchased') %>";
         const addToBag = "<%= __('add_to_bag') %>";
         const addedToBag = "<%= __('added_to_bag') %>";
+        const nothingHere = "<%= __('nothing_here') %>";
     </script>
     <script src="js/game.js"></script>
 </body>
