@@ -17,6 +17,7 @@ let bpm = 130;
 let isRankOpened = false;
 let isAdvanced = false;
 let skins = [], DLCs = [];
+let carts = new Set();
 let DLCdata = [];
 let skinData = [];
 
@@ -671,6 +672,10 @@ const showDLCinfo = async n => {
     DLCbasketButton.classList.add('storeButtonDisabled');
     DLCbasketButton.disabled = true;
     DLCbasketButton.textContent = purchased;
+  } else if(carts.has(DLCInfoDLCName.textContent)) {
+    DLCbasketButton.classList.add('storeButtonDisabled');
+    DLCbasketButton.disabled = true;
+    DLCbasketButton.textContent = addedToBag;
   } else {
     DLCbasketButton.classList.remove('storeButtonDisabled');
     DLCbasketButton.disabled = false;
@@ -710,6 +715,10 @@ const showSkinInfo = n => {
     skinBasketButton.classList.add('storeButtonDisabled');
     skinBasketButton.disabled = true;
     skinBasketButton.textContent = purchased;
+  } else if(carts.has(SkinInfoSkinName.textContent)) {
+    skinBasketButton.classList.add('storeButtonDisabled');
+    skinBasketButton.disabled = true;
+    skinBasketButton.textContent = addedToBag;
   } else {
     skinBasketButton.classList.remove('storeButtonDisabled');
     skinBasketButton.disabled = false;
@@ -742,7 +751,9 @@ const updateCart = async cart => {
     });
   }
   let elements = '';
+  carts = new Set();
   for(let i = 0; i < cart.length; i++) {
+    carts.add(cart[i].item);
     elements += `<div class="storeColumnContainer">
                     <div class="storeBasketsContainer">
                         <div class="storeBasketsLeft">`;
@@ -766,10 +777,10 @@ const updateCart = async cart => {
           </div>`;
   }
   storeBasketsContainer.innerHTML = elements;
+  updateStore();
 };
 
 const updateStore = () => {
-  updateCart();
   let langCode = 0;
   if(lang == 'ko') {
     langCode = 0;
@@ -802,7 +813,7 @@ const updateStore = () => {
                             <span class="storeSongArtist">${data[i * 2 + j].composer}</span>
                           </div>
                           <div class="storeSongsBottom">
-                            <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                            <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased : carts.has(data[i * 2 + j].name) ? addedToBag : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
                           </div>
                         </div>
                       </div>`;
@@ -839,7 +850,7 @@ const updateStore = () => {
                           <img src="${cdn}/skins/${data[i * 2 + j].previewFile}.png" class="storeSkin">
                         </div>
                         <div class="storeSkinPriceContainer">
-                          <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                          <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased : carts.has(data[i * 2 + j].name) ? addedToBag : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
                         </div>
                       </div>`;
         } else {
@@ -872,6 +883,15 @@ const addToCart = s => {
     if(data.result != 'success') {
       alert(`Error occured.\n${data.error}`);
     } else {
+      if(s == 'DLC') {
+        DLCbasketButton.classList.add('storeButtonDisabled');
+        DLCbasketButton.disabled = true;
+        DLCbasketButton.textContent = addedToBag;
+      } else if(s == 'Skin') {
+        skinBasketButton.classList.add('storeButtonDisabled');
+        skinBasketButton.disabled = true;
+        skinBasketButton.textContent = addedToBag;
+      }
       updateCart(data.bag);
     }
   }).catch((error) => {
@@ -903,7 +923,7 @@ const menuSelected = () => {
     //store
     document.getElementById("storeContainer").style.display = "block";
     document.getElementById("storeContainer").classList.add("fadeIn");
-    updateStore();
+    updateCart();
     display = 8;
   }
 };
