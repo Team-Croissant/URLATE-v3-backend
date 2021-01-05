@@ -142,5 +142,6 @@
 	"sound_volume_tip": "You can quickly adjust the volume by using Shift + Scroll in the game.",
 	"currency": "$",
 	"added_to_bag": "Added to bag",
-	"nothing_here": "Nothing here,/how about checking out the / or /skins/?"
+	"nothing_here": "Nothing here,/how about checking out the / or /skins/?",
+	"loading": "loading"
 }

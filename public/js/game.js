@@ -20,6 +20,7 @@ let skins = [], DLCs = [];
 let carts = new Set();
 let DLCdata = [];
 let skinData = [];
+let loading = false;
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -514,154 +515,168 @@ const infoScreen = () => {
 const optionScreen = () => {
   display = 2;
   document.getElementById("optionContainer").style.display = "block";
-  document.getElementById("optionContainer").classList.toggle("fadeIn");
+  document.getElementById("optionContainer").classList.add("fadeIn");
 };
 
 const displayClose = () => {
-  if(display == 1) {
-    //PLAY
-    document.getElementById("selectContainer").classList.remove("fadeIn");
+  if(!loading) {
+    if(display == 1) {
+      //PLAY
+      document.getElementById("selectContainer").classList.remove("fadeIn");
       document.getElementById("selectContainer").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("selectContainer").classList.remove("fadeOut");
-      document.getElementById("selectContainer").style.display = "none";
-    }, 500);
-  } else if(display == 2) {
-    //OPTION
-    fetch(`${api}/user`, {
-      method: 'GET',
-      credentials: 'include'
-    })
-    .then(res => res.json())
-    .then((data) => {
-      data = data.user;
-      if(!data.advanced) {
-        if(settings.sound.res == "192kbps" ||
-        !settings.game.judgeSkin ||
-        JSON.stringify(settings.game.applyJudge) != `{"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false}`) {
-          settings.sound.res = "128kbps";
-          settings.game.judgeSkin = true;
-          settings.game.applyJudge = {
-            "Perfect": false,
-            "Great": false,
-            "Good": false,
-            "Bad": false,
-            "Miss": false,
-            "Bullet": false
-          };
+      setTimeout(() => {
+        document.getElementById("selectContainer").classList.remove("fadeOut");
+        document.getElementById("selectContainer").style.display = "none";
+      }, 500);
+    } else if(display == 2) {
+      //OPTION
+      fetch(`${api}/user`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+      .then(res => res.json())
+      .then((data) => {
+        data = data.user;
+        if(!data.advanced) {
+          if(settings.sound.res == "192kbps" ||
+          !settings.game.judgeSkin ||
+          JSON.stringify(settings.game.applyJudge) != `{"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false}`) {
+            settings.sound.res = "128kbps";
+            settings.game.judgeSkin = true;
+            settings.game.applyJudge = {
+              "Perfect": false,
+              "Great": false,
+              "Good": false,
+              "Bad": false,
+              "Miss": false,
+              "Bullet": false
+            };
+          }
         }
-      }
-    });
-    settings.sound.offset = offset;
-    fetch(`${api}/settings`, {
-      method: 'PUT',
-      credentials: 'include',
-      body: JSON.stringify({
-        settings: settings
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => res.json())
-    .then((data) => {
-      if(data.result != 'success') {
-        alert(`Error occured.\n${data.error}`);
-      }
-    }).catch((error) => {
-      alert(`Error occured.\n${error}`);
-      console.error(`Error occured.\n${error}`);
-    });
-    document.getElementById("optionContainer").classList.remove("fadeIn");
+      });
+      settings.sound.offset = offset;
+      fetch(`${api}/settings`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify({
+          settings: settings
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if(data.result != 'success') {
+          alert(`Error occured.\n${data.error}`);
+        }
+      }).catch((error) => {
+        alert(`Error occured.\n${error}`);
+        console.error(`Error occured.\n${error}`);
+      });
+      document.getElementById("optionContainer").classList.remove("fadeIn");
       document.getElementById("optionContainer").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("optionContainer").classList.remove("fadeOut");
-      document.getElementById("optionContainer").style.display = "none";
-    }, 500);
-  } else if(display == 3) {
-    //ADVANCED
-    document.getElementById("advancedContainer").classList.remove("fadeIn");
+      setTimeout(() => {
+        document.getElementById("optionContainer").classList.remove("fadeOut");
+        document.getElementById("optionContainer").style.display = "none";
+      }, 500);
+    } else if(display == 3) {
+      //ADVANCED
+      document.getElementById("advancedContainer").classList.remove("fadeIn");
       document.getElementById("advancedContainer").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("advancedContainer").classList.remove("fadeOut");
-      document.getElementById("advancedContainer").style.display = "none";
-    }, 500);
-  } else if(display == 4) {
-    //Info
-    document.getElementById("infoContainer").classList.remove("fadeIn");
+      setTimeout(() => {
+        document.getElementById("advancedContainer").classList.remove("fadeOut");
+        document.getElementById("advancedContainer").style.display = "none";
+      }, 500);
+    } else if(display == 4) {
+      //Info
+      document.getElementById("infoContainer").classList.remove("fadeIn");
       document.getElementById("infoContainer").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("infoContainer").classList.remove("fadeOut");
-      document.getElementById("infoContainer").style.display = "none";
-    }, 500);
-  } else if(display == 5) {
-    //Info Profile
-    document.getElementById("infoProfileContainer").classList.remove("fadeIn");
+      setTimeout(() => {
+        document.getElementById("infoContainer").classList.remove("fadeOut");
+        document.getElementById("infoContainer").style.display = "none";
+      }, 500);
+    } else if(display == 5) {
+      //Info Profile
+      document.getElementById("infoProfileContainer").classList.remove("fadeIn");
       document.getElementById("infoProfileContainer").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("infoProfileContainer").classList.remove("fadeOut");
-      document.getElementById("infoProfileContainer").style.display = "none";
-    }, 500);
-    display = 4;
-    return;
-  } else if(display == 6) {
-    //PLAY Rank
-    document.getElementById("selectRankContainer").style.opacity = "0";
-    document.getElementById("selectRankContainer").style.pointerEvents = "none";
-    document.getElementById("selectRankInnerContainer").classList.remove("visible");
-    display = 1;
-    isRankOpened = false;
-    return;
-  } else if(display == 7) {
-    //OPTION Offset
-    offsetButton.textContent = offset + 'ms';
-    document.getElementById("offsetContiner").classList.remove("fadeIn");
+      setTimeout(() => {
+        document.getElementById("infoProfileContainer").classList.remove("fadeOut");
+        document.getElementById("infoProfileContainer").style.display = "none";
+      }, 500);
+      display = 4;
+      return;
+    } else if(display == 6) {
+      //PLAY Rank
+      document.getElementById("selectRankContainer").style.opacity = "0";
+      document.getElementById("selectRankContainer").style.pointerEvents = "none";
+      document.getElementById("selectRankInnerContainer").classList.remove("visible");
+      display = 1;
+      isRankOpened = false;
+      return;
+    } else if(display == 7) {
+      //OPTION Offset
+      offsetButton.textContent = offset + 'ms';
+      document.getElementById("offsetContiner").classList.remove("fadeIn");
       document.getElementById("offsetContiner").classList.add("fadeOut");
-    if(songSelection != -1) {
-      songs[songSelection].play();
-      songs[songSelection].fade(0, 1, 500);
-    } else {
-      themeSong.play();
-      themeSong.fade(0, 1, 500);
-    }
-    offsetSong.fade(1, 0, 500);
-    setTimeout(() => {
-      document.getElementById("offsetContiner").classList.remove("fadeOut");
-      document.getElementById("offsetContiner").style.display = "none";
-      offsetSong.stop();
-    }, 500);
-    display = 2;
-    return;
-  } else if(display == 8) {
-    //STORE
-    document.getElementById("storeContainer").classList.remove("fadeIn");
+      if(songSelection != -1) {
+        songs[songSelection].play();
+        songs[songSelection].fade(0, 1, 500);
+      } else {
+        themeSong.play();
+        themeSong.fade(0, 1, 500);
+      }
+      offsetSong.fade(1, 0, 500);
+      setTimeout(() => {
+        document.getElementById("offsetContiner").classList.remove("fadeOut");
+        document.getElementById("offsetContiner").style.display = "none";
+        offsetSong.stop();
+      }, 500);
+      display = 2;
+      return;
+    } else if(display == 8) {
+      //STORE
+      document.getElementById("storeContainer").classList.remove("fadeIn");
       document.getElementById("storeContainer").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("storeContainer").classList.remove("fadeOut");
-      document.getElementById("storeContainer").style.display = "none";
-    }, 500);
-  } else if(display == 9) {
-    //DLC info
-    document.getElementById("storeDLCInfo").classList.remove("fadeIn");
+      setTimeout(() => {
+        document.getElementById("storeContainer").classList.remove("fadeOut");
+        document.getElementById("storeContainer").style.display = "none";
+      }, 500);
+    } else if(display == 9) {
+      //DLC info
+      document.getElementById("storeDLCInfo").classList.remove("fadeIn");
       document.getElementById("storeDLCInfo").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("storeDLCInfo").classList.remove("fadeOut");
-      document.getElementById("storeDLCInfo").style.display = "none";
-    }, 500);
-    display = 8;
-    return;
-  } else if(display == 10) {
-    //Skin info
-    document.getElementById("storeSkinInfo").classList.remove("fadeIn");
+      setTimeout(() => {
+        document.getElementById("storeDLCInfo").classList.remove("fadeOut");
+        document.getElementById("storeDLCInfo").style.display = "none";
+      }, 500);
+      display = 8;
+      return;
+    } else if(display == 10) {
+      //Skin info
+      document.getElementById("storeSkinInfo").classList.remove("fadeIn");
       document.getElementById("storeSkinInfo").classList.add("fadeOut");
-    setTimeout(() => {
-      document.getElementById("storeSkinInfo").classList.remove("fadeOut");
-      document.getElementById("storeSkinInfo").style.display = "none";
-    }, 500);
-    display = 8;
-    return;
+      setTimeout(() => {
+        document.getElementById("storeSkinInfo").classList.remove("fadeOut");
+        document.getElementById("storeSkinInfo").style.display = "none";
+      }, 500);
+      display = 8;
+      return;
+    }
+    display = 0;
   }
-  display = 0;
+};
+
+const loadingShow = () => {
+  loading = true;
+  overlayLoadingContainer.style.pointerEvents = "all";
+  overlayLoadingContainer.style.opacity = "1";
+};
+
+const loadingHide = () => {
+  loading = false;
+  overlayLoadingContainer.style.pointerEvents = "none";
+  overlayLoadingContainer.style.opacity = "0";
 };
 
 const showDLCinfo = async n => {
@@ -730,6 +745,7 @@ const showSkinInfo = n => {
 };
 
 const updateCart = async cart => {
+  loadingShow();
   let langCode = 0;
   if(lang == 'ko') {
     langCode = 0;
@@ -871,6 +887,7 @@ const updateStore = () => {
       elements += '</div>';
     }
     document.getElementsByClassName('storeContentsContainer')[0].innerHTML = elements;
+    loadingHide();
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
@@ -976,8 +993,8 @@ const menuSelected = () => {
 };
 
 const getAdvanced = () => {
-  advancedPurchasing.style.pointerEvents = "all";
-  advancedPurchasing.style.opacity = "1";
+  purchasingContainer.style.pointerEvents = "all";
+  purchasingContainer.style.opacity = "1";
   fetch(`${api}/xsolla/token`, {
     method: 'POST',
     credentials: 'include',
