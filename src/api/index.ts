@@ -194,7 +194,7 @@ app.get("/getUser", async (req, res) => {
 });
 
 app.get("/getTracks", async (req, res) => {
-  const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'original_name', 'type')
+  const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'originalName', 'type')
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load tracks. It may be a problem with the DB.'));
     return;
@@ -204,7 +204,7 @@ app.get("/getTracks", async (req, res) => {
 });
 
 app.get("/getTrack/:name", async (req, res) => {
-  const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'original_name', 'type').where('name', req.params.name);
+  const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'originalName', 'type').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load track. It may be a problem with the DB.'));
     return;

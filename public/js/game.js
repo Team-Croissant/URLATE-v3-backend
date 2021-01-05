@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
                 songList += `<div class="songSelectionContainer${tracks[i].type == 1 && !isAdvanced ? ' advancedSelection' : tracks[i].type == 2 ? ' dlcSelection' : ''}" onclick="songSelected(${i})">
                                 <div class="songSelectionInfo">
-                                    <span class="songSelectionTitle">${(settings.general.detailLang == 'original') ? tracks[i].original_name : tracks[i].name}</span>
+                                    <span class="songSelectionTitle">${(settings.general.detailLang == 'original') ? tracks[i].originalName : tracks[i].name}</span>
                                     <span class="songSelectionArtist">${tracks[i].producer}</span>
                                 </div>
                                 <div class="songSelectionRank">
@@ -346,7 +346,7 @@ const songSelected = n => {
     return;
   }
   if(!(songSelection == -1 && tracks[n].name == "URLATE Theme")) {
-    songNameText.textContent = (settings.general.detailLang == 'original') ? tracks[n].original_name : tracks[n].name;
+    songNameText.textContent = (settings.general.detailLang == 'original') ? tracks[n].originalName : tracks[n].name;
     songs[n].volume(1);
     if(songSelection != -1) {
       let i = songSelection;
@@ -365,7 +365,7 @@ const songSelected = n => {
     document.getElementsByClassName('songSelected')[0].classList.remove('songSelected');
   }
   document.getElementsByClassName('songSelectionContainer')[n].classList.add('songSelected');
-  selectTitle.textContent = (settings.general.detailLang == 'original') ? tracks[n].original_name : tracks[n].name;
+  selectTitle.textContent = (settings.general.detailLang == 'original') ? tracks[n].originalName : tracks[n].name;
   if(selectTitle.offsetWidth > window.innerWidth / 4) {
     selectTitle.style.fontSize = '4vh';
   } else {
@@ -688,7 +688,7 @@ const showDLCinfo = n => {
       DLCinfoSongsContainer.innerHTML += `<div class="DLCinfoSongContainer">
                       <img src="${cdn}/albums/${settings.display.albumRes}/${data.fileName} (Custom).png" class="DLCinfoSongAlbum">
                       <div class="DLCinfoSongAbout">
-                          <span class="DLCinfoSongName">${(settings.general.detailLang == 'original') ? data.original_name : data.name}</span>
+                          <span class="DLCinfoSongName">${(settings.general.detailLang == 'original') ? data.originalName : data.name}</span>
                           <span class="DLCinfoSongProd">${data.producer}</span>
                       </div>
                   </div>`;
