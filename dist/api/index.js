@@ -107,7 +107,7 @@ app.get('/auth/getStatus', function (req, res) { return __awaiter(void 0, void 0
                     res.status(200).json(api_response_1.createStatusResponse('Not authorized'));
                     return [2 /*return*/];
                 }
-                res.status(200).json(api_response_1.createStatusResponse('logined'));
+                res.status(200).json(api_response_1.createStatusResponse('Logined'));
                 return [2 /*return*/];
         }
     });
@@ -521,6 +521,20 @@ app.get("/store/getSkins/:locale", function (req, res) { return __awaiter(void 0
         }
     });
 }); });
+/*app.post("/store/addToCart", async (req, res) => {
+  if(req.body.type == 'DLC') {
+    if(req.session.cartDLC) {
+      req.session.cartDLC
+    } else {
+
+    }
+  } else if(req.body.type == 'Skin') {
+    
+  } else {
+    res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item type ${req.body.type} doesn't exist.`));
+  }
+  res.status(200).json(createSuccessResponse('success'));
+});*/
 app.get('/auth/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

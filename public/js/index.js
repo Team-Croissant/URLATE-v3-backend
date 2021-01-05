@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   })
   .then(res => res.json())
   .then((data) => {
-    if(data.status == "logined") {
+    if(data.status == "Logined") {
       window.location.href = `${projectUrl}/game`;
     } else if(data.status == "Not authorized") {
       window.location.href = `${projectUrl}/authorize`;

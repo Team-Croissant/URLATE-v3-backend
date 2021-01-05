@@ -79,7 +79,7 @@ app.get('/auth/getStatus', async (req, res) => {
     return;
   }
 
-  res.status(200).json(createStatusResponse('logined'));
+  res.status(200).json(createStatusResponse('Logined'));
 });
 
 app.post('/auth/login', (req, res) => {
@@ -371,6 +371,21 @@ app.get("/store/getSkins/:locale", async (req, res) => {
   }
   res.status(200).json({result: "success", data: results});
 });
+
+/*app.post("/store/addToCart", async (req, res) => {
+  if(req.body.type == 'DLC') {
+    if(req.session.cartDLC) {
+      req.session.cartDLC 
+    } else {
+
+    }
+  } else if(req.body.type == 'Skin') {
+    
+  } else {
+    res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item type ${req.body.type} doesn't exist.`));
+  }
+  res.status(200).json(createSuccessResponse('success'));
+});*/
 
 app.get('/auth/logout', (req, res) => {
   delete req.session.authorized;
