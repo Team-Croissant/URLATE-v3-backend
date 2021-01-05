@@ -652,8 +652,19 @@ const displayClose = () => {
   display = 0;
 };
 
-const showDLCinfo = (n) => {
+const showDLCinfo = n => {
+  DLCinfoDLCName.textContent = document.getElementsByClassName('storeName')[n].textContent;
+  DLCinfoArtistName.textContent = document.getElementsByClassName('storeSongArtist')[n].textContent;
   DLCInfoAlbum.src = document.getElementsByClassName('storeSongsAlbum')[n].src;
+  if(DLCs.indexOf(DLCinfoDLCName.textContent) != -1) {
+    DLCbasketButton.classList.add('storeButtonDisabled');
+    DLCbasketButton.disabled = true;
+    DLCbasketButton.textContent = purchased;
+  } else {
+    DLCbasketButton.classList.remove('storeButtonDisabled');
+    DLCbasketButton.disabled = false;
+    DLCbasketButton.textContent = addToBag;
+  }
   DLCinfoSongsContainer.innerHTML = '';
   for(let i = 0; i < DLCdata[n].length; i++) {
     fetch(`${api}/getTrack/${DLCdata[n][i]}`, {
