@@ -552,7 +552,7 @@ const displayClose = () => {
       }
     });
     settings.sound.offset = offset;
-    fetch(`${api}/update/settings`, {
+    fetch(`${api}/settings`, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify({
@@ -1199,7 +1199,7 @@ const scrollEvent = e => {
     setTimeout(() => {
       overlayClose('volume');
     }, 1500);
-    fetch(`${api}/update/settings`, {
+    fetch(`${api}/settings`, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify({

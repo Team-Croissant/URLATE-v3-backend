@@ -859,7 +859,7 @@ const songPlayPause = () => {
 };
 
 const resume = () => {
-  fetch(`${api}/update/settings`, {
+  fetch(`${api}/settings`, {
     method: 'PUT',
     credentials: 'include',
     body: JSON.stringify({
@@ -942,7 +942,7 @@ const globalScrollEvent = e => {
     setTimeout(() => {
       overlayClose('volume');
     }, 1500);
-    fetch(`${api}/update/settings`, {
+    fetch(`${api}/settings`, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify({

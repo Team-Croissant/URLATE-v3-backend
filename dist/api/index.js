@@ -390,7 +390,7 @@ app.post('/xsolla/webhook', function (req, res) { return __awaiter(void 0, void 
         }
     });
 }); });
-app.put('/update/settings', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.put('/settings', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var settings, advanced, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {

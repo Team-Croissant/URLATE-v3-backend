@@ -297,7 +297,7 @@ app.post('/xsolla/webhook', async (req, res) => {
   res.end();
 });
 
-app.put('/update/settings', async (req, res) => {
+app.put('/settings', async (req, res) => {
   if(!req.session.userid) {
     res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
     return;
