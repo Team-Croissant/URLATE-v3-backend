@@ -730,6 +730,14 @@ const showSkinInfo = n => {
 };
 
 const updateCart = async cart => {
+  let langCode = 0;
+  if(lang == 'ko') {
+    langCode = 0;
+  } else if(lang == 'ja') {
+    langCode = 1;
+  } else if(lang == 'en') {
+    langCode = 2;
+  }
   if(!cart) {
     await fetch(`${api}/store/bag`, {
       method: 'GET',
@@ -773,7 +781,10 @@ const updateCart = async cart => {
                         <div class="storeBasketsInfo">
                             <span class="storeName">${data.name}</span>
                             <span class="storeSongArtist">${data.composer}</span>
-                        </div>`;
+                        </div>
+                      </div>
+                      <div class="storeBasketsRight">
+                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>`;
         } else {
           alert(`Error occured.\n${data.error}`);
         }
@@ -796,16 +807,16 @@ const updateCart = async cart => {
           elements += `<img src="${cdn}/skins/${data.previewFile}.png" class="storeBasketsSkin">
                         <div class="storeBasketsInfo">
                             <span class="storeName">${data.name}</span>
-                        </div>`;
+                        </div>
+                      </div>
+                      <div class="storeBasketsRight">
+                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>`;
         } else {
           alert(`Error occured.\n${data.error}`);
         }
       });
     }
     elements += `</div>
-                <div class="storeBasketsRight">
-                    <span class="storePrice"></span>
-                </div>
             </div>
         </div>`;
   }
