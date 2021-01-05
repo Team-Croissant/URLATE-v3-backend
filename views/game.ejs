@@ -618,22 +618,14 @@
                 </div>
                 <div id="DLCinfoContentsContainer">
                     <img src="" id="DLCInfoAlbum">
-                    <div id="DLCinfoSongsContainer">
-                        <div class="DLCinfoSongContainer">
-                            <img src="" class="DLCinfoSongAlbum">
-                            <div class="DLCinfoSongAbout">
-                                <span class="DLCinfoSongName">SongName</span>
-                                <span class="DLCinfoSongProd">Producer</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="DLCinfoSongsContainer"></div>
                 </div>
                 <div id="DLCinfoAboutContainer">
-                    <span class="storeName" id="DLCinfoDLCName">DLC Name</span>
+                    <span class="storeName" id="DLCInfoDLCName">DLC Name</span>
                     <span class="storeSongArtist" id="DLCinfoArtistName">Composer Name</span>
                 </div>
                 <div id="DLCinfoButtonContainer">
-                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('dlc')" id="DLCbasketButton"><%= __('add_to_bag') %></button>
+                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('DLC')" id="DLCbasketButton"><%= __('add_to_bag') %></button>
                 </div>
             </div>
         </div>
@@ -642,13 +634,13 @@
             <div class="storeInfoContainer">
                 <div id="skinInfoTitleContainer">
                     <span class="storeInfoTitle"><%= __('Skin_info') %></span>
-                    <span id="skinInfoSkinName">Normal</span>
+                    <span id="SkinInfoSkinName">Normal</span>
                 </div>
                 <div id="skinInfoPreviewContainer">
                     <img src="" id="skinInfoPreview">
                 </div>
                 <div class="storeInfoButtonContainer">
-                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('skin')" id="skinBasketButton"><%= __('add_to_bag') %></button>
+                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('Skin')" id="skinBasketButton"><%= __('add_to_bag') %></button>
                 </div>
             </div>
         </div>
@@ -673,6 +665,7 @@
         const currency = "<%= __('currency') %>";
         const purchased = "<%= __('purchased') %>";
         const addToBag = "<%= __('add_to_bag') %>";
+        const addedToBag = "<%= __('added_to_bag') %>";
     </script>
     <script src="js/game.js"></script>
 </body>

@@ -664,10 +664,10 @@ const displayClose = () => {
 };
 
 const showDLCinfo = n => {
-  DLCinfoDLCName.textContent = document.getElementsByClassName('storeName')[n].textContent;
+  DLCInfoDLCName.textContent = document.getElementsByClassName('storeName')[n].textContent;
   DLCinfoArtistName.textContent = document.getElementsByClassName('storeSongArtist')[n].textContent;
   DLCInfoAlbum.src = document.getElementsByClassName('storeSongsAlbum')[n].src;
-  if(DLCs.indexOf(DLCinfoDLCName.textContent) != -1) {
+  if(DLCs.indexOf(DLCInfoDLCName.textContent) != -1) {
     DLCbasketButton.classList.add('storeButtonDisabled');
     DLCbasketButton.disabled = true;
     DLCbasketButton.textContent = purchased;
@@ -703,9 +703,9 @@ const showDLCinfo = n => {
 };
 
 const showSkinInfo = n => {
-  skinInfoSkinName.textContent = document.getElementsByClassName('storeSkinName')[n].textContent;
+  SkinInfoSkinName.textContent = document.getElementsByClassName('storeSkinName')[n].textContent;
   skinInfoPreview.src = `${cdn}/skins/preview/${skinData[n]}.png`;
-  if(skins.indexOf(skinInfoSkinName.textContent) != -1) {
+  if(skins.indexOf(SkinInfoSkinName.textContent) != -1) {
     skinBasketButton.classList.add('storeButtonDisabled');
     skinBasketButton.disabled = true;
     skinBasketButton.textContent = purchased;
@@ -801,6 +801,31 @@ const updateStore = () => {
       elements += '</div>';
     }
     document.getElementsByClassName('storeContentsContainer')[1].innerHTML = elements;
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
+};
+
+const addToCart = s => {
+  fetch(`${api}/store/addToCart`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({
+      type: s,
+      item: document.getElementById(`${s}Info${s}Name`).textContent
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result != 'success') {
+      alert(`Error occured.\n${data.error}`);
+    } else {
+      console.log(data.cart);
+    }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);

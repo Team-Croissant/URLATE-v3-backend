@@ -521,20 +521,24 @@ app.get("/store/skins/:locale", function (req, res) { return __awaiter(void 0, v
         }
     });
 }); });
-/*app.post("/store/addToCart", async (req, res) => {
-  if(req.body.type == 'DLC') {
-    if(req.session.cartDLC) {
-      req.session.cartDLC
-    } else {
-
-    }
-  } else if(req.body.type == 'Skin') {
-    
-  } else {
-    res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item type ${req.body.type} doesn't exist.`));
-  }
-  res.status(200).json(createSuccessResponse('success'));
-});*/
+app.post("/store/addToCart", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        if (req.body.type == 'DLC' || req.body.type == 'Skin') {
+            if (req.session.cart) {
+                req.session.cart.push(req.body);
+            }
+            else {
+                req.session.cart = [req.body];
+            }
+        }
+        else {
+            res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong request', "Item type " + req.body.type + " doesn't exist."));
+            return [2 /*return*/];
+        }
+        res.status(200).json({ result: "success", cart: req.session.cart });
+        return [2 /*return*/];
+    });
+}); });
 app.get('/auth/logout', function (req, res) {
     delete req.session.authorized;
     delete req.session.accessToken;

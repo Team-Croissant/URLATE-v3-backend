@@ -140,5 +140,6 @@
 	"add_to_bag": "Add to bag",
 	"Skin_info": "Skin info",
 	"sound_volume_tip": "You can quickly adjust the volume by using Shift + Scroll in the game.",
-	"currency": "$"
+	"currency": "$",
+	"added_to_bag": "Added to bag"
 }
