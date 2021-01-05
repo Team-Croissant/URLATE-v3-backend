@@ -372,18 +372,43 @@ app.get("/store/skins/:locale", async (req, res) => {
   res.status(200).json({result: "success", data: results});
 });
 
-app.post("/store/addToCart", async (req, res) => {
+app.post("/store/bag", async (req, res) => {
   if(req.body.type == 'DLC' || req.body.type == 'Skin') {
-    if(req.session.cart) {
-      req.session.cart.push(req.body);
+    if(req.session.bag) {
+      if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
+        res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item ${req.body.type} already exist.`));
+        return;
+      } else {
+        req.session.bag.push(req.body);
+      }
     } else {
-      req.session.cart = [req.body];
+      req.session.bag = [req.body];
     }
   } else {
     res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item type ${req.body.type} doesn't exist.`));
     return;
   }
-  res.status(200).json({result: "success", cart: req.session.cart});
+  res.status(200).json({result: "success", bag: req.session.bag});
+});
+
+app.get("/store/bag", async (req, res) => {
+    if(req.session.bag) {
+      res.status(200).json({result: "success", bag: req.session.bag});
+    } else {
+      res.status(200).json({result: "success", bag: []});
+    }
+});
+
+app.delete("/store/bag", async (req, res) => {
+    if(req.session.bag) {
+      if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
+        req.session.bag.splice(req.session.bag.indexOf(req.body), 1);
+      } else {
+        res.status(400).json(createErrorResponse('failed', 'Wrong request', `Item ${req.body.type} doesn't exist.`));
+      }
+    } else {
+      res.status(400).json(createErrorResponse('failed', 'Bag empty', 'Bag is empty.'));
+    }
 });
 
 app.get('/auth/logout', (req, res) => {
@@ -394,6 +419,7 @@ app.get('/auth/logout', (req, res) => {
   delete req.session.tempName;
   delete req.session.email;
   delete req.session.vaildChecked;
+  delete req.session.bag;
   req.session.save(() => {
     if(req.query.redirect == 'true') {
       res.redirect("https://rhyga.me");

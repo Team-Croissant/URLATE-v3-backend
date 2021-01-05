@@ -808,7 +808,7 @@ const updateStore = () => {
 };
 
 const addToCart = s => {
-  fetch(`${api}/store/addToCart`, {
+  fetch(`${api}/store/bag`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify({
@@ -824,7 +824,7 @@ const addToCart = s => {
     if(data.result != 'success') {
       alert(`Error occured.\n${data.error}`);
     } else {
-      console.log(data.cart);
+      console.log(data.bag);
     }
   }).catch((error) => {
     alert(`Error occured.\n${error}`);

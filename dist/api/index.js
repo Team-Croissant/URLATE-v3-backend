@@ -521,21 +521,54 @@ app.get("/store/skins/:locale", function (req, res) { return __awaiter(void 0, v
         }
     });
 }); });
-app.post("/store/addToCart", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/store/bag", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         if (req.body.type == 'DLC' || req.body.type == 'Skin') {
-            if (req.session.cart) {
-                req.session.cart.push(req.body);
+            if (req.session.bag) {
+                if (req.session.bag.map(function (i) { return JSON.stringify(i); }).indexOf(JSON.stringify(req.body)) != -1) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong request', "Item " + req.body.type + " already exist."));
+                    return [2 /*return*/];
+                }
+                else {
+                    req.session.bag.push(req.body);
+                }
             }
             else {
-                req.session.cart = [req.body];
+                req.session.bag = [req.body];
             }
         }
         else {
             res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong request', "Item type " + req.body.type + " doesn't exist."));
             return [2 /*return*/];
         }
-        res.status(200).json({ result: "success", cart: req.session.cart });
+        res.status(200).json({ result: "success", bag: req.session.bag });
+        return [2 /*return*/];
+    });
+}); });
+app.get("/store/bag", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        if (req.session.bag) {
+            res.status(200).json({ result: "success", bag: req.session.bag });
+        }
+        else {
+            res.status(200).json({ result: "success", bag: [] });
+        }
+        return [2 /*return*/];
+    });
+}); });
+app.delete("/store/bag", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        if (req.session.bag) {
+            if (req.session.bag.map(function (i) { return JSON.stringify(i); }).indexOf(JSON.stringify(req.body)) != -1) {
+                req.session.bag.splice(req.session.bag.indexOf(req.body), 1);
+            }
+            else {
+                res.status(400).json(api_response_1.createErrorResponse('failed', 'Wrong request', "Item " + req.body.type + " doesn't exist."));
+            }
+        }
+        else {
+            res.status(400).json(api_response_1.createErrorResponse('failed', 'Bag empty', 'Bag is empty.'));
+        }
         return [2 /*return*/];
     });
 }); });
@@ -547,6 +580,7 @@ app.get('/auth/logout', function (req, res) {
     delete req.session.tempName;
     delete req.session.email;
     delete req.session.vaildChecked;
+    delete req.session.bag;
     req.session.save(function () {
         if (req.query.redirect == 'true') {
             res.redirect("https://rhyga.me");
