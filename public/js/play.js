@@ -51,7 +51,7 @@ let resultEffect = new Howl({
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = 'none';
-  fetch(`${api}/getTracks`, {
+  fetch(`${api}/tracks`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  fetch(`${api}/auth/getStatus`, {
+  fetch(`${api}/auth/status`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if(data.status == "Not logined") {
       window.location.href = url;
     } else {
-      fetch(`${api}/getUser`, {
+      fetch(`${api}/user`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -143,7 +143,7 @@ const initialize = (isFirstCalled) => {
           break;
         }
       }
-      fetch(`${api}/getSkin/${settings.game.skin}`, {
+      fetch(`${api}/skin/${settings.game.skin}`, {
         method: 'GET',
         credentials: 'include'
       })

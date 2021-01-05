@@ -61,7 +61,7 @@ const settingApply = () => {
   sync = settings.sound.offset;
   denyCursor = settings.editor.denyCursor;
   denySkin = settings.editor.denySkin;
-  fetch(`${api}/getSkin/${settings.game.skin}`, {
+  fetch(`${api}/skin/${settings.game.skin}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -87,7 +87,7 @@ const settingApply = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetch(`${api}/auth/getStatus`, {
+  fetch(`${api}/auth/status`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if(data.status == "Not logined") {
       window.location.href = url;
     } else {
-      fetch(`${api}/getUser`, {
+      fetch(`${api}/user`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  fetch(`${api}/getTracks`, {
+  fetch(`${api}/tracks`, {
     method: 'GET',
     credentials: 'include'
   })

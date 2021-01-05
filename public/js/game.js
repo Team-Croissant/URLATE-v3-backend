@@ -193,7 +193,7 @@ const sortAsName = (a, b) => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  fetch(`${api}/auth/getStatus`, {
+  fetch(`${api}/auth/status`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     } else if(data.status == "Not logined") {
       window.location.href = url;
     } else {
-      fetch(`${api}/getUser`, {
+      fetch(`${api}/user`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             skinSelector.appendChild(option); 
           }
           settingApply();
-          fetch(`${api}/getTracks`, {
+          fetch(`${api}/tracks`, {
             method: 'GET',
             credentials: 'include'
           })
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                                     <span class="ranks rankQ"></span>
                                 </div>
                             </div>`;
-                fetch(`${api}/getRecord/${tracks[i].name}/${username}`, {
+                fetch(`${api}/record/${tracks[i].name}/${username}`, {
                   method: 'GET',
                   credentials: 'include'
                 })
@@ -393,7 +393,7 @@ const songSelected = n => {
       document.getElementsByClassName('ranks')[songSelection].classList.add(trackRecords[songSelection][0].rank);
     }
   }
-  fetch(`${api}/getTrackInfo/${tracks[n].name}`, {
+  fetch(`${api}/trackInfo/${tracks[n].name}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -412,7 +412,7 @@ const songSelected = n => {
 };
 
 const updateRanks = () => {
-  fetch(`${api}/getRecords/${tracks[songSelection].name}/${difficultySelection + 1}/record/DESC/${username}`, {
+  fetch(`${api}/records/${tracks[songSelection].name}/${difficultySelection + 1}/record/DESC/${username}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -527,7 +527,7 @@ const displayClose = () => {
     }, 500);
   } else if(display == 2) {
     //OPTION
-    fetch(`${api}/getUser`, {
+    fetch(`${api}/user`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -678,7 +678,7 @@ const showDLCinfo = n => {
   }
   DLCinfoSongsContainer.innerHTML = '';
   for(let i = 0; i < DLCdata[n].length; i++) {
-    fetch(`${api}/getTrack/${DLCdata[n][i]}`, {
+    fetch(`${api}/track/${DLCdata[n][i]}`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -728,7 +728,7 @@ const updateStore = () => {
   } else if(lang == 'en') {
     langCode = 2;
   }
-  fetch(`${api}/store/getDLCs/${lang}`, {
+  fetch(`${api}/store/DLCs/${lang}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -768,7 +768,7 @@ const updateStore = () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
-  fetch(`${api}/store/getSkins/${lang}`, {
+  fetch(`${api}/store/skins/${lang}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -838,7 +838,7 @@ const menuSelected = () => {
 const getAdvanced = () => {
   advancedPurchasing.style.pointerEvents = "all";
   advancedPurchasing.style.opacity = "1";
-  fetch(`${api}/xsolla/getToken`, {
+  fetch(`${api}/xsolla/token`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify({
@@ -942,7 +942,7 @@ const settingChanged = (e, v) => {
 };
 
 const showProfile = name => {
-  fetch(`${api}/getTeamProfile/${name}`, {
+  fetch(`${api}/teamProfile/${name}`, {
     method: 'GET',
     credentials: 'include'
   })

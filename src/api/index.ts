@@ -61,7 +61,7 @@ app.post('/', (req, res) => {
   res.end('Welcome to URLATE API!');
 });
 
-app.get('/auth/getStatus', async (req, res) => {
+app.get('/auth/status', async (req, res) => {
   const hasToken = req.session.accessToken && req.session.refreshToken;
   if (!hasToken) {
     res.status(200).json(createStatusResponse('Not logined'));
@@ -178,7 +178,7 @@ app.post("/auth/authorize", async (req, res) => {
   });
 });
 
-app.get("/getUser", async (req, res) => {
+app.get("/user", async (req, res) => {
   if(!req.session.userid) {
     res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
     return;
@@ -186,14 +186,14 @@ app.get("/getUser", async (req, res) => {
 
   const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced', 'DLCs').where('userid', req.session.userid)
   if (!results.length) {
-    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load data. Use auth/getStatus to check your status.'));
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load data. Use /auth/status to check your status.'));
     return;
   }
   
   res.status(200).json({result: "success", user: results[0]});
 });
 
-app.get("/getTracks", async (req, res) => {
+app.get("/tracks", async (req, res) => {
   const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'originalName', 'type')
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load tracks. It may be a problem with the DB.'));
@@ -203,7 +203,7 @@ app.get("/getTracks", async (req, res) => {
   res.status(200).json({result: "success", tracks: results});
 });
 
-app.get("/getTrack/:name", async (req, res) => {
+app.get("/track/:name", async (req, res) => {
   const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'originalName', 'type').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load track. It may be a problem with the DB.'));
@@ -213,7 +213,7 @@ app.get("/getTrack/:name", async (req, res) => {
   res.status(200).json({result: "success", track: results});
 });
 
-app.get("/getTrackInfo/:name", async (req, res) => {
+app.get("/trackInfo/:name", async (req, res) => {
   const results = await knex('patternInfo').select('bpm', 'bullet_density', 'note_density', 'speed').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load track data. It may be a problem with the DB.'));
@@ -223,7 +223,7 @@ app.get("/getTrackInfo/:name", async (req, res) => {
   res.status(200).json({result: "success", info: results});
 });
 
-app.post('/xsolla/getToken', (req, res) => {
+app.post('/xsolla/token', (req, res) => {
   if(req.body.type == 'advanced') {
     fetch(`https://api.xsolla.com/merchant/v2/merchants/${config.xsolla.merchantId}/token`, {
         method: 'post',
@@ -321,7 +321,7 @@ app.put('/settings', async (req, res) => {
   res.status(200).json(createSuccessResponse('success'));
 });
 
-app.get("/getSkin/:skinName", async (req, res) => {
+app.get("/skin/:skinName", async (req, res) => {
   const results = await knex('skins').select('data').where('name', req.params.skinName);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load skin data.'));
@@ -330,7 +330,7 @@ app.get("/getSkin/:skinName", async (req, res) => {
   res.status(200).json({result: "success", data: results[0].data});
 });
 
-app.get("/getTeamProfile/:name", async (req, res) => {
+app.get("/teamProfile/:name", async (req, res) => {
   const results = await knex('teamProfiles').select('data').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load data.'));
@@ -339,7 +339,7 @@ app.get("/getTeamProfile/:name", async (req, res) => {
   res.status(200).json({result: "success", data: results[0].data});
 });
 
-app.get("/getRecord/:track/:name", async (req, res) => {
+app.get("/record/:track/:name", async (req, res) => {
   const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal').where('nickname', req.params.name).where('name', req.params.track).orderBy('difficulty', 'ASC');
   if (!results.length) {
     res.status(200).json(createSuccessResponse('empty'));
@@ -348,13 +348,13 @@ app.get("/getRecord/:track/:name", async (req, res) => {
   res.status(200).json({result: "success", results});
 });
 
-app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", async (req, res) => {
+app.get("/records/:track/:difficulty/:order/:sort/:nickname", async (req, res) => {
   const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'nickname').where('name', req.params.track).where('difficulty', req.params.difficulty).orderBy(req.params.order, req.params.sort);
   const rank = results.map(d => {return d['nickname']}).indexOf(req.params.nickname) + 1;
   res.status(200).json({result: "success", results: results.slice(0, 100), rank: rank});
 });
 
-app.get("/store/getDLCs/:locale", async (req, res) => {
+app.get("/store/DLCs/:locale", async (req, res) => {
   const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
@@ -363,7 +363,7 @@ app.get("/store/getDLCs/:locale", async (req, res) => {
   res.status(200).json({result: "success", data: results});
 });
 
-app.get("/store/getSkins/:locale", async (req, res) => {
+app.get("/store/skins/:locale", async (req, res) => {
   const results = await knex('storeSkin').select('name', 'previewFile', 'price');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load Skin data.'));

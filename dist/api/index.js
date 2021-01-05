@@ -86,7 +86,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     res.end('Welcome to URLATE API!');
 });
-app.get('/auth/getStatus', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/auth/status', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var hasToken, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -227,7 +227,7 @@ app.post("/auth/authorize", function (req, res) { return __awaiter(void 0, void 
         }
     });
 }); });
-app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/user", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -240,7 +240,7 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
             case 1:
                 results = _a.sent();
                 if (!results.length) {
-                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load data. Use auth/getStatus to check your status.'));
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load data. Use /auth/status to check your status.'));
                     return [2 /*return*/];
                 }
                 res.status(200).json({ result: "success", user: results[0] });
@@ -248,7 +248,7 @@ app.get("/getUser", function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); });
-app.get("/getTracks", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/tracks", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -264,7 +264,7 @@ app.get("/getTracks", function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-app.get("/getTrack/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/track/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -280,7 +280,7 @@ app.get("/getTrack/:name", function (req, res) { return __awaiter(void 0, void 0
         }
     });
 }); });
-app.get("/getTrackInfo/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/trackInfo/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -296,7 +296,7 @@ app.get("/getTrackInfo/:name", function (req, res) { return __awaiter(void 0, vo
         }
     });
 }); });
-app.post('/xsolla/getToken', function (req, res) {
+app.post('/xsolla/token', function (req, res) {
     if (req.body.type == 'advanced') {
         fetch("https://api.xsolla.com/merchant/v2/merchants/" + config.xsolla.merchantId + "/token", {
             method: 'post',
@@ -428,7 +428,7 @@ app.put('/settings', function (req, res) { return __awaiter(void 0, void 0, void
         }
     });
 }); });
-app.get("/getSkin/:skinName", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/skin/:skinName", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -444,7 +444,7 @@ app.get("/getSkin/:skinName", function (req, res) { return __awaiter(void 0, voi
         }
     });
 }); });
-app.get("/getTeamProfile/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/teamProfile/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -460,7 +460,7 @@ app.get("/getTeamProfile/:name", function (req, res) { return __awaiter(void 0, 
         }
     });
 }); });
-app.get("/getRecord/:track/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/record/:track/:name", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -476,7 +476,7 @@ app.get("/getRecord/:track/:name", function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/records/:track/:difficulty/:order/:sort/:nickname", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results, rank;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -489,7 +489,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, 
         }
     });
 }); });
-app.get("/store/getDLCs/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/store/DLCs/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -505,7 +505,7 @@ app.get("/store/getDLCs/:locale", function (req, res) { return __awaiter(void 0,
         }
     });
 }); });
-app.get("/store/getSkins/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/store/skins/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
