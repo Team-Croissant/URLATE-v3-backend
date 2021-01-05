@@ -572,32 +572,7 @@
                 <img src="https://img.icons8.com/fluent-systems-regular/40/000000/shopping-bag-full.png" class="storeSelectors" onclick="storeSelect(2)"/>
             </div>
             <div class="storeContentsContainer storeShow"></div>
-            <div class="storeContentsContainer">
-                <div class="storeRowContainer">
-                    <div class="storeSkinsContainer">
-                        <div class="storeSkinTitleContainer">
-                            <span class="storeSkinName">Skin Name</span>
-                        </div>
-                        <div class="storeSkinContentContainer">
-                            <img src="/images/skin.png" class="storeSkin">
-                        </div>
-                        <div class="storeSkinPriceContainer">
-                            <span class="storePrice">₩5,000</span>
-                        </div>
-                    </div>
-                    <div class="storeSkinsContainer">
-                        <div class="storeSkinTitleContainer">
-                            <span class="storeSkinName">Skin Name</span>
-                        </div>
-                        <div class="storeSkinContentContainer">
-
-                        </div>
-                        <div class="storeSkinPriceContainer">
-                            <span class="storePrice">₩5,000</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="storeContentsContainer"></div>
             <div class="storeContentsContainer" id="storeBasketsContainer">
                 <div class="storeColumnContainer">
                     <div class="storeBasketsContainer">
@@ -635,10 +610,10 @@
                     <span class="storeInfoTitle"><%= __('DLC_info') %></span>
                 </div>
                 <div id="DLCinfoContentsContainer">
-                    <img src="/images/mainImage.png" id="DLCInfoAlbum">
+                    <img src="" id="DLCInfoAlbum">
                     <div id="DLCinfoSongsContainer">
                         <div class="DLCinfoSongContainer">
-                            <img src="/images/mainImage.png" class="DLCinfoSongAlbum">
+                            <img src="" class="DLCinfoSongAlbum">
                             <div class="DLCinfoSongAbout">
                                 <span class="DLCinfoSongName">SongName</span>
                                 <span class="DLCinfoSongProd">Producer</span>
@@ -647,11 +622,11 @@
                     </div>
                 </div>
                 <div id="DLCinfoAboutContainer">
-                    <span class="storeName">DLC Name</span>
-                    <span class="storeSongArtist">Composer Name</span>
+                    <span class="storeName" id="DLCinfoDLCName">DLC Name</span>
+                    <span class="storeSongArtist" id="DLCinfoArtistName">Composer Name</span>
                 </div>
                 <div id="DLCinfoButtonContainer">
-                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart()"><%= __('add_to_bag') %></button>
+                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('dlc')" id="DLCbasketButton"><%= __('add_to_bag') %></button>
                 </div>
             </div>
         </div>
@@ -663,10 +638,10 @@
                     <span id="skinInfoSkinName">Normal</span>
                 </div>
                 <div id="skinInfoPreviewContainer">
-                    <img src="/images/readme/play.jpg" id="skinInfoPreview">
+                    <img src="" id="skinInfoPreview">
                 </div>
                 <div class="storeInfoButtonContainer">
-                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart()"><%= __('add_to_bag') %></button>
+                    <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('skin')" id="skinBasketButton"><%= __('add_to_bag') %></button>
                 </div>
             </div>
         </div>
@@ -690,6 +665,7 @@
         const lang = "<%= __('lang') %>";
         const currency = "<%= __('currency') %>";
         const purchased = "<%= __('purchased') %>";
+        const addToBag = "<%= __('add_to_bag') %>";
     </script>
     <script src="js/game.js"></script>
 </body>

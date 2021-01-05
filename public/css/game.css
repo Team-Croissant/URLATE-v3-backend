@@ -1989,6 +1989,7 @@ p {
 }
 
 .storeButtonDisabled {
+  cursor: default;
   background: #222;
 }
 
@@ -1997,7 +1998,7 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 15vh;
+  height: 13vh;
   width: 50vw;
 }
 
@@ -2008,7 +2009,7 @@ p {
 
 #skinInfoPreviewContainer {
   width: 100%;
-  height: 40vh;
+  height: 42vh;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -18,6 +18,7 @@ let isRankOpened = false;
 let isAdvanced = false;
 let skins = [], DLCs = [];
 let DLCdata = [];
+let skinData = [];
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -648,6 +649,16 @@ const displayClose = () => {
     }, 500);
     display = 8;
     return;
+  } else if(display == 10) {
+    //Skin info
+    document.getElementById("storeSkinInfo").classList.remove("fadeIn");
+    document.getElementById("storeSkinInfo").classList.toggle("fadeOut");
+    setTimeout(() => {
+      document.getElementById("storeSkinInfo").classList.remove("fadeOut");
+      document.getElementById("storeSkinInfo").style.display = "none";
+    }, 500);
+    display = 8;
+    return;
   }
   display = 0;
 };
@@ -691,6 +702,23 @@ const showDLCinfo = n => {
   display = 9;
 };
 
+const showSkinInfo = n => {
+  skinInfoSkinName.textContent = document.getElementsByClassName('storeSkinName')[n].textContent;
+  skinInfoPreview.src = `${cdn}/skins/preview/${skinData[n]}.png`;
+  if(skins.indexOf(skinInfoSkinName.textContent) != -1) {
+    skinBasketButton.classList.add('storeButtonDisabled');
+    skinBasketButton.disabled = true;
+    skinBasketButton.textContent = purchased;
+  } else {
+    skinBasketButton.classList.remove('storeButtonDisabled');
+    skinBasketButton.disabled = false;
+    skinBasketButton.textContent = addToBag;
+  }
+  document.getElementById("storeSkinInfo").style.display = "flex";
+  document.getElementById("storeSkinInfo").classList.add("fadeIn");
+  display = 10;
+};
+
 const updateStore = () => {
   let langCode = 0;
   if(lang == 'ko') {
@@ -700,7 +728,7 @@ const updateStore = () => {
   } else if(lang == 'en') {
     langCode = 2;
   }
-  fetch(`${api}/store/getDLC/${lang}`, {
+  fetch(`${api}/store/getDLCs/${lang}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -736,6 +764,43 @@ const updateStore = () => {
       elements += '</div>';
     }
     document.getElementsByClassName('storeContentsContainer')[0].innerHTML = elements;
+  }).catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
+  fetch(`${api}/store/getSkins/${lang}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then((data) => {
+    skinData = [];
+    data = data.data;
+    document.getElementsByClassName('storeContentsContainer')[1].innerHTML = '';
+    let elements = '';
+    for(let i = 0; i < data.length / 2; i++) {
+      elements += '<div class="storeRowContainer">';
+      for(let j = 0; j < 2; j++) {
+        if(data[i * 2 + j]) {
+          skinData[i * 2 + j] = JSON.parse(data[i * 2 + j].previewFile);
+          elements += `<div class="storeSkinsContainer" onclick="showSkinInfo(${i * 2 + j})">
+                        <div class="storeSkinTitleContainer">
+                          <span class="storeSkinName">${data[i * 2 + j].name}</span>
+                        </div>
+                        <div class="storeSkinContentContainer">
+                          <img src="${cdn}/skins/${data[i * 2 + j].previewFile}.png" class="storeSkin">
+                        </div>
+                        <div class="storeSkinPriceContainer">
+                          <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                        </div>
+                      </div>`;
+        } else {
+          elements += `<div class="storeSkinsContainer"></div>`;
+        }
+      }
+      elements += '</div>';
+    }
+    document.getElementsByClassName('storeContentsContainer')[1].innerHTML = elements;
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
