@@ -489,7 +489,7 @@ app.get("/getRecords/:track/:difficulty/:order/:sort/:nickname", function (req, 
         }
     });
 }); });
-app.get("/store/getDLC/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/store/getDLCs/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -498,6 +498,22 @@ app.get("/store/getDLC/:locale", function (req, res) { return __awaiter(void 0, 
                 results = _a.sent();
                 if (!results.length) {
                     res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
+                    return [2 /*return*/];
+                }
+                res.status(200).json({ result: "success", data: results });
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get("/store/getSkins/:locale", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, knex('storeSkin').select('name', 'previewFile', 'price')];
+            case 1:
+                results = _a.sent();
+                if (!results.length) {
+                    res.status(400).json(api_response_1.createErrorResponse('failed', 'Failed to Load', 'Failed to load Skin data.'));
                     return [2 /*return*/];
                 }
                 res.status(200).json({ result: "success", data: results });
