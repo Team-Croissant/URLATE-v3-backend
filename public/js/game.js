@@ -695,6 +695,7 @@ const loadingHide = () => {
 };
 
 const showDLCinfo = async n => {
+  loadingOverlayShow();
   DLCInfoDLCName.textContent = document.getElementsByClassName('storeName')[n].textContent;
   DLCinfoArtistName.textContent = document.getElementsByClassName('storeSongArtist')[n].textContent;
   DLCInfoAlbum.src = document.getElementsByClassName('storeSongsAlbum')[n].src;
@@ -735,10 +736,12 @@ const showDLCinfo = async n => {
   DLCinfoSongsContainer.innerHTML = elements;
   document.getElementById("storeDLCInfo").style.display = "flex";
   document.getElementById("storeDLCInfo").classList.add("fadeIn");
+  loadingOverlayHide();
   display = 9;
 };
 
 const showSkinInfo = n => {
+  loadingOverlayShow();
   SkinInfoSkinName.textContent = document.getElementsByClassName('storeSkinName')[n].textContent;
   skinInfoPreview.src = `${cdn}/skins/preview/${skinData[n]}.png`;
   if(skins.indexOf(SkinInfoSkinName.textContent) != -1) {
@@ -756,10 +759,12 @@ const showSkinInfo = n => {
   }
   document.getElementById("storeSkinInfo").style.display = "flex";
   document.getElementById("storeSkinInfo").classList.add("fadeIn");
+  loadingOverlayHide();
   display = 10;
 };
 
 const cartDelete = async (type, item) => {
+  loadingOverlayShow();
   await fetch(`${api}/store/bag`, {
     method: 'DELETE',
     credentials: 'include',
