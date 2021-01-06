@@ -1007,7 +1007,7 @@ const updateStore = () => {
                           <img src="${cdn}/skins/${data[i * 2 + j].previewFile}.png" class="storeSkin">
                         </div>
                         <div class="storeSkinPriceContainer">
-                        <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased :
+                        <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased :
                                                   carts.has(data[i * 2 + j].name) ? addedToBag :
                                                   isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) + currency:
                                                   numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
