@@ -468,7 +468,7 @@ app.post("/store/purchase/:lang", async (req, res) => {
   redisClient.set(`Cart${req.session.userid}`, JSON.stringify(cart));
   let price = 0;
   let langCode = Number(req.params.lang);
-  let isAdvanced = await knex('user').select('advanced').where('userid', req.session.userid);
+  let isAdvanced = await knex('users').select('advanced').where('userid', req.session.userid);
   isAdvanced = isAdvanced[0].advanced;
   for(let i = 0; i < cart.length; i++) {
     const result = await knex(`store${cart[i].type}`).select('price').where('name', cart[i].item);
