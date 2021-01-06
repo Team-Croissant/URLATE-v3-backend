@@ -2090,3 +2090,9 @@ p {
 #storeContentsBaskets {
   overflow-y: hidden;
 }
+
+.storePriceSale {
+  margin-right: 0.5vw;
+  color: #666;
+  text-decoration: line-through;
+}

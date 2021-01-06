@@ -844,7 +844,10 @@ const updateCart = async cart => {
                         </div>
                       </div>
                       <div class="storeBasketsRight">
-                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>
+                        <span class="storePrice">
+                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data.price)[langCode] * 0.8) + currency:
+                          numberWithCommas(JSON.parse(data.price)[langCode]) + currency}
+                        </span>
                         <img src="https://img.icons8.com/material-rounded/24/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('DLC', '${data.name}')">`;
         } else {
           alert(`Error occured.\n${data.error}`);
@@ -960,7 +963,10 @@ const updateStore = () => {
                             <span class="storeSongArtist">${data[i * 2 + j].composer}</span>
                           </div>
                           <div class="storeSongsBottom">
-                            <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased : carts.has(data[i * 2 + j].name) ? addedToBag : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                            <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased :
+                                                      carts.has(data[i * 2 + j].name) ? addedToBag :
+                                                      isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) + currency:
+                                                      numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
                           </div>
                         </div>
                       </div>`;
@@ -998,7 +1004,10 @@ const updateStore = () => {
                           <img src="${cdn}/skins/${data[i * 2 + j].previewFile}.png" class="storeSkin">
                         </div>
                         <div class="storeSkinPriceContainer">
-                          <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased : carts.has(data[i * 2 + j].name) ? addedToBag : numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                        <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased :
+                                                  carts.has(data[i * 2 + j].name) ? addedToBag :
+                                                  isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) + currency:
+                                                  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
                         </div>
                       </div>`;
         } else {
