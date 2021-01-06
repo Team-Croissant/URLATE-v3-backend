@@ -335,6 +335,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const songSelected = n => {
+  loadingShow();
   if(songSelection == n) {
     //play
     if((tracks[n].type == 1 && !isAdvanced) || tracks[n].type == 2) {
@@ -435,6 +436,7 @@ const updateRanks = () => {
                           <div class="selectRankScore">${numberWithCommas(Number(data[i].record))}</div>
                       </div>`;
     }
+    loadingHide();
     selectRankScoreContainer.innerHTML = innerContent;
   });
 };
@@ -667,16 +669,26 @@ const displayClose = () => {
   }
 };
 
-const loadingShow = () => {
+const loadingOverlayShow = () => {
   loading = true;
   overlayLoadingContainer.style.pointerEvents = "all";
   overlayLoadingContainer.style.opacity = "1";
 };
 
-const loadingHide = () => {
+const loadingOverlayHide = () => {
   loading = false;
   overlayLoadingContainer.style.pointerEvents = "none";
   overlayLoadingContainer.style.opacity = "0";
+};
+
+const loadingShow = () => {
+  loadingCircle.style.pointerEvents = "all";
+  loadingCircle.style.opacity = "1";
+};
+
+const loadingHide = () => {
+  loadingCircle.style.pointerEvents = "none";
+  loadingCircle.style.opacity = "0";
 };
 
 const showDLCinfo = async n => {
@@ -768,7 +780,7 @@ const cartDelete = async (type, item) => {
 };
 
 const updateCart = async cart => {
-  loadingShow();
+  loadingOverlayShow();
   let langCode = 0;
   if(lang == 'ko') {
     langCode = 0;
@@ -912,7 +924,7 @@ const updateStore = () => {
       elements += '</div>';
     }
     document.getElementsByClassName('storeContentsContainer')[0].innerHTML = elements;
-    loadingHide();
+    loadingOverlayHide();
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
@@ -1124,6 +1136,9 @@ const settingChanged = (e, v) => {
 };
 
 const showProfile = name => {
+  loadingShow();
+  document.getElementById("infoProfileContainer").style.display = "flex";
+  document.getElementById("infoProfileContainer").classList.add("fadeIn");
   fetch(`${api}/teamProfile/${name}`, {
     method: 'GET',
     credentials: 'include'
@@ -1166,9 +1181,8 @@ const showProfile = name => {
                     </div>`;
     }
     infoProfileBottom.innerHTML = innerHTML;
+    loadingHide();
     display = 5;
-    document.getElementById("infoProfileContainer").style.display = "flex";
-    document.getElementById("infoProfileContainer").classList.add("fadeIn");
   }).catch((error) => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);

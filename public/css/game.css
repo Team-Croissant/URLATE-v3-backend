@@ -2067,3 +2067,13 @@ p {
   margin-top: 0.5vh;
   height: 4vh;
 }
+
+#loadingCircle {
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: difference;
+  position: fixed;
+  right: 1vw;
+  bottom: 2vh;
+}
