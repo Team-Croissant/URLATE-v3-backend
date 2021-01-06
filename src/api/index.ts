@@ -294,7 +294,6 @@ app.post('/xsolla/webhook', async (req, res) => {
                 skins.add(cart[i].item);
               }
             }
-            delete req.session.bag;
             await knex('users').update({'skins': JSON.stringify(Array.from(skins)), 'DLCs': JSON.stringify(Array.from(DLCs))}).where('userid', req.body.user.id);
           });
         }
@@ -505,6 +504,7 @@ app.post("/store/purchase/:lang", async (req, res) => {
     })
     .then(res => res.json())
     .then(json => {
+      delete req.session.bag;
       res.status(200).json({result: "success", token: json.token});
     }).catch((error) => {
       res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load token. It may be a problem with xsolla.'));
