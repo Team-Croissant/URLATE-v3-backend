@@ -744,6 +744,29 @@ const showSkinInfo = n => {
   display = 10;
 };
 
+const cartDelete = async (type, item) => {
+  await fetch(`${api}/store/bag`, {
+    method: 'DELETE',
+    credentials: 'include',
+    body: JSON.stringify({
+      type: type,
+      item: item
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == 'success') {
+      cart = data.bag;
+      updateCart(cart);
+    } else {
+      alert(`Error occured.\n${data.error}`);
+    }
+  });
+};
+
 const updateCart = async cart => {
   loadingShow();
   let langCode = 0;
@@ -800,7 +823,8 @@ const updateCart = async cart => {
                         </div>
                       </div>
                       <div class="storeBasketsRight">
-                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>`;
+                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>
+                        <img src="https://img.icons8.com/material-rounded/24/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('DLC', '${data.name}')">`;
         } else {
           alert(`Error occured.\n${data.error}`);
         }
@@ -826,7 +850,8 @@ const updateCart = async cart => {
                         </div>
                       </div>
                       <div class="storeBasketsRight">
-                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>`;
+                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>
+                        <img src="https://img.icons8.com/material-rounded/50/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('Skin', '${data.name}')">`;
         } else {
           alert(`Error occured.\n${data.error}`);
         }

@@ -1659,7 +1659,6 @@ p {
 }
 
 .storeBasketsContainer {
-  cursor: pointer;
   padding: 2vh;
   display: flex;
   flex-direction: row;
@@ -2064,6 +2063,7 @@ p {
 }
 
 .storeDelete {
+  cursor: pointer;
   margin-top: 0.5vh;
   height: 4vh;
 }
