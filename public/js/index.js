@@ -52,7 +52,7 @@ const signInCallback = (authResult) => {
     .then(res => res.json())
     .then((data) => {
       if(data.result == "success") {
-        window.location.href = `${projectUrl}/join`;
+        window.location.href = `${projectUrl}/authorize`;
       } else if(data.result == "failed") {
         if(data.error == "Not Whitelisted") {
           alert("You are not whitelisted.");
