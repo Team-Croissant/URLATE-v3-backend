@@ -874,7 +874,10 @@ const updateCart = async cart => {
                         </div>
                       </div>
                       <div class="storeBasketsRight">
-                        <span class="storePrice">${numberWithCommas(JSON.parse(data.price)[langCode]) + currency}</span>
+                        <span class="storePrice">
+                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data.price)[langCode] * 0.8) + currency:
+                          numberWithCommas(JSON.parse(data.price)[langCode]) + currency}
+                        </span>
                         <img src="https://img.icons8.com/material-rounded/50/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('Skin', '${data.name}')">`;
         } else {
           alert(`Error occured.\n${data.error}`);
