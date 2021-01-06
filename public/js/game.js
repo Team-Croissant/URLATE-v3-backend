@@ -532,6 +532,7 @@ const displayClose = () => {
       }, 500);
     } else if(display == 2) {
       //OPTION
+      loadingShow();
       fetch(`${api}/user`, {
         method: 'GET',
         credentials: 'include'
@@ -572,6 +573,7 @@ const displayClose = () => {
         if(data.result != 'success') {
           alert(`Error occured.\n${data.error}`);
         }
+        loadingHide();
       }).catch((error) => {
         alert(`Error occured.\n${error}`);
         console.error(`Error occured.\n${error}`);
