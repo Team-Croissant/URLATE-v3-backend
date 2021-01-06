@@ -2075,8 +2075,8 @@ p {
   opacity: 0;
   mix-blend-mode: difference;
   position: fixed;
-  right: 1vw;
-  bottom: 2vh;
+  right: 2vw;
+  bottom: 3vh;
 }
 
 #basketsButtonContainer {
