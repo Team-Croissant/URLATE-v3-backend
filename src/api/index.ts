@@ -449,7 +449,7 @@ app.get("/store/bag", (req, res) => {
 app.delete("/store/bag", (req, res) => {
   if(req.session.bag && req.session.bag != []) {
     if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
-      req.session.bag.splice(req.session.bag.indexOf(req.body) - 1, 1);
+      req.session.bag.splice(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)), 1);
       req.session.save(() => {
         res.status(200).json({result: "success", bag: req.session.bag});
       });
