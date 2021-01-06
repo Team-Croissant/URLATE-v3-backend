@@ -1842,6 +1842,7 @@ p {
 }
 
 #storeBasketsContainer {
+  overflow-y: auto;
   height: 62vh;
 }
 
@@ -1964,7 +1965,7 @@ p {
   background-origin: border-box;
   background-clip: content-box, border-box;
   box-shadow: 2px 1000px 1px #fff inset;
-  filter: drop-shadow(0 0 20px rgba(50, 50, 50, 0.2));
+  filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.2));
 }
 
 .storeButtonDisabled {
@@ -2076,4 +2077,16 @@ p {
   position: fixed;
   right: 1vw;
   bottom: 2vh;
+}
+
+#basketsButtonContainer {
+  padding-right: 1vw;
+  height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#storeContentsBaskets {
+  overflow-y: hidden;
 }

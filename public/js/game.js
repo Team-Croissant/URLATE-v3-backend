@@ -18,6 +18,7 @@ let isRankOpened = false;
 let isAdvanced = false;
 let skins = [], DLCs = [];
 let carts = new Set();
+let cartArray = [];
 let DLCdata = [];
 let skinData = [];
 let loading = false;
@@ -802,7 +803,7 @@ const updateCart = async cart => {
     .then(res => res.json())
     .then((data) => {
       if(data.result == 'success') {
-        cart = data.bag;
+        cart = data.bag.sort((a, b) => {return a.type > b.type ? 1 : -1});
       } else {
         alert(`Error occured.\n${data.error}`);
       }
@@ -812,6 +813,7 @@ const updateCart = async cart => {
     });
   }
   let elements = '';
+  cartArray = cart;
   carts = new Set();
   for(let i = 0; i < cart.length; i++) {
     carts.add(cart[i].item);
@@ -875,11 +877,49 @@ const updateCart = async cart => {
             </div>
         </div>`;
   }
+  basketsButtonContainer.style.display = "flex";
   storeBasketsContainer.innerHTML = elements;
   if(cart.length == 0) {
+    basketsButtonContainer.style.display = "none";
     storeBasketsContainer.innerHTML = `<div id="nothingHere"><span>${nothingHere.split('/')[0]}</span><span>${nothingHere.split('/')[1]}<strong>DLC</strong>${nothingHere.split('/')[2]}<strong>${nothingHere.split('/')[3]}</strong>${nothingHere.split('/')[4]}</span></div>`;
   }
   updateStore();
+};
+
+const storePurchase = () => {
+  purchasingContainer.style.pointerEvents = "all";
+  purchasingContainer.style.opacity = "1";
+  let langCode = 0;
+  if(lang == 'ko') {
+    langCode = 0;
+  } else if(lang == 'ja') {
+    langCode = 1;
+  } else if(lang == 'en') {
+    langCode = 2;
+  }
+  fetch(`${api}/store/purchase/${langCode}`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({
+      cart: cartArray
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then((data) => {
+    if(data.result == 'success') {
+      window.location.href = `https://sandbox-secure.xsolla.com/paystation3/?access_token=${data.token}`;
+    } else {
+      alert(`Error occured.\n${data.error}`);
+    }
+  }).catch((error) => {
+    purchasingContainer.style.pointerEvents = "none";
+    purchasingContainer.style.opacity = "0";
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
 };
 
 const updateStore = () => {
@@ -1048,8 +1088,8 @@ const getAdvanced = () => {
   .then((data) => {
     window.location.href = `https://sandbox-secure.xsolla.com/paystation3/desktop/subscription/?access_token=${data.token}`;
   }).catch((error) => {
-    advancedPurchasing.style.pointerEvents = "none";
-    advancedPurchasing.style.opacity = "0";
+    purchasingContainer.style.pointerEvents = "none";
+    purchasingContainer.style.opacity = "0";
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });

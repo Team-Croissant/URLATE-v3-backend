@@ -577,7 +577,7 @@
             </div>
             <div class="storeContentsContainer storeShow"></div>
             <div class="storeContentsContainer"></div>
-            <div class="storeContentsContainer">
+            <div class="storeContentsContainer" id="storeContentsBaskets">
                 <div id="storeBasketsContainer">
                     <div class="storeColumnContainer">
                         <div class="storeBasketsContainer">
@@ -606,6 +606,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div id="basketsButtonContainer">
+                    <button class="storeButton metropolis" onclick="storePurchase()" id="basketButton"><%= __('purchase') %></button>
                 </div>
             </div>
         </div>

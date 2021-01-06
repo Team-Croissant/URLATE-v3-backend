@@ -5,8 +5,11 @@ import express = require('express');
 import session = require('express-session');
 import fetch = require('node-fetch');
 import sha1 = require('sha1');
+import redis = require('redis');
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
+
+const redisClient = redis.createClient();
 
 const config = require(__dirname + '/../../config/config.json');
 const settingsConfig = require(__dirname + '/../../config/settings.json');
@@ -52,6 +55,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) => new OAuth2(ClientId, ClientSecret, RedirectionUrl);
+
+redisClient.on("error", function(error) {
+  signale.error(error);
+});
 
 app.get('/', (req, res) => {
   res.end('Welcome to URLATE API!');
@@ -260,6 +267,7 @@ app.post('/xsolla/token', (req, res) => {
 
 app.post('/xsolla/webhook', async (req, res) => {
   if(req.headers.authorization == `Signature ${sha1(JSON.stringify(req.body) + config.xsolla.projectKey)}`) {
+    console.log(req.body.notification_type);
     switch(req.body.notification_type) {
       case 'user_validation':
         const result = await knex('users').select('userid').where('userid', req.body.user.id);
@@ -273,7 +281,23 @@ app.post('/xsolla/webhook', async (req, res) => {
         }});
         return;
       case 'payment':
-        console.log('payment');
+        if(!req.body.purchase.subscription) {
+          redisClient.get(`Cart${req.body.user.id}`, async (err, reply) => {
+            let cart = JSON.parse(reply);
+            let saved = await knex('users').select('skins', 'DLCs').where('userid', req.body.user.id);
+            let DLCs = new Set(JSON.parse(saved[0]['DLCs']));
+            let skins = new Set(JSON.parse(saved[0]['skins']));
+            for(let i = 0; i < cart.length; i++) {
+              if(cart[i].type == 'DLC') {
+                DLCs.add(cart[i].item);
+              } else if(cart[i].type == 'Skin') {
+                skins.add(cart[i].item);
+              }
+            }
+            delete req.session.bag;
+            await knex('users').update({'skins': JSON.stringify(Array.from(skins)), 'DLCs': JSON.stringify(Array.from(DLCs))}).where('userid', req.body.user.id);
+          });
+        }
         break;
       case 'create_subscription':
         await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
@@ -284,9 +308,11 @@ app.post('/xsolla/webhook', async (req, res) => {
       case 'cancel_subscription':
         await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
         break;
-      case 'refund': //TODO: NEED TO CHANGE FT.PAYMENT
-        await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
-        break;
+      case 'refund':
+      if(!req.body.purchase.subscription) {
+        console.log('refund success');
+      }
+      break;
     }
   } else {
     res.status(400).json({"error": {
@@ -391,7 +417,7 @@ app.get("/store/skin/:name", async (req, res) => {
   res.status(200).json({result: "success", data: results[0]});
 });
 
-app.post("/store/bag", async (req, res) => {
+app.post("/store/bag", (req, res) => {
   if(req.body.type == 'DLC' || req.body.type == 'Skin') {
     if(req.session.bag) {
       if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
@@ -412,7 +438,7 @@ app.post("/store/bag", async (req, res) => {
   });
 });
 
-app.get("/store/bag", async (req, res) => {
+app.get("/store/bag", (req, res) => {
   if(req.session.bag) {
     res.status(200).json({result: "success", bag: req.session.bag});
   } else {
@@ -420,7 +446,7 @@ app.get("/store/bag", async (req, res) => {
   }
 });
 
-app.delete("/store/bag", async (req, res) => {
+app.delete("/store/bag", (req, res) => {
   if(req.session.bag && req.session.bag != []) {
     if(req.session.bag.map(i => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
       req.session.bag.splice(req.session.bag.indexOf(req.body) - 1, 1);
@@ -432,6 +458,55 @@ app.delete("/store/bag", async (req, res) => {
     }
   } else {
     res.status(400).json(createErrorResponse('failed', 'Bag empty', 'Bag is empty.'));
+  }
+});
+
+app.post("/store/purchase/:lang", async (req, res) => {
+  let currency = ["KRW", "JPY", "USD"];
+  let cart = req.body.cart;
+  redisClient.set(`Cart${req.session.userid}`, JSON.stringify(cart));
+  let price = 0;
+  let langCode = Number(req.params.lang);
+  for(let i = 0; i < cart.length; i++) {
+    const result = await knex(`store${cart[i].type}`).select('price').where('name', cart[i].item);
+    price += JSON.parse(result[0].price)[langCode];
+  }
+  if(req.params.lang < 2) {
+    fetch(`https://api.xsolla.com/merchant/v2/merchants/${config.xsolla.merchantId}/token`, {
+        method: 'post',
+        body: JSON.stringify({
+          "user": {
+            "id": {
+              "value": req.session.userid
+            },
+            "email": {
+              "value": req.session.email
+            }
+          },
+          "purchase": {
+            "checkout": {
+              "amount": price,
+              "currency": currency[langCode]
+            }
+          },
+          "settings": {
+            "project_id": config.xsolla.projectId,
+            "mode": "sandbox" //TODO: NEED TO DELETE ON RELEASE
+          }
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${config.xsolla.basicKey}`
+        },
+    })
+    .then(res => res.json())
+    .then(json => {
+      res.status(200).json({result: "success", token: json.token});
+    }).catch((error) => {
+      res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load token. It may be a problem with xsolla.'));
+    });
+  } else {
+    res.status(400).json(createErrorResponse('failed', 'Wrong request', `Lang code ${req.params.lang} doesn't exist.`));
   }
 });
 

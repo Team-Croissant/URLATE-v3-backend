@@ -143,5 +143,6 @@
 	"currency": "$",
 	"added_to_bag": "Added to bag",
 	"nothing_here": "Nothing here,/how about checking out the / or /skins/?",
-	"loading": "loading"
+	"loading": "loading",
+	"purchase": "Purchase"
 }
