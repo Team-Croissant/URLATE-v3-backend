@@ -385,6 +385,10 @@ p {
   cursor: pointer;
 }
 
+#editorIcon {
+  margin-left: -8px;
+}
+
 .closeBtn {
   z-index: 200;
   position: fixed;
