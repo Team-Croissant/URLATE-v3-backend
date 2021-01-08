@@ -145,7 +145,9 @@ const settingApply = () => {
   hide.bad = settings.game.applyJudge.Bad;
   hide.miss = settings.game.applyJudge.Miss;
   frameCounter = settings.game.counter;
-  volumeMaster.value = settings.sound.volume.master * 100;
+  for(let i = 0; i <= 1; i++) {
+    volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+  }
   let fileName = '';
   for(let i = 0; i < tracks.length; i++) {
     if(tracks[i].name == pattern.information.track) {
