@@ -44,29 +44,35 @@
         </div>
     </div>
     <div id="menuContainer">
-        <div id="backIconContainer" class="noClick"></div>
-        <img src="images/parts/elements/back1.png" class="backIcon noClick" id="back1">
-        <img src="images/parts/elements/back2.png" class="backIcon noClick" id="back2">
-        <img src="images/parts/elements/back3.png" class="backIcon noClick" id="back3">
-        <img src="images/parts/elements/back4.png" class="backIcon noClick" id="back4">
-        <img src="images/parts/elements/back5.png" class="backIcon noClick" id="back5">
         <div id="menuMain" class="menuSelector clickable" onclick="menuSelected(0)">
-            <img src="images/parts/graphicIcons/play.png" class="mainIcon">
+            <div class="fadeIconContainer">
+                <img src="images/parts/graphicIcons/play.png" class="mainIcon">
+                <img src="images/parts/graphicIcons/play_selected.png" class="fadeIcon">
+            </div>
             <span class="menuTitle"><%= __('play_title') %></span>
             <span class="light menuSubtitle"><%= __('play_subtitle') %></span>
         </div>
         <div id="menuEditor" class="menuSelector clickable" onclick="menuSelected(1)">
-            <img src="images/parts/graphicIcons/editor.png" class="mainIcon">
+            <div class="fadeIconContainer">
+                <img src="images/parts/graphicIcons/editor.png" class="mainIcon">
+                <img src="images/parts/graphicIcons/editor_selected.png" class="fadeIcon">
+            </div>
             <span class="menuTitle"><%= __('editor_title') %></span>
             <span class="light menuSubtitle"><%= __('editor_subtitle') %></span>
         </div>
         <div id="menuStore" class="menuSelector clickable" onclick="menuSelected(3)">
-            <img src="images/parts/graphicIcons/store.png" class="mainIcon">
+            <div class="fadeIconContainer">
+                <img src="images/parts/graphicIcons/store.png" class="mainIcon">
+                <img src="images/parts/graphicIcons/store_selected.png" class="fadeIcon">
+            </div>
             <span class="menuTitle"><%= __('store_title') %></span>
             <span class="light menuSubtitle"><%= __('store_subtitle') %></span>
         </div>
         <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected(2)">
-            <img src="images/parts/graphicIcons/advanced.png" class="mainIcon">
+            <div class="fadeIconContainer">
+                <img src="images/parts/graphicIcons/advanced.png" class="mainIcon">
+                <img src="images/parts/graphicIcons/advanced_selected.png" class="fadeIcon">
+            </div>
             <span class="menuTitle"><%= __('advanced_title') %></span>
             <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
         </div>

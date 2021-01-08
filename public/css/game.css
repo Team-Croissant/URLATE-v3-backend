@@ -58,6 +58,21 @@ body {
   height: 18vh;
 }
 
+.fadeIcon {
+  position: absolute;
+  height: 18vh;
+  opacity: 0;
+  transition-duration: .2s;
+}
+
+.fadeIcon:hover {
+  opacity: 1;
+}
+
+.fadeIconContainer {
+  display: flex;
+}
+
 .menuTitle {
   font-size: 3vh;
   font-weight: 600;
@@ -319,22 +334,8 @@ p {
   transition-duration: 1s;
   background: aliceblue;
   background-image: url('/images/backgrounds/main.png');
-}
-
-#backIconContainer {
-  position: absolute;
-  left: 0;
-  top: 0;
-  mix-blend-mode: color-burn;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/images/backgrounds/icons.png');
-  background-repeat: no-repeat;
-  background-position: center;
   background-size: cover;
-  background-attachment: fixed;
-  background-position: 100% 0%; 
-  background-size: 120%;
+  background-position: center;
 }
 
 #menuContainer.loaded {
@@ -349,10 +350,6 @@ p {
   text-align: center;
   align-items: center;
   justify-content: center;
-}
-
-.noClick {
-  pointer-events: none;
 }
 
 .clickable {
@@ -631,17 +628,6 @@ p {
   overflow-y: hidden;
   transform: scaleX(1.2);
   transition-duration: 0.3s;
-}
-
-.backIcon {
-  mix-blend-mode: color-burn;
-  position: fixed;
-  opacity: 0;
-  transition-duration: .5s;
-}
-
-.backIcon.show {
-  opacity: 0.3;
 }
 
 #back1 {
