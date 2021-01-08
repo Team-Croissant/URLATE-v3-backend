@@ -1,5 +1,3 @@
-let selection = 0;
-let selectionList = ['menuMain', 'menuEditor', 'menuAdvanced', 'menuStore'];
 let display = 0;
 let username = '';
 let analyser, dataArray;
@@ -512,24 +510,6 @@ Pace.on('done', () => {
   }
   loaded = 1;
 });
-
-const menuLeft = () => {
-  document.getElementById(selectionList[selection]).style.display = "none";
-  selection--;
-  if(selection < 0) {
-    selection = selectionList.length - 1;
-  }
-  document.getElementById(selectionList[selection]).style.display = "flex";
-};
-
-const menuRight = () => {
-  document.getElementById(selectionList[selection]).style.display = "none";
-  selection++;
-  if(selection > selectionList.length - 1) {
-    selection = 0;
-  }
-  document.getElementById(selectionList[selection]).style.display = "flex";
-};
 
 const infoScreen = () => {
   display = 4;
@@ -1082,8 +1062,8 @@ const addToCart = s => {
   });
 };
 
-const menuSelected = () => {
-  if(selection == 0) {
+const menuSelected = (n) => {
+  if(n == 0) {
     //play
     display = 1;
     if(songSelection == -1) {
@@ -1093,15 +1073,15 @@ const menuSelected = () => {
     }
     document.getElementById("selectContainer").style.display = "flex";
     document.getElementById("selectContainer").classList.add("fadeIn");
-  } else if(selection == 1) {
+  } else if(n == 1) {
     //editor
     window.location.href = `${url}/editor`;
-  } else if(selection == 2) {
+  } else if(n == 2) {
     //advanced
     display = 3;
     document.getElementById("advancedContainer").style.display = "block";
     document.getElementById("advancedContainer").classList.add("fadeIn");
-  } else if(selection == 3) {
+  } else if(n == 3) {
     //store
     document.getElementById("storeContainer").style.display = "block";
     document.getElementById("storeContainer").classList.add("fadeIn");

@@ -35,7 +35,7 @@
     </div>
     <div id="header">
         <div id="headerLeft">
-            <span id="name" class="light">USERNAME</span>
+            <strong id="name" class="metropolis">USERNAME</strong>
         </div>
         <div id="headerRight">
             <img src="https://img.icons8.com/windows/64/000000/info.png" class="icon clickable" onclick="infoScreen()">
@@ -50,32 +50,26 @@
         <img src="images/parts/elements/back3.png" class="backIcon noClick" id="back3">
         <img src="images/parts/elements/back4.png" class="backIcon noClick" id="back4">
         <img src="images/parts/elements/back5.png" class="backIcon noClick" id="back5">
-        <img src="https://img.icons8.com/metro/52/000000/chevron-left.png" class="icon clickable" onclick="menuLeft()">
-        <div id="menuMain" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/graphicIcons/cursor.png" class="mainIcon">
-            <div id="Hline"></div>
+        <div id="menuMain" class="menuSelector clickable" onclick="menuSelected(0)">
+            <img src="images/parts/graphicIcons/play.png" class="mainIcon">
             <span class="menuTitle"><%= __('play_title') %></span>
             <span class="light menuSubtitle"><%= __('play_subtitle') %></span>
         </div>
-        <div id="menuEditor" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/graphicIcons/editor.png" class="shadowIcon" id="editorIcon">
-            <div id="Hline"></div>
+        <div id="menuEditor" class="menuSelector clickable" onclick="menuSelected(1)">
+            <img src="images/parts/graphicIcons/editor.png" class="mainIcon">
             <span class="menuTitle"><%= __('editor_title') %></span>
             <span class="light menuSubtitle"><%= __('editor_subtitle') %></span>
         </div>
-        <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/graphicIcons/heart.png" class="shadowIcon" id="titleAdvancedIcon">
-            <div id="Hline"></div>
-            <span class="menuTitle"><%= __('advanced_title') %></span>
-            <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
-        </div>
-        <div id="menuStore" class="menuSelector clickable" onclick="menuSelected()">
-            <img src="images/parts/graphicIcons/store.png" class="shadowIcon" id="titleStoreIcon">
-            <div id="Hline"></div>
+        <div id="menuStore" class="menuSelector clickable" onclick="menuSelected(3)">
+            <img src="images/parts/graphicIcons/store.png" class="mainIcon">
             <span class="menuTitle"><%= __('store_title') %></span>
             <span class="light menuSubtitle"><%= __('store_subtitle') %></span>
         </div>
-        <img src="https://img.icons8.com/metro/52/000000/chevron-right.png" class="icon clickable" onclick="menuRight()">
+        <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected(2)">
+            <img src="images/parts/graphicIcons/advanced.png" class="mainIcon">
+            <span class="menuTitle"><%= __('advanced_title') %></span>
+            <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
+        </div>
     </div>
     <div id="selectContainer" class="containers metropolis">
         <div id="selectBackground"></div>

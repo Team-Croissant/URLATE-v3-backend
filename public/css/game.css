@@ -57,11 +57,6 @@ body {
   height: 18vh;
 }
 
-.shadowIcon {
-  filter: drop-shadow(0 0 5px rgba(30,30,30,.3));
-  height: 18vh;
-}
-
 .menuTitle {
   font-size: 3vh;
   font-weight: 600;
@@ -296,12 +291,6 @@ p {
   margin: 5px;
 }
 
-#Hline {
-  border-top: 2px solid #BBB;
-  width: 1.5em;
-  margin: 10px;
-}
-
 #selectContainer {
   background: #000 !important;
   position: fixed;
@@ -352,22 +341,6 @@ p {
   transform: scale(1);
 }
 
-#menuMain {
-  display: flex;
-}
-
-#menuEditor {
-  display: none;
-}
-
-#menuAdvanced {
-  display: none;
-}
-
-#menuStore {
-  display: none;
-}
-
 .menuSelector {
   width: 13vw;
   display: flex;
@@ -383,10 +356,6 @@ p {
 
 .clickable {
   cursor: pointer;
-}
-
-#editorIcon {
-  margin-left: -8px;
 }
 
 .closeBtn {
