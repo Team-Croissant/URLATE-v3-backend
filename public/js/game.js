@@ -21,6 +21,7 @@ let carts = new Set();
 let cartArray = [];
 let DLCdata = [];
 let skinData = [];
+let songData = [];
 let loading = false;
 
 let overlayTime = 0;
@@ -246,6 +247,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
             option.appendChild(document.createTextNode(skins[i]));
             skinSelector.appendChild(option); 
           }
+          for(let i = 0; i < DLCs.length; i++) {
+            fetch(`${api}/store/DLC/${DLCs[i]}`, {
+              method: 'GET',
+              credentials: 'include'
+            }).then(res => res.json())
+            .then((data) => {
+              if(data.result == 'success') {
+                data = data.data;
+                data.songs = JSON.parse(data.songs);
+                for(let j = 0; j < data.songs.length; j++) {
+                  songData.push(data.songs[j]);
+                }
+              } else {
+                alert('Failed to load DLC list.');
+                console.error('Failed to load DLC list.');
+              }
+            }).catch((error) => {
+              alert(`Error occured.\n${error}`);
+              console.error(`Error occured.\n${error}`);
+            });
+          }
           settingApply();
           fetch(`${api}/tracks`, {
             method: 'GET',
@@ -288,7 +310,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         document.getElementsByClassName('ranks')[i].classList.add(`rank${value.rank}`);
                         trackRecords[i][j] = {"rank": `rank${value.rank}`, "record": value.record, "medal": value.medal, "maxcombo": value.maxcombo};
                       } else {
-                        if((tracks[i].type == 1 && !isAdvanced) || tracks[i].type == 2) {
+                        if((tracks[i].type == 1 && !isAdvanced) || (tracks[i].type == 2 && !(songData.indexOf(tracks[i].name) != -1))) {
                           trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
                         } else {
                           trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
@@ -297,7 +319,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     }
                   } else {
                     for(let j = 0; j < 3; j++) {
-                      if((tracks[i].type == 1 && !isAdvanced) || tracks[i].type == 2) {
+                      if((tracks[i].type == 1 && !isAdvanced) || (tracks[i].type == 2 && !(songData.indexOf(tracks[i].name) != -1))) {
                         document.getElementsByClassName('ranks')[i].className = "ranks";
                         document.getElementsByClassName('ranks')[i].classList.add('rankL');
                         trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
@@ -339,7 +361,7 @@ const songSelected = n => {
   loadingShow();
   if(songSelection == n) {
     //play
-    if((tracks[n].type == 1 && !isAdvanced) || tracks[n].type == 2) {
+    if((tracks[n].type == 1 && !isAdvanced) || (tracks[n].type == 2 && !(songData.indexOf(tracks[n].name) != -1))) {
       alert('NOT ALLOWED TO PLAY'); //TODO
     } else {
       localStorage.difficultySelection = difficultySelection;
