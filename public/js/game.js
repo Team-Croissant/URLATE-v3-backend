@@ -845,8 +845,8 @@ const updateCart = async cart => {
                       </div>
                       <div class="storeBasketsRight">
                         <span class="storePrice">
-                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data.price)[langCode] * 0.8) + currency:
-                          numberWithCommas(JSON.parse(data.price)[langCode]) + currency}
+                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas((JSON.parse(data.price)[langCode] * 0.8) / 100 * data.sale) + currency:
+                          data.sale == '100' ? numberWithCommas(JSON.parse(data.price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data.price)[langCode] / 100 * data.sale) + currency}
                         </span>
                         <img src="https://img.icons8.com/material-rounded/24/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('DLC', '${data.name}')">`;
         } else {
@@ -875,8 +875,8 @@ const updateCart = async cart => {
                       </div>
                       <div class="storeBasketsRight">
                         <span class="storePrice">
-                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data.price)[langCode] * 0.8) + currency:
-                          numberWithCommas(JSON.parse(data.price)[langCode]) + currency}
+                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas((JSON.parse(data.price)[langCode] * 0.8) / 100 * data.sale) + currency:
+                          data.sale == '100' ? numberWithCommas(JSON.parse(data.price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data.price)[langCode] / 100 * data.sale) + currency}
                         </span>
                         <img src="https://img.icons8.com/material-rounded/50/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('Skin', '${data.name}')">`;
         } else {
@@ -968,8 +968,8 @@ const updateStore = () => {
                           <div class="storeSongsBottom">
                             <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased :
                                                       carts.has(data[i * 2 + j].name) ? addedToBag :
-                                                      isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) + currency:
-                                                      numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                                                      isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas((JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) / 100 * data[i * 2 + j].sale) + currency:
+                                                      data[i * 2 + j].sale == '100' ? numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] / 100 * data[i * 2 + j].sale) + currency}</span>
                           </div>
                         </div>
                       </div>`;
@@ -1009,8 +1009,8 @@ const updateStore = () => {
                         <div class="storeSkinPriceContainer">
                         <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased :
                                                   carts.has(data[i * 2 + j].name) ? addedToBag :
-                                                  isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) + currency:
-                                                  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency}</span>
+                                                  isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas((JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) / 100 * data[i * 2 + j].sale) + currency:
+                                                      data[i * 2 + j].sale == '100' ? numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode] / 100 * data[i * 2 + j].sale) + currency}</span>
                         </div>
                       </div>`;
         } else {

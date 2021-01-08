@@ -267,7 +267,7 @@ app.post('/xsolla/token', (req, res) => {
 
 app.post('/xsolla/webhook', async (req, res) => {
   if(req.headers.authorization == `Signature ${sha1(JSON.stringify(req.body) + config.xsolla.projectKey)}`) {
-    console.log(req.body.notification_type);
+    signale.debug(req.body.notification_type);
     switch(req.body.notification_type) {
       case 'user_validation':
         const result = await knex('users').select('userid').where('userid', req.body.user.id);
@@ -309,7 +309,7 @@ app.post('/xsolla/webhook', async (req, res) => {
         break;
       case 'refund':
       if(!req.body.purchase.subscription) {
-        console.log('refund success');
+        signale.warning(req.body);
       }
       break;
     }
@@ -381,7 +381,7 @@ app.get("/records/:track/:difficulty/:order/:sort/:nickname", async (req, res) =
 });
 
 app.get("/store/DLCs", async (req, res) => {
-  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs');
+  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs', 'sale');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
     return;
@@ -390,7 +390,7 @@ app.get("/store/DLCs", async (req, res) => {
 });
 
 app.get("/store/DLC/:name", async (req, res) => {
-  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs').where('name', req.params.name);
+  const results = await knex('storeDLC').select('name', 'previewFile', 'price', 'composer', 'songs', 'sale').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load DLC data.'));
     return;
@@ -399,7 +399,7 @@ app.get("/store/DLC/:name", async (req, res) => {
 });
 
 app.get("/store/skins", async (req, res) => {
-  const results = await knex('storeSkin').select('name', 'previewFile', 'price');
+  const results = await knex('storeSkin').select('name', 'previewFile', 'price', 'sale');
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load Skin data.'));
     return;
@@ -408,7 +408,7 @@ app.get("/store/skins", async (req, res) => {
 });
 
 app.get("/store/skin/:name", async (req, res) => {
-  const results = await knex('storeSkin').select('name', 'previewFile', 'price').where('name', req.params.name);
+  const results = await knex('storeSkin').select('name', 'previewFile', 'price', 'sale').where('name', req.params.name);
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load Skin data.'));
     return;
@@ -470,9 +470,9 @@ app.post("/store/purchase/:lang", async (req, res) => {
   let isAdvanced = await knex('users').select('advanced').where('userid', req.session.userid);
   isAdvanced = isAdvanced[0].advanced;
   for(let i = 0; i < cart.length; i++) {
-    const result = await knex(`store${cart[i].type}`).select('price').where('name', cart[i].item);
+    const result = await knex(`store${cart[i].type}`).select('price', 'sale').where('name', cart[i].item);
     let add = JSON.parse(result[0].price)[langCode];
-    price += add - add * 0.2 * isAdvanced;
+    price += (add - add * 0.2 * isAdvanced) / 100 * result[0].sale;
   }
   if(req.params.lang < 2) {
     fetch(`https://api.xsolla.com/merchant/v2/merchants/${config.xsolla.merchantId}/token`, {
