@@ -37,9 +37,10 @@
     <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
     <title>URLATE</title>
 </head>
-<body>
+<body onmousemove="mouseMove(event)">
+    <div id="animContainer" class="widthAnim"></div>
     <div id="logoContainer">
-        <img src="images/logos/URLATE.png" id="logo" alt="<%= __('index_logoAlt') %>">
+        <img src="images/logos/URLATE_WHITE.png" id="logo" alt="<%= __('index_logoAlt') %>">
         <% if(__('lang') == 'en') { %>
             <a href="/ko" class="bottomLang">English(영어)</a>
         <% } else { %>
@@ -61,6 +62,7 @@
         const loginFailed = "<%= __('login_failed') %>";
         const loginError = "<%= __('login_error') %>";
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>

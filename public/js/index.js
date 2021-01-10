@@ -1,4 +1,25 @@
+let lottieAnim;
+
 document.addEventListener("DOMContentLoaded", (event) => {
+  let widthWidth = window.screen.availWidth * window.devicePixelRatio;
+  let heightWidth = window.screen.availHeight * window.devicePixelRatio / 9 * 16;
+  if(widthWidth > heightWidth) {
+    animContainer.style.width = `${widthWidth}px`;
+    animContainer.style.height = `${widthWidth / 16 * 9}px`;
+  } else {
+    animContainer.style.width = `${heightWidth}px`;
+    animContainer.style.height = `${heightWidth / 16 * 9}px`;
+  }
+  lottieAnim = bodymovin.loadAnimation({
+    wrapper: animContainer,
+    animType: 'canvas',
+    loop: true,
+    path: 'lottie/index.json'
+  });
+  lottieAnim.addEventListener('DOMLoaded', () => {
+    canvasResize();
+  });
+  lottie.setSpeed(0.5);
   fetch(`${api}/auth/status`, {
     method: 'GET',
     credentials: 'include'
@@ -16,6 +37,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
     alert(`Error occured.\n${error}`);
   });
 });
+
+const mouseMove = (e) => {
+  lottie.pause();
+  animContainer.getElementsByTagName('canvas')[0].style.marginRight = `${50 + (e.clientX - (window.innerWidth / 2)) / (window.innerWidth / 2) * 50}px`;
+  animContainer.getElementsByTagName('canvas')[0].style.marginBottom = `${50 + (e.clientY - (window.innerHeight / 2)) / (window.innerHeight / 2) * 50}px`;
+  lottie.play();
+};
+
+const canvasResize = () => {
+  let lottieCanvas = animContainer.getElementsByTagName('canvas')[0];
+  let widthWidth = window.innerWidth * window.devicePixelRatio;
+  let heightWidth = window.innerHeight * window.devicePixelRatio / 9 * 16;
+  if(widthWidth > heightWidth) {
+    lottieCanvas.width = widthWidth;
+    lottieCanvas.height = widthWidth / 16 * 9;
+  } else {
+    lottieCanvas.width = heightWidth;
+    lottieCanvas.height = heightWidth / 16 * 9;
+  }
+}
+
+window.onresize = () => {
+  canvasResize();
+};
 
 window.onload = () => {
   document.getElementById('buttonContainer').style.transitionDuration = '2s';

@@ -4,13 +4,26 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #EEE;
     text-align: center;
     font-family: 'Heebo', 'Noto Sans KR', '나눔바른고딕', arial;
     letter-spacing: -1px;
+    overflow: hidden;
+}
+
+#animContainer {
+    background: linear-gradient(30deg, #6EACFE, #B451FF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 #logoContainer {
+    position: relative;
+    z-index: 1;
     width: 100vw;
     height: 62vh;
     display: flex;
@@ -20,6 +33,7 @@ body {
 }
 
 #buttonContainer {
+    z-index: 1;
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -31,7 +45,7 @@ body {
 }
 
 #logo {
-    height: 24vh;
+    height: 30vh;
 }
 
 #footer {
@@ -39,8 +53,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 5vh;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    height: 8vh;
     position: fixed;
     bottom: 0;
 }
@@ -49,11 +62,11 @@ body {
     margin-left: 5vw;
     margin-right: 5vw;
     text-decoration: none;
-    color: rgb(34, 34, 34);
+    color: #ffffffdd;
 }
 
 .bottomLang {
     text-decoration: none;
-    color: rgb(25, 153, 204);
+    color: #ffffffdd;
     font-size: .9em;
 }
