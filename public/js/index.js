@@ -38,12 +38,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
-const mouseMove = (e) => {
+/*const mouseMove = (e) => {
   lottie.pause();
   animContainer.getElementsByTagName('canvas')[0].style.marginRight = `${50 + (e.clientX - (window.innerWidth / 2)) / (window.innerWidth / 2) * 50}px`;
   animContainer.getElementsByTagName('canvas')[0].style.marginBottom = `${50 + (e.clientY - (window.innerHeight / 2)) / (window.innerHeight / 2) * 50}px`;
   lottie.play();
-};
+};*/
 
 const canvasResize = () => {
   let lottieCanvas = animContainer.getElementsByTagName('canvas')[0];
