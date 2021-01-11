@@ -926,6 +926,7 @@ const storePurchase = () => {
   .then(res => res.json())
   .then((data) => {
     let international = !(lang == "ko");
+    if(international) alert("International payment mode is executed according to the language setting of URLATE.\nSince payment is made in KRW, there may be a difference from the price displayed on the store.");
     tossPayments.requestPayment('카드', {
       amount: data.amount,
       orderId: data.orderId,
