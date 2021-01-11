@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
+@import url('metropolis.css');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 body {
     margin: 0;
     padding: 0;
     text-align: center;
-    font-family: 'Heebo', 'Noto Sans KR', '나눔바른고딕', arial;
+    font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
     letter-spacing: -1px;
     overflow: hidden;
 }
@@ -48,20 +48,25 @@ body {
     height: 30vh;
 }
 
-#footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 8vh;
+#footerLeft {
     position: fixed;
-    bottom: 0;
+    text-align: left;
+    font-size: 1.6vh;
+    color: white;
+    left: 2vh;
+    bottom: 2vh;
+}
+
+#footerRight {
+    position: fixed;
+    text-align: right;
+    font-size: 1.6vh;
+    color: white;
+    right: 2vh;
+    bottom: 2vh;
 }
 
 .link {
-    margin-left: 5vw;
-    margin-right: 5vw;
-    text-decoration: none;
     color: #ffffffdd;
 }
 
