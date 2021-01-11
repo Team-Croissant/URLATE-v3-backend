@@ -385,14 +385,14 @@ app.post("/store/purchase", async (req, res) => {
   for(let i = 0; i < cart.length; i++) {
     const result = await knex(`store${cart[i].type}`).select('price', 'sale').where('name', cart[i].item);
     let add = JSON.parse(result[0].price)[0];
-    price += (add - add * 0.2 * isAdvanced) / 100 * result[0].sale;
+    price += Math.round((add - add * 0.2 * isAdvanced) / 100 * result[0].sale);
   }
   redisClient.set(`Amount${orderId}`, price.toString());
-  delete req.session.bag;
   res.status(200).json({result: "success", amount: price, orderId: orderId, email: req.session.email});
 });
 
 app.get("/store/success", async (req, res) => {
+  delete req.session.bag;
   if(!req.session.userid) {
     res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
     return;
