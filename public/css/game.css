@@ -2052,3 +2052,12 @@ p {
   color: #666;
   text-decoration: line-through;
 }
+
+#storeFooterLeft {
+  position: fixed;
+  text-align: left;
+  font-size: 1.6vh;
+  color: black;
+  left: 2vh;
+  bottom: 2vh;
+}
