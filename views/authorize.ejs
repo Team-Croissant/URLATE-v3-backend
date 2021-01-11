@@ -21,7 +21,7 @@
     <input type="password" name="secondaryPassword" placeholder="<%= __('pwPlaceholder') %>" id="password" class="textbox" pattern="^[0-9]*$" minlength="4" maxlength="6" required>
     <span id="pw"><%= __('pwText') %></span>
     <input type="submit" class="button" onclick="check()" value="<%= __('done') %>">
-    <h5><a href="<%= api %>/logout?redirect=true" style="color: rgb(0, 135, 197); font-weight: 400;"><%= __('mainPage') %></a></h5>
+    <h5><a href="<%= api %>/auth/logout?redirect=true" style="color: rgb(0, 135, 197); font-weight: 400;"><%= __('mainPage') %></a></h5>
     <script>
         const projectUrl = "<%= url %>";
         const api = "<%= api %>";
