@@ -6,6 +6,7 @@ import session = require('express-session');
 import fetch = require('node-fetch');
 import sha1 = require('sha1');
 import redis = require('redis');
+import { v4 as uuidv4 } from 'uuid';
 const MySQLStore = require('express-mysql-session')(session);
 const hasher = require("pbkdf2-password")();
 
@@ -21,6 +22,7 @@ const plus = google.plus('v1');
 let whitelist = 'bjgumsun@gmail.com, kyungblog@gmail.com, bjgumsun@dimigo.hs.kr, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com';
 
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
+import { datacatalog } from 'googleapis/build/src/apis/datacatalog';
 
 const app = express();
 app.locals.pretty = true;
@@ -231,98 +233,6 @@ app.get("/trackInfo/:name", async (req, res) => {
   res.status(200).json({result: "success", info: results});
 });
 
-app.post('/xsolla/token', (req, res) => {
-  if(req.body.type == 'advanced') {
-    fetch(`https://api.xsolla.com/merchant/v2/merchants/${config.xsolla.merchantId}/token`, {
-        method: 'post',
-        body: JSON.stringify({
-          "user": {
-            "id": {
-              "value": req.session.userid
-            },
-            "email": {
-              "value": req.session.email
-            }
-          },
-          "settings": {
-            "project_id": config.xsolla.projectId,
-            "mode": "sandbox" //TODO: NEED TO DELETE ON RELEASE
-          }
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${config.xsolla.basicKey}`
-        },
-    })
-    .then(res => res.json())
-    .then(json => {
-      res.status(200).json({result: "success", token: json.token});
-    }).catch((error) => {
-      res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load token. It may be a problem with xsolla.'));
-    });
-    return;
-  }
-  res.status(400).json(createErrorResponse('failed', 'Wrong access', 'You accessed the wrong address.'));
-});
-
-app.post('/xsolla/webhook', async (req, res) => {
-  if(req.headers.authorization == `Signature ${sha1(JSON.stringify(req.body) + config.xsolla.projectKey)}`) {
-    signale.debug(req.body.notification_type);
-    switch(req.body.notification_type) {
-      case 'user_validation':
-        const result = await knex('users').select('userid').where('userid', req.body.user.id);
-        if(result[0] && req.body.settings.project_id == config.xsolla.projectId && req.body.settings.merchant_id == config.xsolla.merchantId) {
-          res.end();
-          return;
-        }
-        res.status(400).json({"error": {
-          "code": "INVALID_USER",
-          "message": "Invalid user"
-        }});
-        return;
-      case 'payment':
-        if(!req.body.purchase.subscription) {
-          redisClient.get(`Cart${req.body.user.id}`, async (err, reply) => {
-            let cart = JSON.parse(reply);
-            let saved = await knex('users').select('skins', 'DLCs').where('userid', req.body.user.id);
-            let DLCs = new Set(JSON.parse(saved[0]['DLCs']));
-            let skins = new Set(JSON.parse(saved[0]['skins']));
-            for(let i = 0; i < cart.length; i++) {
-              if(cart[i].type == 'DLC') {
-                DLCs.add(cart[i].item);
-              } else if(cart[i].type == 'Skin') {
-                skins.add(cart[i].item);
-              }
-            }
-            await knex('users').update({'skins': JSON.stringify(Array.from(skins)), 'DLCs': JSON.stringify(Array.from(DLCs))}).where('userid', req.body.user.id);
-          });
-        }
-        break;
-      case 'create_subscription':
-        await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
-        break;
-      case 'update_subscription':
-        await knex('users').update({'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
-        break;
-      case 'cancel_subscription':
-        await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()}).where('userid', req.body.user.id);
-        break;
-      case 'refund':
-      if(!req.body.purchase.subscription) {
-        signale.warning(req.body);
-      }
-      break;
-    }
-  } else {
-    res.status(400).json({"error": {
-      "code": "INVALID_SIGNATURE",
-      "message": "Invaild signature"
-    }});
-    return;
-  }
-  res.end();
-});
-
 app.put('/settings', async (req, res) => {
   if(!req.session.userid) {
     res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
@@ -461,57 +371,87 @@ app.delete("/store/bag", (req, res) => {
   }
 });
 
-app.post("/store/purchase/:lang", async (req, res) => {
-  let currency = ["KRW", "JPY", "USD"];
+app.post("/store/purchase", async (req, res) => {
+  if(!req.session.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
+  }
+  let orderId = uuidv4();
   let cart = req.body.cart;
-  redisClient.set(`Cart${req.session.userid}`, JSON.stringify(cart));
+  redisClient.set(`Cart${orderId}`, JSON.stringify(cart));
   let price = 0;
-  let langCode = Number(req.params.lang);
   let isAdvanced = await knex('users').select('advanced').where('userid', req.session.userid);
   isAdvanced = isAdvanced[0].advanced;
   for(let i = 0; i < cart.length; i++) {
     const result = await knex(`store${cart[i].type}`).select('price', 'sale').where('name', cart[i].item);
-    let add = JSON.parse(result[0].price)[langCode];
+    let add = JSON.parse(result[0].price)[0];
     price += (add - add * 0.2 * isAdvanced) / 100 * result[0].sale;
   }
-  if(req.params.lang < 2) {
-    fetch(`https://api.xsolla.com/merchant/v2/merchants/${config.xsolla.merchantId}/token`, {
-        method: 'post',
-        body: JSON.stringify({
-          "user": {
-            "id": {
-              "value": req.session.userid
-            },
-            "email": {
-              "value": req.session.email
-            }
-          },
-          "purchase": {
-            "checkout": {
-              "amount": price,
-              "currency": currency[langCode]
-            }
-          },
-          "settings": {
-            "project_id": config.xsolla.projectId,
-            "mode": "sandbox" //TODO: NEED TO DELETE ON RELEASE
-          }
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${config.xsolla.basicKey}`
-        },
-    })
-    .then(res => res.json())
-    .then(json => {
-      delete req.session.bag;
-      res.status(200).json({result: "success", token: json.token});
-    }).catch((error) => {
-      res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load token. It may be a problem with xsolla.'));
-    });
-  } else {
-    res.status(400).json(createErrorResponse('failed', 'Wrong request', `Lang code ${req.params.lang} doesn't exist.`));
+  redisClient.set(`Amount${orderId}`, price.toString());
+  delete req.session.bag;
+  res.status(200).json({result: "success", amount: price, orderId: orderId, email: req.session.email});
+});
+
+app.get("/store/success", async (req, res) => {
+  if(!req.session.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
   }
+  const paymentKey = req.query.paymentKey;
+  const orderId = req.query.orderId;
+  const amount = req.query.amount;
+  redisClient.get(`Amount${orderId}`, async (err, data) => {
+    if(err) {
+      res.redirect(`${config.project.url}/storeDenied?error=${err}`);
+      return;
+    }
+    if(Number(data) == amount) {
+      fetch(`https://api.tosspayments.com/v1/payments/${paymentKey}`, {
+          method: 'post',
+          body: JSON.stringify({
+            "orderId": orderId,
+            "amount": amount
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${config.toss.basicKey}`
+          },
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status == 'DONE') {
+          redisClient.get(`Cart${orderId}`, async (err, reply) => {
+            if(err) {
+              res.redirect(`${config.project.url}/storeDenied?error=${err}`);
+              return;
+            }
+            let cart = JSON.parse(reply);
+            let saved = await knex('users').select('skins', 'DLCs').where('userid', req.session.userid);
+            let DLCs = new Set(JSON.parse(saved[0]['DLCs']));
+            let skins = new Set(JSON.parse(saved[0]['skins']));
+            for(let i = 0; i < cart.length; i++) {
+              if(cart[i].type == 'DLC') {
+                DLCs.add(cart[i].item);
+              } else if(cart[i].type == 'Skin') {
+                skins.add(cart[i].item);
+              }
+            }
+            await knex('users').update({'skins': JSON.stringify(Array.from(skins)), 'DLCs': JSON.stringify(Array.from(DLCs))}).where('userid', req.session.userid);
+            res.redirect(`${config.project.url}/storePurchased`);
+          });
+        }
+      }).catch((error) => {
+        res.redirect(`${config.project.url}/storeDenied?error=${error}`);
+      });
+    } else {
+      res.redirect(`${config.project.url}/storeDenied?error=Wrong request`);
+    }
+  });
+});
+
+app.get("/store/fail", async (req, res) => {
+  const message = req.params.message;
+  res.render("storeDenied", {error: message});
 });
 
 app.get('/auth/logout', (req, res) => {
@@ -525,7 +465,7 @@ app.get('/auth/logout', (req, res) => {
   delete req.session.bag;
   req.session.save(() => {
     if(req.query.redirect == 'true') {
-      res.redirect("https://rhyga.me");
+      res.redirect(config.project.url);
     } else {
       res.status(200).json(createSuccessResponse('success'));
     }

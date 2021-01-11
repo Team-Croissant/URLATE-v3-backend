@@ -1,0 +1,44 @@
+@import url('metropolis.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+    letter-spacing: -1px;
+    overflow: hidden;
+}
+
+#titleContainer {
+  position: fixed;
+  top: 4vh;
+  left: 0;
+  width: 100vw;
+}
+
+#title {
+  font-size: 5vh;
+  font-weight: 700;
+}
+
+#contentsContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#animContainer {
+  width: 20vh;
+  height: 20vh;
+}
+
+#infoText {
+  font-weight: 600;
+  color: #444;
+  margin-top: 5vh;
+  font-size: 3vh;
+}

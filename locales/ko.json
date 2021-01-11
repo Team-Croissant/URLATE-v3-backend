@@ -160,5 +160,10 @@
 	"added_to_bag": "쇼핑백에 추가됨",
 	"nothing_here": "아무것도 없네요,//나 /스킨/을 구경해보시는건 어떤가요?",
 	"loading": "로딩중",
-	"purchase": "구매하기"
+	"purchase": "구매하기",
+	"purchase_success": "결제가 성공적으로 이루어졌습니다.",
+	"move_to_game_after_1": "",
+	"move_to_game_after_2": " 초 뒤 게임으로 이동합니다..",
+	"purchase_fail": "결제에 실패했습니다.",
+	"error_message": "에러 메시지"
 }

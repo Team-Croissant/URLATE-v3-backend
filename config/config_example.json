@@ -24,11 +24,9 @@
     "clientId" : "GOOGLE CLIENT ID",
     "clientSecret" : "GOOGLE CLIENT SECRET"
   },
-  "xsolla" : {
-    "merchantId": "XSOLLA MERCHANT ID",
-    "apiKey": "XSOLLA API KEY",
-    "projectId": "XSOLLA PROJECT ID",
-    "basicKey": "XSOLLA BASIC KEY",
-    "projectKey": "XSOLLA PROJECT SECRET KEY"
+  "toss" : {
+    "clientKey": "TOSS PAYMENTS CLIENT KEY",
+    "secretKey": "TOSS PAYMENTS SECRET KEY",
+    "basicKey": "TOSS PAYMENTS BASIC KEY"
   }
 }

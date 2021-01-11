@@ -1,3 +1,6 @@
+const clientKey = 'test_ck_D4yKeq5bgrpenOK60508GX0lzW6Y';
+const tossPayments = TossPayments(clientKey);
+
 let display = 0;
 let username = '';
 let analyser, dataArray;
@@ -910,7 +913,7 @@ const storePurchase = () => {
   } else if(lang == 'en') {
     langCode = 2;
   }
-  fetch(`${api}/store/purchase/${langCode}`, {
+  fetch(`${api}/store/purchase`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify({
@@ -922,11 +925,19 @@ const storePurchase = () => {
   })
   .then(res => res.json())
   .then((data) => {
-    if(data.result == 'success') {
-      window.location.href = `https://sandbox-secure.xsolla.com/paystation3/?access_token=${data.token}`;
-    } else {
-      alert(`Error occured.\n${data.error}`);
-    }
+    let international = !(lang == "ko");
+    tossPayments.requestPayment('카드', {
+      amount: data.amount,
+      orderId: data.orderId,
+      orderName: 'URLATE 상점 결제',
+      customerName: username,
+      customerEmail: data.email,
+      successUrl: `${api}/store/success`,
+      failUrl: `${api}/store/fail`,
+      useInternationalCardOnly: international
+    });
+    purchasingContainer.style.pointerEvents = "none";
+    purchasingContainer.style.opacity = "0";
   }).catch((error) => {
     purchasingContainer.style.pointerEvents = "none";
     purchasingContainer.style.opacity = "0";

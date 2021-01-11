@@ -143,5 +143,10 @@
 	"added_to_bag": "Added to bag",
 	"nothing_here": "Nothing here,/how about checking out the / or /skins/?",
 	"loading": "loading",
-	"purchase": "Purchase"
+	"purchase": "Purchase",
+	"purchase_success": "Purchase success.",
+	"move_to_game_after_1": "We will move to the game in ",
+	"move_to_game_after_2": " seconds.",
+	"purchase_fail": "Purchase failed.",
+	"error_message": "Error: "
 }

@@ -39,6 +39,7 @@
     "socket.io": "^2.3.0",
     "supervisor": "^0.12.0",
     "typescript": "^3.8.3",
+    "uuid": "^3.3.3",
     "yui-lint": "^0.2.0"
   },
   "devDependencies": {

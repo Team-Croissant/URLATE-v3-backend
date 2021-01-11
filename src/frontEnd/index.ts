@@ -69,6 +69,14 @@ app.get('/info', (req, res) => {
   res.render('information');
 });
 
+app.get('/storePurchased', (req, res) => {
+  res.render('storePurchased', { url : config.project.url });
+});
+
+app.get('/storeDenied', (req, res) => {
+  res.render('storeDenied', { error: req.query.error, url : config.project.url });
+});
+
 http.createServer(app).listen(port, () => {
   signale.success(`HTTP Server running at port ${port}.`);
 });
