@@ -69,8 +69,9 @@
 	"advanced_wicon_description_14": "You can try out new features that will be updated in the future.",
 	"advanced_wicon_description_15": "Welcome to the development server!",
 	"advanced_subtitle_3": "All right, I like it!",
-	"advanced_description_8": "Click the Sign Up button and set a price. The amount is automatically paid every month.",
-	"advanced_description_9": "You can cancel your subscription at any time!",
+	"advanced_description_8": "Click the Join button and enjoy all of the above benefits.",
+	"advanced_description_9": "The monthly payment of 4,900₩(About 4$) is automatically charged.",
+	"advanced_description_10": "You can cancel your subscription at any time!",
 	"register": "Join",
 	"registered": "Modification",
 	"enabled": "Enabled",
@@ -148,5 +149,6 @@
 	"move_to_game_after_1": "We will move to the game in ",
 	"move_to_game_after_2": " seconds.",
 	"purchase_fail": "Purchase failed.",
-	"error_message": "Error: "
+	"error_message": "Error: ",
+	"month": "mo."
 }

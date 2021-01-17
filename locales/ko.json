@@ -85,8 +85,9 @@
 	"advanced_wicon_description_14": "추후 업데이트될 신기능도 미리 체험해볼 수 있습니다.",
 	"advanced_wicon_description_15": "개발서버로 어서 오세요!",
 	"advanced_subtitle_3": "좋습니다, 마음에 들어요!",
-	"advanced_description_8": "가입하기 버튼을 누르고, 가격을 정해보세요. 금액이 매월 자동으로 결제됩니다.",
-	"advanced_description_9": "언제든지 구독을 취소할 수 있어요!",
+	"advanced_description_8": "가입하기 버튼을 누르고, 위의 혜택들을 전부 받아보세요.",
+	"advanced_description_9": "매월 4,900₩이 자동으로 결제됩니다.",
+	"advanced_description_10": "언제든지 구독을 취소할 수 있어요!",
 	"register": "가입하기",
 	"purchasing_1": "잠시만 기다려주십시오,",
 	"purchasing_2": "결제창으로 이동하고 있습니다..",
@@ -165,5 +166,6 @@
 	"move_to_game_after_1": "",
 	"move_to_game_after_2": " 초 뒤 게임으로 이동합니다..",
 	"purchase_fail": "결제에 실패했습니다.",
-	"error_message": "에러 메시지"
+	"error_message": "에러 메시지",
+	"month": "개월"
 }
