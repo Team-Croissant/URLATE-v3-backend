@@ -850,8 +850,7 @@ const updateCart = async cart => {
                       </div>
                       <div class="storeBasketsRight">
                         <span class="storePrice">
-                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round((JSON.parse(data.price)[langCode] * 0.8) / 100 * data.sale * 100) / 100) + currency:
-                          data.sale == '100' ? numberWithCommas(JSON.parse(data.price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round(JSON.parse(data.price)[langCode] / 100 * data.sale * 100) / 100) + currency}
+                          ${getPriceText([], true, data, langCode)}
                         </span>
                         <img src="https://img.icons8.com/material-rounded/24/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('DLC', '${data.name}')">`;
         } else {
@@ -880,8 +879,7 @@ const updateCart = async cart => {
                       </div>
                       <div class="storeBasketsRight">
                         <span class="storePrice">
-                          ${isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round((JSON.parse(data.price)[langCode] * 0.8) / 100 * data.sale * 100) / 100) + currency:
-                          data.sale == '100' ? numberWithCommas(JSON.parse(data.price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data.price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round(JSON.parse(data.price)[langCode] / 100 * data.sale * 100) / 100) + currency}
+                          ${getPriceText([], true, data, langCode)}
                         </span>
                         <img src="https://img.icons8.com/material-rounded/50/000000/delete-sign.png" class="storeDelete" onclick="cartDelete('Skin', '${data.name}')">`;
         } else {
@@ -925,8 +923,6 @@ const storePurchase = () => {
   })
   .then(res => res.json())
   .then((data) => {
-    let international = !(lang == "ko");
-    if(international) alert("International payment mode is executed according to the language setting of URLATE.\nSince payment is made in KRW, there may be a difference from the price displayed on the store.");
     tossPayments.requestPayment('카드', {
       amount: data.amount,
       orderId: data.orderId,
@@ -945,6 +941,37 @@ const storePurchase = () => {
     alert(`Error occured.\n${error}`);
     console.error(`Error occured.\n${error}`);
   });
+};
+
+const getPriceText = (array, ignoreCart, data, langCode) => {
+  let priceData = '';
+  if(array.indexOf(data.name) != -1) {
+    priceData = purchased;
+  } else if(carts.has(data.name) && !ignoreCart) {
+    priceData = addedToBag;
+  } else if(isAdvanced) {
+    let originalPrice = numberWithCommas(JSON.parse(data.price)[0]) + '₩';
+    let saledPrice = numberWithCommas(Math.round((JSON.parse(data.price)[0] * 0.8) * data.sale) / 100) + '₩';
+    if(langCode) {
+      saledPrice += `(${numberWithCommas(Math.round((JSON.parse(data.price)[langCode] * 0.8) * data.sale) / 100) + currency})`;
+    }
+    priceData = `<span class="storePriceSale">${originalPrice}</span>${saledPrice}`;
+  } else {
+    let originalPrice = numberWithCommas(JSON.parse(data.price)[0]) + '₩';
+    let saledPrice = '';
+    if(data != '100') {
+      saledPrice = numberWithCommas(Math.round(JSON.parse(data.price)[0] * data.sale) / 100) + '₩';
+    }
+    if(saledPrice == '') {
+      priceData = originalPrice;
+    } else {
+      priceData = `<span class="storePriceSale">${originalPrice}</span>${saledPrice}`;
+    }
+    if(langCode) {
+      priceData += `(${numberWithCommas(Math.round(JSON.parse(data.price)[langCode] * data.sale) / 100) + currency})`;
+    }
+  }
+  return priceData;
 };
 
 const updateStore = () => {
@@ -980,10 +1007,7 @@ const updateStore = () => {
                             <span class="storeSongArtist">${data[i * 2 + j].composer}</span>
                           </div>
                           <div class="storeSongsBottom">
-                            <span class="storePrice">${DLCs.indexOf(data[i * 2 + j].name) != -1 ? purchased :
-                                                      carts.has(data[i * 2 + j].name) ? addedToBag :
-                                                      isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round((JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) / 100 * data[i * 2 + j].sale * 100) / 100) + currency:
-                                                      data[i * 2 + j].sale == '100' ? numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round(JSON.parse(data[i * 2 + j].price)[langCode] / 100 * data[i * 2 + j].sale * 100) / 100) + currency}</span>
+                            <span class="storePrice">${getPriceText(DLCs, false, data[i * 2 + j], langCode)}</span>
                           </div>
                         </div>
                       </div>`;
@@ -1021,10 +1045,7 @@ const updateStore = () => {
                           <img src="${cdn}/skins/${data[i * 2 + j].previewFile}.png" class="storeSkin">
                         </div>
                         <div class="storeSkinPriceContainer">
-                        <span class="storePrice">${skins.indexOf(data[i * 2 + j].name) != -1 ? purchased :
-                                                  carts.has(data[i * 2 + j].name) ? addedToBag :
-                                                  isAdvanced ? '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round((JSON.parse(data[i * 2 + j].price)[langCode] * 0.8) / 100 * data[i * 2 + j].sale * 100) / 100) + currency:
-                                                      data[i * 2 + j].sale == '100' ? numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency : '<span class="storePriceSale">' + numberWithCommas(JSON.parse(data[i * 2 + j].price)[langCode]) + currency + '</span>' +  numberWithCommas(Math.round(JSON.parse(data[i * 2 + j].price)[langCode] / 100 * data[i * 2 + j].sale * 100) / 100) + currency}</span>
+                        <span class="storePrice">${getPriceText(skins, false, data[i * 2 + j], langCode)}</span>
                         </div>
                       </div>`;
         } else {
