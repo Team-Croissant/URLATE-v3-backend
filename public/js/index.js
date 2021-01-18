@@ -1,8 +1,8 @@
 let lottieAnim;
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  let widthWidth = window.screen.availWidth * window.devicePixelRatio;
-  let heightWidth = window.screen.availHeight * window.devicePixelRatio / 9 * 16;
+  let widthWidth = window.screen.availWidth;
+  let heightWidth = window.screen.availHeight / 9 * 16;
   if(widthWidth > heightWidth) {
     animContainer.style.width = `${widthWidth}px`;
     animContainer.style.height = `${widthWidth / 16 * 9}px`;
@@ -111,12 +111,4 @@ const signInCallback = (authResult) => {
   } else {
     alert(loginError);
   }
-};
-  
-
-const signOut = () => {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(() => {
-    console.log('User signed out.');
-  });
 };

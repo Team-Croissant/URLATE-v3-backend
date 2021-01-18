@@ -3,6 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 body {
+  background-size: cover;
+  background-position: center;
+  background-image: url('/images/backgrounds/main.png');
   user-select: none;
   margin: 0;
   padding: 0;
@@ -179,18 +182,20 @@ p {
 }
 
 #loadingContainer {
-    opacity: 1;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/images/backgrounds/loading.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+  position: absolute;
+  z-index: 1;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/backgrounds/loading.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 #logo {
@@ -323,6 +328,8 @@ p {
 }
 
 #menuContainer {
+  position: fixed;
+  z-index: 1;
   width: 100vw;
   height: 100vh;
   display: none;
@@ -332,10 +339,6 @@ p {
   align-items: center;
   justify-content: center;
   transition-duration: 1s;
-  background: aliceblue;
-  background-image: url('/images/backgrounds/main.png');
-  background-size: cover;
-  background-position: center;
 }
 
 #menuContainer.loaded {
@@ -2060,4 +2063,20 @@ p {
   color: black;
   left: 2vh;
   bottom: 2vh;
+}
+
+#animContainer {
+  background-image: url('/images/backgrounds/main.png');
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#animContainer > canvas {
+  mix-blend-mode: color-burn;
 }

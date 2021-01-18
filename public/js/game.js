@@ -25,6 +25,8 @@ let skinData = [];
 let songData = [];
 let loading = false;
 
+let lottieAnim;
+
 let overlayTime = 0;
 let shiftDown = false;
 
@@ -45,9 +47,23 @@ let offsetSong = new Howl({
   loop: true
 });
 
+const lottieResize = () => {
+  let lottieCanvas = animContainer.getElementsByTagName('canvas')[0];
+  let widthWidth = window.innerWidth * window.devicePixelRatio;
+  let heightWidth = window.innerHeight * window.devicePixelRatio / 9 * 16;
+  if(widthWidth > heightWidth) {
+    lottieCanvas.width = widthWidth;
+    lottieCanvas.height = widthWidth / 16 * 9;
+  } else {
+    lottieCanvas.width = heightWidth;
+    lottieCanvas.height = heightWidth / 16 * 9;
+  }
+};
+
 const initialize = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  lottieResize();
 };
 
 const convertWordArrayToUint8Array = wordArray => {
@@ -198,6 +214,25 @@ const sortAsName = (a, b) => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  let widthWidth = window.screen.availWidth;
+  let heightWidth = window.screen.availHeight / 9 * 16;
+  if(widthWidth > heightWidth) {
+    animContainer.style.width = `${widthWidth}px`;
+    animContainer.style.height = `${widthWidth / 16 * 9}px`;
+  } else {
+    animContainer.style.width = `${heightWidth}px`;
+    animContainer.style.height = `${heightWidth / 16 * 9}px`;
+  }
+  lottieAnim = bodymovin.loadAnimation({
+    wrapper: animContainer,
+    animType: 'canvas',
+    loop: true,
+    path: 'lottie/game.json'
+  });
+  lottieAnim.addEventListener('DOMLoaded', () => {
+    lottieResize();
+  });
+  lottie.setSpeed(0.5);
   fetch(`${api}/auth/status`, {
     method: 'GET',
     credentials: 'include'
