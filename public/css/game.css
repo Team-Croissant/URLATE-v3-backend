@@ -620,6 +620,7 @@ p {
 }
 
 #visualizer {
+  z-index: 1;
   filter: invert(87%) sepia(3%) saturate(3117%) hue-rotate(186deg) brightness(101%) contrast(104%);
   pointer-events: none;
   position: fixed;
