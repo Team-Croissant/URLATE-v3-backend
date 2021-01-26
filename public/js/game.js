@@ -994,7 +994,7 @@ const getPriceText = (array, ignoreCart, data, langCode) => {
   } else {
     let originalPrice = numberWithCommas(JSON.parse(data.price)[0]) + '₩';
     let saledPrice = '';
-    if(data != '100') {
+    if(data.sale != '100') {
       saledPrice = numberWithCommas(Math.round(JSON.parse(data.price)[0] * data.sale) / 100) + '₩';
     }
     if(saledPrice == '') {
