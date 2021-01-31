@@ -454,8 +454,7 @@ app.get("/store/success", async (req, res) => {
 });
 
 app.get("/store/fail", async (req, res) => {
-  const message = req.params.message;
-  res.render("storeDenied", {error: message});
+  res.redirect(`${config.project.url}/storeDenied?error=${req.params.message}`);
 });
 
 app.get('/auth/logout', (req, res) => {
