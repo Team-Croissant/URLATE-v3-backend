@@ -4,7 +4,6 @@ import http = require('http');
 import express = require('express');
 import session = require('express-session');
 import fetch = require('node-fetch');
-import sha1 = require('sha1');
 import redis = require('redis');
 import { v4 as uuidv4 } from 'uuid';
 const MySQLStore = require('express-mysql-session')(session);
