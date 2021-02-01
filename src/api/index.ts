@@ -441,6 +441,8 @@ app.get("/store/success", async (req, res) => {
             await knex('users').update({'skins': JSON.stringify(Array.from(skins)), 'DLCs': JSON.stringify(Array.from(DLCs))}).where('userid', req.session.userid);
             res.redirect(`${config.project.url}/storePurchased`);
           });
+        } else {
+          res.redirect(`${config.project.url}/storeDenied?error=undefined`);
         }
       }).catch((error) => {
         res.redirect(`${config.project.url}/storeDenied?error=${error}`);
