@@ -938,14 +938,6 @@ const updateCart = async cart => {
 const storePurchase = () => {
   purchasingContainer.style.pointerEvents = "all";
   purchasingContainer.style.opacity = "1";
-  let langCode = 0;
-  if(lang == 'ko') {
-    langCode = 0;
-  } else if(lang == 'ja') {
-    langCode = 1;
-  } else if(lang == 'en') {
-    langCode = 2;
-  }
   fetch(`${api}/store/purchase`, {
     method: 'POST',
     credentials: 'include',
@@ -958,6 +950,7 @@ const storePurchase = () => {
   })
   .then(res => res.json())
   .then((data) => {
+    let international = !(lang == "ko");
     tossPayments.requestPayment('카드', {
       amount: data.amount,
       orderId: data.orderId,
