@@ -108,10 +108,8 @@ app.post('/auth/login', (req, res) => {
         req.session.accessToken = access_token;
         req.session.refreshToken = refresh_token;
         req.session.save(() => {
-          if(whitelist.indexOf(response.data.emails[0].value) == -1) {
             signale.debug(new Date());
             signale.debug(`User logined : ${response.data.emails[0].value}`);
-          }
           res.status(200).json(createSuccessResponse('success'));
         });
       } else {
@@ -119,6 +117,7 @@ app.post('/auth/login', (req, res) => {
         signale.debug(`User login blocked by whitelist : ${response.data.emails[0].value}`);
         res.status(400).json(createErrorResponse('failed', 'Not Whitelisted', 'Provided email is not whitelisted.'));
       }
+      return;
     });
   });
 });
