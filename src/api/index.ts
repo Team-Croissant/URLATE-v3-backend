@@ -108,8 +108,8 @@ app.post('/auth/login', (req, res) => {
         req.session.accessToken = access_token;
         req.session.refreshToken = refresh_token;
         req.session.save(() => {
-            signale.debug(new Date());
-            signale.debug(`User logined : ${response.data.emails[0].value}`);
+          signale.debug(new Date());
+          signale.debug(`User logined : ${response.data.emails[0].value}`);
           res.status(200).json(createSuccessResponse('success'));
         });
       } else {
@@ -196,7 +196,7 @@ app.get("/user", async (req, res) => {
     return;
   }
 
-  const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced', 'DLCs').where('userid', req.session.userid)
+  const results = await knex('users').select('nickname', 'settings', 'skins', 'advanced', 'DLCs', 'userid').where('userid', req.session.userid)
   if (!results.length) {
     res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load data. Use /auth/status to check your status.'));
     return;
@@ -450,6 +450,56 @@ app.get("/store/success", async (req, res) => {
     } else {
       res.redirect(`${config.project.url}/storeDenied?error=Wrong request`);
     }
+  });
+});
+
+app.get("/billing/success", async (req, res) => {
+  const customerKey = req.query.customerKey;
+  const authKey = req.query.authKey;
+  if(!req.session.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
+  }
+  if(req.session.userid != customerKey) {
+    res.redirect(`${config.project.url}/storeDenied?error=Invaild customerKey`);
+    return;
+  }
+  fetch(`https://api.tosspayments.com/v1/billing/authorizations/${authKey}`, {
+    method: 'post',
+    body: JSON.stringify({
+      "customerKey": customerKey
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${config.toss.basicKey}`
+    },
+  })
+  .then(res => res.json())
+  .then(data => {
+    fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
+      method: 'post',
+      body: JSON.stringify({
+        "amount": 4900,
+        "customerEmail": req.session.email,
+        "customerKey": customerKey,
+        "orderId": uuidv4(),
+        "orderName": "URLATE ADVANCED 구독",
+        "taxFreeAmount": 0
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${config.toss.basicKey}`
+      },
+    })
+    .then(res => res.json())
+    .then(async data => {
+      if(data.status == 'DONE') {
+        await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date()}).where('userid', req.session.userid);
+        res.redirect(`${config.project.url}/storePurchased`);
+      } else {
+        res.redirect(`${config.project.url}/storeDenied?error=undefined`);
+      }
+    });
   });
 });
 

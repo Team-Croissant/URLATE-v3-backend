@@ -1,7 +1,8 @@
-const clientKey = 'test_ck_D4yKeq5bgrpenOK60508GX0lzW6Y';
+const clientKey = 'test_ck_lpP2YxJ4K87dLMWBovz3RGZwXLOb';
 const tossPayments = TossPayments(clientKey);
 
 let display = 0;
+let userid;
 let username = '';
 let analyser, dataArray;
 let canvas = document.getElementById("renderer");
@@ -270,6 +271,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             urlateText.innerHTML = '<strong>URLATE</strong> Advanced';
             registerBtn.value = registered;
             registerBtn.style.background = '#444';
+            registerBtn.disabled = true
+            registerBtn.classList.remove('clickable');
             headerLeft.style.backgroundImage = `url('/images/parts/elements/namespace_advanced.png')`;
             let elements = document.getElementsByClassName('advancedOnly');
             for(let i = 0; i < elements.length; i++) {
@@ -1154,25 +1157,13 @@ const menuSelected = (n) => {
 const getAdvanced = () => {
   purchasingContainer.style.pointerEvents = "all";
   purchasingContainer.style.opacity = "1";
-  fetch(`${api}/xsolla/token`, {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify({
-      type: 'advanced'
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(res => res.json())
-  .then((data) => {
-    window.location.href = `https://sandbox-secure.xsolla.com/paystation3/desktop/subscription/?access_token=${data.token}`;
-  }).catch((error) => {
-    purchasingContainer.style.pointerEvents = "none";
-    purchasingContainer.style.opacity = "0";
-    alert(`Error occured.\n${error}`);
-    console.error(`Error occured.\n${error}`);
+  tossPayments.requestBillingAuth('카드', {
+    customerKey: userid,
+    successUrl: `${api}/billing/success`,
+    failUrl: `${api}/store/fail`,
   });
+  purchasingContainer.style.pointerEvents = "none";
+  purchasingContainer.style.opacity = "0";
 };
 
 const optionSelect = n => {

@@ -74,6 +74,9 @@ app.get('/storePurchased', (req, res) => {
 });
 
 app.get('/storeDenied', (req, res) => {
+  if(req.query.error == 'undefined') {
+    req.query.error = "Payment information verification error";
+  }
   res.render('storeDenied', { error: req.query.error, url : config.project.url });
 });
 
