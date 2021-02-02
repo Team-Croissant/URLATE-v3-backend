@@ -18,10 +18,9 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
-let whitelist = 'bjgumsun@gmail.com, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com';
+let whitelist = 'bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com';
 
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
-import { datacatalog } from 'googleapis/build/src/apis/datacatalog';
 
 const app = express();
 app.locals.pretty = true;
@@ -154,7 +153,8 @@ app.post("/auth/join", async (req, res) => {
         advancedUpdatedDate: new Date(),
         settings: JSON.stringify(settingsConfig),
         skins: '["Default"]',
-        DLCs: '[]'
+        DLCs: '[]',
+        advancedBillingCode: ''
       });
       delete req.session.tempName;
       req.session.save(() => {
@@ -475,7 +475,8 @@ app.get("/billing/success", async (req, res) => {
     },
   })
   .then(res => res.json())
-  .then(data => {
+  .then(async data => {
+    await knex('users').update({'advancedBillingCode': data.billingKey}).where('userid', req.session.userid);
     fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
       method: 'post',
       body: JSON.stringify({
@@ -524,6 +525,66 @@ app.get('/auth/logout', (req, res) => {
     }
   });
 });
+
+const advancedCancel = async () => {
+  console.log('');
+  signale.start(`Advanced subscription canceling..`);
+  let maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() - 1);
+  maxDate.setDate(maxDate.getDate() - 3);
+  await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()})
+                      .where('advanced', true)
+                      .where('advancedUpdatedDate', '<', maxDate);
+  signale.complete(`Advanced subscription canceled!`);
+};
+
+const advancedUpdate = async () => {
+  console.log('');
+  signale.start(`Advanced subscription updating..`);
+  let maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() - 1);
+  let minDate = new Date();
+  minDate.setMonth(minDate.getMonth() - 1);
+  minDate.setDate(minDate.getDate() - 3);
+  const results = await knex('users').select('userid', 'email', 'advancedBillingCode')
+                                      .where('advanced', true)
+                                      .where('advancedUpdatedDate', '<=', maxDate)
+                                      .where('advancedUpdatedDate', '>=', minDate);
+  let successCount = 0;
+  let failCount = 0;
+  for(let i = 0; i < results.length; i++) {
+    const rst = results[i];
+    fetch(`https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`, {
+      method: 'post',
+      body: JSON.stringify({
+        "amount": 4900,
+        "customerEmail": rst.email,
+        "customerKey": rst.userid,
+        "orderId": uuidv4(),
+        "orderName": "URLATE ADVANCED 구독",
+        "taxFreeAmount": 0
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${config.toss.basicKey}`
+      },
+    })
+    .then(res => res.json())
+    .then(async data => {
+      if(data.status == 'DONE') {
+        await knex('users').update({'advancedUpdatedDate': new Date()}).where('userid', rst.userid);
+        successCount++;
+      } else {
+        failCount++;
+      }
+    });
+  }
+  signale.complete(`Advanced subscription updated : ${successCount}`);
+  signale.warn(`Advanced subscription update failed : ${failCount}`);
+  advancedCancel();
+  setTimeout(advancedUpdate, 86400000);
+};
+setTimeout(advancedUpdate, 1000);
 
 const PORT = 1024;
 http.createServer(app).listen(PORT, () => {
