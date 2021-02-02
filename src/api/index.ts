@@ -154,7 +154,9 @@ app.post("/auth/join", async (req, res) => {
         settings: JSON.stringify(settingsConfig),
         skins: '["Default"]',
         DLCs: '[]',
-        advancedBillingCode: ''
+        advancedBillingCode: '',
+        advancedExpireDate: new Date(),
+        advancedType: ''
       });
       delete req.session.tempName;
       req.session.save(() => {
@@ -495,7 +497,9 @@ app.get("/billing/success", async (req, res) => {
     .then(res => res.json())
     .then(async data => {
       if(data.status == 'DONE') {
-        await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date()}).where('userid', req.session.userid);
+        let date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date(), 'advancedExpireDate': date, 'advancedType': 's'}).where('userid', req.session.userid);
         res.redirect(`${config.project.url}/storePurchased`);
       } else {
         res.redirect(`${config.project.url}/storeDenied?error=undefined`);
@@ -530,11 +534,10 @@ const advancedCancel = async () => {
   console.log('');
   signale.start(`Advanced subscription canceling..`);
   let maxDate = new Date();
-  maxDate.setMonth(maxDate.getMonth() - 1);
   maxDate.setDate(maxDate.getDate() - 3);
-  await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date()})
+  await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date(), 'advancedType': '', 'advancedBillingCode': ''})
                       .where('advanced', true)
-                      .where('advancedUpdatedDate', '<', maxDate);
+                      .where('advancedExpireDate', '<', maxDate);
   signale.complete(`Advanced subscription canceled!`);
 };
 
@@ -542,47 +545,51 @@ const advancedUpdate = async () => {
   console.log('');
   signale.start(`Advanced subscription updating..`);
   let maxDate = new Date();
-  maxDate.setMonth(maxDate.getMonth() - 1);
   let minDate = new Date();
-  minDate.setMonth(minDate.getMonth() - 1);
   minDate.setDate(minDate.getDate() - 3);
-  const results = await knex('users').select('userid', 'email', 'advancedBillingCode')
+  const results = await knex('users').select('userid', 'email', 'advancedBillingCode', 'advancedType')
                                       .where('advanced', true)
-                                      .where('advancedUpdatedDate', '<=', maxDate)
-                                      .where('advancedUpdatedDate', '>=', minDate);
+                                      .where('advancedExpireDate', '<=', maxDate)
+                                      .where('advancedExpireDate', '>=', minDate);
   let successCount = 0;
   let failCount = 0;
   for(let i = 0; i < results.length; i++) {
     const rst = results[i];
-    fetch(`https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`, {
-      method: 'post',
-      body: JSON.stringify({
-        "amount": 4900,
-        "customerEmail": rst.email,
-        "customerKey": rst.userid,
-        "orderId": uuidv4(),
-        "orderName": "URLATE ADVANCED 구독",
-        "taxFreeAmount": 0
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${config.toss.basicKey}`
-      },
-    })
-    .then(res => res.json())
-    .then(async data => {
-      if(data.status == 'DONE') {
-        await knex('users').update({'advancedUpdatedDate': new Date()}).where('userid', rst.userid);
-        successCount++;
-      } else {
-        failCount++;
-      }
-    });
+    if(rst.advancedType == 's') {
+      fetch(`https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`, {
+        method: 'post',
+        body: JSON.stringify({
+          "amount": 4900,
+          "customerEmail": rst.email,
+          "customerKey": rst.userid,
+          "orderId": uuidv4(),
+          "orderName": "URLATE ADVANCED 구독",
+          "taxFreeAmount": 0
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${config.toss.basicKey}`
+        },
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status == 'DONE') {
+          let date = new Date();
+          date.setMonth(date.getMonth() + 1);
+          knex('users').update({'advancedUpdatedDate': new Date(), 'advancedExpireDate': date}).where('userid', rst.userid);
+          successCount++;
+        } else {
+          failCount++;
+        }
+      });
+    }
   }
-  signale.complete(`Advanced subscription updated : ${successCount}`);
-  signale.warn(`Advanced subscription update failed : ${failCount}`);
-  advancedCancel();
   setTimeout(advancedUpdate, 86400000);
+  setTimeout(() => {
+    signale.complete(`Advanced subscription updated : ${successCount}`);
+    signale.warn(`Advanced subscription update failed : ${failCount}`);
+    advancedCancel();
+  }, 5000);
 };
 setTimeout(advancedUpdate, 1000);
 
