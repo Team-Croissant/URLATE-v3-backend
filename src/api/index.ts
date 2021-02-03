@@ -572,11 +572,11 @@ const advancedUpdate = async () => {
         },
       })
       .then(res => res.json())
-      .then(data => {
+      .then(async data => {
         if(data.status == 'DONE') {
           let date = new Date();
           date.setMonth(date.getMonth() + 1);
-          knex('users').update({'advancedUpdatedDate': new Date(), 'advancedExpireDate': date}).where('userid', rst.userid);
+          await knex('users').update({'advancedUpdatedDate': new Date(), 'advancedExpireDate': date}).where('userid', rst.userid);
           successCount++;
         } else {
           failCount++;
