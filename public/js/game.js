@@ -1594,7 +1594,7 @@ window.addEventListener("resize", initialize);
 window.addEventListener("mousewheel", scrollEvent);
 window.addEventListener("DOMMouseScroll", scrollEvent);
 
-window.onpopstate = function () {
+window.onpopstate = () => {
   if(display != 0) {
     displayClose();
     history.pushState('anotherAwesomeState', null, null);
