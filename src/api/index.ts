@@ -535,10 +535,24 @@ const advancedCancel = async () => {
   signale.start(`Advanced subscription canceling..`);
   let maxDate = new Date();
   maxDate.setDate(maxDate.getDate() - 3);
-  await knex('users').update({'advanced': false, 'advancedUpdatedDate': new Date(), 'advancedType': '', 'advancedBillingCode': ''})
+  let results = await knex('users').select('settings', 'userid')
                       .where('advanced', true)
                       .where('advancedExpireDate', '<', maxDate);
-  signale.complete(`Advanced subscription canceled!`);
+  let successCount = 0;
+  for(const rst of results) {
+    let setting = JSON.parse(rst.settings);
+    if(setting.sound.res == "192kbps") {
+      setting.sound.res = "128kbps";
+    }
+    setting.game.judgeSkin = true;
+    setting.game.applyJudge = {"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false};
+    await knex('users').update({'settings': JSON.stringify(setting), 'advanced': false, 'advancedUpdatedDate': new Date(), 'advancedType': '', 'advancedBillingCode': ''})
+                        .where('userid', rst.userid);
+    successCount++;
+  }
+  setTimeout(() => {
+    signale.complete(`Advanced subscription canceled : ${successCount}`);
+  }, 5000);
 };
 
 const advancedUpdate = async () => {
