@@ -215,6 +215,7 @@ const sortAsName = (a, b) => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  history.pushState("someAwesomeState", null, null);
   let widthWidth = window.screen.availWidth;
   let heightWidth = window.screen.availHeight / 9 * 16;
   if(widthWidth > heightWidth) {
@@ -1592,3 +1593,12 @@ document.onkeyup = e => {
 window.addEventListener("resize", initialize);
 window.addEventListener("mousewheel", scrollEvent);
 window.addEventListener("DOMMouseScroll", scrollEvent);
+
+window.onpopstate = function () {
+  if(display != 0) {
+    displayClose();
+    history.pushState('anotherAwesomeState', null, null);
+  } else {
+    history.back();
+  }
+};
