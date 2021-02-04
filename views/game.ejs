@@ -611,7 +611,7 @@
                     </div>
                 </div>
                 <div id="basketsButtonContainer">
-                    <button class="storeButton metropolis" onclick="storePurchase()" id="basketButton"><%= __('purchase') %></button>
+                    <button class="storeButton metropolis" onclick="storeMethod()" id="basketButton"><%= __('purchase') %></button>
                 </div>
             </div>
         </div>
@@ -646,6 +646,34 @@
                 </div>
                 <div class="storeInfoButtonContainer">
                     <button class="storeButton storeButtonDisabled metropolis" onclick="addToCart('Skin')" id="skinBasketButton"><%= __('add_to_bag') %></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlayLoadingContainer" id="overlayPaymentContainer">
+        <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable" id="paymentCloseBtn" onclick="displayClose()">
+        <div id="overlayPaymentSelectionContainer">
+            <span class="menuTitle" id="paymentTitle"><%= __('payment_method') %></span>
+            <div id="overlayPaymentSelection">
+                <div class="overlayPaymentItem" onclick="storePurchase('카드')">
+                    <img src="https://img.icons8.com/ios/48/000000/bank-card-back-side.png" class="paymentIcon">
+                    <span class="paymentText"><%= __('Card') %></span>
+                </div>
+                <div class="overlayPaymentItem" onclick="storePurchase('휴대폰')">
+                    <img src="https://img.icons8.com/ios/48/000000/cell-phone.png" class="paymentIcon">
+                    <span class="paymentText"><%= __('Phone') %></span>
+                </div>
+                <div class="overlayPaymentItem" onclick="storePurchase('문화상품권')">
+                    <img src="https://img.icons8.com/ios/48/000000/ticket.png" class="paymentIcon">
+                    <span class="paymentText"><%= __('Cultureland') %></span>
+                </div>
+                <div class="overlayPaymentItem" onclick="storePurchase('게임문화상품권')">
+                    <img src="https://img.icons8.com/ios/48/000000/controller.png" class="paymentIcon">
+                    <span class="paymentText"><%= __('smart_Culture') %></span>
+                </div>
+                <div class="overlayPaymentItem" onclick="storePurchase('도서문화상품권')">
+                    <img src="https://img.icons8.com/ios/48/000000/book.png" class="paymentIcon">
+                    <span class="paymentText"><%= __('Booknlife') %></span>
                 </div>
             </div>
         </div>

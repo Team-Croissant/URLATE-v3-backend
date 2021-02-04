@@ -711,6 +711,12 @@ const displayClose = () => {
       }, 500);
       display = 8;
       return;
+    } else if(display == 11) {
+      //Store purchase method selection
+      overlayPaymentContainer.style.pointerEvents = "none";
+      overlayPaymentContainer.style.opacity = "0";
+      display = 8;
+      return;
     }
     display = 0;
   }
@@ -939,7 +945,15 @@ const updateCart = async cart => {
   updateStore();
 };
 
-const storePurchase = () => {
+const storeMethod = () => {
+  display = 11;
+  overlayPaymentContainer.style.pointerEvents = "all";
+  overlayPaymentContainer.style.opacity = "1";
+};
+
+const storePurchase = (method) => {
+  overlayPaymentContainer.style.pointerEvents = "none";
+  overlayPaymentContainer.style.opacity = "0";
   purchasingContainer.style.pointerEvents = "all";
   purchasingContainer.style.opacity = "1";
   fetch(`${api}/store/purchase`, {
@@ -955,7 +969,7 @@ const storePurchase = () => {
   .then(res => res.json())
   .then((data) => {
     let international = !(lang == "ko");
-    tossPayments.requestPayment('카드', {
+    tossPayments.requestPayment(method, {
       amount: data.amount,
       orderId: data.orderId,
       orderName: 'URLATE 상점 결제',

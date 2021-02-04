@@ -150,5 +150,11 @@
 	"move_to_game_after_2": " seconds.",
 	"purchase_fail": "Purchase failed.",
 	"error_message": "Error: ",
-	"month": "mo."
+	"month": "mo.",
+	"payment_method": "Payment method",
+	"Card": "Card",
+	"Phone": "Phone",
+	"Cultureland": "Cultureland",
+	"smart_Culture": "Smart Culture",
+	"Booknlife": "Booknlife"
 }

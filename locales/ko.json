@@ -167,5 +167,11 @@
 	"move_to_game_after_2": " 초 뒤 게임으로 이동합니다..",
 	"purchase_fail": "결제에 실패했습니다.",
 	"error_message": "에러 메시지",
-	"month": "개월"
+	"month": "개월",
+	"payment_method": "결제 수단",
+	"Card": "카드",
+	"Phone": "휴대폰",
+	"Cultureland": "컬쳐랜드",
+	"smart_Culture": "게임문화상품권",
+	"Booknlife": "도서문화상품권"
 }
