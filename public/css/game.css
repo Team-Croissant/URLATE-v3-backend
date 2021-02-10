@@ -2066,6 +2066,12 @@ p {
   bottom: 2vh;
 }
 
+#storeFooterRight {
+  position: fixed;
+  right: 2vh;
+  bottom: 2vh;
+}
+
 #animContainer {
   background-image: url('/images/backgrounds/main.png');
   z-index: 0;
