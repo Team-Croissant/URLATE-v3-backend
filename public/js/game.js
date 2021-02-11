@@ -1531,7 +1531,9 @@ const couponApply = () => {
         if(data.error == 'Invalid code') {
           alert(`${couponInvalid1}\n${couponInvalid2}`);
         } else if(data.error == 'Used code') {
-          alert(`${couponUsed}`);
+          alert(couponUsed);
+        } else if(data.error == 'Already subscribed') {
+          alert(`${alreadySubscribed1}\n${alreadySubscribed2}`);
         } else {
           alert(`Error occured.\n${data.description}`);
           console.error(`Error occured.\n${data.description}`);
