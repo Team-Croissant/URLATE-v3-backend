@@ -512,6 +512,57 @@ app.get("/store/fail", async (req, res) => {
   res.redirect(`${config.project.url}/storeDenied?error=${req.params.message}`);
 });
 
+app.put('/coupon', async (req, res) => {
+  if(!req.session.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
+  }
+  try {
+    const code = req.body.code;
+    let coupon = await knex('codes').select('reward', 'used').where('code', code);
+    if(coupon.length != 1) {
+      res.status(400).json(createErrorResponse('failed', 'Invalid code', 'Invalid code sent.'));
+      return;
+    }
+    coupon = coupon[0];
+    if(coupon.used) {
+      res.status(400).json(createErrorResponse('failed', 'Used code', 'The code sent has already been used.'));
+      return;
+    }
+    const reward = JSON.parse(coupon.reward);
+    if(reward.type == 'advanced') {
+      let addM = 0;
+      let addD = 0;
+      if(reward.content.indexOf('M') != -1) {
+        addM = Number(reward.content.split('M')[0]);
+      } else {
+        addD = Number(reward.content.split('D')[0]);
+      }
+      let status = await knex('users').select('advanced', 'advancedExpireDate', 'advancedType').where('userid', req.session.userid);
+      status = status[0];
+      if(!status.advanced) {
+        let date = new Date();
+        date.setMonth(date.getMonth() + addM);
+        date.setMonth(date.getDate() + addD);
+        await knex('users').update({'advanced': true, 'advancedDate': new Date(), 'advancedUpdatedDate': new Date(), 'advancedExpireDate': date, 'advancedType': 'c'}).where('userid', req.session.userid);
+      } else if(status.advancedType == 'c') {
+        let date = new Date(status.advancedExpireDate);
+        date.setMonth(date.getMonth() + addM);
+        date.setMonth(date.getDate() + addD);
+        await knex('users').update({'advancedUpdatedDate': new Date(), 'advancedExpireDate': date}).where('userid', req.session.userid);
+      } else {
+        res.status(400).json(createErrorResponse('failed', 'Already subscribed', 'User is already subscribed to ADVANCED.'));
+        return;
+      }
+    }
+    await knex('codes').update({'used': 1}).where('code', code);
+  } catch(e) {
+    res.status(400).json(createErrorResponse('failed', 'Error occured while loading', e));
+    return;
+  }
+  res.status(200).json(createSuccessResponse('success'));
+});
+
 app.get('/auth/logout', (req, res) => {
   delete req.session.authorized;
   delete req.session.accessToken;

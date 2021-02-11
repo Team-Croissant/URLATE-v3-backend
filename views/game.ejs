@@ -405,6 +405,11 @@
                     </select>
                 </div>
                 <p class="optionValue"><%= __('detail_lang_warning') %></p>
+                <p class="optionTitle"><%= __('game') %></p>
+                <div class="optionValueContainer">
+                    <p class="optionSemiTitle"><%= __('coupon_code_enter') %></p>
+                    <a class="optionButton" onclick="couponEnter()"><%= __('apply') %></a>
+                </div>
             </div>
             <div class="optionContentsContainer" id="optionDisplay">
                 <p class="optionTitle"><%= __('resolution') %></p>
@@ -652,7 +657,15 @@
             </div>
         </div>
     </div>
-    <div class="overlayLoadingContainer" id="overlayPaymentContainer">
+    <div class="overlayContainer" id="overlayCodeContainer">
+        <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable" id="codeCloseBtn" onclick="displayClose()">
+        <div id="codeContainer">
+            <span class="menuTitle" id="codeTitle"><%= __('coupon_code_enter') %></span>
+            <input type="text" id="codeInput">
+            <a class="optionButton" onclick="couponApply()"><%= __('apply') %></a>
+        </div>
+    </div>
+    <div class="overlayContainer" id="overlayPaymentContainer">
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable" id="paymentCloseBtn" onclick="displayClose()">
         <div id="overlayPaymentSelectionContainer">
             <span class="menuTitle" id="paymentTitle"><%= __('payment_method') %></span>
@@ -680,13 +693,13 @@
             </div>
         </div>
     </div>
-    <div class="overlayLoadingContainer" id="overlayLoadingContainer">
-        <span class="overlayLoadingContainerText"><%= __('loading') %></span>
+    <div class="overlayContainer" id="overlayLoadingContainer">
+        <span class="overlayContainerText"><%= __('loading') %></span>
         <br>
         <img src="/images/parts/elements/loading.png" alt="loading" class="loadingCircle">
     </div>
     <img src="/images/parts/elements/loading.png" alt="loading" class="loadingCircle" id="loadingCircle">
-    <div class="overlayLoadingContainer" id="purchasingContainer">
+    <div class="overlayContainer" id="purchasingContainer">
         <span class="overlayLoadingContainerText"><%= __('purchasing_1') %><br><%= __('purchasing_2') %></span>
         <br>
         <img src="/images/parts/elements/loading.png" alt="loading" class="loadingCircle">
@@ -715,6 +728,11 @@
         const addToBag = "<%= __('add_to_bag') %>";
         const addedToBag = "<%= __('added_to_bag') %>";
         const nothingHere = "<%= __('nothing_here') %>";
+        const couponApplySuccess = "<%= __('coupon_apply_success') %>";
+        const couponInvalid1 = "<%= __('coupon_invalid_1') %>";
+        const couponInvalid2 = "<%= __('coupon_invalid_2') %>";
+        const couponUsed = "<%= __('coupon_used') %>";
+        const inputEmpty = "<%= __('input_empty') %>";
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.js"></script>
     <script src="js/game.js"></script>

@@ -714,8 +714,14 @@ const displayClose = () => {
     } else if(display == 11) {
       //Store purchase method selection
       overlayPaymentContainer.style.pointerEvents = "none";
-      overlayPaymentContainer.style.opacity = "0";
+      overlayPaymentContainer.style.opacity = "0"; overlayCodeContainer
       display = 8;
+      return;
+    } else if(display == 12) {
+      //Coupon code form
+      overlayCodeContainer.style.pointerEvents = "none";
+      overlayCodeContainer.style.opacity = "0";
+      display = 2;
       return;
     }
     display = 0;
@@ -1493,6 +1499,57 @@ const overlayClose = s => {
     if(overlayTime + 1400 <= new Date().getTime()) {
       volumeOverlay.classList.remove('overlayOpen');
     }
+  }
+};
+
+const couponEnter = () => {
+  display = 12;
+  overlayCodeContainer.style.pointerEvents = "all";
+  overlayCodeContainer.style.opacity = "1";
+};
+
+const couponApply = () => {
+  if(codeInput.value != '') {
+    overlayLoadingContainer.style.pointerEvents = "all";
+    overlayLoadingContainer.style.opacity = "1";
+    fetch(`${api}/coupon`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify({
+        code: codeInput.value
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.result == 'success') {
+        alert(couponApplySuccess);
+        location.reload();
+      } else if(data.result == 'failed') {
+        if(data.error == 'Invalid code') {
+          alert(`${couponInvalid1}\n${couponInvalid2}`);
+        } else if(data.error == 'Used code') {
+          alert(`${couponUsed}`);
+        } else {
+          alert(`Error occured.\n${data.description}`);
+          console.error(`Error occured.\n${data.description}`);
+        }
+      } else {
+        alert(`Error occured.`);
+        console.error(`Error occured.`);
+      }
+      overlayLoadingContainer.style.pointerEvents = "none";
+      overlayLoadingContainer.style.opacity = "0";
+    }).catch((error) => {
+      alert(`Error occured.\n${error}`);
+      console.error(`Error occured.\n${error}`);
+      overlayLoadingContainer.style.pointerEvents = "none";
+      overlayLoadingContainer.style.opacity = "0";
+    });
+  } else {
+    alert(`${inputEmpty}`);
   }
 };
 

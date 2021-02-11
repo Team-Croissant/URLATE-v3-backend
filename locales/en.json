@@ -156,5 +156,8 @@
 	"Phone": "Phone",
 	"Cultureland": "Cultureland",
 	"smart_Culture": "Smart Culture",
-	"Booknlife": "Booknlife"
+	"Booknlife": "Booknlife",
+	"coupon_code_enter": "Coupon apply",
+	"apply": "Enter",
+	"coupon_apply_success": "Coupon apply success! Refreshing.."
 }

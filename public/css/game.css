@@ -914,7 +914,7 @@ p {
   cursor: pointer;
   font-weight: 500;
   text-align: center;
-  padding: 1.5vh 3vw 1.5vh 3vw;
+  padding: 1.2vh 3vw 1.2vh 3vw;
   font-size: 2vh;
   font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
   letter-spacing: -1px;
@@ -1991,7 +1991,7 @@ p {
   color: #555;
 }
 
-.overlayLoadingContainer {
+.overlayContainer {
   pointer-events: none;
   background-color: rgba(50, 50, 50, 0.8);
   width: 100vw;
@@ -2115,9 +2115,7 @@ p {
 
 .overlayPaymentItem {
   cursor: pointer;
-  width: 6vw;
-  margin-left: 1vw;
-  margin-right: 1vw;
+  width: 8vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2143,4 +2141,42 @@ p {
   position: fixed;
   top: 39vh;
   right: 31vw;
+}
+
+#overlayCodeContainer {
+  transition-duration: 0.3s;
+  z-index: 200;
+}
+
+#codeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 0vw 2vw 2vw 2vw;
+  width: 30vw;
+  height: 30vh;
+  border-radius: 10px;
+}
+
+#codeInput {
+  font-size: 2vh;
+  width: 20vw;
+  text-align: center;
+  height: 3vh;
+  margin-bottom: 2vh;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+#codeTitle {
+  margin-bottom: 3vh;
+}
+
+#codeCloseBtn {
+  z-index: 250;
+  position: fixed;
+  top: 40vh;
+  right: 36vw;
 }

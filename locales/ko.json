@@ -173,5 +173,12 @@
 	"Phone": "휴대폰",
 	"Cultureland": "컬쳐랜드",
 	"smart_Culture": "게임문화상품권",
-	"Booknlife": "도서문화상품권"
+	"Booknlife": "도서문화상품권",
+	"coupon_code_enter": "쿠폰 번호 입력",
+	"apply": "등록",
+	"coupon_apply_success": "쿠폰 등록 성공! 게임을 다시 로드합니다..",
+	"coupon_invalid_1": "이런! 쿠폰 번호를 확인할 수 없습니다.",
+	"coupon_invalid_2": "오타가 없는지 확인하시고 다시 입력해주세요.",
+	"coupon_used": "이미 사용된 쿠폰입니다.",
+	"input_empty": "입력창이 비어있습니다."
 }
