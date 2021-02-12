@@ -207,7 +207,7 @@ body {
   height: 100%;
 }
 
-#canvasBackgroundImage {
+#canvasBackground {
   position: fixed;
   z-index: -1;
   width: 60%;
@@ -215,7 +215,6 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: grayscale(30%) opacity(20%);
 }
 
 #componentCanvas {
@@ -654,4 +653,8 @@ kbd {
   font-weight: 400;
   color: #404040;
   font-size: 2vh;
+}
+
+.hideBGA {
+  display: none;
 }

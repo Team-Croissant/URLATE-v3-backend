@@ -155,7 +155,7 @@
         </div>
         <div id="componentView" onmousemove="trackMousePos(event)" onmousedown="compClicked()">
           <div id="canvasContainer">
-            <div id="canvasBackgroundImage"></div>
+            <div id="canvasBackground"></div>
             <canvas id="componentCanvas" width="100%" height="100%">
             </canvas>
           </div>
@@ -386,6 +386,35 @@
                 <input type="text" class="settingsPropertiesTextbox metropolis" onfocus="textFocused()" onblur="textBlurred()" onkeyup="changeOffset(this)" value="0">
               </div>
             </div>
+            <div class="settingsPropertiesContainer">
+              <p class="settingsSemiTitle">BACKGROUND</p>
+              <div class="settingsPropertiesIndividual">
+                <span class="settingsPropertiesTitle">LOTTIE</span>
+                <input type="button" class="settingsButtons metropolis clickable" onclick="lottieUpload()" value="▶">
+              </div>
+              <div id="settingsBGAContainer" class="hideBGA">
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">TYPE</span>
+                  <select class="settingsSelectBox metropolis clickable" id="lottieInitBox" onchange="lottieSet()">
+                    <option value="0">Image</option>
+                    <option value="1" selected>Image & BGA</option>
+                    <option value="2">BGA</option>
+                  </select>
+                </div>
+                <div class="settingsPropertiesIndividual">
+                  <span class="settingsPropertiesTitle">LETTERBOX COLOR</span>
+                  <input type="text" class="settingsPropertiesTextbox metropolis" onfocus="textFocused()" onblur="textBlurred()" onkeyup="changeLetterbox(this)" value="FFFFFF">
+                </div>
+              </div>
+              <div class="settingsPropertiesIndividual">
+                <span class="settingsPropertiesTitle">GRAYSCALE</span>
+                <input type="text" class="settingsPropertiesTextbox metropolis" onfocus="textFocused()" onblur="textBlurred()" onkeyup="changeGrayscale(this)" value="30">
+              </div>
+              <div class="settingsPropertiesIndividual">
+                <span class="settingsPropertiesTitle">OPACITY</span>
+                <input type="text" class="settingsPropertiesTextbox metropolis" onfocus="textFocused()" onblur="textBlurred()" onkeyup="changeOpacity(this)" value="20">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -423,6 +452,7 @@
     const url = "<%= url %>";
     const api = "<%= api %>";
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
   <script src="js/playerModules.js"></script>

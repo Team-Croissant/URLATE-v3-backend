@@ -28,6 +28,13 @@ let triggersOverlapNum = 2;
 let isTextboxFocused = false;
 let skin, denyCursor, denySkin;
 
+let BGAframerate = 60;
+let lottieAnim = {
+  play: () => {},
+  stop: () => {},
+  pause: () => {}
+};
+
 let pattern = {
   "information": {
     "version": "1.0",
@@ -205,12 +212,19 @@ const songSelected = (isLoaded, withoutSong) => {
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = pattern.information.bpm;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = pattern.information.speed;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = pattern.information.offset;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[6].value = 'FFFFFF';
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[7].value = '30';
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[8].value = '20';
+  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[0].selected = false;
+  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[1].selected = true;
+  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[2].selected = false;
+  canvasBackground.style.filter = `grayscale(30%) opacity(20%)`;
   bpm = pattern.information.bpm;
   offset = pattern.information.offset;
   speed = pattern.information.speed;
   document.getElementById('percentage').innerText = '100%';
   rate = 1;
-  document.getElementById('canvasBackgroundImage').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
+  document.getElementById('canvasBackground').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
   document.getElementById('songSelectionContainer').style.display = 'none';
   document.getElementById('initialScreenContainer').style.display = 'none';
   document.getElementById('editorMainContainer').style.display = 'initial';
@@ -399,6 +413,16 @@ const initialize = () => {
 const gotoMain = (isCalledByMain) => {
   if(isCalledByMain || confirm(rusure)) {
     song.stop();
+    lottieAnim.stop();
+    if(!settingsBGAContainer.classList.length) {
+      lottieAnim.destroy();
+      settingsBGAContainer.classList.add('hideBGA');
+    }
+    lottieAnim = {
+      play: () => {},
+      stop: () => {},
+      pause: () => {}
+    };
     song = new Howl({
       src: ['/sounds/tick.mp3'],
       format: ['mp3'],
@@ -406,7 +430,6 @@ const gotoMain = (isCalledByMain) => {
     });
     localStorage.temp = JSON.stringify(pattern);
     localStorage.clear('pattern');
-    if(!isCalledByMain) song.stop();
     changeSettingsMode(-1);
     if(isSettingsOpened) toggleSettings();
     selectedCntElement = {"v1": '', "v2": '', "i": ''};
@@ -921,11 +944,13 @@ const songPlayPause = () => {
       document.getElementById('controlBtn').classList.add('timeline-play');
       document.getElementById('controlBtn').classList.remove('timeline-pause');
       song.pause();
+      lottieAnim.pause();
     } else {
       document.getElementById('controlBtn').classList.add('timeline-pause');
       document.getElementById('controlBtn').classList.remove('timeline-play');
       circleBulletAngles = [];
       song.play();
+      lottieAnim.play();
     }
   }
 };
@@ -952,6 +977,7 @@ const save = () => {
 const deleteAll = () => {
   if(confirm(deleteSure)) {
     song.stop();
+    lottieAnim.stop();
     changeSettingsMode(-1);
     if(isSettingsOpened) toggleSettings();
     selectedCntElement = {"v1": '', "v2": '', "i": ''};
@@ -1609,6 +1635,7 @@ const stopBtn = () => {
   document.getElementById('controlBtn').classList.add('timeline-play');
   document.getElementById('controlBtn').classList.remove('timeline-pause');
   song.stop();
+  lottieAnim.stop();
 };
 
 const changeRate = () => {
@@ -1618,6 +1645,7 @@ const changeRate = () => {
   }
   document.getElementById('percentage').innerText = `${rate * 100}%`;
   song.rate(rate);
+  lottieAnim.setSpeed(rate);
 };
 
 const test = () => {
@@ -1745,15 +1773,27 @@ const hideHelp = () => {
 const tmlScrollLeft = () => {
   song.seek(song.seek() - 0.01);
   let seek = song.seek();
-  song.seek(seek - (seek % (60 / bpm / split)));
+  seek = seek - (seek % (60 / bpm / split));
+  song.seek(seek);
+  if(song.playing()) {
+    lottieAnim.goToAndPlay(seek * 1000 / rate);
+  } else {
+    lottieAnim.goToAndStop(seek * 1000 / rate);
+  }
 };
 
 const tmlScrollRight = () => {
   song.seek(song.seek() + 0.01);
   let seek = song.seek();
-  song.seek(seek + (60 / bpm / split) - (seek % (60 / bpm / split)));
-  if(song.seek() >= song._duration) {
-    song.seek(seek - (60 / bpm / split) + (seek % (60 / bpm / split)) - 0.01);
+  let now = seek + (60 / bpm / split) - (seek % (60 / bpm / split));
+  if(now >= song._duration) {
+    now = seek - (60 / bpm / split) + (seek % (60 / bpm / split)) - 0.01;
+  }
+  song.seek(now);
+  if(song.playing()) {
+    lottieAnim.goToAndPlay(now * 1000 / rate);
+  } else {
+    lottieAnim.goToAndStop(now * 1000 / rate);
   }
 };
 
@@ -1861,6 +1901,83 @@ const globalScrollEvent = e => {
   }
 };
 
+const lottieUpload = () => {
+  let input = document.createElement("input");
+  input.type = 'file';
+  input.accept = '.json, .lottie';
+  input.setAttribute("onchange", `lottieLoaded(event)`);
+  input.click();
+};
+
+const lottieLoaded = (event) => {
+  let file = event.target.files[0];
+  let reader = new FileReader();
+  reader.onload = (e) => {
+    if(settingsBGAContainer.classList.length) {
+      settingsBGAContainer.classList.remove('hideBGA');
+    } else {
+      lottieAnim.destroy();
+    }
+    let blob = new Blob([e.target.result], {type: 'application/json'});
+    let path = URL.createObjectURL(blob);
+    lottieAnim = bodymovin.loadAnimation({
+      wrapper: canvasBackground,
+      animType: 'svg',
+      loop: true,
+      autoplay: false,
+      path: path
+    });
+    URL.revokeObjectURL(path);
+  };
+  reader.readAsText(file);
+};
+
+const lottieSet = () => {
+  switch(lottieInitBox.value) {
+    case '0': //Image
+      canvasBackground.getElementsByTagName('svg')[0].style.display = 'none';
+      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
+      break;
+    case '1': //Image & BGA
+      canvasBackground.getElementsByTagName('svg')[0].style.display = 'initial';
+      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
+      break;
+    case '2': //BGA
+      canvasBackground.getElementsByTagName('svg')[0].style.display = 'initial';
+      canvasBackground.style.backgroundImage = 'none';
+      canvasBackground.style.backgroundColor = `#${trackSettings.getElementsByClassName('settingsPropertiesTextbox')[6].value}`;
+      break;
+  }
+};
+
+const changeLetterbox = (e) => {
+  e.value = e.value.toUpperCase();
+  if(e.value == 'BLACK') {
+    e.value = '000000';
+  } else if(e.value == 'WHITE') {
+    e.value = 'FFFFFF';
+  }
+  canvasBackground.style.backgroundColor = `#${e.value}`;
+};
+
+const changeGrayscale = (e) => {
+  if(isNaN(Number(e.value))) {
+    alert("Input value is not number.");
+    e.value = '30';
+  } else {
+    canvasBackground.style.filter = `grayscale(${e.value}%) opacity(${trackSettings.getElementsByClassName('settingsPropertiesTextbox')[8].value}%)`;
+  }
+};
+
+const changeOpacity = (e) => {
+  if(isNaN(Number(e.value))) {
+    alert("Input value is not number.");
+    e.value = '20';
+  } else {
+    canvasBackground.style.filter = `grayscale(${trackSettings.getElementsByClassName('settingsPropertiesTextbox')[7].value}%) opacity(${e.value}%)`;
+  }
+};
+
 document.getElementById('timelineContainer').addEventListener("mousewheel", scrollEvent);
 document.getElementById('timelineContainer').addEventListener("DOMMouseScroll", scrollEvent);
 window.addEventListener("mousewheel", globalScrollEvent);
@@ -1897,6 +2014,7 @@ document.onkeydown = e => {
         timelineScrollCount = 0;
         timelineYLoc = 0;
         song.stop();
+        lottieAnim.stop();
       }
     }
   } else if(e.key == 'Control') {
@@ -1941,6 +2059,7 @@ document.onkeydown = e => {
     showHelp();
   } else if(e.key == 'F2') { //for test
     song.stop();
+    lottieAnim.stop();
     pattern = {
       "information": {
         "version": "1.0",
