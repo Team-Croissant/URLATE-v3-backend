@@ -49,9 +49,18 @@ let offsetSong = new Howl({
 });
 
 const lottieResize = () => {
+  let widthWidth = window.innerWidth;
+  let heightWidth = window.innerHeight / 9 * 16;
+  if(widthWidth > heightWidth) {
+    animContainer.style.width = `${widthWidth}px`;
+    animContainer.style.height = `${widthWidth / 16 * 9}px`;
+  } else {
+    animContainer.style.width = `${heightWidth}px`;
+    animContainer.style.height = `${heightWidth / 16 * 9}px`;
+  }
   let lottieCanvas = animContainer.getElementsByTagName('canvas')[0];
-  let widthWidth = window.innerWidth * window.devicePixelRatio;
-  let heightWidth = window.innerHeight * window.devicePixelRatio / 9 * 16;
+  widthWidth = window.innerWidth * window.devicePixelRatio;
+  heightWidth = window.innerHeight * window.devicePixelRatio / 9 * 16;
   if(widthWidth > heightWidth) {
     lottieCanvas.width = widthWidth;
     lottieCanvas.height = widthWidth / 16 * 9;
@@ -59,6 +68,13 @@ const lottieResize = () => {
     lottieCanvas.width = heightWidth;
     lottieCanvas.height = heightWidth / 16 * 9;
   }
+  lottieAnim.destroy();
+  lottieAnim = bodymovin.loadAnimation({
+    wrapper: animContainer,
+    animType: 'canvas',
+    loop: true,
+    path: 'lottie/game.json'
+  });
 };
 
 const initialize = () => {
@@ -216,8 +232,8 @@ const sortAsName = (a, b) => {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   history.pushState("someAwesomeState", null, null);
-  let widthWidth = window.screen.availWidth;
-  let heightWidth = window.screen.availHeight / 9 * 16;
+  let widthWidth = window.innerWidth;
+  let heightWidth = window.innerHeight / 9 * 16;
   if(widthWidth > heightWidth) {
     animContainer.style.width = `${widthWidth}px`;
     animContainer.style.height = `${widthWidth / 16 * 9}px`;
