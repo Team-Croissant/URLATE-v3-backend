@@ -681,6 +681,9 @@ const tmlRender = () => {
     tmlCtx.textBaseline = "middle";
     tmlCtx.textAlign = "right";
     if(tmlCanvas.height / tmlCanvas.width < 0.16) {
+      if(tmlCanvas.height / tmlCanvas.width >= 0.15) {
+        tmlCtx.font = `${tmlCanvas.height / 13}px Heebo`;
+      }
       if(isNaN(minutes)) {
         tmlCtx.fillText('Wait..', tmlStartX, startY / 1.7);
       } else {
