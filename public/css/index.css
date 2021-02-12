@@ -11,6 +11,8 @@ body {
 }
 
 #animContainer {
+    width: 100vw;
+    height: 100vh;
     background: linear-gradient(30deg, #6EACFE, #B451FF);
     display: flex;
     align-items: center;
