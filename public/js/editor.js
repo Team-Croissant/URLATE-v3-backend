@@ -32,7 +32,9 @@ let BGAframerate = 60;
 let lottieAnim = {
   play: () => {},
   stop: () => {},
-  pause: () => {}
+  pause: () => {},
+  goToAndPlay: () => {},
+  goToAndStop: () => {}
 };
 
 let pattern = {
@@ -433,7 +435,9 @@ const gotoMain = (isCalledByMain) => {
     lottieAnim = {
       play: () => {},
       stop: () => {},
-      pause: () => {}
+      pause: () => {},
+      goToAndPlay: () => {},
+      goToAndStop: () => {}
     };
     song = new Howl({
       src: ['/sounds/tick.mp3'],
