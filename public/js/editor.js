@@ -28,7 +28,6 @@ let triggersOverlapNum = 2;
 let isTextboxFocused = false;
 let skin, denyCursor, denySkin;
 
-let BGAframerate = 60;
 let lottieAnim = {
   play: () => {},
   stop: () => {},
