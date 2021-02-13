@@ -45,6 +45,13 @@ let pattern = {
     "speed": "",
     "offset": ""
   },
+  "background": {
+    "lottie": {},
+    "type": 1,
+    "boxColor": "FFFFFF",
+    "grayscale": 30,
+    "opacity": 20
+  },
   "patterns" : [],
   "bullets" : [],
   "triggers" : []
@@ -212,13 +219,14 @@ const songSelected = (isLoaded, withoutSong) => {
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[3].value = pattern.information.bpm;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[4].value = pattern.information.speed;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[5].value = pattern.information.offset;
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[6].value = 'FFFFFF';
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[7].value = '30';
-  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[8].value = '20';
-  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[0].selected = false;
-  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[1].selected = true;
-  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[2].selected = false;
-  canvasBackground.style.filter = `grayscale(30%) opacity(20%)`;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[6].value = pattern.background.boxColor;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[7].value = pattern.background.grayscale;
+  trackSettings.getElementsByClassName('settingsPropertiesTextbox')[8].value = pattern.background.opacity;
+  for(let element of trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')) {
+    element.selected = false;
+  }
+  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[pattern.background.type].selected = true;
+  canvasBackground.style.filter = `grayscale(${pattern.background.grayscale}%) opacity(${pattern.background.opacity}%)`;
   bpm = pattern.information.bpm;
   offset = pattern.information.offset;
   speed = pattern.information.speed;
@@ -447,6 +455,13 @@ const gotoMain = (isCalledByMain) => {
         "bpm": "",
         "speed": "",
         "offset": ""
+      },
+      "background": {
+        "lottie": {},
+        "type": 1,
+        "boxColor": "FFFFFF",
+        "grayscale": 30,
+        "opacity": 20
       },
       "patterns" : [],
       "bullets" : [],
@@ -993,6 +1008,13 @@ const deleteAll = () => {
         "bpm": "",
         "speed": "",
         "offset": ""
+      },
+      "background": {
+        "lottie": {},
+        "type": 1,
+        "boxColor": "FFFFFF",
+        "grayscale": 30,
+        "opacity": 20
       },
       "patterns" : [],
       "bullets" : [],
@@ -1921,6 +1943,7 @@ const lottieLoaded = (event) => {
     } else {
       lottieAnim.destroy();
     }
+    pattern.background.lottie = e.target.result;
     let blob = new Blob([e.target.result], {type: 'application/json'});
     let path = URL.createObjectURL(blob);
     lottieAnim = bodymovin.loadAnimation({
@@ -1951,6 +1974,7 @@ const lottieSet = () => {
       canvasBackground.style.backgroundColor = `#${trackSettings.getElementsByClassName('settingsPropertiesTextbox')[6].value}`;
       break;
   }
+  pattern.background.type = Number(lottieInitBox.value);
 };
 
 const changeLetterbox = (e) => {
@@ -1961,6 +1985,7 @@ const changeLetterbox = (e) => {
     e.value = 'FFFFFF';
   }
   canvasBackground.style.backgroundColor = `#${e.value}`;
+  pattern.background.boxColor = e.value;
 };
 
 const changeGrayscale = (e) => {
@@ -1970,6 +1995,7 @@ const changeGrayscale = (e) => {
   } else {
     canvasBackground.style.filter = `grayscale(${e.value}%) opacity(${trackSettings.getElementsByClassName('settingsPropertiesTextbox')[8].value}%)`;
   }
+  pattern.background.grayscale = Number(e.value);
 };
 
 const changeOpacity = (e) => {
@@ -1979,6 +2005,7 @@ const changeOpacity = (e) => {
   } else {
     canvasBackground.style.filter = `grayscale(${trackSettings.getElementsByClassName('settingsPropertiesTextbox')[7].value}%) opacity(${e.value}%)`;
   }
+  pattern.background.opacity = Number(e.value);
 };
 
 document.getElementById('timelineContainer').addEventListener("mousewheel", scrollEvent);
@@ -2072,6 +2099,13 @@ document.onkeydown = e => {
         "bpm": "",
         "speed": "",
         "offset": ""
+      },
+      "background": {
+        "lottie": {},
+        "type": 1,
+        "boxColor": "FFFFFF",
+        "grayscale": 30,
+        "opacity": 20
       },
       "patterns" : [
         {"ms": 60/bpm*1000, "value": 0, "x": -50, "y" : -50},
