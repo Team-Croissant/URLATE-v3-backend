@@ -47,7 +47,7 @@ let pattern = {
   },
   "background": {
     "lottie": {},
-    "type": 1,
+    "type": 0,
     "boxColor": "FFFFFF",
     "grayscale": 30,
     "opacity": 20
@@ -201,7 +201,12 @@ const songSelected = (isLoaded, withoutSong) => {
       }
     });
   }
-  if(!isLoaded) {
+  if(isLoaded) {
+    if(pattern.background.type) {
+      lottieInitBox.value = pattern.background.type;
+      lottieLoad();
+    }
+  } else {
     pattern.information = {
       "version": "1.0",
       "track": tracks[songSelectBox.selectedIndex].name,
@@ -222,10 +227,7 @@ const songSelected = (isLoaded, withoutSong) => {
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[6].value = pattern.background.boxColor;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[7].value = pattern.background.grayscale;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[8].value = pattern.background.opacity;
-  for(let element of trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')) {
-    element.selected = false;
-  }
-  trackSettings.getElementsByClassName('settingsSelectBox')[0].getElementsByTagName('option')[pattern.background.type].selected = true;
+  lottieInitBox.value = pattern.background.type;
   canvasBackground.style.filter = `grayscale(${pattern.background.grayscale}%) opacity(${pattern.background.opacity}%)`;
   bpm = pattern.information.bpm;
   offset = pattern.information.offset;
@@ -1935,27 +1937,35 @@ const lottieUpload = () => {
 };
 
 const lottieLoaded = (event) => {
+  lottieInitBox.value = 2;
   let file = event.target.files[0];
   let reader = new FileReader();
   reader.onload = (e) => {
-    if(settingsBGAContainer.classList.length) {
-      settingsBGAContainer.classList.remove('hideBGA');
-    } else {
-      lottieAnim.destroy();
-    }
     pattern.background.lottie = e.target.result;
-    let blob = new Blob([e.target.result], {type: 'application/json'});
-    let path = URL.createObjectURL(blob);
-    lottieAnim = bodymovin.loadAnimation({
-      wrapper: canvasBackground,
-      animType: 'svg',
-      loop: true,
-      autoplay: false,
-      path: path
-    });
-    URL.revokeObjectURL(path);
+    lottieLoad();
   };
   reader.readAsText(file);
+};
+
+const lottieLoad = () => {
+  if(settingsBGAContainer.classList.length) {
+    settingsBGAContainer.classList.remove('hideBGA');
+  } else {
+    lottieAnim.destroy();
+  }
+  let blob = new Blob([pattern.background.lottie], {type: 'application/json'});
+  let path = URL.createObjectURL(blob);
+  lottieAnim = bodymovin.loadAnimation({
+    wrapper: canvasBackground,
+    animType: 'svg',
+    loop: true,
+    autoplay: false,
+    path: path
+  });
+  lottieAnim.addEventListener("DOMLoaded", () => {
+    lottieSet();
+  });
+  URL.revokeObjectURL(path);
 };
 
 const lottieSet = () => {
