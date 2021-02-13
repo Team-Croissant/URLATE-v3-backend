@@ -217,6 +217,8 @@ const songSelected = (isLoaded, withoutSong) => {
       "offset": 0
     };
   }
+  document.getElementById('controlBtn').classList.add('timeline-play');
+  document.getElementById('controlBtn').classList.remove('timeline-pause');
   songName.innerText = pattern.information.track;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[0].value = pattern.information.track;
   trackSettings.getElementsByClassName('settingsPropertiesTextbox')[1].value = pattern.information.producer;
