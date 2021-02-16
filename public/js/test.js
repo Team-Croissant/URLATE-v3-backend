@@ -35,6 +35,12 @@ let comboAlert = false, comboCount = 50;
 let comboAlertMs = 0, comboAlertCount = 0;
 let hide = {}, frameCounter;
 let load = 0;
+let fileName = '';
+let lottieAnim = {
+  play: () => {},
+  stop: () => {},
+  pause: () => {}
+};
 let tick = new Howl({
   src: [`/sounds/tick.mp3`],
   autoplay: false,
@@ -117,6 +123,7 @@ const initialize = (isFirstCalled) => {
     document.getElementById('artist').textContent = pattern.information.producer;
     document.getElementById('scoreArtist').textContent = pattern.information.producer;
     document.getElementById('authorNamespace').textContent = pattern.information.author;
+    canvasBackground.style.filter = `grayscale(${pattern.background.grayscale}%) opacity(${pattern.background.opacity}%)`;
     offset = pattern.information.offset;
     bpm = pattern.information.bpm;
     speed = pattern.information.speed;
@@ -125,6 +132,40 @@ const initialize = (isFirstCalled) => {
   canvas.height = window.innerHeight * pixelRatio * settings.display.canvasRes / 100;
   missCanvas.width = window.innerWidth * 0.2 * pixelRatio;
   missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
+};
+
+const lottieLoad = () => {
+  let blob = new Blob([pattern.background.lottie], {type: 'application/json'});
+  let path = URL.createObjectURL(blob);
+  lottieAnim = bodymovin.loadAnimation({
+    wrapper: canvasBackground,
+    animType: 'svg',
+    loop: true,
+    autoplay: false,
+    path: path
+  });
+  lottieAnim.addEventListener("DOMLoaded", () => {
+    lottieSet();
+  });
+  URL.revokeObjectURL(path);
+};
+
+const lottieSet = () => {
+  switch(pattern.background.type) {
+    case 0: //Image
+      canvasBackground.getElementsByTagName('svg')[0].style.display = 'none';
+      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+      break;
+    case 1: //Image & BGA
+      canvasBackground.getElementsByTagName('svg')[0].style.display = 'initial';
+      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+      break;
+    case 2: //BGA
+      canvasBackground.getElementsByTagName('svg')[0].style.display = 'initial';
+      canvasBackground.style.backgroundImage = 'none';
+      canvasBackground.style.backgroundColor = `#${pattern.background.boxColor}`;
+      break;
+  }
 };
 
 const settingApply = () => {
@@ -148,16 +189,18 @@ const settingApply = () => {
   for(let i = 0; i <= 1; i++) {
     volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
   }
-  let fileName = '';
   for(let i = 0; i < tracks.length; i++) {
     if(tracks[i].name == pattern.information.track) {
       fileName = tracks[i].fileName;
       document.getElementById("album").src = `${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png`;
-      document.getElementById('canvasBackgroundImage').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+      document.getElementById('canvasBackground').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       document.getElementById('scoreBackground').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       document.getElementById('scoreAlbum').style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       break;
     }
+  }
+  if(pattern.background.type) {
+    lottieLoad();
   }
   fetch(`${api}/skin/${settings.game.skin}`, {
     method: 'GET',
@@ -640,6 +683,7 @@ const trackMousePos = () => {
 };
 
 const calculateResult = () => {
+  lottieAnim.stop();
   document.getElementById('wallLeft').style.left = '-10vw';
   document.getElementById('wallRight').style.right = '-10vw';
   resultEffect.play();
@@ -751,6 +795,7 @@ const compClicked = (isTyped) => {
       floatingResumeContainer.style.display = 'none';
     }, 300);
     song.play();
+    lottieAnim.play();
   }
   mouseClicked = true;
   mouseClickedMs = Date.now();
@@ -853,9 +898,11 @@ const doneLoading = () => {
 const songPlayPause = () => {
   if(song.playing()) {
     song.pause();
+    lottieAnim.pause();
     menuAllowed = false;
   } else {
     song.play();
+    lottieAnim.play();
     menuAllowed = true;
   }
 };
@@ -984,6 +1031,7 @@ document.onkeydown = e => {
           isMenuOpened = true;
           menuContainer.style.display = 'flex';
           song.pause();
+          lottieAnim.pause();
         } else {
           resume();
         }
