@@ -61,12 +61,14 @@ const lottieResize = () => {
   let lottieCanvas = animContainer.getElementsByTagName('canvas')[0];
   widthWidth = window.innerWidth * window.devicePixelRatio;
   heightWidth = window.innerHeight * window.devicePixelRatio / 9 * 16;
-  if(widthWidth > heightWidth) {
-    lottieCanvas.width = widthWidth;
-    lottieCanvas.height = widthWidth / 16 * 9;
-  } else {
-    lottieCanvas.width = heightWidth;
-    lottieCanvas.height = heightWidth / 16 * 9;
+  if(lottieCanvas) {
+    if(widthWidth > heightWidth) {
+      lottieCanvas.width = widthWidth;
+      lottieCanvas.height = widthWidth / 16 * 9;
+    } else {
+      lottieCanvas.width = heightWidth;
+      lottieCanvas.height = heightWidth / 16 * 9;
+    }
   }
   lottieAnim.destroy();
   lottieAnim = bodymovin.loadAnimation({
@@ -88,11 +90,11 @@ const convertWordArrayToUint8Array = wordArray => {
   let length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
   let uInt8Array = new Uint8Array(length), index=0, word, i;
   for(i = 0; i < length; i++) {
-      word = arrayOfWords[i];
-      uInt8Array[index++] = word >> 24;
-      uInt8Array[index++] = (word >> 16) & 0xff;
-      uInt8Array[index++] = (word >> 8) & 0xff;
-      uInt8Array[index++] = word & 0xff;
+    word = arrayOfWords[i];
+    uInt8Array[index++] = word >> 24;
+    uInt8Array[index++] = (word >> 16) & 0xff;
+    uInt8Array[index++] = (word >> 8) & 0xff;
+    uInt8Array[index++] = word & 0xff;
   }
   return uInt8Array;
 };
@@ -1634,13 +1636,13 @@ document.onkeydown = e => {
   if(display == 0) {
     if(key == 'arrowleft') {
       e.preventDefault();
-      menuLeft();
+      //menuLeft();
     } else if(key == 'arrowright') {
       e.preventDefault();
-      menuRight();
+      //menuRight();
     } else if(key == 'enter' || key == ' ') {
       e.preventDefault();
-      menuSelected();
+      //menuSelected();
     }
   } else if(display == 1 || display == 6) {
     if(key == 'arrowup') {
