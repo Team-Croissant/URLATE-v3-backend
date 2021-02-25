@@ -278,6 +278,7 @@ const intro1play = () => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  const iniMode = new URLSearchParams(window.location.search).get('initialize');
   history.pushState("someAwesomeState", null, null);
   let widthWidth = window.innerWidth;
   let heightWidth = window.innerHeight / 9 * 16;
@@ -288,19 +289,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
     animContainer.style.width = `${heightWidth}px`;
     animContainer.style.height = `${heightWidth / 16 * 9}px`;
   }
-
-  intro1anim = bodymovin.loadAnimation({
-    wrapper: intro1,
-    animType: 'canvas',
-    autoplay: false,
-    loop: false,
-    path: 'lottie/coupy.json'
-  });
-
-  intro1anim.addEventListener('DOMLoaded', () => {
-    intro1anim.setSpeed(1);
-    intro1play();
-  });
+  
+  if(iniMode == 0) { //no intro
+    intro1container.style.display = 'none';
+    loaded++;
+  } else {
+    intro1anim = bodymovin.loadAnimation({
+      wrapper: intro1,
+      animType: 'canvas',
+      autoplay: false,
+      loop: false,
+      path: 'lottie/coupy.json'
+    });
+  
+    intro1anim.addEventListener('DOMLoaded', () => {
+      intro1anim.setSpeed(1);
+      intro1play();
+    });
+  }
 
   lottieAnim = bodymovin.loadAnimation({
     wrapper: animContainer,
