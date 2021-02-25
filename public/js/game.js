@@ -32,6 +32,7 @@ let lottieAnim;
 let intro1anim;
 let intro1song;
 let intro1load = 0;
+let intro1skipped = 0;
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -236,18 +237,22 @@ const sortAsName = (a, b) => {
 };
 
 const intro1skip = () => {
-  intro1anim.stop();
-  intro1container.style.opacity = '0';
-  setTimeout(() => {
-    loaded++;
+  if(!intro1skipped) {
+    intro1skipped++;
+    intro1anim.setVolume(0);
+    intro1anim.stop();
+    intro1container.style.opacity = '0';
     setTimeout(() => {
-      if(loaded == 3) {
-        loaded = -1;
-        gameLoaded();
-      }
-    }, 1000);
-    intro1container.style.display = 'none';
-  }, 500);
+      loaded++;
+      setTimeout(() => {
+        if(loaded == 3) {
+          loaded = -1;
+          gameLoaded();
+        }
+      }, 1000);
+      intro1container.style.display = 'none';
+    }, 500);
+  }
 };
 
 const intro1animUpdate = () => {
