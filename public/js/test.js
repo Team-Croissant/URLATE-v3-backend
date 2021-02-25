@@ -941,7 +941,7 @@ const editor = () => {
 };
 
 const home = () => {
-  window.location.href = url;
+  window.location.href = `${url}/game?initialize=0`;
 };
 
 const settingChanged = (e, v) => {
