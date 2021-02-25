@@ -2182,3 +2182,22 @@ p {
   top: 40vh;
   right: 36vw;
 }
+
+.introContainer {
+  background: #000;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.5s;
+  z-index: 500;
+}
+
+#intro1 {
+  width: 50vh;
+  height: 50vh;
+}

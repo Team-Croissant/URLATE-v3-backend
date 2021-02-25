@@ -9,6 +9,7 @@ let canvas = document.getElementById("renderer");
 let ctx = canvas.getContext("2d");
 let bars = 100;
 let loaded = 0;
+let paceLoaded = 0;
 let songSelection = -1;
 let difficultySelection = 0;
 let difficulties = [1,5,10];
@@ -27,6 +28,10 @@ let songData = [];
 let loading = false;
 
 let lottieAnim;
+
+let intro1anim;
+let intro1song;
+let intro1load = 0;
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -184,14 +189,12 @@ const settingApply = () => {
     autoplay: false,
     loop: true,
     onload: () => {
-      if(loaded) {
+      loaded++;
+      if(loaded == 3) {
+        loaded = -1;
         gameLoaded();
       }
-      loaded = 1;
       Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
-      if(display == 0 && songSelection == -1) {
-        themeSong.play();
-      }
     }
   });
 };
@@ -232,6 +235,43 @@ const sortAsName = (a, b) => {
   return a.name > b.name ? 1 : -1;
 };
 
+const intro1skip = () => {
+  intro1anim.stop();
+  intro1container.style.opacity = '0';
+  setTimeout(() => {
+    loaded++;
+    setTimeout(() => {
+      if(loaded == 3) {
+        loaded = -1;
+        gameLoaded();
+      }
+    }, 1000);
+    intro1container.style.display = 'none';
+  }, 500);
+};
+
+const intro1animUpdate = () => {
+  if(intro1anim.currentFrame >= 95) {
+    intro1container.style.transitionDuration = '0s';
+    requestAnimationFrame(() => {
+      intro1container.style.backgroundColor = '#fff';
+      requestAnimationFrame(() => {
+        intro1container.style.transitionDuration = '0.5s';
+      });
+    });
+  } else {
+    requestAnimationFrame(intro1animUpdate);
+  }
+};
+
+const intro1play = () => {
+  intro1anim.play();
+  intro1animUpdate();
+  setTimeout(() => {
+    intro1skip();
+  }, 5000);
+};
+
 document.addEventListener("DOMContentLoaded", (event) => {
   history.pushState("someAwesomeState", null, null);
   let widthWidth = window.innerWidth;
@@ -243,6 +283,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
     animContainer.style.width = `${heightWidth}px`;
     animContainer.style.height = `${heightWidth / 16 * 9}px`;
   }
+
+  intro1anim = bodymovin.loadAnimation({
+    wrapper: intro1,
+    animType: 'canvas',
+    autoplay: false,
+    loop: false,
+    path: 'lottie/coupy.json'
+  });
+
+  intro1anim.addEventListener('DOMLoaded', () => {
+    intro1anim.setSpeed(1);
+    intro1play();
+  });
+
   lottieAnim = bodymovin.loadAnimation({
     wrapper: animContainer,
     animType: 'canvas',
@@ -527,6 +581,9 @@ const numberWithCommas = x => {
 };
 
 const gameLoaded = () => {
+  if(display == 0 && songSelection == -1) {
+    themeSong.play();
+  }
   document.getElementById("menuContainer").style.display = "flex";
   document.getElementById("loadingContainer").classList.add("fadeOut");
   localStorage.clear('songName');
@@ -565,10 +622,14 @@ Pace.on('done', () => {
   } else if(nameWidth > 180) {
     document.getElementById("name").style.fontSize = "2.5vh";
   }
-  if(loaded) {
+  if(!paceLoaded) {
+    loaded++;
+    paceLoaded++;
+  }
+  if(loaded == 3) {
+    loaded = -1;
     gameLoaded();
   }
-  loaded = 1;
 });
 
 const infoScreen = () => {
