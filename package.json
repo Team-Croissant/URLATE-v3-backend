@@ -8,7 +8,7 @@
   "description": "Avoid & Get on the tempo, URLATE",
   "main": "src/",
   "scripts": {
-    "auto-build": "watch tsc src",
+    "auto-build": "tsc-watch",
     "start-api-server": "supervisor dist/api/index.js",
     "start-web-server": "supervisor dist/frontEnd/index.js",
     "start-cdn-server": "supervisor dist/cdn/index.js",
@@ -44,7 +44,6 @@
   },
   "devDependencies": {
     "@types/node": "^13.7.7",
-    "signale": "^1.4.0",
-    "watch": "^1.0.2"
+    "signale": "^1.4.0"
   }
 }
