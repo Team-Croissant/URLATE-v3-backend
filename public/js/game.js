@@ -1,7 +1,7 @@
 const clientKey = 'test_ck_7XZYkKL4Mrjb7EZwR6Lr0zJwlEWR';
 const tossPayments = TossPayments(clientKey);
 
-let display = 0;
+let display = -1;
 let userid;
 let username = '';
 let analyser, dataArray;
@@ -238,14 +238,18 @@ const sortAsName = (a, b) => {
 };
 
 const warningSkip = () => {
-  warningContainer.style.opacity = "0";
-  intro1video.play();
-  setTimeout(() => {
-    warningContainer.style.display = 'none';
-  }, 500);
+  if(display == -1) {
+    warningContainer.style.opacity = "0";
+    intro1video.play();
+    setTimeout(() => {
+      warningContainer.style.display = 'none';
+    }, 500);
+    display = 0;
+  }
 };
 
 const intro1skip = () => {
+  intro1video.pause();
   if(!intro1skipped) {
     intro1skipped++;
     intro1container.style.opacity = '0';
@@ -319,7 +323,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     warningInner.style.transitionDelay = "0s";
   }, 1000);
   setTimeout(() => {
-    warningContainer.onclick = warningSkip;
+    document.getElementById('warningContainer').onclick = () => {
+      warningSkip();
+    }
     pressAnywhere.style.opacity = "1";
     warningInner.style.borderBottom = "0.1vh solid #555";
   }, 3000);
