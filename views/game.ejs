@@ -31,15 +31,15 @@
         </div>
     </div>
     <div id="warningContainer" class="introContainer">
-        <h1><%= __('warning') %></h1>
+        <span id="warningTitle"><%= __('warning') %></span>
         <div id="warningInner">
             <span><%= __('warning1') %><br><%= __('warning2') %><br><%= __('warning3') %><br><br><%= __('warning4') %><br><%= __('warning5') %><br><br><%= __('warning6') %></span>
         </div>
-        <span id="pressAnywhere"><%= __('press_anywhere') %></span>
+        <span id="pressAnywhere"><%= __('loading') %></span>
     </div>
     <div id="intro1container" class="introContainer" onclick="intro1skip()">
-        <video id="intro1video">
-            <source src="videos/croissant.webm" type="video/webm">
+        <video id="intro1video" onloadeddata="intro1loaded()">
+            <source id="intro1sources" type="video/webm">
         </video>
     </div>
     <div id="intro2container" class="introContainer" onclick="intro2skip()">
@@ -735,6 +735,7 @@
         const cdn = "<%= cdn %>";
         const url = "<%= url %>";
         const api = "<%= api %>";
+        const pressAnywhere = "<%= __('press_anywhere') %>";
         const enabled = "<%= __('enabled') %>";
         const registered = "<%= __('registered') %>";
         const lang = "<%= __('lang') %>";

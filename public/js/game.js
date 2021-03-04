@@ -30,6 +30,7 @@ let loading = false;
 let lottieAnim;
 
 let intro1skipped = 0;
+let intro1load = 0;
 
 let intro2anim;
 let intro2song;
@@ -197,6 +198,7 @@ const settingApply = () => {
         gameLoaded();
       }
       Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+      intro1video.volume = settings.sound.volume.master * settings.sound.volume.music;
     }
   });
 };
@@ -246,6 +248,14 @@ const warningSkip = () => {
     }, 500);
     display = 0;
   }
+};
+
+const intro1loaded = () => {
+    if(intro1load == 1) {
+        document.getElementById('pressAnywhere').textContent = pressAnywhere;
+        document.getElementById('warningContainer').onclick = warningSkip;
+    }
+    intro1load++;
 };
 
 const intro1skip = () => {
@@ -323,10 +333,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     warningInner.style.transitionDelay = "0s";
   }, 1000);
   setTimeout(() => {
-    document.getElementById('warningContainer').onclick = () => {
-      warningSkip();
+    if(intro1load == 1) {
+      document.getElementById('pressAnywhere').textContent = pressAnywhere;
+      document.getElementById('warningContainer').onclick = warningSkip;
     }
-    pressAnywhere.style.opacity = "1";
+    intro1load++;
+    document.getElementById('pressAnywhere').style.opacity = "1";
     warningInner.style.borderBottom = "0.1vh solid #555";
   }, 3000);
   if(iniMode == 0) { //no intro
@@ -335,6 +347,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     intro2container.style.display = 'none';
     loaded++;
   } else {
+    intro1sources.src = "videos/croissant.webm";
+    intro1video.load();
+
     intro2anim = bodymovin.loadAnimation({
       wrapper: intro2,
       animType: 'canvas',
@@ -493,6 +508,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
               }
               Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+              intro1video.volume = settings.sound.volume.master * settings.sound.volume.music;
               selectSongContainer.innerHTML = songList;
             } else {
               alert('Failed to load song list.');
@@ -1352,6 +1368,7 @@ const settingChanged = (e, v) => {
       overlayClose('volume');
     }, 1500);
     Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+    intro1video.volume = settings.sound.volume.master * settings.sound.volume.music;
   } else if(v == 'volumeSong') {
     settings.sound.volume.music = e.value / 100;
     volumeSongValue.textContent = e.value + '%';
@@ -1702,7 +1719,8 @@ const scrollEvent = e => {
       volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
       volumeMasterValue[i].textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
     }
-    Howler.volume(settings.sound.volume.master);
+    Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+    intro1video.volume = settings.sound.volume.master * settings.sound.volume.music;
     volumeOverlay.classList.add('overlayOpen');
     overlayTime = new Date().getTime();
     setTimeout(() => {
