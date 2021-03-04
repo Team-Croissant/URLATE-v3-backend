@@ -2201,18 +2201,15 @@ p {
   z-index: 502;
 }
 
-#warningContainer>h1 {
-  margin-top: 0;
-  color: #f1d94d;
-}
-
 #pressAnywhere {
+  font-size: 2vh;
   color: #aaa;
   transition-duration: 0.3s;
   opacity: 0;
 }
 
 #warningInner {
+  font-size: 2.5vh;
   color: #fff;
   padding: 5vh 5vw 5vh 5vw;
   margin-bottom: 5vh;
@@ -2239,4 +2236,11 @@ p {
 #intro2 {
   width: 50vh;
   height: 50vh;
+}
+
+#warningTitle {
+  font-weight: 700;
+  font-size: 4vh;
+  margin-bottom: 1vh;
+  color: #f1d94d;
 }
