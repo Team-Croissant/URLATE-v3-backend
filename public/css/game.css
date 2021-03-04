@@ -2194,10 +2194,49 @@ p {
   align-items: center;
   justify-content: center;
   transition-duration: 0.5s;
+}
+
+#warningContainer {
+  flex-direction: column;
+  z-index: 502;
+}
+
+#warningContainer>h1 {
+  margin-top: 0;
+  color: #f1d94d;
+}
+
+#pressAnywhere {
+  color: #aaa;
+  transition-duration: 0.3s;
+  opacity: 0;
+}
+
+#warningInner {
+  color: #fff;
+  padding: 5vh 5vw 5vh 5vw;
+  margin-bottom: 5vh;
+  border-bottom: 0.1vh solid #000;
+  transition-delay: 0.5s;
+  transition-duration: 0.3s;
+  opacity: 0;
+}
+
+#intro1container {
+  z-index: 501;
+}
+
+#intro2container {
   z-index: 500;
 }
 
-#intro1 {
+#intro1video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+#intro2 {
   width: 50vh;
   height: 50vh;
 }

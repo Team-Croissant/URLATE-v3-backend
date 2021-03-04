@@ -29,10 +29,11 @@ let loading = false;
 
 let lottieAnim;
 
-let intro1anim;
-let intro1song;
-let intro1load = 0;
 let intro1skipped = 0;
+
+let intro2anim;
+let intro2song;
+let intro2skipped = 0;
 
 let overlayTime = 0;
 let shiftDown = false;
@@ -236,12 +237,36 @@ const sortAsName = (a, b) => {
   return a.name > b.name ? 1 : -1;
 };
 
+const warningSkip = () => {
+  warningContainer.style.opacity = "0";
+  intro1video.play();
+  setTimeout(() => {
+    warningContainer.style.display = 'none';
+  }, 500);
+};
+
 const intro1skip = () => {
   if(!intro1skipped) {
     intro1skipped++;
-    intro1anim.setVolume(0);
-    intro1anim.stop();
     intro1container.style.opacity = '0';
+    setTimeout(() => {
+      intro1container.style.display = 'none';
+      intro2anim.setSpeed(1);
+      intro2play();
+    }, 500);
+  }
+};
+
+intro1video.onended = () => {
+  intro1skip();
+};
+
+const intro2skip = () => {
+  if(!intro2skipped) {
+    intro2skipped++;
+    intro2anim.setVolume(0);
+    intro2anim.stop();
+    intro2container.style.opacity = '0';
     setTimeout(() => {
       loaded++;
       setTimeout(() => {
@@ -250,30 +275,30 @@ const intro1skip = () => {
           gameLoaded();
         }
       }, 1000);
-      intro1container.style.display = 'none';
+      intro2container.style.display = 'none';
     }, 500);
   }
 };
 
-const intro1animUpdate = () => {
-  if(intro1anim.currentFrame >= 95) {
-    intro1container.style.transitionDuration = '0s';
+const intro2animUpdate = () => {
+  if(intro2anim.currentFrame >= 95) {
+    intro2container.style.transitionDuration = '0s';
     requestAnimationFrame(() => {
-      intro1container.style.backgroundColor = '#fff';
+      intro2container.style.backgroundColor = '#fff';
       requestAnimationFrame(() => {
-        intro1container.style.transitionDuration = '0.5s';
+        intro2container.style.transitionDuration = '0.5s';
       });
     });
   } else {
-    requestAnimationFrame(intro1animUpdate);
+    requestAnimationFrame(intro2animUpdate);
   }
 };
 
-const intro1play = () => {
-  intro1anim.play();
-  intro1animUpdate();
+const intro2play = () => {
+  intro2anim.play();
+  intro2animUpdate();
   setTimeout(() => {
-    intro1skip();
+    intro2skip();
   }, 5000);
 };
 
@@ -289,22 +314,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
     animContainer.style.width = `${heightWidth}px`;
     animContainer.style.height = `${heightWidth / 16 * 9}px`;
   }
-  
+  warningInner.style.opacity = "1";
+  setTimeout(() => {
+    warningInner.style.transitionDelay = "0s";
+  }, 1000);
+  setTimeout(() => {
+    warningContainer.onclick = warningSkip;
+    pressAnywhere.style.opacity = "1";
+    warningInner.style.borderBottom = "0.1vh solid #555";
+  }, 3000);
   if(iniMode == 0) { //no intro
+    warningContainer.style.display = 'none';
     intro1container.style.display = 'none';
+    intro2container.style.display = 'none';
     loaded++;
   } else {
-    intro1anim = bodymovin.loadAnimation({
-      wrapper: intro1,
+    intro2anim = bodymovin.loadAnimation({
+      wrapper: intro2,
       animType: 'canvas',
       autoplay: false,
       loop: false,
       path: 'lottie/coupy.json'
-    });
-  
-    intro1anim.addEventListener('DOMLoaded', () => {
-      intro1anim.setSpeed(1);
-      intro1play();
     });
   }
 
