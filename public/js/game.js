@@ -478,17 +478,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
                   trackRecords[i] = [];
                   if(data.result == "success") {
                     for(let j = 0; j < 3; j++) {
+                      if((tracks[i].type == 1 && !isAdvanced) || (tracks[i].type == 2 && !(songData.indexOf(tracks[i].name) != -1))) {
+                        trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
+                      } else {
+                        trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
+                      }
+                    }
+                    for(let j = 0; j < 3; j++) {
                       if(data.results[j] != undefined) {
                         let value = data.results[j];
-                        document.getElementsByClassName('ranks')[i].className = "ranks";
-                        document.getElementsByClassName('ranks')[i].classList.add(`rank${value.rank}`);
-                        trackRecords[i][j] = {"rank": `rank${value.rank}`, "record": value.record, "medal": value.medal, "maxcombo": value.maxcombo};
-                      } else {
-                        if((tracks[i].type == 1 && !isAdvanced) || (tracks[i].type == 2 && !(songData.indexOf(tracks[i].name) != -1))) {
-                          trackRecords[i][j] = {"rank": "rankL", "record": 000000000, "medal": 0, "maxcombo": 0};
-                        } else {
-                          trackRecords[i][j] = {"rank": "rankQ", "record": 000000000, "medal": 0, "maxcombo": 0};
-                        }
+                        trackRecords[i][value.difficulty - 1] = {"rank": `rank${value.rank}`, "record": value.record, "medal": value.medal, "maxcombo": value.maxcombo};
                       }
                     }
                   } else {
