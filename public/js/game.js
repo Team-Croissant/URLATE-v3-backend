@@ -47,6 +47,12 @@ let offsetAverage = [];
 
 let trackRecords = [];
 
+let socket = io("https://game.rhyga.me");
+
+socket.on("connect", () => {
+  console.log(socket.id);
+});
+
 let themeSong;
 let songs = [];
 let offsetSong = new Howl({
