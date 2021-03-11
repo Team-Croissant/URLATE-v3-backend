@@ -363,6 +363,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       loop: false,
       path: 'lottie/coupy.json'
     });
+
+	  setTimeout(intro1loaded, 10000);
   }
 
   lottieAnim = bodymovin.loadAnimation({
