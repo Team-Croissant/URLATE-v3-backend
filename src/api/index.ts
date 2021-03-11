@@ -279,6 +279,28 @@ app.get("/teamProfile/:name", async (req, res) => {
   res.status(200).json({result: "success", data: results[0].data});
 });
 
+app.put('/record', async (req, res) => {
+  if(!req.session.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
+  }
+  try {
+    await knex('trackRecords').insert({
+      name: req.body.name,
+      nickname: req.body.nickname,
+      rank: req.body.rank,
+      record: req.body.record,
+      maxcombo: req.body.maxcombo,
+      medal: req.body.medal,
+      difficulty: req.body.difficulty
+    });
+  } catch(e) {
+    res.status(400).json(createErrorResponse('failed', 'Error occured while updating', e));
+    return;
+  }
+  res.status(200).json(createSuccessResponse('success'));
+});
+
 app.get("/record/:track/:name", async (req, res) => {
   const results = await knex('trackRecords').select('rank', 'record', 'maxcombo', 'medal', 'difficulty').where('nickname', req.params.name).where('name', req.params.track).orderBy('difficulty', 'ASC');
   if (!results.length) {
