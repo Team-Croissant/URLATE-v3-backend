@@ -2124,7 +2124,7 @@ document.onkeydown = e => {
   } else if(e.key == 'F1') {
     e.preventDefault();
     showHelp();
-  } else if(e.key == 'F2') { //for test
+  } else if(e.key == 'F2' && false) { //for test, disable for now
     song.stop();
     lottieAnim.stop();
     pattern = {
