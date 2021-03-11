@@ -767,9 +767,24 @@ const tmlRender = () => {
     tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY);
   } else if(sync >= 50 || sync <= -50) {
     tmlCtx.fillText(syncAlert, endX, endY);
+  } else if(pixelRatio != 1) {
+    tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY + 5);
+  }
+  tmlCtx.textAlign = "left";
+  if(copied) {
+    tmlCtx.fillText(`${copiedText}`, tmlStartX, endY + 5);
+  } else {
+    tmlCtx.fillText(`${timeAlert}`, tmlStartX, endY + 5);
+  }
+  if(new Date() - copiedTime >= 1000) {
+    copied = false;
   }
   if(pointingCntElement.i === '') {
-    timelineContainer.style.cursor = "";
+    if(mouseX >= tmlCanvas.width / 20 && mouseX <= tmlCanvas.width / 10 && mouseY < tmlCanvas.height / 6) {
+      timelineContainer.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
+    } else {
+      timelineContainer.style.cursor = "";
+    }
   } else {
     timelineContainer.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
   }
@@ -1430,6 +1445,13 @@ const tmlClicked = () => {
     }
   } else if(mode == 2) {
     timelineAddElement();
+  }
+};
+
+  if(mouseX < tmlCanvas.width / 10 && mouseY < tmlCanvas.height / 6) {
+    navigator.clipboard.writeText(song.seek());
+    copied = true;
+    copiedTime = new Date();
   }
 };
 
