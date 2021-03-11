@@ -159,5 +159,21 @@
 	"Booknlife": "Booknlife",
 	"coupon_code_enter": "Coupon apply",
 	"apply": "Enter",
-	"coupon_apply_success": "Coupon apply success! Refreshing.."
+	"coupon_apply_success": "Coupon apply success! Refreshing..",
+	"warning": "Warning",
+	"warning1": "Some people may develop photosensitivity seizures that they have not experienced in the past when viewing sparkling videos or images.",
+	"warning2": "The elements of URLATE were created with this in mind, but it is necessary to pay attention to the pattern of some songs and the BGA of the user pattern.",
+	"warning3": "If you or a family member has ever experienced any of these symptoms, you should consult your doctor before starting the game.",
+	"warning4": "The use of cheats in the game is strictly prohibited, regardless of type.",
+	"warning5": "Team Croissant and anti-cheat bots are always checking the player's play history, and cheat users will be banned.",
+	"warning6": "The songs, images, and some elements included in URLATE are not owned by Team Croissant and dissemination may lead to legal penalties.",
+	"press_anywhere": "Press anywhere to continue",
+	"coupon_invalid_1": "Oops! Coupon number cannot be verified.",
+	"coupon_invalid_2": "Please check that there are no typos and enter again.",
+	"coupon_used": "This coupon has already been used.",
+	"input_empty": "The input is blank.",
+	"already_subscribed1": "Already subscribed to ADVANCED.",
+	"already_subscribed2": "You can use coupon by canceling your subscription.",
+	"timeAlert": "Click the clock on the timeline to copy the current value.",
+	"copied": "Copied!"
 }
