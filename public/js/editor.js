@@ -2107,21 +2107,6 @@ document.onkeydown = e => {
       e.preventDefault();
       test();
     }
-  } else if(e.key.toLowerCase() == 'r') {
-    if(ctrlDown) {
-      e.preventDefault();
-      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
-      pattern.triggers.sort(sortAsTiming);
-      for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":""}`) {
-          selectedCntElement = {"i": i, "v1": 2, "v2": -1};
-          patternChanged();
-          changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
-          if(!isSettingsOpened) toggleSettings();
-          return;
-        }
-      }
-    }
   } else if(e.key == 'F1') {
     e.preventDefault();
     showHelp();
