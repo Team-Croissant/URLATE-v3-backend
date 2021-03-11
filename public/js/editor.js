@@ -64,6 +64,8 @@ let selectedCntElement = {"v1": '', "v2": '', "i": ''};
 let circleBulletAngles = [];
 let destroyedBullets = new Set([]);
 let prevDestroyedBullets = new Set([]);
+let destroyedSeeks = new Set([]);
+let prevDestroyedSeeks = new Set([]);
 
 const sortAsTiming = (a, b) => {
   if(a.ms == b.ms) return 0;
@@ -830,6 +832,7 @@ const cntRender = () => {
     const renderTriggers = pattern.triggers.slice(0, end);
     eraseCnt();
     destroyedBullets.clear();
+    destroyedSeeks.clear();
     let bpmCount = 0, speedCount = 0, opacityCount = 0;
     for(let i = 0; i < renderTriggers.length; i++) {
       if(renderTriggers[i].value == 0) {
@@ -868,6 +871,15 @@ const cntRender = () => {
           cntCtx.textBaseline = "middle";
           cntCtx.fillText(renderTriggers[i].text, cntCanvas.width / 200 * (renderTriggers[i].x + 100), cntCanvas.height / 200 * (renderTriggers[i].y + 100));
         }
+      } else if(renderTriggers[i].value == 6) {
+        if(!destroyedSeeks.has(renderTriggers[i])) {
+          if(!prevDestroyedSeeks.has(renderTriggers[i])) {
+            if(song.playing()) {
+              song.seek(renderTriggers[i].seek);
+            }
+          }
+          destroyedSeeks.add(renderTriggers[i]);
+        }
       }
     }
     for(let i = 0; i < destroyParticles.length; i++) {
@@ -887,6 +899,9 @@ const cntRender = () => {
       cntCanvas.style.opacity = 1;
     }
     prevDestroyedBullets = new Set(destroyedBullets);
+    for(let i of destroyedSeeks) {
+      prevDestroyedSeeks.add(i);
+    }
     start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4 / speed));
     end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14 / speed));
     const renderNotes = pattern.patterns.slice(start, end);
@@ -979,6 +994,8 @@ const cntRender = () => {
 
 const songPlayPause = () => {
   if(document.getElementById('editorMainContainer').style.display == 'initial') {
+    prevDestroyedSeeks.clear();
+    destroyedSeeks.clear();
     if(song.playing()){
       document.getElementById('controlBtn').classList.add('timeline-play');
       document.getElementById('controlBtn').classList.remove('timeline-pause');
@@ -1284,6 +1301,7 @@ const triggersInput = (v, e) => {
       break;
     case 'size':
     case 'text':
+    case 'seek':
       pattern.triggers[selectedCntElement.i][v] = e.value;
       patternChanged();
       break;
@@ -1484,11 +1502,11 @@ const timelineAddElement = () => {
         }
       }
     } else if(mousePosY >= startY + height * (bulletsOverlapNum + 1) && mousePosY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum + 1)) {
-      pattern.triggers.push({"ms": parseInt(calculatedMs), "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
+      pattern.triggers.push({"ms": parseInt(calculatedMs), "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": "", "seek": 0});
       pattern.triggers.sort(sortAsTiming);
       patternChanged();
       for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${parseInt(calculatedMs)},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":""}`) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${parseInt(calculatedMs)},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":"","seek":0}`) {
           selectedCntElement = {"i": i, "v1": 2, "v2": -1};
         }
       }
@@ -1546,10 +1564,10 @@ const compClicked = () => {
       changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
       if(!isSettingsOpened) toggleSettings();
     } else {
-      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": ""});
+      pattern.triggers.push({"ms": song.seek() * 1000, "value": -1, "num": 0, "bpm": bpm, "opacity": 1, "speed": speed, "align": "center", "size": "16px", "time": parseInt(60/bpm*1000), "x": 0, "y": 0, "text": "", "seek": 0});
       pattern.triggers.sort(sortAsTiming);
       for(let i = 0; i < pattern.triggers.length; i++) {
-        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":""}`) {
+        if(JSON.stringify(pattern.triggers[i]) == `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(60/bpm*1000)},"x":0,"y":0,"text":"","seek":0}`) {
           selectedCntElement = {"i": i, "v1": 2, "v2": -1};
           patternChanged();
           changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
@@ -1659,6 +1677,10 @@ const changeSettingsMode = (v1, v2, i) => {
             textBox[4].value = pattern.triggers[i].x;
             textBox[5].value = pattern.triggers[i].y;
             textBox[6].value = pattern.triggers[i].text;
+            break;
+          case 6:
+            //Seek
+            textBox[1].value = pattern.triggers[i].seek;
             break;
         }
       }
