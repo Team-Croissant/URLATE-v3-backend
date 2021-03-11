@@ -543,7 +543,7 @@ const cntRender = () => {
     }
     pointingCntElement = [{"v1": '', "v2": '', "i": ''}];
     const seek = song.seek() - (offset + sync) / 1000;
-    let start = lowerBound(pattern.triggers, seek * 1000 - 2000);
+    let start = lowerBound(pattern.triggers, 0);
     let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
     const renderTriggers = pattern.triggers.slice(start, end);
     for(let i = 0; i < renderTriggers.length; i++) {
