@@ -334,9 +334,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     animContainer.style.width = `${heightWidth}px`;
     animContainer.style.height = `${heightWidth / 16 * 9}px`;
   }
-  warningInner.style.opacity = "1";
   setTimeout(() => {
-    warningInner.style.transitionDelay = "0s";
+    warningInner.style.opacity = "1";
   }, 1000);
   setTimeout(() => {
     if(intro1load == 1) {

@@ -2214,7 +2214,6 @@ p {
   padding: 5vh 5vw 5vh 5vw;
   margin-bottom: 5vh;
   border-bottom: 0.1vh solid #000;
-  transition-delay: 0.5s;
   transition-duration: 0.3s;
   opacity: 0;
 }
