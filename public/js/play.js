@@ -750,6 +750,10 @@ const calculateResult = () => {
     missCtx.textBaseline = "bottom";
     missCtx.fillText('Perfect!', missCanvas.width - 10, missCanvas.height * 0.8 - 10);  
   }
+  console.log(`accuracy: ${accuracy}`);
+  console.log(`rank: ${rank}`);
+  console.log(`record: ${score}`);
+  console.log(`maxcombo: ${maxCombo}`);
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
