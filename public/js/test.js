@@ -39,7 +39,10 @@ let fileName = '';
 let lottieAnim = {
   play: () => {},
   stop: () => {},
-  pause: () => {}
+  pause: () => {},
+  goToAndPlay: () => {},
+  goToAndStop: () => {},
+  setSpeed: () => {}
 };
 let tick = new Howl({
   src: [`/sounds/tick.mp3`],

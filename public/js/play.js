@@ -40,7 +40,10 @@ let fileName = '';
 let lottieAnim = {
   play: () => {},
   stop: () => {},
-  pause: () => {}
+  pause: () => {},
+  goToAndPlay: () => {},
+  goToAndStop: () => {},
+  setSpeed: () => {}
 };
 let overlayTime = 0;
 let shiftDown = false;

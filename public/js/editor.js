@@ -34,7 +34,8 @@ let lottieAnim = {
   stop: () => {},
   pause: () => {},
   goToAndPlay: () => {},
-  goToAndStop: () => {}
+  goToAndStop: () => {},
+  setSpeed: () => {}
 };
 
 let pattern = {
