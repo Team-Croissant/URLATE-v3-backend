@@ -353,7 +353,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     intro2container.style.display = 'none';
     loaded++;
   } else {
-    intro1sources.src = "videos/croissant.webm";
+    if(intro1video.canPlayType("video/webm")) {
+      intro1sources.src = "videos/croissant.webm";
+    } else {
+      intro1sources.src = "videos/croissant.mp4";
+    }
     intro1video.load();
 
     intro2anim = bodymovin.loadAnimation({
