@@ -27,6 +27,7 @@ let bulletsOverlapNum = 1;
 let triggersOverlapNum = 2;
 let isTextboxFocused = false;
 let skin, denyCursor, denySkin;
+let copied = false, copiedTime = 0;
 
 let lottieAnim = {
   play: () => {},
@@ -1444,8 +1445,10 @@ const tmlClicked = () => {
   } else if(mode == 2) {
     timelineAddElement();
   }
+  copySeek();
 };
 
+const copySeek = () => {
   if(mouseX < tmlCanvas.width / 10 && mouseY < tmlCanvas.height / 6) {
     navigator.clipboard.writeText(song.seek());
     copied = true;
