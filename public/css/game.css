@@ -812,7 +812,6 @@ p {
 
 .optionSelectors {
   cursor: pointer;
-  letter-spacing: -3px;
   margin: 2vh;
   color: #9B9B9B;
   font-weight: 500;
