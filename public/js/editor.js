@@ -817,7 +817,7 @@ const callBulletDestroy = (j) => {
     let ry = Math.floor(Math.random() * 4) - 2;
     randomDirection[i] = [rx, ry];
   }
-  destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection});
+  destroyParticles.push({'x': x, 'y': y, 'w': 5, 'n': 1, 'd': randomDirection, 'ms': Date.now()});
 };
 
 const cntRender = () => {
@@ -886,7 +886,7 @@ const cntRender = () => {
     for(let i = 0; i < destroyParticles.length; i++) {
       if(destroyParticles[i].w > 0) {
         drawParticle(0, destroyParticles[i].x, destroyParticles[i].y, i);
-        destroyParticles[i].w -= 0.1;
+        destroyParticles[i].w = 3 - (Date.now() - destroyParticles[i].ms) / 100;
         destroyParticles[i].n++;
       }
     }
