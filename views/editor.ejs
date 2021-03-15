@@ -148,6 +148,7 @@
           <img src="https://img.icons8.com/ios-glyphs/48/000000/delete.png" class="menuIcon clickable" onclick="deleteAll()">
           <div id="horizontalLine" class="menuIcon"></div>
           <img src="https://img.icons8.com/ios-glyphs/48/000000/question-mark.png" class="menuIcon clickable" onmouseover="showHelp()" onmouseout="hideHelp()">
+          <img src="https://img.icons8.com/ios-glyphs/48/000000/arrow.png" class="menuIcon clickable" onclick="moveTo()">
         </div>
         <div id="componentView" onmousemove="trackMousePos(event)" onmousedown="compClicked()">
           <div id="canvasContainer">
@@ -452,6 +453,7 @@
     <p class="optionValue" id="volumeMasterValue">50%</p>
   </div>
   <script>
+    const moveToAlert = "<%= __('moveToAlert') %>";
     const timeAlert = "<%= __('timeAlert') %>";
     const copiedText = "<%= __('copied') %>";
     const zoomAlert = "<%= __('zoomAlert') %>";
