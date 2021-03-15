@@ -265,7 +265,9 @@ const eraseCnt = () => {
 };
 
 const getJudgeStyle = (j, p, x, y) => {
-  p = `${parseInt(p)}`.padStart(2, '0');
+  p = parseInt(p);
+  if(p <= 0) p = 0;
+  p = `${p}`.padStart(2, '0');
   if(p <= 0) p = 0;
   if(!judgeSkin) {
     if(j == 'miss') {
@@ -285,7 +287,9 @@ const getJudgeStyle = (j, p, x, y) => {
       return `rgba(50, 50, 50, ${1 - p / 100})`;
     }
   } else {
-    p = parseInt(255 - p * 2.55).toString(16).padStart(2, '0');
+    p = parseInt(255 - p * 2.55);
+    if(p <= 0) p = 0;
+    p = p.toString(16).padStart(2, '0');
     if(p <= 0) p = '00';
     if(skin[j].type == 'gradient') {
       let grd = ctx.createLinearGradient(x - 50, y - 20, x + 50, y + 20);
