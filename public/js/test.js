@@ -720,8 +720,7 @@ const calculateResult = () => {
   rankImg.src = `/images/parts/elements/${rank}.png`;
   scoreInfoRank.style.setProperty('--background', `url('/images/parts/elements/${rank}back.png')`);
   setTimeout(() => {
-    document.getElementById('componentCanvas').classList.add('opacity0');
-    document.getElementById('componentCanvas').classList.remove('opacity1');
+    document.getElementById('componentCanvas').style.opacity = "0";
   }, 500);
   setTimeout(() => {
     floatingArrowContainer.style.display = 'flex';
@@ -887,9 +886,8 @@ Pace.on('done', () => {
 const doneLoading = () => {
   setTimeout(() => {
     cntRender();
-    document.getElementById('componentCanvas').classList.add('opacity1');
-    document.getElementById('loadingContainer').classList.remove('opacity1');
-    document.getElementById('loadingContainer').classList.add('opacity0');
+    document.getElementById('componentCanvas').style.opacity = "1";
+    document.getElementById('loadingContainer').style.opacity = "0";
     document.getElementById('wallLeft').style.left = '0vw';
     document.getElementById('wallRight').style.right = '0vw';
     setTimeout(() => {
