@@ -1311,6 +1311,10 @@ const triggersInput = (v, e) => {
   }
 };
 
+const moveTo = () => {
+  song.seek(prompt(moveToAlert));
+};
+
 const changeBPM = (e) => {
   if(isNaN(Number(e.value))) {
     alert("Input value is not number.");

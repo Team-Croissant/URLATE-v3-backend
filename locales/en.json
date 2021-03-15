@@ -175,5 +175,6 @@
 	"already_subscribed1": "Already subscribed to ADVANCED.",
 	"already_subscribed2": "You can use coupon by canceling your subscription.",
 	"timeAlert": "Click the clock on the timeline to copy the current value.",
-	"copied": "Copied!"
+	"copied": "Copied!",
+	"moveToAlert": "Please enter the time to move (seconds)."
 }
