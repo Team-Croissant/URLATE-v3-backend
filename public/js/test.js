@@ -13,7 +13,7 @@ let missParticles = [];
 let destroyedBullets = new Set([]);
 let destroyedNotes = new Set([]);
 let mouseX = 0, mouseY = 0;
-let score = 0, combo = 0, displayScore = 0, maxCombo = 0;
+let score = 0, combo = 0, displayScore = 0, prevScore = 0, maxCombo = 0, scoreMs = 0;
 let perfect = 0;
 let great = 0;
 let good = 0;
@@ -650,8 +650,11 @@ const cntRender = () => {
       console.error(e);
     }
   }
-  if(displayScore < score) {
-    displayScore += score / 60;
+  if(Date.now() - scoreMs < 500) {
+    displayScore += (score - prevScore) / 500 * (Date.now() - scoreMs);
+    prevScore = displayScore;
+  } else {
+    displayScore = score;
   }
   ctx.font = "700 4vh Metropolis";
   ctx.fillStyle = "#333";
@@ -847,6 +850,8 @@ const compReleased = () => {
 };
 
 const calculateScore = (judge, i, isMissed) => {
+  scoreMs = Date.now();
+  prevScore = displayScore;
   destroyedNotes.add(i);
   if(!isMissed) {
     pattern.patterns[i].ms = song.seek() * 1000 - (offset + sync);
