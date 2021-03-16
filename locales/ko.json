@@ -193,5 +193,7 @@
 	"press_anywhere": "계속하려면 아무 곳이나 클릭하세요.",
 	"timeAlert": "타임라인의 시계를 클릭하면 현재값을 복사할 수 있습니다.",
 	"copied": "복사됨!",
-	"moveToAlert": "이동할 시점을 입력해주세요(초)."
+	"moveToAlert": "이동할 시점을 입력해주세요(초).",
+	"fullscreen_1": "",
+	"fullscreen_2": " 을 눌러 전체화면을 활성화시켜주세요."
 }

@@ -176,5 +176,7 @@
 	"already_subscribed2": "You can use coupon by canceling your subscription.",
 	"timeAlert": "Click the clock on the timeline to copy the current value.",
 	"copied": "Copied!",
-	"moveToAlert": "Please enter the time to move (seconds)."
+	"moveToAlert": "Please enter the time to move (seconds).",
+	"fullscreen_1": "Press ",
+	"fullscreen_2": " to enable fullscreen."
 }
