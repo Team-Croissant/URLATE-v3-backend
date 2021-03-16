@@ -1763,6 +1763,7 @@ document.onkeydown = e => {
   let key = e.key.toLowerCase();
   //console.log(key);
   if(key == 'escape') {
+    e.preventDefault();
     displayClose();
     return;
   }
