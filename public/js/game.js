@@ -351,6 +351,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     intro1container.style.display = 'none';
     intro2container.style.display = 'none';
     loaded++;
+    display = 0;
   } else {
     if(intro1video.canPlayType("video/webm")) {
       intro1sources.src = "videos/croissant.webm";
