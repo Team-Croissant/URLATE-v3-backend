@@ -1,6 +1,9 @@
 let lottieAnim;
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", (event) => {var UserAgent = navigator.userAgent;
+	if(UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null)	{
+		fullscreenRequired.style.display = 'none';
+	}
   let widthWidth = window.innerWidth;
   let heightWidth = window.innerHeight / 9 * 16;
   if(widthWidth > heightWidth) {
