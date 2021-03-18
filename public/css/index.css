@@ -79,6 +79,7 @@ body {
 }
 
 #fullscreenRequired {
+    font-size: 2vh;
     z-index: 100;
     display: flex;
     position: fixed;
@@ -105,4 +106,12 @@ kbd {
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
   margin: 3px;
   border-radius: 5px;
+}
+
+#fullscreenText {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #bbb;
+    position: fixed;
+    bottom: 5vh;
 }

@@ -1,7 +1,7 @@
 let lottieAnim;
 
 document.addEventListener("DOMContentLoaded", (event) => {var UserAgent = navigator.userAgent;
-	if(UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null)	{
+	if(UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson|safari|Safari/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null)	{
 		fullscreenRequired.style.display = 'none';
 	}
   let widthWidth = window.innerWidth;
@@ -92,6 +92,10 @@ window.onload = () => {
     document.getElementById('buttonContainer').style.marginTop = '2vh';
     document.getElementById('buttonContainer').style.opacity = '1';
   }, 500);
+};
+
+const fullscreenDisable = () => {
+  fullscreenRequired.style.display = 'none';
 };
 
 const loginTrigger = () => {
