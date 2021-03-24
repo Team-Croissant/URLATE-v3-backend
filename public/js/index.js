@@ -1,7 +1,9 @@
 let lottieAnim;
 
-document.addEventListener("DOMContentLoaded", (event) => {var UserAgent = navigator.userAgent;
-	if(UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson|safari|Safari/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null)	{
+document.addEventListener("DOMContentLoaded", (event) => {
+  let UserAgent = navigator.userAgent;
+  console.log(UserAgent);
+	if(UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null || (UserAgent.match(/Safari/i) != null && UserAgent.match(/Chrome/i) == null))	{
 		fullscreenRequired.style.display = 'none';
 	}
   let widthWidth = window.innerWidth;
