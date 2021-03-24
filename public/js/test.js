@@ -588,7 +588,7 @@ const cntRender = () => {
     for(let i = 0; i < destroyParticles.length; i++) {
       if(destroyParticles[i].w > 0) {
         drawParticle(0, destroyParticles[i].x, destroyParticles[i].y, i);
-        destroyParticles[i].w = 3 - (Date.now() - destroyParticles[i].ms) / 100;
+        destroyParticles[i].w = 10 - (Date.now() - destroyParticles[i].ms) / 25;
         destroyParticles[i].n++;
       }
     }

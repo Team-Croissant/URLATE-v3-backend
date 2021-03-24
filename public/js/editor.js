@@ -402,7 +402,7 @@ const drawParticle = (n, x, y, j) => {
     for(let i = 0; i < 3; i++) {
       cntCtx.beginPath();
       cntCtx.fillStyle = '#222';
-      cntCtx.arc(cx + (n * destroyParticles[j].d[i][0]), cy + (n * destroyParticles[j].d[i][1]), w, 0, 2 * Math.PI);
+      cntCtx.arc(cx + (n * destroyParticles[j].d[i][0] / 2), cy + (n * destroyParticles[j].d[i][1] / 2), w, 0, 2 * Math.PI);
       cntCtx.fill();
     }
   }
@@ -886,7 +886,7 @@ const cntRender = () => {
     for(let i = 0; i < destroyParticles.length; i++) {
       if(destroyParticles[i].w > 0) {
         drawParticle(0, destroyParticles[i].x, destroyParticles[i].y, i);
-        destroyParticles[i].w = 3 - (Date.now() - destroyParticles[i].ms) / 100;
+        destroyParticles[i].w = 5 - (Date.now() - destroyParticles[i].ms) / 50;
         destroyParticles[i].n++;
       }
     }
