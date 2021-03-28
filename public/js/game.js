@@ -356,6 +356,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if(intro1video.canPlayType("video/webm")) {
       intro1sources.src = "videos/croissant.webm";
     } else {
+      intro1sources.type = "video/mp4";
       intro1sources.src = "videos/croissant.mp4";
     }
     intro1video.load();
