@@ -781,6 +781,10 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
           missPoint.push(song.seek() * 1000);
           combo = 0;
           callBulletDestroy(i);
+          colorOverlayContainer.classList.add('show');
+          setTimeout(() => {
+            colorOverlayContainer.classList.remove('show');
+          }, 100);
         }
       }
       break;
