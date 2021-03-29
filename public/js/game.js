@@ -47,11 +47,7 @@ let offsetAverage = [];
 
 let trackRecords = [];
 
-let socket = io("https://game.rhyga.me");
-
-socket.on("connect", () => {
-  console.log(socket.id);
-});
+let socket;
 
 let themeSong;
 let songs = [];
@@ -90,6 +86,16 @@ const lottieResize = () => {
     animType: 'canvas',
     loop: true,
     path: 'lottie/game.json'
+  });
+};
+
+const socketInitialize = () => {
+  socket = io("https://game.rhyga.me", {query: `id=${userid}`});
+
+  socket.on("connect", () => {
+    socket.on('chat message', (msg) => {
+      console.log(msg);
+    });
   });
 };
 
@@ -406,6 +412,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           settings = JSON.parse(data.settings);
           username = data.nickname;
           userid = data.userid;
+          socketInitialize();
           document.getElementById('name').textContent = username;
           document.getElementById('optionName').textContent = username;
           if(lang == 'ko') {

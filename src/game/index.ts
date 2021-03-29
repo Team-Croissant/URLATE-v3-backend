@@ -1,19 +1,38 @@
-const signale = require('signale');
-const http = require('http');
-const app = require('express')();
+import redis = require('redis');
+import signale = require('signale');
+import fetch = require('node-fetch');
 
-const socketPort = 1027;
-const socketServer = http.createServer(app);
+const redisClient = redis.createClient();
+const io = require("socket.io")(1027);
 
-socketServer.listen(socketPort, function() {
-  signale.success(`Game server running at port ${socketPort}`);
+redisClient.on("error", function(error) {
+  signale.error(error);
 });
 
-const io = require('socket.io').listen(socketServer);
+io.on("connection", (socket) => {
+  redisClient.set(`socket${socket.id}`, socket.handshake.query.id);
+  fetch('https://api.rhyga.me/user', {
+    method: 'POST',
+    body: JSON.stringify({
+      userid: socket.handshake.query.id
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then((data) => {
+    redisClient.set(`socketName${socket.id}`, data.user.nickname);
+    //socket.emit('user connected', data.user.id);
+  });
 
-io.sockets.on('connection',function (socket) {
   socket.on('chat message', (msg) => {
-    console.log(`chat message: ${msg}`);
-    io.emit('chat message', msg);
+    redisClient.get(`socketName${socket.id}`, async (err, data) => {
+      socket.emit('chat message', `${data}: ${msg}`);
+    });
+  });
+
+  socket.on('disconnect', () => {
+    //socket.emit('user disconnected', socket.id);
   });
 });
