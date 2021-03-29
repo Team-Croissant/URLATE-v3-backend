@@ -207,6 +207,21 @@ app.get("/user", async (req, res) => {
   res.status(200).json({result: "success", user: results[0]});
 });
 
+app.post("/user", async (req, res) => {
+  if(!req.body.userid) {
+    res.status(400).json(createErrorResponse('failed', 'UserID Required', 'UserID is required for this task.'));
+    return;
+  }
+
+  const results = await knex('users').select('nickname', 'settings', 'advanced').where('userid', req.body.userid)
+  if (!results.length) {
+    res.status(400).json(createErrorResponse('failed', 'Failed to Load', 'Failed to load data.'));
+    return;
+  }
+  
+  res.status(200).json({result: "success", user: results[0]});
+});
+
 app.get("/tracks", async (req, res) => {
   const results = await knex('tracks').select('name', 'fileName', 'producer', 'bpm', 'difficulty', 'originalName', 'type')
   if (!results.length) {
