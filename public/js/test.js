@@ -673,10 +673,10 @@ const cntRender = () => {
       fps = (frameArray[0] + frameArray[1] + frameArray[2] + frameArray[3] + frameArray[4]) / 5;
       frameArray = [];
     }
-    ctx.font = "2.5vh Heebo";
-    ctx.fillStyle = "#555";
-    ctx.textBaseline = "bottom";
-    ctx.fillText(fps.toFixed(), canvas.width / 2, canvas.height - canvas.height / 70);
+    // ctx.font = "2.5vh Heebo";
+    // ctx.fillStyle = "#555";
+    // ctx.textBaseline = "bottom";
+    // ctx.fillText(fps.toFixed(), canvas.width / 2, canvas.height - canvas.height / 70);
     frameCounterMs = Date.now();
   }
   drawCursor();
