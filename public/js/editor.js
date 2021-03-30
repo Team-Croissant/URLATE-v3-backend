@@ -1937,7 +1937,7 @@ const overlayClose = s => {
 };
 
 const globalScrollEvent = e => {
-  if(shiftDown) {
+  if(shiftDown && mouseMode != 1) {
     e = window.event || e;
     let delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
     if(delta == 1) { //UP
