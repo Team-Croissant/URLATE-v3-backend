@@ -1,107 +1,107 @@
-@import url('metropolis.css');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+@import url("metropolis.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
-    letter-spacing: -1px;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  letter-spacing: -1px;
+  overflow: hidden;
 }
 
 #animContainer {
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(30deg, #6EACFE, #B451FF);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(30deg, #6eacfe, #b451ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 #logoContainer {
-    position: relative;
-    z-index: 1;
-    width: 100vw;
-    height: 62vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 62vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #buttonContainer {
-    z-index: 1;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 7vh;
-    opacity: 0;
-    transition-duration: 0s;
+  z-index: 1;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 7vh;
+  opacity: 0;
+  transition-duration: 0s;
 }
 
 #logo {
-    height: 30vh;
+  height: 30vh;
 }
 
 #footerLeft {
-    position: fixed;
-    text-align: left;
-    font-size: 1.6vh;
-    color: white;
-    left: 2vh;
-    bottom: 2vh;
+  position: fixed;
+  text-align: left;
+  font-size: 1.6vh;
+  color: white;
+  left: 2vh;
+  bottom: 2vh;
 }
 
 #footerRight {
-    position: fixed;
-    text-align: right;
-    font-size: 1.6vh;
-    color: white;
-    right: 2vh;
-    bottom: 2vh;
+  position: fixed;
+  text-align: right;
+  font-size: 1.6vh;
+  color: white;
+  right: 2vh;
+  bottom: 2vh;
 }
 
 .link {
-    color: #ffffffdd;
+  color: #ffffffdd;
 }
 
 .bottomLang {
-    text-decoration: none;
-    color: #ffffffdd;
-    font-size: .9em;
+  text-decoration: none;
+  color: #ffffffdd;
+  font-size: 0.9em;
 }
 
 #fullscreenRequired {
-    font-size: 2vh;
-    z-index: 100;
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #333;
-    color: white;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  font-size: 2vh;
+  z-index: 100;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #333;
+  color: white;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 @media all and (display-mode: fullscreen) {
-    #fullscreenRequired {
-        display: none;
-    }
+  #fullscreenRequired {
+    display: none;
+  }
 }
 
 kbd {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   border: 2px solid #bbb;
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
   margin: 3px;
@@ -109,9 +109,9 @@ kbd {
 }
 
 #fullscreenText {
-    cursor: pointer;
-    text-decoration: underline;
-    color: #bbb;
-    position: fixed;
-    bottom: 5vh;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #bbb;
+  position: fixed;
+  bottom: 5vh;
 }

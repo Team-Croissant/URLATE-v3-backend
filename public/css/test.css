@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
-@import url('metropolis.css');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap");
+@import url("metropolis.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
   background: #eee;
   background-repeat: repeat;
   width: 100vw;
   height: 100vh;
-  cursor: none; 
+  cursor: none;
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   letter-spacing: -1px;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -25,14 +25,14 @@ body {
   -moz-user-select: none;
   user-select: none;
 }
-  
+
 .pace-inactive {
   display: none;
 }
-  
+
 .pace .pace-progress {
   background: #1788de;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   position: fixed;
   z-index: 2000;
   bottom: 0;
@@ -40,7 +40,7 @@ body {
   width: 100%;
   height: 1vh;
 }
-  
+
 .pace .pace-activity {
   display: block;
   position: fixed;
@@ -61,24 +61,54 @@ body {
 }
 
 @-webkit-keyframes pace-spinner {
-  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-moz-keyframes pace-spinner {
-  0% { -moz-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-o-keyframes pace-spinner {
-   0% { -o-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-ms-keyframes pace-spinner {
-  0% { -ms-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @keyframes pace-spinner {
-  0% { transform: rotate(0deg); transform: rotate(0deg); }
-  100% { transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 #canvasContainer {
@@ -88,7 +118,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  transition-duration: .7s;
+  transition-duration: 0.7s;
 }
 
 #componentCanvas {
@@ -100,7 +130,7 @@ body {
 }
 
 .wall {
-  filter: drop-shadow(0 0px 10px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.5));
   position: fixed;
   -webkit-pointer-events: none;
   pointer-events: none;
@@ -149,19 +179,19 @@ body {
 }
 
 #title {
-  filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
   font-size: 2em;
   font-weight: 600;
 }
 
 #artist {
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
   font-size: 1.3em;
 }
 
 #alertMessage {
-  color: #FF5555;
-  filter: drop-shadow(0 0 5px rgba(255,100,100,0.2));
+  color: #ff5555;
+  filter: drop-shadow(0 0 5px rgba(255, 100, 100, 0.2));
   font-size: 1.3em;
 }
 
@@ -169,7 +199,7 @@ body {
   width: 30vw;
   margin-bottom: 3vh;
   border-radius: 5px;
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
 }
 
 .opacity1 {
@@ -222,7 +252,7 @@ body {
   width: 20vw;
   height: 10vh;
   font-size: 4vh;
-  transition-duration: .2s;
+  transition-duration: 0.2s;
   cursor: pointer;
   border-radius: 50vh;
   background-size: cover;
@@ -280,7 +310,7 @@ body {
 
 #scoreDecorations {
   pointer-events: none;
-  background-image: url('/images/backgrounds/decorations.png');
+  background-image: url("/images/backgrounds/decorations.png");
   position: fixed;
   top: 0;
   left: 0;
@@ -305,7 +335,7 @@ body {
   background-size: cover;
   background-position: center;
   border: 1vh solid white;
-  filter: drop-shadow(0 0 0 10px rgba(0,0,0,.3));
+  filter: drop-shadow(0 0 0 10px rgba(0, 0, 0, 0.3));
 }
 
 #scoreAlbumInfo {
@@ -317,13 +347,13 @@ body {
 }
 
 #scoreTitle {
-  color: #F3F3F3;
+  color: #f3f3f3;
   font-size: 5vh;
   font-weight: 600;
 }
 
 #scoreArtist {
-  color: #F3F3F3;
+  color: #f3f3f3;
   font-size: 3vh;
   font-weight: 400;
 }
@@ -344,7 +374,7 @@ body {
 }
 
 #missPoint {
-  color: #FFF;
+  color: #fff;
   font-style: italic;
   font-size: 2vh;
   font-weight: 300;
@@ -363,7 +393,7 @@ body {
 
 #result {
   margin-top: 10vh;
-  color: #F3F3F3;
+  color: #f3f3f3;
   font-weight: 600;
   font-size: 5vh;
 }
@@ -411,13 +441,13 @@ body {
 }
 
 .scoreSemiTitle {
-  color: #FFF;
+  color: #fff;
   font-weight: 400;
   font-size: 3vh;
 }
 
 .scoreValue {
-  color: #FFF;
+  color: #fff;
   font-weight: 600;
   font-size: 5vh;
 }
@@ -442,7 +472,7 @@ body {
 }
 
 .judgeResult {
-  color: #FFF;
+  color: #fff;
   font-weight: 600;
   font-size: 4vh;
 }
@@ -592,12 +622,12 @@ body {
   color: #333;
   animation: floatResume 1s ease-in-out infinite;
   animation-direction: alternate;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 #floatingResume {
   background-color: white;
-  padding: .5em;
+  padding: 0.5em;
   border-radius: 10px;
   position: fixed;
   font-size: 3vh;
@@ -676,7 +706,7 @@ body {
 }
 
 .optionValue {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   font-weight: 400;
   color: #404040;
   font-size: 2vh;
@@ -691,7 +721,7 @@ body {
   background-color: rgba(255, 100, 100, 0.3);
   opacity: 0;
   pointer-events: none;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 
 #colorOverlayContainer.show {

@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap');
-@import url('metropolis.css');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap");
+@import url("metropolis.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
-  background: #eee url('/images/backgrounds/editor.png');
+  background: #eee url("/images/backgrounds/editor.png");
   background-size: 130vw;
   background-repeat: repeat;
   width: 100vw;
   height: 100vh;
-  cursor: url('/images/parts/cursor/blueCursor.cur'), default;
+  cursor: url("/images/parts/cursor/blueCursor.cur"), default;
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: 'Heebo', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Heebo", "Noto Sans KR", "나눔바른고딕", arial;
   letter-spacing: -1px;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -27,14 +27,14 @@ body {
   -moz-user-select: none;
   user-select: none;
 }
-  
+
 .pace-inactive {
   display: none;
 }
-  
+
 .pace .pace-progress {
   background: #1788de;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   position: fixed;
   z-index: 2000;
   bottom: 0;
@@ -42,7 +42,7 @@ body {
   width: 100%;
   height: 1vh;
 }
-  
+
 .pace .pace-activity {
   display: block;
   position: fixed;
@@ -63,24 +63,54 @@ body {
 }
 
 @-webkit-keyframes pace-spinner {
-  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-moz-keyframes pace-spinner {
-  0% { -moz-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-o-keyframes pace-spinner {
-   0% { -o-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-ms-keyframes pace-spinner {
-  0% { -ms-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @keyframes pace-spinner {
-  0% { transform: rotate(0deg); transform: rotate(0deg); }
-  100% { transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 #navbar {
@@ -89,8 +119,8 @@ body {
   display: flex;
   width: 100vw;
   height: 8vh;
-  background-color: #FFF;
-  border-bottom: 1px solid #DDD;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
   filter: drop-shadow(0 0px 5px rgba(65, 65, 65, 0.1));
 }
 
@@ -109,7 +139,7 @@ body {
 }
 
 .metropolis {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
 }
 
 #topCenterBar {
@@ -131,12 +161,14 @@ body {
 }
 
 .icon {
-  filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%) contrast(96%);
+  filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%)
+    contrast(96%);
   width: 1vw;
 }
 
 .menuIcon {
-  filter: invert(70%) sepia(53%) saturate(0%) hue-rotate(222deg) brightness(100%) contrast(95%);
+  filter: invert(70%) sepia(53%) saturate(0%) hue-rotate(222deg)
+    brightness(100%) contrast(95%);
   width: 1.3vw;
   margin-top: 3vh;
 }
@@ -146,17 +178,19 @@ body {
 }
 
 .menuSelected {
-  filter: invert(25%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%) contrast(96%);
+  filter: invert(25%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%)
+    contrast(96%);
 }
 
 .backIcon {
   margin-bottom: -0.1vh;
   padding-right: 5px;
-  height: 1.5vh
+  height: 1.5vh;
 }
 
 #horizontalLine {
-  filter: invert(83%) sepia(53%) saturate(0%) hue-rotate(222deg) brightness(100%) contrast(95%);
+  filter: invert(83%) sepia(53%) saturate(0%) hue-rotate(222deg)
+    brightness(100%) contrast(95%);
   width: 2vw;
   height: 2px;
   background-color: #000;
@@ -172,7 +206,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #FFF;
+  background-color: #fff;
   filter: drop-shadow(0 0 5px rgba(65, 65, 65, 0.1));
   width: 5vw;
   height: 100%;
@@ -196,7 +230,7 @@ body {
 }
 
 .clickable {
-  cursor: url('/images/parts/cursor/blueSelect.cur'), pointer;
+  cursor: url("/images/parts/cursor/blueSelect.cur"), pointer;
 }
 
 #canvasContainer {
@@ -229,7 +263,7 @@ body {
   z-index: 2;
   /*overflow-y: scroll;
   overflow-x: scroll;*/
-  background-color: #FFF;
+  background-color: #fff;
   width: 100vw;
   height: 27vh;
   scrollbar-width: 1vh;
@@ -242,11 +276,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #EEE; 
+  background: #eee;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #999; 
+  background: #999;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -262,7 +296,7 @@ body {
   z-index: 5;
   width: 25vw;
   height: 100vh;
-  background-color: #FFF;
+  background-color: #fff;
   filter: drop-shadow(0 0px 5px rgba(65, 65, 65, 0.1));
 }
 
@@ -288,7 +322,7 @@ body {
   align-items: center;
   width: 80%;
   height: 8%;
-  border-bottom: 1px solid #DEDEDE;
+  border-bottom: 1px solid #dedede;
 }
 
 #dot {
@@ -339,7 +373,7 @@ body {
   width: 50%;
   height: 2vh;
   border-radius: 2px;
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
   color: #999;
   font-weight: 500;
   font-size: 1.5vh;
@@ -356,8 +390,8 @@ body {
 .settingsButtons {
   width: 25%;
   margin: 0.1vw;
-  border: solid 1px #AAA;
-  background-color: #FFF;
+  border: solid 1px #aaa;
+  background-color: #fff;
   color: #555;
   border-radius: 3px;
   height: 2.5vh;
@@ -399,7 +433,7 @@ body {
   height: 10vw;
   margin: 2vw;
   background-color: white;
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
 }
 
 .initialIcon {
@@ -423,7 +457,7 @@ body {
   justify-content: center;
   flex-direction: column;
   background-color: white;
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
   width: 25vw;
   height: 30vh;
 }
@@ -433,15 +467,15 @@ body {
   width: 20vw;
   height: 5vh;
   margin: 2vh;
-  background-color: #FFF;
-  border: 1px solid #DEDEDE;
-  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+  background-color: #fff;
+  border: 1px solid #dedede;
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.1));
 }
 
 .initlalButtons {
   width: 5vw;
   height: 3vh;
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
   margin-top: 2vh;
   background-color: white;
 }
@@ -468,7 +502,8 @@ body {
   align-items: center;
   bottom: 23.5vh;
   left: 1vw;
-  filter: invert(30%) sepia(0%) saturate(572%) hue-rotate(158deg) brightness(102%) contrast(86%);
+  filter: invert(30%) sepia(0%) saturate(572%) hue-rotate(158deg)
+    brightness(102%) contrast(86%);
 }
 
 #timelineSplitController {
@@ -482,11 +517,11 @@ body {
 }
 
 .timeline-play {
-  content: url('https://img.icons8.com/ios-glyphs/24/000000/play.png');
+  content: url("https://img.icons8.com/ios-glyphs/24/000000/play.png");
 }
 
 .timeline-pause {
-  content: url('https://img.icons8.com/ios-glyphs/24/000000/pause.png');
+  content: url("https://img.icons8.com/ios-glyphs/24/000000/pause.png");
 }
 
 #percentage {
@@ -519,7 +554,7 @@ body {
   width: 80vw;
   height: 80vh;
   border-radius: 10px;
-  background-color: #FDFDFD;
+  background-color: #fdfdfd;
   filter: drop-shadow(0 0 7px #00000010);
 }
 
@@ -569,15 +604,15 @@ body {
   width: 53%;
   height: 2.6vh;
   border-radius: 2px;
-  border: 1px solid #BBB;
+  border: 1px solid #bbb;
   color: #999;
-  background-color: #FFF;
+  background-color: #fff;
   font-weight: 500;
   font-size: 1.5vh;
 }
 
 kbd {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   font-style: italic;
   border: 2px solid #555;
   padding: 4px 14px 4px 8px;
@@ -649,7 +684,7 @@ kbd {
 }
 
 .optionValue {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   font-weight: 400;
   color: #404040;
   font-size: 2vh;

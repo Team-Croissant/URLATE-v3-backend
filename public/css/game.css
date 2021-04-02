@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:200,400,500,600,800&display=swap');
-@import url('metropolis.css');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Heebo:200,400,500,600,800&display=swap");
+@import url("metropolis.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
   background-size: cover;
   background-position: center;
-  background-image: url('/images/backgrounds/main.png');
+  background-image: url("/images/backgrounds/main.png");
   user-select: none;
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: 'Heebo', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Heebo", "Noto Sans KR", "나눔바른고딕", arial;
   letter-spacing: -1px;
   overflow-x: hidden;
   overflow-y: hidden;
 }
 
 .metropolis {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
 }
 
 .lighter {
@@ -34,7 +34,7 @@ body {
 
 .link {
   text-decoration: none;
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .blackLink {
@@ -65,7 +65,7 @@ body {
   position: absolute;
   height: 18vh;
   opacity: 0;
-  transition-duration: .2s;
+  transition-duration: 0.2s;
 }
 
 .fadeIcon:hover {
@@ -93,14 +93,14 @@ body {
   -moz-user-select: none;
   user-select: none;
 }
-  
+
 .pace-inactive {
   display: none;
 }
-  
+
 .pace .pace-progress {
   background: #1788de;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   position: fixed;
   z-index: 2000;
   bottom: 0;
@@ -108,7 +108,7 @@ body {
   width: 100%;
   height: 1vh;
 }
-  
+
 .pace .pace-activity {
   display: block;
   position: fixed;
@@ -129,24 +129,54 @@ body {
 }
 
 @-webkit-keyframes pace-spinner {
-  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-moz-keyframes pace-spinner {
-  0% { -moz-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-o-keyframes pace-spinner {
-   0% { -o-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @-ms-keyframes pace-spinner {
-  0% { -ms-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 @keyframes pace-spinner {
-  0% { transform: rotate(0deg); transform: rotate(0deg); }
-  100% { transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 p {
@@ -192,61 +222,61 @@ p {
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background-image: url('/images/backgrounds/loading.png');
+  background-image: url("/images/backgrounds/loading.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
 #logo {
-    width: 25vw;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  width: 25vw;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 #footer {
-    z-index: 100;
-    position: fixed;
-    height: 10vh;
-    width: 100vw;
-    bottom: 0;
-    display: flex;
-    text-align: center;
-    align-items: center;
+  z-index: 100;
+  position: fixed;
+  height: 10vh;
+  width: 100vw;
+  bottom: 0;
+  display: flex;
+  text-align: center;
+  align-items: center;
 }
 
 #footerLeft {
-    opacity: 0;
-    padding-left: 5vw;
-    height: 100%;
-    width: 33vw;
-    display: flex;
-    text-align: left;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 2vh;
-    transition-duration: 1s;
+  opacity: 0;
+  padding-left: 5vw;
+  height: 100%;
+  width: 33vw;
+  display: flex;
+  text-align: left;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 2vh;
+  transition-duration: 1s;
 }
 
 #footerCenter {
-    height: 100%;
-    width: 34vw;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    transition-duration: 1s;
+  height: 100%;
+  width: 34vw;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition-duration: 1s;
 }
 
 #footerRight {
-    font-size: 1.6vh;
-    padding-right: 5vw;
-    height: 100%;
-    width: 33vw;
-    display: flex;
-    text-align: right;
-    align-items: center;
-    justify-content: flex-end;
+  font-size: 1.6vh;
+  padding-right: 5vw;
+  height: 100%;
+  width: 33vw;
+  display: flex;
+  text-align: right;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 #urlateText {
@@ -283,7 +313,7 @@ p {
   text-align: left;
   align-items: center;
   justify-content: flex-start;
-  background-image: url('/images/parts/elements/namespace_pure.png');
+  background-image: url("/images/parts/elements/namespace_pure.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 19vw auto;
@@ -307,7 +337,7 @@ p {
 }
 
 #line {
-  border-left: 2px solid #BBB;
+  border-left: 2px solid #bbb;
   height: 1em;
   margin: 5px;
 }
@@ -321,7 +351,7 @@ p {
   opacity: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('/images/backgrounds/track.png');
+  background-image: url("/images/backgrounds/track.png");
   background-repeat: no-repeat;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -394,8 +424,8 @@ p {
 #infoContainer {
   letter-spacing: -0.5px;
   color: #333;
-  background-color: #FFF;
-  background-image: url('/images/backgrounds/option_decorations.png');
+  background-color: #fff;
+  background-image: url("/images/backgrounds/option_decorations.png");
   background-position: center bottom;
   background-size: cover;
   background-attachment: fixed;
@@ -487,7 +517,7 @@ p {
   background-color: rgba(255, 255, 255, 0.7);
   font-size: 3vh;
   font-weight: 600;
-  transition-duration: .1s;
+  transition-duration: 0.1s;
 }
 
 .profileHover:hover {
@@ -495,63 +525,63 @@ p {
 }
 
 #profileCoupy {
-  background-image: url('/images/credits/coupy.png');
+  background-image: url("/images/credits/coupy.png");
 }
 
 #profileAlta {
-  background-image: url('/images/credits/altadex.jpg');
+  background-image: url("/images/credits/altadex.jpg");
 }
 
 #profileShd {
-  background-image: url('/images/credits/shd.jpg');
+  background-image: url("/images/credits/shd.jpg");
 }
 
 #profileGreenstar {
-  background-image: url('/images/credits/greenstar.jpg');
+  background-image: url("/images/credits/greenstar.jpg");
 }
 
 #profileRanol {
-  background-image: url('/images/credits/ranol.png');
+  background-image: url("/images/credits/ranol.png");
 }
 
 #profileKiwi {
-  background-image: url('/images/credits/kiwi.png');
+  background-image: url("/images/credits/kiwi.png");
 }
 
 #profilePine {
-  background-image: url('/images/credits/pine.png');
+  background-image: url("/images/credits/pine.png");
 }
 
 #profileSkylight {
-  background-image: url('/images/credits/lightqp.png');
+  background-image: url("/images/credits/lightqp.png");
 }
 
 #profileJoon {
-  background-image: url('/images/credits/joon.png');
+  background-image: url("/images/credits/joon.png");
 }
 
 #profileHanu {
-  background-image: url('/images/credits/hanukoon.png');
+  background-image: url("/images/credits/hanukoon.png");
 }
 
 #profileGeoplex {
-  background-image: url('/images/credits/geoplex.png');
+  background-image: url("/images/credits/geoplex.png");
 }
 
 #profileDanu {
-  background-image: url('/images/credits/danuel.jpg');
+  background-image: url("/images/credits/danuel.jpg");
 }
 
 #profileViktor {
-  background-image: url('/images/credits/viktor.png');
+  background-image: url("/images/credits/viktor.png");
 }
 
 #profileSaw {
-  background-image: url('/images/credits/saw.png');
+  background-image: url("/images/credits/saw.png");
 }
 
 #profileBasix {
-  background-image: url('/images/credits/basix.png');
+  background-image: url("/images/credits/basix.png");
 }
 
 #infoProfileContainer {
@@ -621,7 +651,8 @@ p {
 
 #visualizer {
   z-index: 1;
-  filter: invert(87%) sepia(3%) saturate(3117%) hue-rotate(186deg) brightness(101%) contrast(104%);
+  filter: invert(87%) sepia(3%) saturate(3117%) hue-rotate(186deg)
+    brightness(101%) contrast(104%);
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -669,44 +700,60 @@ p {
 }
 
 .fadeIn {
-  animation: fadeIn .3s ease-in-out forwards;
+  animation: fadeIn 0.3s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .fadeOut {
-  animation: fadeOut .3s ease-in-out forwards;
+  animation: fadeOut 0.3s ease-in-out forwards;
 }
 
 @keyframes fadeOut {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .shortFadeIn {
-  animation: shortFadeIn .2s linear forwards;
+  animation: shortFadeIn 0.2s linear forwards;
 }
 
 @keyframes shortFadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .shortFadeOut {
-  animation: shortFadeOut .2s linear forwards;
+  animation: shortFadeOut 0.2s linear forwards;
 }
 
 @keyframes shortFadeOut {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 #advancedContainer {
-  background-color: #FFF;
-  background-image: url('/images/backgrounds/advanced_decorations.png');
+  background-color: #fff;
+  background-image: url("/images/backgrounds/advanced_decorations.png");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
@@ -753,8 +800,12 @@ p {
 }
 
 #subtitleHighlight {
-  background: rgb(255,255,255);
-  background: linear-gradient(180deg, rgb(255,255,255) 49%, rgb(235,235,235) 50%);
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    180deg,
+    rgb(255, 255, 255) 49%,
+    rgb(235, 235, 235) 50%
+  );
 }
 
 #registerBtn {
@@ -764,10 +815,14 @@ p {
   height: 7vh;
   border-radius: 15px;
   border: none;
-  background: linear-gradient(135deg, rgba(59,137,236,1) 0%, rgba(187,62,254,1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 137, 236, 1) 0%,
+    rgba(187, 62, 254, 1) 100%
+  );
   font-size: 3vh;
   color: white;
-  filter: drop-shadow(0 0 10px rgba(50,50,50,0.3));
+  filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.3));
 }
 
 .additionalDescription {
@@ -776,8 +831,8 @@ p {
 }
 
 #optionContainer {
-  background-color: #FFF;
-  background-image: url('/images/backgrounds/option_decorations.png');
+  background-color: #fff;
+  background-image: url("/images/backgrounds/option_decorations.png");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
@@ -806,14 +861,14 @@ p {
   height: 72vh;
   width: 12vw;
   float: left;
-  border-right: solid #BBB 3px;
+  border-right: solid #bbb 3px;
   padding-right: 3vw;
 }
 
 .optionSelectors {
   cursor: pointer;
   margin: 2vh;
-  color: #9B9B9B;
+  color: #9b9b9b;
   font-weight: 500;
   font-size: 4vh;
 }
@@ -858,7 +913,7 @@ p {
 }
 
 .optionValue {
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   font-weight: 400;
   color: #404040;
   font-size: 2vh;
@@ -871,7 +926,7 @@ p {
   width: 10vw;
   height: 5vh;
   font-size: 2vh;
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   letter-spacing: -1px;
   color: #fff;
   background-color: #666;
@@ -915,7 +970,7 @@ p {
   text-align: center;
   padding: 1.2vh 3vw 1.2vh 3vw;
   font-size: 2vh;
-  font-family: 'Metropolis', 'Noto Sans KR', '나눔바른고딕', arial;
+  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
   letter-spacing: -1px;
   color: #fff;
   text-decoration: none;
@@ -1084,7 +1139,7 @@ p {
 .trackStatLine {
   height: 100%;
   background-color: #fff;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   width: 100%;
 }
 
@@ -1217,7 +1272,7 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  transition-duration: .2s;
+  transition-duration: 0.2s;
 }
 
 .songSelectionInfo {
@@ -1316,7 +1371,11 @@ p {
   padding-bottom: 1.5vh;
   --artist-display: none;
   --title-weight: 600;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.5));
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.5)
+  );
 }
 
 #selectRankContainer {
@@ -1340,13 +1399,13 @@ p {
   padding-right: 2vw;
   width: 80%;
   height: 95%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 
 #selectRankInnerContainer.visible {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
   border-radius: 5px;
 }
@@ -1438,8 +1497,8 @@ p {
   align-items: center;
   opacity: 0;
   z-index: 101;
-  background-color: #FFF;
-  background-image: url('/images/backgrounds/option_decorations.png');
+  background-color: #fff;
+  background-image: url("/images/backgrounds/option_decorations.png");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
@@ -1478,7 +1537,7 @@ p {
 
 .timingText {
   margin-top: 1vh;
-  font-family: 'Metropolis', '나눔바른고딕', arial;
+  font-family: "Metropolis", "나눔바른고딕", arial;
   font-size: 2vh;
   font-weight: 400;
 }
@@ -1522,7 +1581,7 @@ p {
   height: 100%;
   border-radius: 1em;
   cursor: pointer;
-  filter: drop-shadow(0 0 1vh rgba(50,50,50,0.3));
+  filter: drop-shadow(0 0 1vh rgba(50, 50, 50, 0.3));
 }
 
 #offsetButtonText {
@@ -1555,12 +1614,12 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #E56464;
+  background-color: #e56464;
   width: 10vw;
   height: 4vh;
   border-radius: 0.5em;
   cursor: pointer;
-  filter: drop-shadow(0 0 1vh rgba(50,50,50,0.3));
+  filter: drop-shadow(0 0 1vh rgba(50, 50, 50, 0.3));
 }
 
 #offsetResetButtonText {
@@ -1627,7 +1686,7 @@ p {
   height: 10vh;
   border-radius: 10px;
   border: solid #d3d3d3 1px;
-  box-shadow: 0 0 20px rgba(50,50,50,0.1);
+  box-shadow: 0 0 20px rgba(50, 50, 50, 0.1);
 }
 
 .storeSongsContainer {
@@ -1641,7 +1700,7 @@ p {
   height: 20vh;
   border-radius: 10px;
   border: solid #d3d3d3 1px;
-  box-shadow: 0 0 20px rgba(50,50,50,0.1);
+  box-shadow: 0 0 20px rgba(50, 50, 50, 0.1);
 }
 
 .storeSongsLeft {
@@ -1711,7 +1770,7 @@ p {
 }
 
 .storeSalePrice {
-  color: #B0B0B0;
+  color: #b0b0b0;
 }
 
 .storeSkinsContainer {
@@ -1725,7 +1784,7 @@ p {
   height: 40vh;
   border-radius: 10px;
   border: solid #d3d3d3 1px;
-  box-shadow: 0 0 20px rgba(50,50,50,0.1);
+  box-shadow: 0 0 20px rgba(50, 50, 50, 0.1);
 }
 
 .storeSkinTitleContainer {
@@ -1815,7 +1874,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   transition-duration: 0.5s;
 }
 
@@ -1920,7 +1979,11 @@ p {
   font-size: 3vh;
   color: black;
   border: solid 3px transparent;
-  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #62C7FC, #AC67FE);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(101deg, #62c7fc, #ac67fe);
   background-origin: border-box;
   background-clip: content-box, border-box;
   box-shadow: 2px 1000px 1px #fff inset;
@@ -2072,7 +2135,7 @@ p {
 }
 
 #animContainer {
-  background-image: url('/images/backgrounds/main.png');
+  background-image: url("/images/backgrounds/main.png");
   z-index: 0;
   pointer-events: none;
   display: flex;
