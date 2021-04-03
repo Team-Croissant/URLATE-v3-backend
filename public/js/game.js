@@ -7,7 +7,6 @@ let username = "";
 let analyser, dataArray;
 let canvas = document.getElementById("renderer");
 let ctx = canvas.getContext("2d");
-let bars = 100;
 let loaded = 0;
 let paceLoaded = 0;
 let songSelection = -1;
@@ -48,8 +47,6 @@ let offsetAverage = [];
 
 let trackRecords = [];
 
-let socket;
-
 let themeSong;
 let songs = [];
 let offsetSong = new Howl({
@@ -87,16 +84,6 @@ const lottieResize = () => {
     animType: "canvas",
     loop: true,
     path: "lottie/game.json",
-  });
-};
-
-const socketInitialize = () => {
-  socket = io("https://game.rhyga.me", { query: `id=${userid}` });
-
-  socket.on("connect", () => {
-    socket.on("chat message", (msg) => {
-      console.log(msg);
-    });
   });
 };
 
@@ -237,21 +224,19 @@ const drawBar = (x1, y1, x2, y2, width) => {
 };
 
 const animationLooper = () => {
-  if (display == 0) {
-    let width = canvas.width;
-    let height = canvas.height;
+  if (display == 1) {
     let wWidth = window.innerWidth;
     let wHeight = window.innerHeight;
-    ctx.clearRect(0, 0, width, height);
-    let barWidth = wHeight / bars;
     analyser.getByteFrequencyData(dataArray);
-    for (let i = 0; i < bars; i++) {
-      let barHeight = (dataArray[i] * wHeight) / 550;
-      let y = barWidth * i;
-      let x_end = barHeight / 1.3;
-      drawBar(0, y, x_end, y, barWidth - barWidth / 2);
-      y = wHeight - y;
-      drawBar(wWidth, y, wWidth - x_end, y, barWidth - barWidth / 2);
+    let barWidth = wWidth / 300;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < 300; i++) {
+      let barHeight = (dataArray[i] * wHeight) / 800;
+      let x = barWidth * i;
+      let y_end = barHeight / 1.3;
+      drawBar(x, 0, x, y_end, barWidth - barWidth / 2, 1);
+      x = wWidth - x;
+      drawBar(x, wHeight, x, wHeight - y_end, barWidth - barWidth / 2, 1);
     }
   }
   requestAnimationFrame(animationLooper);
@@ -424,7 +409,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
               settings = JSON.parse(data.settings);
               username = data.nickname;
               userid = data.userid;
-              socketInitialize();
               document.getElementById("name").textContent = username;
               document.getElementById("optionName").textContent = username;
               if (lang == "ko") {
