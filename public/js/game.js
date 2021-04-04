@@ -350,12 +350,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }, 3000);
   if (iniMode == 0) {
     //no intro
-    warningContainer.style.display = "none";
     intro1container.style.display = "none";
     intro2container.style.display = "none";
     loaded++;
     display = 0;
   } else {
+    warningContainer.style.display = "flex";
     if (intro1video.canPlayType("video/webm")) {
       intro1sources.src = "videos/croissant.webm";
     } else {

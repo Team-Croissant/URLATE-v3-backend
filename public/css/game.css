@@ -2259,6 +2259,7 @@ p {
 }
 
 #warningContainer {
+  display: none;
   flex-direction: column;
   z-index: 502;
 }
