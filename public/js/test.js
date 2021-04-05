@@ -726,7 +726,7 @@ const cntRender = () => {
         drawParticle(4, missParticles[i].x, missParticles[i].y, i);
       }
     }
-    start = lowerBound(pattern.bullets, seek * 1000 - bpm * 40);
+    start = lowerBound(pattern.bullets, seek * 1000 - bpm * 100);
     end = upperBound(pattern.bullets, seek * 1000);
     const renderBullets = pattern.bullets.slice(start, end);
     for (let i = 0; i < renderBullets.length; i++) {
