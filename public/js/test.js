@@ -151,6 +151,10 @@ const initialize = (isFirstCalled) => {
     offset = pattern.information.offset;
     bpm = pattern.information.bpm;
     speed = pattern.information.speed;
+  } else {
+    if (pattern.background.type) {
+      lottieLoad(true);
+    }
   }
   canvas.width =
     (window.innerWidth * pixelRatio * settings.display.canvasRes) / 100;
@@ -160,19 +164,27 @@ const initialize = (isFirstCalled) => {
   missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
 };
 
-const lottieLoad = () => {
+const lottieLoad = (needToSeek) => {
   let blob = new Blob([pattern.background.lottie], {
     type: "application/json",
   });
   let path = URL.createObjectURL(blob);
+  if (lottieAnim.animType) {
+    lottieAnim.destroy();
+  }
   lottieAnim = bodymovin.loadAnimation({
     wrapper: canvasBackground,
-    animType: "svg",
+    animType: "canvas",
     loop: true,
     autoplay: false,
     path: path,
   });
   lottieAnim.addEventListener("DOMLoaded", () => {
+    if (needToSeek) {
+      if (song.playing()) {
+        lottieAnim.goToAndPlay(song.seek() * 1000);
+      }
+    }
     lottieSet();
   });
   URL.revokeObjectURL(path);
@@ -181,15 +193,17 @@ const lottieLoad = () => {
 const lottieSet = () => {
   switch (pattern.background.type) {
     case 0: //Image
-      canvasBackground.getElementsByTagName("svg")[0].style.display = "none";
+      canvasBackground.getElementsByTagName("canvas")[0].style.display = "none";
       canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       break;
     case 1: //Image & BGA
-      canvasBackground.getElementsByTagName("svg")[0].style.display = "initial";
+      canvasBackground.getElementsByTagName("canvas")[0].style.display =
+        "initial";
       canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       break;
     case 2: //BGA
-      canvasBackground.getElementsByTagName("svg")[0].style.display = "initial";
+      canvasBackground.getElementsByTagName("canvas")[0].style.display =
+        "initial";
       canvasBackground.style.backgroundImage = "none";
       canvasBackground.style.backgroundColor = `#${pattern.background.boxColor}`;
       break;
