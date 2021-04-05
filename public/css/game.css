@@ -1360,10 +1360,10 @@ p {
   content: "🔒";
 }
 
-.songSelected:before {
-  content: url("https://img.icons8.com/material-rounded/30/ffffff/give-way.png");
+.songSelectionLottie {
+  height: 5vh;
+  width: 10vh;
   margin-right: 1vw;
-  transform: rotate(-90deg) scale(0.7);
 }
 
 .songSelected {

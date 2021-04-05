@@ -85,6 +85,17 @@ const lottieResize = () => {
     loop: true,
     path: "lottie/game.json",
   });
+  if (songSelection != -1) {
+    arrowAnim.destroy();
+    arrowAnim = bodymovin.loadAnimation({
+      wrapper: document.getElementsByClassName("songSelectionLottie")[
+        songSelection
+      ],
+      animType: "canvas",
+      loop: true,
+      path: "lottie/arrow.json",
+    });
+  }
 };
 
 const initialize = () => {
@@ -487,6 +498,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                           ? " dlcSelection"
                           : ""
                       }" onclick="songSelected(${i})">
+                                <div class="songSelectionLottie"></div>
                                 <div class="songSelectionInfo">
                                     <span class="songSelectionTitle">${
                                       settings.general.detailLang == "original"
@@ -647,10 +659,19 @@ const songSelected = (n) => {
     songs[n].play();
   }
   if (document.getElementsByClassName("songSelected")[0]) {
+    arrowAnim.destroy();
     document
       .getElementsByClassName("songSelected")[0]
       .classList.remove("songSelected");
   }
+  arrowAnim = bodymovin.loadAnimation({
+    wrapper: document
+      .getElementsByClassName("songSelectionContainer")
+      [n].getElementsByClassName("songSelectionLottie")[0],
+    animType: "canvas",
+    loop: true,
+    path: "lottie/arrow.json",
+  });
   document
     .getElementsByClassName("songSelectionContainer")
     [n].classList.add("songSelected");
