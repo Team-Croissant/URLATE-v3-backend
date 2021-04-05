@@ -1281,7 +1281,7 @@ document.onkeydown = (e) => {
     compClicked(true);
   } else {
     if (confirm(returnToGame)) {
-      window.location.href = `${url}/game`;
+      window.location.href = `${url}/game?initialize=0`;
     }
   }
 };
