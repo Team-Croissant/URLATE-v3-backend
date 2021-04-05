@@ -41,8 +41,7 @@ body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 7vh;
-  opacity: 0;
+  margin-top: 2vh;
   transition-duration: 0s;
 }
 
