@@ -57,7 +57,7 @@ body {
 }
 
 .mainIcon {
-  filter: drop-shadow(0 0 10px rgba(30, 30, 30, 0.2));
+  filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.2));
   height: 18vh;
 }
 
@@ -500,7 +500,7 @@ p {
   height: 10vw;
   border-radius: 10px;
   background-color: #fff;
-  filter: drop-shadow(0 0 5px rgba(50, 50, 50, 0.2));
+  box-shadow: 0 0 5px rgba(50, 50, 50, 0.3);
   margin-left: 1vw;
   margin-right: 1vw;
 }
@@ -607,7 +607,7 @@ p {
   border-radius: 100px;
   width: 10vw;
   height: 10vw;
-  filter: drop-shadow(0 0 10px #33333333);
+  box-shadow: 0 0 10px #33333333;
 }
 
 #infoProfileTop {
@@ -822,7 +822,7 @@ p {
   );
   font-size: 3vh;
   color: white;
-  filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.3));
+  box-shadow: 0 0 20px rgba(50, 50, 50, 0.3);
 }
 
 .additionalDescription {
@@ -1581,7 +1581,7 @@ p {
   height: 100%;
   border-radius: 1em;
   cursor: pointer;
-  filter: drop-shadow(0 0 1vh rgba(50, 50, 50, 0.3));
+  box-shadow: 0 0 1vh rgba(50, 50, 50, 0.3);
 }
 
 #offsetButtonText {
@@ -1619,7 +1619,7 @@ p {
   height: 4vh;
   border-radius: 0.5em;
   cursor: pointer;
-  filter: drop-shadow(0 0 1vh rgba(50, 50, 50, 0.3));
+  box-shadow: 0 0 1vh rgba(50, 50, 50, 0.3);
 }
 
 #offsetResetButtonText {
@@ -1817,21 +1817,6 @@ p {
   justify-content: flex-end;
   width: 100%;
   height: 5vh;
-}
-
-.noteSvg {
-  height: 10vh;
-}
-
-.bulletSvg {
-  margin-left: 2vw;
-  height: 9vh;
-}
-
-.cursorSvg {
-  margin-left: 2vw;
-  height: 10vh;
-  filter: drop-shadow(0 0 10px rgba(50, 50, 50, 0.3));
 }
 
 .storeBasketsLeft {
@@ -2035,7 +2020,7 @@ p {
   width: 100vw;
   height: 8vh;
   background-color: white;
-  filter: drop-shadow(0 0 10px rgba(67, 136, 201, 0.3));
+  box-shadow: 0 0 20px rgba(50, 50, 50, 0.3);
 }
 
 .overlayOpen {
