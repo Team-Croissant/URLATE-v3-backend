@@ -839,12 +839,14 @@ Pace.on("done", () => {
 
 const infoScreen = () => {
   display = 4;
+  lottieAnim.pause();
   document.getElementById("infoContainer").style.display = "block";
   document.getElementById("infoContainer").classList.add("fadeIn");
 };
 
 const optionScreen = () => {
   display = 2;
+  lottieAnim.pause();
   document.getElementById("optionContainer").style.display = "block";
   document.getElementById("optionContainer").classList.add("fadeIn");
 };
@@ -1022,6 +1024,7 @@ const displayClose = () => {
       display = 2;
       return;
     }
+    lottieAnim.play();
     display = 0;
   }
 };
@@ -1525,6 +1528,7 @@ const addToCart = (s) => {
 };
 
 const menuSelected = (n) => {
+  lottieAnim.pause();
   if (n == 0) {
     //play
     display = 1;
