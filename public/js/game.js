@@ -1,4 +1,4 @@
-const clientKey = "test_ck_7XZYkKL4Mrjb7EZwR6Lr0zJwlEWR";
+const clientKey = "test_ck_lpP2YxJ4K87dLMWBovz3RGZwXLOb";
 const tossPayments = TossPayments(clientKey);
 
 let display = -1;
