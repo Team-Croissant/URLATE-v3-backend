@@ -1045,7 +1045,7 @@ const compClicked = (isTyped) => {
   if ((!isTyped && !settings.input.mouse) || isMenuOpened || !menuAllowed) {
     return;
   }
-  if (!song.playing() || !isMenuOpened || !menuAllowed) {
+  if (!song.playing()) {
     socket.emit("game resume", new Date().getTime());
     socketInterval = setInterval(socketUpdate, socketIntervalMs);
     floatingResumeContainer.style.opacity = 0;

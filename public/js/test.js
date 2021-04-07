@@ -1015,7 +1015,7 @@ const compClicked = (isTyped) => {
   if ((!isTyped && !settings.input.mouse) || isMenuOpened || !menuAllowed) {
     return;
   }
-  if (!song.playing() || !isMenuOpened || !menuAllowed) {
+  if (!song.playing()) {
     floatingResumeContainer.style.opacity = 0;
     setTimeout(() => {
       floatingResumeContainer.style.display = "none";
