@@ -1126,7 +1126,7 @@ const cntRender = () => {
         ) {
           cntCtx.beginPath();
           cntCtx.fillStyle = "#111";
-          cntCtx.font = `${renderTriggers[i].size} Metropolis`;
+          cntCtx.font = `${renderTriggers[i].size} Metropolis`; //weight
           cntCtx.textAlign = renderTriggers[i].align;
           cntCtx.textBaseline = "middle";
           cntCtx.fillText(

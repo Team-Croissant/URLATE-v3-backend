@@ -70,6 +70,19 @@ let resultEffect = new Howl({
   autoplay: false,
   loop: false,
 });
+let socket;
+
+const socketInitialize = () => {
+  socket = io("https://game.rhyga.me", { query: `id=${userid}` });
+
+  socket.on("connect", () => {
+    socket.emit(
+      "game start",
+      localStorage.songName,
+      localStorage.difficultySelection
+    );
+  });
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   menuContainer.style.display = "none";
@@ -113,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
               data = data.user;
               userName = data.nickname;
               userid = data.userid;
+              socketInitialize();
               settings = JSON.parse(data.settings);
               initialize(true);
               if (data.advanced) {
