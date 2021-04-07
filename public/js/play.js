@@ -71,17 +71,24 @@ let resultEffect = new Howl({
   loop: false,
 });
 let socket;
+let socketInterval;
+let socketIntervalMs = 70;
 
 const socketInitialize = () => {
   socket = io("https://game.rhyga.me", { query: `id=${userid}` });
 
   socket.on("connect", () => {
     socket.emit(
-      "game start",
+      "game init",
       localStorage.songName,
       localStorage.difficultySelection
     );
   });
+};
+
+const socketUpdate = () => {
+  let d = new Date().getTime();
+  socket.emit("game update", mouseX, mouseY, offset + sync, d);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -226,6 +233,7 @@ const initialize = (isFirstCalled) => {
           autoplay: false,
           loop: false,
           onend: () => {
+            clearInterval(socketInterval);
             setTimeout(() => {
               isResultShowing = true;
               menuAllowed = false;
@@ -853,20 +861,21 @@ const cntRender = () => {
   //fps counter
   if (frameCounter) {
     frameArray.push(1000 / (Date.now() - frameCounterMs));
-    if (frameArray.length == 5) {
+    if (frameArray.length == 20) {
       fps =
-        (frameArray[0] +
-          frameArray[1] +
-          frameArray[2] +
-          frameArray[3] +
-          frameArray[4]) /
-        5;
+        frameArray.reduce((sum, current) => {
+          return sum + current;
+        }, 0) / 20;
       frameArray = [];
     }
     // ctx.font = "2.5vh Heebo";
     // ctx.fillStyle = "#555";
     // ctx.textBaseline = "bottom";
-    // ctx.fillText(fps.toFixed(), canvas.width / 2, canvas.height - canvas.height / 70);
+    // ctx.fillText(
+    //   fps.toFixed(),
+    //   canvas.width / 2,
+    //   canvas.height - canvas.height / 70
+    // );
     frameCounterMs = Date.now();
   }
   drawCursor();
@@ -881,6 +890,7 @@ const trackMousePos = () => {
 };
 
 const calculateResult = () => {
+  socket.emit("game end");
   lottieAnim.stop();
   document.getElementById("wallLeft").style.left = "-10vw";
   document.getElementById("wallRight").style.right = "-10vw";
@@ -1030,6 +1040,8 @@ const compClicked = (isTyped) => {
     return;
   }
   if (!song.playing()) {
+    socket.emit("game resume", new Date().getTime());
+    socketInterval = setInterval(socketUpdate, socketIntervalMs);
     floatingResumeContainer.style.opacity = 0;
     setTimeout(() => {
       floatingResumeContainer.style.display = "none";
@@ -1136,20 +1148,14 @@ const doneLoading = () => {
       document.getElementById("componentCanvas").style.transitionDuration =
         "0s";
     }, 1000);
-    setTimeout(songPlayPause, 4000);
+    setTimeout(() => {
+      socket.emit("game start", new Date().getTime());
+      socketInterval = setInterval(socketUpdate, socketIntervalMs);
+      song.play();
+      lottieAnim.play();
+      menuAllowed = true;
+    }, 4000);
   }, 1000);
-};
-
-const songPlayPause = () => {
-  if (song.playing()) {
-    song.pause();
-    lottieAnim.pause();
-    menuAllowed = false;
-  } else {
-    song.play();
-    lottieAnim.play();
-    menuAllowed = true;
-  }
 };
 
 const resume = () => {
@@ -1281,6 +1287,8 @@ document.onkeydown = (e) => {
           menuContainer.style.display = "flex";
           song.pause();
           lottieAnim.pause();
+          clearInterval(socketInterval);
+          socket.emit("game pause", new Date().getTime());
         } else {
           resume();
         }
