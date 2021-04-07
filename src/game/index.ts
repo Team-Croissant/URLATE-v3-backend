@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
 
   socket.on("game pause", (date) => {
     redisClient.set(`pauseDate${socket.id}`, date);
-    signale.stop("Game Paused", date);
+    signale.stop("Game Paused");
   });
 
   socket.on("game resume", (date) => {
