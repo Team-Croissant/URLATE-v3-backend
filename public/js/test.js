@@ -405,9 +405,12 @@ const drawParticle = (n, x, y, j) => {
         let p = 100 - (s + 300 - Date.now()) / 3;
         let newY = cy - Math.round(p / 10);
         ctx.fillStyle = getJudgeStyle(j.toLowerCase(), p, cx, newY);
-        ctx.font = "3vh Metropolis";
+        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - p / 100})`;
+        ctx.font = "600 4vh Metropolis";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.lineWidth = 3;
+        ctx.strokeText(j, cx, newY);
         ctx.fillText(j, cx, newY);
         if (p < 100) {
           requestAnimationFrame(() => {
@@ -424,9 +427,12 @@ const drawParticle = (n, x, y, j) => {
       let p = 100 - (missParticles[j].s + 300 - Date.now()) / 3;
       let newY = cy - Math.round(p / 10);
       ctx.fillStyle = getJudgeStyle("miss", p);
-      ctx.font = "3vh Metropolis";
+      ctx.strokeStyle = `rgba(255, 255, 255, ${1 - p / 100})`;
+      ctx.font = "600 4vh Metropolis";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
+      ctx.lineWidth = 3;
+      ctx.strokeText(j, cx, newY);
       ctx.fillText("Miss", cx, newY);
     }
   }
