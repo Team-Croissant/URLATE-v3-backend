@@ -243,10 +243,10 @@ const initialize = (isFirstCalled) => {
           onload: () => {
             Howler.volume(settings.sound.volume.master);
             song.volume(settings.sound.volume.music);
-            if (load) {
+            if (load == 1) {
               doneLoading();
             }
-            load = 1;
+            load++;
           },
         });
       })
@@ -1039,7 +1039,7 @@ const compClicked = (isTyped) => {
   if ((!isTyped && !settings.input.mouse) || isMenuOpened || !menuAllowed) {
     return;
   }
-  if (!song.playing()) {
+  if (!song.playing() || !isMenuOpened || !menuAllowed) {
     socket.emit("game resume", new Date().getTime());
     socketInterval = setInterval(socketUpdate, socketIntervalMs);
     floatingResumeContainer.style.opacity = 0;
@@ -1130,10 +1130,10 @@ const calculateScore = (judge, i, isMissed) => {
 };
 
 Pace.on("done", () => {
-  if (load) {
+  if (load == 1) {
     doneLoading();
   }
-  load = 1;
+  load++;
 });
 
 const doneLoading = () => {
