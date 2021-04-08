@@ -991,53 +991,55 @@ const calculateResult = () => {
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
-  const powX =
-    ((((mouseX - x) * canvasContainer.offsetWidth) / 200) *
-      pixelRatio *
-      settings.display.canvasRes) /
-    100;
-  const powY =
-    ((((mouseY - y) * canvasContainer.offsetHeight) / 200) *
-      pixelRatio *
-      settings.display.canvasRes) /
-    100;
-  switch (v1) {
-    case 0:
-      if (
-        Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
-        canvas.width / 40 + canvas.width / 70
-      ) {
-        pointingCntElement.push({ v1: v1, v2: v2, i: i });
-      }
-      break;
-    case 1:
-      if (
-        Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
-        canvas.width / 80
-      ) {
-        if (!destroyedBullets.has(i)) {
-          bullet++;
-          missPoint.push(song.seek() * 1000);
-          combo = 0;
-          callBulletDestroy(i);
-          colorOverlayContainer.classList.add("show");
-          setTimeout(() => {
-            colorOverlayContainer.classList.remove("show");
-          }, 100);
+  if (song.playing()) {
+    const powX =
+      ((((mouseX - x) * canvasContainer.offsetWidth) / 200) *
+        pixelRatio *
+        settings.display.canvasRes) /
+      100;
+    const powY =
+      ((((mouseY - y) * canvasContainer.offsetHeight) / 200) *
+        pixelRatio *
+        settings.display.canvasRes) /
+      100;
+    switch (v1) {
+      case 0:
+        if (
+          Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
+          canvas.width / 40 + canvas.width / 70
+        ) {
+          pointingCntElement.push({ v1: v1, v2: v2, i: i });
         }
-      }
-      break;
-    default:
-      ctx.font = "18px Metropolis";
-      ctx.fillStyle = "#F55";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "top";
-      ctx.fillText(
-        `trackMouseSelection:Undefined element.`,
-        canvas.width / 100,
-        canvas.height / 100
-      );
-      console.error(`trackMouseSelection:Undefined element.`);
+        break;
+      case 1:
+        if (
+          Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
+          canvas.width / 80
+        ) {
+          if (!destroyedBullets.has(i)) {
+            bullet++;
+            missPoint.push(song.seek() * 1000);
+            combo = 0;
+            callBulletDestroy(i);
+            colorOverlayContainer.classList.add("show");
+            setTimeout(() => {
+              colorOverlayContainer.classList.remove("show");
+            }, 100);
+          }
+        }
+        break;
+      default:
+        ctx.font = "18px Metropolis";
+        ctx.fillStyle = "#F55";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+        ctx.fillText(
+          `trackMouseSelection:Undefined element.`,
+          canvas.width / 100,
+          canvas.height / 100
+        );
+        console.error(`trackMouseSelection:Undefined element.`);
+    }
   }
 };
 
