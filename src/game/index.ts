@@ -27,12 +27,29 @@ const options = {
 const signale = new Signale(options);
 
 const redisClient = redis.createClient();
+
 const io = require("socket.io")(1027);
 
 const patternDir = __dirname + "/../../resources/public/patterns/";
 
 const getPatternDir = (name, difficulty) => {
   return `${name}/${difficulty}.json`;
+};
+
+const redisGet = (key) => {
+  return new Promise(function (resolve, reject) {
+    redisClient.get(key, (err, data) => {
+      resolve(data);
+    });
+  });
+};
+
+const redisSGet = (key) => {
+  return new Promise(function (resolve, reject) {
+    redisClient.smembers(key, (err, data) => {
+      resolve(data);
+    });
+  });
 };
 
 redisClient.on("error", function (error) {
@@ -66,16 +83,11 @@ io.on("connection", (socket) => {
     signale.stop("Game Paused");
   });
 
-  socket.on("game resume", (date) => {
-    redisClient.get(`pauseDate${socket.id}`, async (err, pauseDate) => {
-      redisClient.get(`ms${socket.id}`, async (err, ms) => {
-        redisClient.set(
-          `ms${socket.id}`,
-          Number(ms) + date - Number(pauseDate)
-        );
-      });
-    });
-    signale.start("Game Resume");
+  socket.on("game resume", async (date) => {
+    const pauseDate = await redisGet(`pauseDate${socket.id}`);
+    const ms = await redisGet(`ms${socket.id}`);
+    redisClient.set(`ms${socket.id}`, Number(ms) + date - Number(pauseDate));
+    signale.start(`${socket.id} : Game Resume`);
   });
 
   socket.on("game update", (x, y, offset, date) => {
