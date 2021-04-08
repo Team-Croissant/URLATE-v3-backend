@@ -454,7 +454,7 @@ const drawParticle = (n, x, y, j) => {
         ctx.font = "600 4vh Metropolis";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2;
         ctx.strokeText(j, cx, newY);
         ctx.fillText(j, cx, newY);
         if (p < 100) {
@@ -476,7 +476,7 @@ const drawParticle = (n, x, y, j) => {
       ctx.font = "600 4vh Metropolis";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2;
       ctx.strokeText("Miss", cx, newY);
       ctx.fillText("Miss", cx, newY);
     }
