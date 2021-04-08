@@ -59,18 +59,24 @@ redisClient.on("error", function (error) {
 io.on("connection", (socket) => {
   redisClient.set(`socket${socket.id}`, socket.handshake.query.id);
 
-  socket.on("game init", (name, difficulty) => {
-    fs.readFile(
-      patternDir + getPatternDir(name, difficulty),
-      "utf8",
-      (err, data) => {
-        redisClient.set(`pattern${socket.id}`, JSON.stringify(data));
-      }
-    );
-    redisClient.set(`score${socket.id}`, 0);
-    redisClient.set(`combo${socket.id}`, 0);
-    redisClient.del(`destroyedBullets${socket.id}`);
-    redisClient.del(`destroyedNotes${socket.id}`);
+  socket.on("game init", async (name, difficulty) => {
+    const isUserConnected = await redisGet(`score${socket.id}`);
+    if (isUserConnected === null) {
+      signale.success(`${socket.id} : Game Initialized`);
+      fs.readFile(
+        patternDir + getPatternDir(name, difficulty),
+        "utf8",
+        (err, data) => {
+          redisClient.set(`pattern${socket.id}`, data);
+        }
+      );
+      redisClient.set(`score${socket.id}`, 0);
+      redisClient.set(`combo${socket.id}`, 0);
+      redisClient.del(`destroyedBullets${socket.id}`);
+      redisClient.del(`destroyedNotes${socket.id}`);
+    } else {
+      signale.warn(`${socket.id} : User Reconnected.`);
+    }
   });
 
   socket.on("game start", (date) => {
