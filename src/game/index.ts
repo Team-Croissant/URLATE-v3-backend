@@ -3,6 +3,7 @@ import fetch = require("node-fetch");
 import fs = require("fs");
 
 const { Signale } = require("signale");
+
 const options = {
   disabled: false,
   interactive: false,
@@ -90,6 +91,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    signale.debug(`${socket.id} : User Disconnected.`);
+    redisClient.del(`score${socket.id}`);
+    redisClient.del(`combo${socket.id}`);
+    redisClient.del(`pattern${socket.id}`);
+    redisClient.del(`destroyedNotes${socket.id}`);
+    redisClient.del(`destroyedBullets${socket.id}`);
+    redisClient.del(`ms${socket.id}`);
+    redisClient.del(`pauseDate${socket.id}`);
     redisClient.del(`socket${socket.id}`);
   });
 });
