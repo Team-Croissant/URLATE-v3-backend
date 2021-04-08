@@ -81,12 +81,12 @@ io.on("connection", (socket) => {
 
   socket.on("game start", (date) => {
     redisClient.set(`ms${socket.id}`, date);
-    signale.start("Game Started");
+    signale.start(`${socket.id} : Game Started`);
   });
 
   socket.on("game pause", (date) => {
     redisClient.set(`pauseDate${socket.id}`, date);
-    signale.stop("Game Paused");
+    signale.stop(`${socket.id} : Game Paused`);
   });
 
   socket.on("game resume", async (date) => {
@@ -105,7 +105,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("game end", () => {
-    signale.stop("Game Finished");
+    signale.stop(`${socket.id} : Game Finished`);
   });
 
   socket.on("disconnect", () => {
