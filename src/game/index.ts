@@ -257,6 +257,45 @@ io.on("connection", (socket) => {
     redisClient.set(`prevY${socket.id}`, mouseY);
   });
 
+  socket.on("game click", async (x, y, offset, date) => {
+    const ms = Number(await redisGet(`ms${socket.id}`));
+    let bpm = Number(await redisGet(`bpm${socket.id}`));
+    let speed = Number(await redisGet(`speed${socket.id}`));
+    const seek = date - ms - offset;
+    let pattern = JSON.parse(`${await redisGet(`pattern${socket.id}`)}`);
+    const start = lowerBound(pattern.patterns, seek - (bpm * 4) / speed);
+    const end = upperBound(pattern.patterns, seek + (bpm * 14) / speed);
+    const renderNotes = pattern.patterns.slice(start, end);
+    let destroyedNotes: number[] = await redisSGet(
+      `destroyedNotes${socket.id}`
+    );
+    destroyedNotes = destroyedNotes.map(Number);
+    for (let i = 0; i < renderNotes.length; i++) {
+      if (destroyedNotes.indexOf(start + i) == -1) {
+        const powX = (x - renderNotes[i].x) * 9.6;
+        const powY = (y - renderNotes[i].y) * 5.4;
+        if (Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= 75.4285714286) {
+          let perfectJudge = 60000 / bpm / 8;
+          let greatJudge = 60000 / bpm / 5;
+          let goodJudge = 60000 / bpm / 3;
+          let badJudge = 60000 / bpm / 2;
+          let noteMs = renderNotes[i].ms;
+          if (seek < noteMs + perfectJudge && seek > noteMs - perfectJudge) {
+            signale.success(`${socket.id} : Perfect`);
+          } else if (seek < noteMs + greatJudge && seek > noteMs - greatJudge) {
+            signale.success(`${socket.id} : Great`);
+          } else if (seek > noteMs - goodJudge && seek < noteMs) {
+            signale.success(`${socket.id} : Good`);
+          } else if ((seek > noteMs - badJudge && seek < noteMs) || noteMs < seek) {
+            signale.success(`${socket.id} : Bad`);
+          } else {
+            signale.success(`${socket.id} : Miss`);
+          }
+          redisClient.sadd(`destroyedNotes${socket.id}`, start + i);
+          break;
+        }
+      }
+    }
   });
 
   socket.on("game end", () => {
