@@ -686,7 +686,7 @@ const advancedUpdate = async () => {
       });
     }
   }
-  setTimeout(advancedUpdate, 86400000);
+  setTimeout(advancedUpdate, 3600000);
   setTimeout(() => {
     signale.complete(`Advanced subscription updated : ${successCount}`);
     signale.warn(`Advanced subscription update failed : ${failCount}`);
