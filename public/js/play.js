@@ -72,7 +72,7 @@ let resultEffect = new Howl({
 });
 let socket;
 let socketInterval;
-let socketIntervalMs = 70;
+let socketIntervalMs = 50;
 
 const socketInitialize = () => {
   socket = io("https://game.rhyga.me", { query: `id=${userid}` });
@@ -1056,6 +1056,14 @@ const compClicked = (isTyped) => {
     }, 300);
     song.play();
     lottieAnim.play();
+  } else {
+    socket.emit(
+      "game click",
+      mouseX,
+      mouseY,
+      offset + sync,
+      new Date().getTime()
+    );
   }
   mouseClicked = true;
   mouseClickedMs = Date.now();
