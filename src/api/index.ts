@@ -18,7 +18,7 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
-let whitelist = 'bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com';
+let whitelist = 'bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com, jungin7612@gmail.com';
 
 import { createSuccessResponse, createErrorResponse, createStatusResponse } from './api-response';
 
