@@ -90,6 +90,51 @@ const upperBound = (array, value) => {
   return low;
 };
 
+const calculateScore = async (judge, id) => {
+  if (judge == "miss") {
+    let miss = await Number(await redisGet(`miss${id}`));
+    miss++;
+    redisClient.set(`combo${id}`, 0);
+    redisClient.set(`miss${id}`, miss);
+    return;
+  } else if (judge == "bullet") {
+    let bullet = await Number(await redisGet(`bullet${id}`));
+    bullet++;
+    redisClient.set(`combo${id}`, 0);
+    redisClient.set(`bullet${id}`, bullet);
+    return;
+  }
+  let patternLength = await Number(await redisGet(`patternLength${id}`));
+  let score = await Number(await redisGet(`score${id}`));
+  let combo = await Number(await redisGet(`combo${id}`));
+  let perfect = await Number(await redisGet(`perfect${id}`));
+  let great = await Number(await redisGet(`great${id}`));
+  let good = await Number(await redisGet(`good${id}`));
+  let bad = await Number(await redisGet(`bad${id}`));
+  combo++;
+  if (judge == "perfect") {
+    score += Math.round(100000000 / patternLength) + combo * 5;
+    perfect++;
+  } else if (judge == "great") {
+    score += Math.round((100000000 / patternLength) * 0.5) + combo * 5;
+    great++;
+  } else if (judge == "good") {
+    score += Math.round((100000000 / patternLength) * 0.2) + combo * 3;
+    good++;
+  } else {
+    bad++;
+    combo = 0;
+    score += Math.round((100000000 / patternLength) * 0.05);
+  }
+  redisClient.set(`combo${id}`, combo);
+  redisClient.set(`score${id}`, score);
+  redisClient.set(`perfect${id}`, perfect);
+  redisClient.set(`great${id}`, great);
+  redisClient.set(`good${id}`, good);
+  redisClient.set(`bad${id}`, bad);
+  console.log(score);
+};
+
 redisClient.on("error", function (error) {
   signale.error(error);
 });
@@ -109,6 +154,7 @@ io.on("connection", (socket) => {
           redisClient.set(`pattern${socket.id}`, file);
           redisClient.set(`bpm${socket.id}`, data.information.bpm);
           redisClient.set(`speed${socket.id}`, data.information.speed);
+          redisClient.set(`patternLength${socket.id}`, data.patterns.length);
         }
       );
       redisClient.set(`prevDate${socket.id}`, 0);
@@ -116,6 +162,12 @@ io.on("connection", (socket) => {
       redisClient.set(`prevY${socket.id}`, 0);
       redisClient.set(`score${socket.id}`, 0);
       redisClient.set(`combo${socket.id}`, 0);
+      redisClient.set(`perfect${socket.id}`, 0);
+      redisClient.set(`great${socket.id}`, 0);
+      redisClient.set(`good${socket.id}`, 0);
+      redisClient.set(`bad${socket.id}`, 0);
+      redisClient.set(`miss${socket.id}`, 0);
+      redisClient.set(`bullet${socket.id}`, 0);
       redisClient.del(`destroyedBullets${socket.id}`);
       redisClient.del(`destroyedNotes${socket.id}`);
     } else {
@@ -148,11 +200,17 @@ io.on("connection", (socket) => {
       const ms = Number(await redisGet(`ms${socket.id}`));
       let bpm = Number(await redisGet(`bpm${socket.id}`));
       let speed = Number(await redisGet(`speed${socket.id}`));
-      let pattern = await JSON.parse(`${await redisGet(`pattern${socket.id}`)}`);
+      let pattern = await JSON.parse(
+        `${await redisGet(`pattern${socket.id}`)}`
+      );
       let destroyedBullets: number[] = await redisSGet(
         `destroyedBullets${socket.id}`
       );
+      let destroyedNotes: number[] = await redisSGet(
+        `destroyedNotes${socket.id}`
+      );
       destroyedBullets = destroyedBullets.map(Number);
+      destroyedNotes = destroyedNotes.map(Number);
       let circleBulletAngles = await redisGet(`circleBulletAngles${socket.id}`);
       circleBulletAngles = `${circleBulletAngles}`.split(",").map(Number);
       for (let s = 1; s <= 10; s++) {
@@ -171,6 +229,7 @@ io.on("connection", (socket) => {
                 renderTriggers[i].num
               );
               signale.warn(`${socket.id} : Bullet`);
+              calculateScore("bullet", socket.id);
             }
           } else if (renderTriggers[i].value == 1) {
             end = upperBound(pattern.bullets, renderTriggers[i].ms);
@@ -248,15 +307,31 @@ io.on("connection", (socket) => {
                 redisClient.set(`combo${socket.id}`, 0);
                 redisClient.sadd(`destroyedBullets${socket.id}`, start + i);
                 signale.warn(`${socket.id} : Bullet`);
+                calculateScore("bullet", socket.id);
               }
             }
+          }
+        }
+        start = lowerBound(pattern.patterns, seek - (bpm * 4) / speed);
+        end = upperBound(pattern.patterns, seek);
+        const renderNotes = pattern.patterns.slice(start, end);
+        for (let i = 0; i < renderNotes.length; i++) {
+          const p =
+            (((bpm * 14) / speed - (renderNotes[i].ms - seek)) /
+              ((bpm * 14) / speed)) *
+            100;
+          if (p >= 120 && destroyedNotes.indexOf(start + i) == -1) {
+            destroyedNotes.push(start + i);
+            redisClient.sadd(`destroyedNotes${socket.id}`, start + i);
+            signale.success(`${socket.id} : Miss`);
+            calculateScore("miss", socket.id);
           }
         }
       }
       redisClient.set(`prevDate${socket.id}`, date);
       redisClient.set(`prevX${socket.id}`, mouseX);
       redisClient.set(`prevY${socket.id}`, mouseY);
-    } catch(e) {
+    } catch (e) {
       signale.error(e);
     }
   });
@@ -279,7 +354,9 @@ io.on("connection", (socket) => {
         if (destroyedNotes.indexOf(start + i) == -1) {
           const powX = (x - renderNotes[i].x) * 9.6;
           const powY = (y - renderNotes[i].y) * 5.4;
-          if (Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= 75.4285714286) {
+          if (
+            Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= 75.4285714286
+          ) {
             let perfectJudge = 60000 / bpm / 8;
             let greatJudge = 60000 / bpm / 5;
             let goodJudge = 60000 / bpm / 3;
@@ -287,21 +364,32 @@ io.on("connection", (socket) => {
             let noteMs = renderNotes[i].ms;
             if (seek < noteMs + perfectJudge && seek > noteMs - perfectJudge) {
               signale.success(`${socket.id} : Perfect`);
-            } else if (seek < noteMs + greatJudge && seek > noteMs - greatJudge) {
+              calculateScore("perfect", socket.id);
+            } else if (
+              seek < noteMs + greatJudge &&
+              seek > noteMs - greatJudge
+            ) {
               signale.success(`${socket.id} : Great`);
+              calculateScore("great", socket.id);
             } else if (seek > noteMs - goodJudge && seek < noteMs) {
               signale.success(`${socket.id} : Good`);
-            } else if ((seek > noteMs - badJudge && seek < noteMs) || noteMs < seek) {
+              calculateScore("good", socket.id);
+            } else if (
+              (seek > noteMs - badJudge && seek < noteMs) ||
+              noteMs < seek
+            ) {
               signale.success(`${socket.id} : Bad`);
+              calculateScore("bad", socket.id);
             } else {
               signale.success(`${socket.id} : Miss`);
+              calculateScore("miss", socket.id);
             }
             redisClient.sadd(`destroyedNotes${socket.id}`, start + i);
             break;
           }
         }
       }
-    } catch(e) {
+    } catch (e) {
       signale.error(e);
     }
   });
@@ -312,6 +400,12 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     signale.debug(`${socket.id} : User Disconnected.`);
+    redisClient.del(`perfect${socket.id}`);
+    redisClient.del(`great${socket.id}`);
+    redisClient.del(`good${socket.id}`);
+    redisClient.del(`bad${socket.id}`);
+    redisClient.del(`miss${socket.id}`);
+    redisClient.del(`bullet${socket.id}`);
     redisClient.del(`score${socket.id}`);
     redisClient.del(`combo${socket.id}`);
     redisClient.del(`pattern${socket.id}`);
