@@ -1044,7 +1044,12 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 };
 
 const compClicked = (isTyped) => {
-  if ((!isTyped && !settings.input.mouse) || isMenuOpened || !menuAllowed || mouseClicked) {
+  if (
+    (!isTyped && !settings.input.mouse) ||
+    isMenuOpened ||
+    !menuAllowed ||
+    mouseClicked
+  ) {
     return;
   }
   if (!song.playing()) {
