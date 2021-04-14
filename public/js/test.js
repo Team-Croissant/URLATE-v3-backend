@@ -485,10 +485,10 @@ const drawCursor = () => {
     mouseClickedMs = Date.now() - 100;
   }
   if (mouseClicked) {
-    if (mouseClickedMs + 20 > Date.now()) {
+    if (mouseClickedMs + 10 > Date.now()) {
       w =
         w +
-        (canvas.width / 400) * (1 - (mouseClickedMs + 20 - Date.now()) / 20);
+        (canvas.width / 400) * (1 - (mouseClickedMs + 10 - Date.now()) / 10);
     } else {
       w = w + (canvas.width / 400) * 1;
     }
