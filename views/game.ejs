@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="css/game.css">
     <link rel="shortcut icon" href="images/favicon.ico">
     <script src="js/pace.js"></script>
+    <script>
+        let intro1load = 0;
+
+        const intro1loaded = () => {
+            if (intro1load == 1) {
+                document.getElementById("pressAnywhere").textContent = pressAnywhere;
+                document.getElementById("warningContainer").onclick = warningSkip;
+            }
+            intro1load++;
+        };
+    </script>
 </head>
 <body>
     <div id="footer">
@@ -39,7 +50,8 @@
     </div>
     <div id="intro1container" class="introContainer" onclick="intro1skip()">
         <video id="intro1video" onloadeddata="intro1loaded()">
-            <source id="intro1sources" type="video/webm">
+            <source type="video/webm" src="<%= cdn %>/videos/croissant.webm">
+            <source type="video/mp4" src="<%= cdn %>/videos/croissant.mp4">
         </video>
     </div>
     <div id="intro2container" class="introContainer" onclick="intro2skip()">

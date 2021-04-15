@@ -30,7 +30,6 @@ let loading = false;
 let lottieAnim;
 
 let intro1skipped = 0;
-let intro1load = 0;
 
 let intro2anim;
 let intro2song;
@@ -242,7 +241,7 @@ const animationLooper = () => {
     let barWidth = wWidth / 300;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < 300; i++) {
-      let barHeight = (dataArray[i] * wHeight) / 800;
+      let barHeight = (dataArray[i] * wHeight) / 1000;
       let x = barWidth * i;
       let y_end = barHeight / 1.3;
       drawBar(x, 0, x, y_end, barWidth - barWidth / 2, 1);
@@ -261,20 +260,12 @@ const sortAsName = (a, b) => {
 const warningSkip = () => {
   if (display == -1) {
     warningContainer.style.opacity = "0";
-    intro1video.play();
     setTimeout(() => {
       warningContainer.style.display = "none";
+      intro1video.play();
     }, 500);
     display = 0;
   }
-};
-
-const intro1loaded = () => {
-  if (intro1load == 1) {
-    document.getElementById("pressAnywhere").textContent = pressAnywhere;
-    document.getElementById("warningContainer").onclick = warningSkip;
-  }
-  intro1load++;
 };
 
 const intro1skip = () => {
@@ -367,13 +358,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     warningContainer.style.display = "flex";
     intro1container.style.display = "flex";
     intro2container.style.display = "flex";
-    if (intro1video.canPlayType("video/webm")) {
-      intro1sources.src = "videos/croissant.webm";
-    } else {
-      intro1sources.type = "video/mp4";
-      intro1sources.src = "videos/croissant.mp4";
-    }
-    intro1video.load();
 
     intro2anim = bodymovin.loadAnimation({
       wrapper: intro2,
@@ -382,8 +366,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       loop: false,
       path: "lottie/coupy.json",
     });
-
-    setTimeout(intro1loaded, 10000);
   }
 
   lottieAnim = bodymovin.loadAnimation({
