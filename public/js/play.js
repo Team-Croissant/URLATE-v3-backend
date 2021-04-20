@@ -242,7 +242,6 @@ const initialize = (isFirstCalled) => {
           autoplay: false,
           loop: false,
           onend: () => {
-            clearInterval(socketInterval);
             setTimeout(() => {
               isResultShowing = true;
               menuAllowed = false;
@@ -698,7 +697,9 @@ const cntRender = () => {
       ctx.fillText(comboAlertCount, canvas.width / 2, canvas.height / 2);
     }
     pointingCntElement = [{ v1: "", v2: "", i: "" }];
-    const seek = song.seek() - (offset + sync) / 1000;
+    if (song.playing()) {
+      socketUpdate(date);
+    }
     let start = lowerBound(pattern.triggers, 0);
     let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
     const renderTriggers = pattern.triggers.slice(start, end);
