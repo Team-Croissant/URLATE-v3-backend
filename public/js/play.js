@@ -169,6 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const initialize = (isFirstCalled) => {
+  canvas.width =
+    (window.innerWidth * pixelRatio * settings.display.canvasRes) / 100;
+  canvas.height =
+    (window.innerHeight * pixelRatio * settings.display.canvasRes) / 100;
+  missCanvas.width = window.innerWidth * 0.2 * pixelRatio;
+  missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
   if (isFirstCalled) {
     fetch(
       `${cdn}/patterns/${localStorage.songName}/${localStorage.difficultySelection}.json`,
@@ -268,13 +274,15 @@ const initialize = (isFirstCalled) => {
     if (pattern.background.type) {
       lottieLoad(true);
     }
+    socket.emit(
+      "game resized",
+      canvas.width,
+      ((window.innerWidth / 200) * pixelRatio * settings.display.canvasRes) /
+        100,
+      ((window.innerHeight / 200) * pixelRatio * settings.display.canvasRes) /
+        100
+    );
   }
-  canvas.width =
-    (window.innerWidth * pixelRatio * settings.display.canvasRes) / 100;
-  canvas.height =
-    (window.innerHeight * pixelRatio * settings.display.canvasRes) / 100;
-  missCanvas.width = window.innerWidth * 0.2 * pixelRatio;
-  missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
 };
 
 const lottieLoad = (needToSeek) => {
@@ -1204,6 +1212,19 @@ const doneLoading = () => {
       lottieAnim.play();
       menuAllowed = true;
       startDate = new Date().getTime();
+      socket.emit(
+        "game start",
+        startDate,
+        canvas.width,
+        ((canvasContainer.offsetWidth / 200) *
+          pixelRatio *
+          settings.display.canvasRes) /
+          100,
+        ((canvasContainer.offsetHeight / 200) *
+          pixelRatio *
+          settings.display.canvasRes) /
+          100
+      );
     }, 4000);
   }, 1000);
 };
