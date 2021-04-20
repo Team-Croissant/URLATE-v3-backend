@@ -232,8 +232,6 @@ io.on("connection", (socket) => {
               `destroyedBullets${socket.id}`,
               renderTriggers[i].num
             );
-            signale.warn(`${socket.id} : Bullet`);
-            calculateScore("bullet", socket.id);
           }
         } else if (renderTriggers[i].value == 1) {
           end = upperBound(pattern.bullets, renderTriggers[i].ms);
