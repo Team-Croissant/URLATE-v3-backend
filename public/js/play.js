@@ -1094,7 +1094,7 @@ const compClicked = (isTyped) => {
     return;
   }
   let d = new Date().getTime();
-  if (!song.playing()) {
+  if (!song.playing() && isPaused) {
     isPaused = false;
     startDate = startDate + d - pauseDate;
     socket.emit("game resume", d);
