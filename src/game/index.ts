@@ -133,6 +133,8 @@ const calculateScore = async (judge, id) => {
   redisClient.set(`good${id}`, good);
   redisClient.set(`bad${id}`, bad);
   console.log(score);
+  io.to(id).emit("score", score);
+  io.to(id).emit("combo", combo);
 };
 
 redisClient.on("error", function (error) {

@@ -71,8 +71,9 @@ let resultEffect = new Howl({
   loop: false,
 });
 let socket;
-let socketInterval;
-let socketIntervalMs = 50;
+
+let socketScore = 0;
+let socketCombo = 0;
 
 const socketInitialize = () => {
   socket = io("https://game.rhyga.me", { query: `id=${userid}` });
@@ -83,6 +84,14 @@ const socketInitialize = () => {
       localStorage.songName,
       localStorage.difficultySelection
     );
+  });
+
+  socket.on("score", async (data) => {
+    socketScore = data;
+  });
+
+  socket.on("combo", async (data) => {
+    socketCombo = data;
   });
 };
 
@@ -861,6 +870,19 @@ const cntRender = () => {
     `${combo}x`,
     canvas.width / 2,
     canvas.height / 70 + canvas.height / 25
+  );
+  ctx.fillText(
+    numberWithCommas(`${socketScore}`.padStart(9, 0)),
+    canvas.width / 2,
+    canvas.height / 70 + canvas.height / 25 + canvas.height / 25
+  );
+  ctx.fillText(
+    `${socketCombo}x`,
+    canvas.width / 2,
+    canvas.height / 70 +
+      canvas.height / 25 +
+      canvas.height / 25 +
+      canvas.height / 25
   );
   drawCursor();
 
