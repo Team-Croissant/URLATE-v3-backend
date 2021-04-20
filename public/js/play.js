@@ -71,6 +71,9 @@ let resultEffect = new Howl({
   loop: false,
 });
 let socket;
+let startDate = 0;
+let pauseDate = 0;
+let isPaused = false;
 
 let socketScore = 0;
 let socketCombo = 0;
@@ -95,8 +98,7 @@ const socketInitialize = () => {
   });
 };
 
-const socketUpdate = () => {
-  let d = new Date().getTime();
+const socketUpdate = (d) => {
   socket.emit("game update", mouseX, mouseY, offset + sync, d);
 };
 
@@ -609,9 +611,10 @@ const drawBullet = (n, x, y, a) => {
 };
 
 const callBulletDestroy = (j) => {
-  const seek = song.seek() - (offset + sync) / 1000;
+  let date = new Date().getTime();
+  const seek = date - startDate - (offset + sync);
   const p =
-    ((seek * 1000 - pattern.bullets[j].ms) /
+    ((seek - pattern.bullets[j].ms) /
       ((bpm * 40) / speed / pattern.bullets[j].speed)) *
     100;
   const left = pattern.bullets[j].direction == "L";
@@ -697,11 +700,18 @@ const cntRender = () => {
       ctx.fillText(comboAlertCount, canvas.width / 2, canvas.height / 2);
     }
     pointingCntElement = [{ v1: "", v2: "", i: "" }];
+    let date = new Date().getTime();
+    let seek = 0;
+    if (isPaused || startDate == 0) {
+      seek = song.seek() * 1000 - (offset + sync);
+    } else {
+      seek = date - startDate - (offset + sync);
+    }
     if (song.playing()) {
       socketUpdate(date);
     }
     let start = lowerBound(pattern.triggers, 0);
-    let end = upperBound(pattern.triggers, seek * 1000 + 2); //2 for floating point miss
+    let end = upperBound(pattern.triggers, seek + 0.002); //for floating point miss
     const renderTriggers = pattern.triggers.slice(start, end);
     for (let i = 0; i < renderTriggers.length; i++) {
       if (renderTriggers[i].value == 0) {
@@ -724,8 +734,8 @@ const cntRender = () => {
         speed = renderTriggers[i].speed;
       } else if (renderTriggers[i].value == 5) {
         if (
-          renderTriggers[i].ms - 1 <= seek * 1000 &&
-          renderTriggers[i].ms + renderTriggers[i].time > seek * 1000
+          renderTriggers[i].ms - 1 <= seek &&
+          renderTriggers[i].ms + renderTriggers[i].time > seek
         ) {
           ctx.beginPath();
           ctx.fillStyle = "#111";
@@ -748,12 +758,12 @@ const cntRender = () => {
       }
     }
     prevDestroyedBullets = new Set(destroyedBullets);
-    start = lowerBound(pattern.patterns, seek * 1000 - (bpm * 4) / speed);
-    end = upperBound(pattern.patterns, seek * 1000 + (bpm * 14) / speed);
+    start = lowerBound(pattern.patterns, seek - (bpm * 4) / speed);
+    end = upperBound(pattern.patterns, seek + (bpm * 14) / speed);
     const renderNotes = pattern.patterns.slice(start, end);
     for (let i = 0; i < renderNotes.length; i++) {
       const p =
-        (((bpm * 14) / speed - (renderNotes[i].ms - seek * 1000)) /
+        (((bpm * 14) / speed - (renderNotes[i].ms - seek)) /
           ((bpm * 14) / speed)) *
         100;
       trackMouseSelection(
@@ -780,13 +790,13 @@ const cntRender = () => {
         drawParticle(4, missParticles[i].x, missParticles[i].y, i);
       }
     }
-    start = lowerBound(pattern.bullets, seek * 1000 - bpm * 100);
-    end = upperBound(pattern.bullets, seek * 1000);
+    start = lowerBound(pattern.bullets, seek - bpm * 100);
+    end = upperBound(pattern.bullets, seek);
     const renderBullets = pattern.bullets.slice(start, end);
     for (let i = 0; i < renderBullets.length; i++) {
       if (!destroyedBullets.has(start + i)) {
         const p =
-          ((seek * 1000 - renderBullets[i].ms) /
+          ((seek - renderBullets[i].ms) /
             ((bpm * 40) / speed / renderBullets[i].speed)) *
           100;
         const left = renderBullets[i].direction == "L";
@@ -1075,9 +1085,11 @@ const compClicked = (isTyped) => {
   ) {
     return;
   }
+  let d = new Date().getTime();
   if (!song.playing()) {
-    socket.emit("game resume", new Date().getTime());
-    socketInterval = setInterval(socketUpdate, socketIntervalMs);
+    isPaused = false;
+    startDate = startDate + d - pauseDate;
+    socket.emit("game resume", d);
     floatingResumeContainer.style.opacity = 0;
     setTimeout(() => {
       floatingResumeContainer.style.display = "none";
@@ -1085,13 +1097,7 @@ const compClicked = (isTyped) => {
     song.play();
     lottieAnim.play();
   } else {
-    socket.emit(
-      "game click",
-      mouseX,
-      mouseY,
-      offset + sync,
-      new Date().getTime()
-    );
+    socket.emit("game click", mouseX, mouseY, offset + sync, d);
   }
   mouseClicked = true;
   mouseClickedMs = Date.now();
@@ -1101,7 +1107,8 @@ const compClicked = (isTyped) => {
       !destroyedNotes.has(pointingCntElement[i].i)
     ) {
       drawParticle(1, mouseX, mouseY);
-      let seek = song.seek() * 1000 - (offset + sync);
+      let date = d;
+      const seek = date - startDate - (offset + sync);
       let ms = pattern.patterns[pointingCntElement[i].i].ms;
       let perfectJudge = 60000 / bpm / 8;
       let greatJudge = 60000 / bpm / 5;
@@ -1193,11 +1200,10 @@ const doneLoading = () => {
         "0s";
     }, 1000);
     setTimeout(() => {
-      socket.emit("game start", new Date().getTime());
-      socketInterval = setInterval(socketUpdate, socketIntervalMs);
       song.play();
       lottieAnim.play();
       menuAllowed = true;
+      startDate = new Date().getTime();
     }, 4000);
   }, 1000);
 };
@@ -1325,14 +1331,16 @@ document.onkeydown = (e) => {
       e.preventDefault();
       if (menuAllowed) {
         if (menuContainer.style.display == "none") {
+          isPaused = true;
           floatingResumeContainer.style.opacity = 0;
           floatingResumeContainer.style.display = "none";
           isMenuOpened = true;
           menuContainer.style.display = "flex";
           song.pause();
           lottieAnim.pause();
-          clearInterval(socketInterval);
-          socket.emit("game pause", new Date().getTime());
+          let d = new Date().getTime();
+          pauseDate = d;
+          socket.emit("game pause", d);
         } else {
           resume();
         }
