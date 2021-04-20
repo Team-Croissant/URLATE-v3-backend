@@ -916,7 +916,7 @@ const calculateResult = () => {
   ).toFixed(1);
   accuracyText.textContent = `${accuracy}%`;
   let rank = "";
-  if (accuracy >= 98 || (bad == 0 && miss == 0 && bullet == 0)) {
+  if (accuracy >= 98 && bad == 0 && miss == 0 && bullet == 0) {
     rankImg.style.animationName = "rainbow";
     rank = "SS";
   } else if (accuracy >= 95) {
