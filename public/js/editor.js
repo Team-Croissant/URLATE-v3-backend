@@ -1126,7 +1126,7 @@ const cntRender = () => {
         ) {
           cntCtx.beginPath();
           cntCtx.fillStyle = "#111";
-          cntCtx.font = `${renderTriggers[i].size} Metropolis`; //weight
+          cntCtx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis`;
           cntCtx.textAlign = renderTriggers[i].align;
           cntCtx.textBaseline = "middle";
           cntCtx.fillText(
@@ -1645,6 +1645,7 @@ const triggersInput = (v, e) => {
       e.value = pattern.triggers[selectedCntElement.i][v];
       break;
     case "size":
+    case "weight":
     case "text":
     case "seek":
       pattern.triggers[selectedCntElement.i][v] = e.value;
@@ -1926,7 +1927,8 @@ const timelineAddElement = () => {
         opacity: 1,
         speed: speed,
         align: "center",
-        size: "16px",
+        weight: 500,
+        size: "1vh",
         time: parseInt((60 / bpm) * 1000),
         x: 0,
         y: 0,
@@ -1940,7 +1942,7 @@ const timelineAddElement = () => {
           JSON.stringify(pattern.triggers[i]) ==
           `{"ms":${parseInt(
             calculatedMs
-          )},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(
+          )},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","weight":500,"size":"1vh","time":${parseInt(
             (60 / bpm) * 1000
           )},"x":0,"y":0,"text":"","seek":0}`
         ) {
@@ -2039,7 +2041,8 @@ const compClicked = () => {
         opacity: 1,
         speed: speed,
         align: "center",
-        size: "16px",
+        weight: 500,
+        size: "1vh",
         time: parseInt((60 / bpm) * 1000),
         x: 0,
         y: 0,
@@ -2052,7 +2055,7 @@ const compClicked = () => {
           JSON.stringify(pattern.triggers[i]) ==
           `{"ms":${
             song.seek() * 1000
-          },"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","size":"16px","time":${parseInt(
+          },"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","weight":500,"size":"1vh","time":${parseInt(
             (60 / bpm) * 1000
           )},"x":0,"y":0,"text":"","seek":0}`
         ) {
@@ -2199,11 +2202,12 @@ const changeSettingsMode = (v1, v2, i) => {
           case 5:
             //Text
             textBox[1].value = pattern.triggers[i].align;
-            textBox[2].value = pattern.triggers[i].size;
-            textBox[3].value = pattern.triggers[i].time;
-            textBox[4].value = pattern.triggers[i].x;
-            textBox[5].value = pattern.triggers[i].y;
-            textBox[6].value = pattern.triggers[i].text;
+            textBox[2].value = pattern.triggers[i].weight;
+            textBox[3].value = pattern.triggers[i].size;
+            textBox[4].value = pattern.triggers[i].time;
+            textBox[5].value = pattern.triggers[i].x;
+            textBox[6].value = pattern.triggers[i].y;
+            textBox[7].value = pattern.triggers[i].text;
             break;
           case 6:
             //Seek

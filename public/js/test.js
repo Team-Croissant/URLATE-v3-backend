@@ -695,7 +695,7 @@ const cntRender = () => {
         ) {
           ctx.beginPath();
           ctx.fillStyle = "#111";
-          ctx.font = `${renderTriggers[i].size} Metropolis`;
+          ctx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis`;
           ctx.textAlign = renderTriggers[i].align;
           ctx.textBaseline = "middle";
           ctx.fillText(
@@ -890,7 +890,7 @@ const calculateResult = () => {
   ).toFixed(1);
   accuracyText.textContent = `${accuracy}%`;
   let rank = "";
-  if (accuracy >= 98 && (bad == 0 && miss == 0 && bullet == 0)) {
+  if (accuracy >= 98 && bad == 0 && miss == 0 && bullet == 0) {
     rankImg.style.animationName = "rainbow";
     rank = "SS";
   } else if (accuracy >= 95) {
@@ -1014,7 +1014,12 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 };
 
 const compClicked = (isTyped) => {
-  if ((!isTyped && !settings.input.mouse) || isMenuOpened || !menuAllowed || mouseClicked) {
+  if (
+    (!isTyped && !settings.input.mouse) ||
+    isMenuOpened ||
+    !menuAllowed ||
+    mouseClicked
+  ) {
     return;
   }
   if (!song.playing()) {
