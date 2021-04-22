@@ -697,7 +697,7 @@ const cntRender = () => {
           ctx.fillStyle = "#111";
           ctx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis`;
           ctx.textAlign = renderTriggers[i].align;
-          ctx.textBaseline = "middle";
+          ctx.textBaseline = renderTriggers[i].valign;
           ctx.fillText(
             renderTriggers[i].text,
             (canvas.width / 200) * (renderTriggers[i].x + 100),
