@@ -200,5 +200,6 @@
   "tutorial_information_1": "안녕하세요, URLATE에 처음 오신 것 같네요!",
   "tutorial_information_2": "URLATE를 이해하고 더 재미있게 즐기는 방법을 알려드리기 위해 튜토리얼 진행을 권장해요.",
   "all_good": "좋아요!",
-  "skip_tutorial": "튜토리얼을 건너뛸래요"
+  "skip_tutorial": "튜토리얼을 건너뛸래요",
+  "confirm_exit_tutorial": "튜토리얼을 건너뛰실래요? 설정에서 튜토리얼을 다시 진행할 수 있습니다."
 }
