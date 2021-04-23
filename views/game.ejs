@@ -70,6 +70,19 @@
             <img src="https://img.icons8.com/windows/64/000000/settings.png" class="icon clickable" onclick="optionScreen()">
         </div>
     </div>
+    <div id="tutorialInformation" class="containers metropolis">
+        <div id="tutorialInfoTop" class="tutorialInner">
+            <h1 class="containersTitle"><span class="light">Welcome to</span> URLATE!</h1>
+            <span id="tutorialText"><%= __('tutorial_information_1') %><br><%= __('tutorial_information_2') %></span>
+        </div>
+        <div id="tutorialInfoMid" class="tutorialInner">
+            <img src="images/parts/elements/elements.png" alt="O O O">
+        </div>
+        <div id="tutorialInfoBottom" class="tutorialInner">
+            <button class="storeButton metropolis" onclick="location.href = '<%= url %>/tutorial'"><%= __('all_good') %></button>
+            <span id="tutorialSkip" onclick="tutorialSkip()"><%= __('skip_tutorial') %></span>
+        </div>
+    </div>
     <div id="menuContainer">
         <div id="menuMain" class="menuSelector clickable" onclick="menuSelected(0)">
             <div class="fadeIconContainer">

@@ -26,6 +26,7 @@ let DLCdata = [];
 let skinData = [];
 let songData = [];
 let loading = false;
+let tutorial = false;
 
 let lottieAnim;
 
@@ -257,6 +258,29 @@ const sortAsName = (a, b) => {
   return a.name > b.name ? 1 : -1;
 };
 
+const tutorialSkip = () => {
+  document.getElementById("tutorialInformation").classList.remove("fadeIn");
+  document.getElementById("tutorialInformation").classList.add("fadeOut");
+  setTimeout(() => {
+    document.getElementById("tutorialInformation").classList.remove("fadeOut");
+    document.getElementById("tutorialInformation").style.display = "none";
+  }, 500);
+  fetch(`${api}/tutorial`, {
+    method: "PUT",
+    credentials: "include"
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.result != "success") {
+      alert(`Error occured.\n${data.error}`);
+    }
+  })
+  .catch((error) => {
+    alert(`Error occured.\n${error}`);
+    console.error(`Error occured.\n${error}`);
+  });
+};
+
 const warningSkip = () => {
   if (display == -1) {
     warningContainer.style.opacity = "0";
@@ -402,6 +426,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
               settings = JSON.parse(data.settings);
               username = data.nickname;
               userid = data.userid;
+              tutorial = data.tutorial;
               document.getElementById("name").textContent = username;
               document.getElementById("optionName").textContent = username;
               if (lang == "ko") {
@@ -772,6 +797,12 @@ const gameLoaded = () => {
   document.getElementById("loadingContainer").classList.add("fadeOut");
   localStorage.clear("songName");
   localStorage.clear("difficulty");
+  setTimeout(() => {
+    if (tutorial) {
+      document.getElementById("tutorialInformation").style.display = "flex";
+      document.getElementById("tutorialInformation").classList.add("fadeIn");
+    }
+  }, 300);
   setTimeout(() => {
     document.getElementById("loadingContainer").style.display = "none";
     document.getElementById("menuContainer").classList.add("loaded");

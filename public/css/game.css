@@ -2292,3 +2292,33 @@ p {
   margin-bottom: 1vh;
   color: #f1d94d;
 }
+
+#tutorialInformation {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#tutorialText {
+  font-size: 2vh;
+}
+
+.tutorialInner {
+  width: 100vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#tutorialInfoMid {
+  height: 40vh;
+}
+
+#tutorialSkip {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #222;
+  margin-top: 2vh;
+}
