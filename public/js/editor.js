@@ -1126,7 +1126,7 @@ const cntRender = () => {
         ) {
           cntCtx.beginPath();
           cntCtx.fillStyle = "#111";
-          cntCtx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis`;
+          cntCtx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis, Noto Sans KR`;
           cntCtx.textAlign = renderTriggers[i].align;
           cntCtx.textBaseline = renderTriggers[i].valign;
           cntCtx.fillText(
@@ -1646,12 +1646,20 @@ const triggersInput = (v, e) => {
       break;
     case "valign":
       textBlurred();
-      if (e.value == "top" || e.value == "bottom" || e.value == "middle" || e.value == "alphabetic" || e.value == "hanging") {
+      if (
+        e.value == "top" ||
+        e.value == "bottom" ||
+        e.value == "middle" ||
+        e.value == "alphabetic" ||
+        e.value == "hanging"
+      ) {
         pattern.triggers[selectedCntElement.i][v] = e.value;
         patternChanged();
         return;
       }
-      alert("Input value should be 'top', 'bottom', 'middle', 'alphabetic', 'hanging'.");
+      alert(
+        "Input value should be 'top', 'bottom', 'middle', 'alphabetic', 'hanging'."
+      );
       e.value = pattern.triggers[selectedCntElement.i][v];
       break;
     case "size":

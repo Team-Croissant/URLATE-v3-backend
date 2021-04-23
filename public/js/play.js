@@ -747,7 +747,7 @@ const cntRender = () => {
         ) {
           ctx.beginPath();
           ctx.fillStyle = "#111";
-          ctx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis`;
+          ctx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis, Noto Sans KR`;
           ctx.textAlign = renderTriggers[i].align;
           ctx.textBaseline = renderTriggers[i].valign;
           ctx.fillText(
