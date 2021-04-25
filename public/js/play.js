@@ -75,11 +75,8 @@ let startDate = 0;
 let pauseDate = 0;
 let isPaused = false;
 
-let socketScore = 0;
-let socketCombo = 0;
-
 const socketInitialize = () => {
-  socket = io("https://game.rhyga.me", { query: `id=${userid}` });
+  socket = io("https://game.rhyga.me", { query: `id=${userid}&name=${userName}` });
 
   socket.on("connect", () => {
     socket.emit(
@@ -87,14 +84,45 @@ const socketInitialize = () => {
       localStorage.songName,
       localStorage.difficultySelection
     );
-  });
 
-  socket.on("score", async (data) => {
-    socketScore = data;
-  });
-
-  socket.on("combo", async (data) => {
-    socketCombo = data;
+    socket.on(
+      "game result",
+      (perfect, great, good, bad, miss, bullet, score, accuracy, rank) => {
+        resultEffect.play();
+        perfectResult.textContent = perfect;
+        greatResult.textContent = great;
+        goodResult.textContent = good;
+        badResult.textContent = bad;
+        missResult.textContent = miss;
+        bulletResult.textContent = bullet;
+        scoreText.textContent = numberWithCommas(`${score}`);
+        comboText.textContent = `${maxCombo}x`;
+        accuracyText.textContent = `${accuracy}%`;
+        rankImg.src = `/images/parts/elements/${rank}.png`;
+        if (rank == "SS") {
+          rankImg.style.animationName = "rainbow";
+        }
+        scoreInfoRank.style.setProperty(
+          "--background",
+          `url('/images/parts/elements/${rank}back.png')`
+        );
+        setTimeout(() => {
+          document.getElementById("componentCanvas").style.opacity = "0";
+        }, 500);
+        setTimeout(() => {
+          floatingArrowContainer.style.display = "flex";
+          floatingArrowContainer.classList.toggle("arrowFade");
+        }, 1000);
+        setTimeout(() => {
+          floatingResultContainer.style.display = "flex";
+          floatingResultContainer.classList.toggle("resultFade");
+        }, 1300);
+        setTimeout(() => {
+          scoreContainer.style.opacity = "1";
+          scoreContainer.style.pointerEvents = "all";
+        }, 2000);
+      }
+    );
   });
 };
 
@@ -890,19 +918,6 @@ const cntRender = () => {
     canvas.width / 2,
     canvas.height / 70 + canvas.height / 25
   );
-  ctx.fillText(
-    numberWithCommas(`${socketScore}`.padStart(9, 0)),
-    canvas.width / 2,
-    canvas.height / 70 + canvas.height / 25 + canvas.height / 25
-  );
-  ctx.fillText(
-    `${socketCombo}x`,
-    canvas.width / 2,
-    canvas.height / 70 +
-      canvas.height / 25 +
-      canvas.height / 25 +
-      canvas.height / 25
-  );
   drawCursor();
 
   //fps counter
@@ -937,60 +952,10 @@ const trackMousePos = () => {
 };
 
 const calculateResult = () => {
-  socket.emit("game end");
+  socket.emit("game end", maxCombo);
   lottieAnim.stop();
   document.getElementById("wallLeft").style.left = "-10vw";
   document.getElementById("wallRight").style.right = "-10vw";
-  resultEffect.play();
-  perfectResult.textContent = perfect;
-  greatResult.textContent = great;
-  goodResult.textContent = good;
-  badResult.textContent = bad;
-  missResult.textContent = miss;
-  bulletResult.textContent = bullet;
-  scoreText.textContent = numberWithCommas(`${score}`);
-  comboText.textContent = `${maxCombo}x`;
-  let accuracy = (
-    ((perfect + (great / 10) * 7 + good / 2 + (bad / 10) * 3) /
-      (perfect + great + good + bad + miss + bullet)) *
-    100
-  ).toFixed(1);
-  accuracyText.textContent = `${accuracy}%`;
-  let rank = "";
-  if (accuracy >= 98 && bad == 0 && miss == 0 && bullet == 0) {
-    rankImg.style.animationName = "rainbow";
-    rank = "SS";
-  } else if (accuracy >= 95) {
-    rank = "S";
-  } else if (accuracy >= 90) {
-    rank = "A";
-  } else if (accuracy >= 80) {
-    rank = "B";
-  } else if (accuracy >= 70) {
-    rank = "C";
-  } else {
-    rank = "F";
-  }
-  rankImg.src = `/images/parts/elements/${rank}.png`;
-  scoreInfoRank.style.setProperty(
-    "--background",
-    `url('/images/parts/elements/${rank}back.png')`
-  );
-  setTimeout(() => {
-    document.getElementById("componentCanvas").style.opacity = "0";
-  }, 500);
-  setTimeout(() => {
-    floatingArrowContainer.style.display = "flex";
-    floatingArrowContainer.classList.toggle("arrowFade");
-  }, 1000);
-  setTimeout(() => {
-    floatingResultContainer.style.display = "flex";
-    floatingResultContainer.classList.toggle("resultFade");
-  }, 1300);
-  setTimeout(() => {
-    scoreContainer.style.opacity = "1";
-    scoreContainer.style.pointerEvents = "all";
-  }, 2000);
   missCtx.beginPath();
   missCtx.fillStyle = "#FFF";
   missCtx.strokeStyle = "#FFF";
@@ -1025,10 +990,6 @@ const calculateResult = () => {
       missCanvas.height * 0.8 - 10
     );
   }
-  console.log(`accuracy: ${accuracy}`);
-  console.log(`rank: ${rank}`);
-  console.log(`record: ${score}`);
-  console.log(`maxcombo: ${maxCombo}`);
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {

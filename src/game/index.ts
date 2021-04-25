@@ -2,6 +2,8 @@ import redis = require("redis");
 import fetch = require("node-fetch");
 import fs = require("fs");
 
+const config = require(__dirname + "/../../config/config.json");
+
 const { Signale } = require("signale");
 
 const options = {
@@ -132,9 +134,6 @@ const calculateScore = async (judge, id) => {
   redisClient.set(`great${id}`, great);
   redisClient.set(`good${id}`, good);
   redisClient.set(`bad${id}`, bad);
-  console.log(score);
-  io.to(id).emit("score", score);
-  io.to(id).emit("combo", combo);
 };
 
 redisClient.on("error", function (error) {
@@ -143,6 +142,7 @@ redisClient.on("error", function (error) {
 
 io.on("connection", (socket) => {
   redisClient.set(`socket${socket.id}`, socket.handshake.query.id);
+  redisClient.set(`user${socket.id}`, socket.handshake.query.name);
 
   socket.on("game init", async (name, difficulty) => {
     const isUserConnected = await redisGet(`score${socket.id}`);
@@ -159,6 +159,8 @@ io.on("connection", (socket) => {
           redisClient.set(`patternLength${socket.id}`, data.patterns.length);
         }
       );
+      redisClient.set(`name${socket.id}`, name);
+      redisClient.set(`difficulty${socket.id}`, difficulty);
       redisClient.set(`score${socket.id}`, 0);
       redisClient.set(`combo${socket.id}`, 0);
       redisClient.set(`perfect${socket.id}`, 0);
@@ -395,8 +397,88 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("game end", () => {
+  socket.on("game end", async (maxCombo) => {
     signale.stop(`${socket.id} : Game Finished`);
+    let name = await redisGet(`name${socket.id}`);
+    let user = await redisGet(`user${socket.id}`);
+    let difficulty = await Number(await redisGet(`difficulty${socket.id}`));
+    let score = await Number(await redisGet(`score${socket.id}`));
+    let perfect = await Number(await redisGet(`perfect${socket.id}`));
+    let great = await Number(await redisGet(`great${socket.id}`));
+    let good = await Number(await redisGet(`good${socket.id}`));
+    let bad = await Number(await redisGet(`bad${socket.id}`));
+    let miss = await Number(await redisGet(`miss${socket.id}`));
+    let bullet = await Number(await redisGet(`bullet${socket.id}`));
+    let accuracy = Number(
+      (
+        ((perfect + (great / 10) * 7 + good / 2 + (bad / 10) * 3) /
+          (perfect + great + good + bad + miss + bullet)) *
+        100
+      ).toFixed(1)
+    );
+    let rank = "";
+    let medal = 1;
+    if (accuracy >= 98 && bad == 0 && miss == 0 && bullet == 0) {
+      rank = "SS";
+    } else if (accuracy >= 95) {
+      rank = "S";
+    } else if (accuracy >= 90) {
+      rank = "A";
+    } else if (accuracy >= 80) {
+      rank = "B";
+    } else if (accuracy >= 70) {
+      rank = "C";
+    } else {
+      rank = "F";
+      medal = 0;
+    }
+    if (miss == 0 && bullet == 0) {
+      if (medal == 0) {
+        medal = 2;
+      } else {
+        medal = 3;
+      }
+      if (bad == 0 && good == 0 && great < 10 && perfect != 0) {
+        medal = 7;
+      }
+    }
+    io.to(socket.id).emit(
+      "game result",
+      perfect,
+      great,
+      good,
+      bad,
+      miss,
+      bullet,
+      score,
+      accuracy,
+      rank
+    );
+    fetch(`${config.project.api}/record`, {
+      method: "PUT",
+      body: JSON.stringify({
+        secret: config.project.secretKey,
+        name: name,
+        nickname: user,
+        rank: rank,
+        record: score,
+        maxcombo: maxCombo,
+        medal: medal,
+        difficulty: difficulty,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result != "success") {
+          alert(`Error occured.\n${data.error}`);
+        }
+      })
+      .catch((error) => {
+        alert(`Error occured.\n${error}`);
+      });
   });
 
   socket.on("disconnect", () => {

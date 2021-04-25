@@ -528,14 +528,14 @@ app.get("/teamProfile/:name", async (req, res) => {
 });
 
 app.put("/record", async (req, res) => {
-  if (!req.session.userid) {
+  if (req.body.secret !== config.project.secretKey) {
     res
       .status(400)
       .json(
         createErrorResponse(
           "failed",
-          "UserID Required",
-          "UserID is required for this task."
+          "Authorize failed",
+          "Project secret key is not vaild."
         )
       );
     return;
