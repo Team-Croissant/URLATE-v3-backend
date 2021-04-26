@@ -464,7 +464,7 @@ io.on("connection", (socket) => {
         record: score,
         maxcombo: maxCombo,
         medal: medal,
-        difficulty: difficulty,
+        difficulty: difficulty + 1,
       }),
       headers: {
         "Content-Type": "application/json",
