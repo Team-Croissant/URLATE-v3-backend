@@ -157,9 +157,9 @@ io.on("connection", (socket) => {
           redisClient.set(`bpm${socket.id}`, data.information.bpm);
           redisClient.set(`speed${socket.id}`, data.information.speed);
           redisClient.set(`patternLength${socket.id}`, data.patterns.length);
+          redisClient.set(`name${socket.id}`, data.information.track);
         }
       );
-      redisClient.set(`name${socket.id}`, name);
       redisClient.set(`difficulty${socket.id}`, difficulty);
       redisClient.set(`score${socket.id}`, 0);
       redisClient.set(`combo${socket.id}`, 0);
