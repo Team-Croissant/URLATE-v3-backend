@@ -556,6 +556,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
                             for (let j = 0; j < 3; j++) {
                               if (data.results[j] != undefined) {
                                 let value = data.results[j];
+                                document.getElementsByClassName("ranks")[
+                                  i
+                                ].className = "ranks";
+                                document
+                                  .getElementsByClassName("ranks")
+                                  [i].classList.add(`rank${value.rank}`);
                                 trackRecords[i][value.difficulty - 1] = {
                                   rank: `rank${value.rank}`,
                                   record: value.record,
