@@ -548,7 +548,7 @@ app.put("/record", async (req, res) => {
       .where("name", req.body.name)
       .where("isBest", 1)
       .where("difficulty", req.body.difficulty);
-    if (result[0].record > req.body.record) {
+    if (result[0].record > req.body.record && result.length) {
       await knex("trackRecords")
         .where("nickname", req.body.nickname)
         .where("name", req.body.name)
