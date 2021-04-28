@@ -235,7 +235,7 @@ const drawBar = (x1, y1, x2, y2, width) => {
 };
 
 const animationLooper = () => {
-  if (display == 1) {
+  if (display == 1 || display == 6) {
     let wWidth = window.innerWidth;
     let wHeight = window.innerHeight;
     analyser.getByteFrequencyData(dataArray);
