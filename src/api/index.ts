@@ -541,6 +541,25 @@ app.put("/record", async (req, res) => {
     return;
   }
   try {
+    let isBest = 1;
+    const result = await knex("trackRecords")
+      .select("record")
+      .where("nickname", req.body.nickname)
+      .where("name", req.body.name)
+      .where("isBest", 1)
+      .where("difficulty", req.body.difficulty);
+    if (result[0].record > req.body.record) {
+      await knex("trackRecords")
+        .where("nickname", req.body.nickname)
+        .where("name", req.body.name)
+        .where("isBest", 1)
+        .where("difficulty", req.body.difficulty)
+        .update({
+          isBest: 0,
+        });
+    } else {
+      isBest--;
+    }
     await knex("trackRecords").insert({
       name: req.body.name,
       nickname: req.body.nickname,
@@ -549,6 +568,7 @@ app.put("/record", async (req, res) => {
       maxcombo: req.body.maxcombo,
       medal: req.body.medal,
       difficulty: req.body.difficulty,
+      isBest: isBest,
     });
   } catch (e) {
     res
@@ -564,7 +584,8 @@ app.get("/record/:track/:name", async (req, res) => {
     .select("rank", "record", "maxcombo", "medal", "difficulty")
     .where("nickname", req.params.name)
     .where("name", req.params.track)
-    .orderBy("difficulty", "ASC");
+    .where("isBest", 1)
+    .orderBy("difficulty", "DESC");
   if (!results.length) {
     res.status(200).json(createSuccessResponse("empty"));
     return;
@@ -579,6 +600,7 @@ app.get(
       .select("rank", "record", "maxcombo", "nickname")
       .where("name", req.params.track)
       .where("difficulty", req.params.difficulty)
+      .where("isBest", 1)
       .orderBy(req.params.order, req.params.sort);
     const rank =
       results
