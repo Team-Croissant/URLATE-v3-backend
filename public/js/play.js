@@ -76,7 +76,9 @@ let pauseDate = 0;
 let isPaused = false;
 
 const socketInitialize = () => {
-  socket = io("https://game.rhyga.me", { query: `id=${userid}&name=${userName}` });
+  socket = io("https://game.rhyga.me", {
+    query: `id=${userid}&name=${userName}`,
+  });
 
   socket.on("connect", () => {
     socket.emit(
@@ -1354,7 +1356,7 @@ document.onkeyup = (e) => {
 };
 
 window.addEventListener("resize", () => {
-  initialize(false);
+  if (pixelRatio) initialize(false);
 });
 
 window.addEventListener("mousewheel", globalScrollEvent);
