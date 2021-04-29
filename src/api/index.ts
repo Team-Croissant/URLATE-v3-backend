@@ -548,15 +548,15 @@ app.put("/record", async (req, res) => {
       .where("name", req.body.name)
       .where("isBest", 1)
       .where("difficulty", req.body.difficulty);
-    if (result[0].record > req.body.record && result.length) {
+    if (result.length && result[0].record > req.body.record) {
       await knex("trackRecords")
+        .update({
+          isBest: 0,
+        })
         .where("nickname", req.body.nickname)
         .where("name", req.body.name)
         .where("isBest", 1)
-        .where("difficulty", req.body.difficulty)
-        .update({
-          isBest: 0,
-        });
+        .where("difficulty", req.body.difficulty);
     } else {
       isBest--;
     }

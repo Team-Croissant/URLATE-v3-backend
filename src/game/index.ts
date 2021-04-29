@@ -469,16 +469,9 @@ io.on("connection", (socket) => {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.result != "success") {
-          alert(`Error occured.\n${data.error}`);
-        }
-      })
-      .catch((error) => {
-        alert(`Error occured.\n${error}`);
-      });
+    }).catch((error) => {
+      console.log("error", error);
+    });
   });
 
   socket.on("disconnect", () => {
