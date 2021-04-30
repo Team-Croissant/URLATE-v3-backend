@@ -2316,3 +2316,8 @@ p {
   color: #222;
   margin-top: 2vh;
 }
+
+#tl_popupPOSDV {
+  display: none !important;
+  opacity: 0;
+}
