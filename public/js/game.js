@@ -175,8 +175,8 @@ const settingApply = () => {
     Number(settings.input.keys)
   ].selected = true;
   for (let i = 0; i <= 1; i++) {
-    volumeMaster[i].value = settings.sound.volume.master * 100;
-    volumeMasterValue[i].textContent = settings.sound.volume.master * 100 + "%";
+    document.getElementsByClassName("volumeMaster")[i].value = settings.sound.volume.master * 100;
+    document.getElementsByClassName("volumeMasterValue")[i].textContent = settings.sound.volume.master * 100 + "%";
   }
   volumeSong.value = settings.sound.volume.music * 100;
   volumeHit.value = settings.sound.volume.hitSound * 100;
@@ -1637,7 +1637,7 @@ const settingChanged = (e, v) => {
   } else if (v == "volumeMaster") {
     settings.sound.volume.master = e.value / 100;
     for (let i = 0; i <= 1; i++) {
-      volumeMasterValue[i].textContent = e.value + "%";
+      document.getElementsByClassName("volumeMasterValue")[i].textContent = e.value + "%";
     }
     overlayTime = new Date().getTime();
     setTimeout(() => {
@@ -2035,8 +2035,8 @@ const scrollEvent = (e) => {
       }
     }
     for (let i = 0; i <= 1; i++) {
-      volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
-      volumeMasterValue[i].textContent = `${Math.round(
+      document.getElementsByClassName("volumeMaster")[i].value = Math.round(settings.sound.volume.master * 100);
+      document.getElementsByClassName("volumeMasterValue")[i].textContent = `${Math.round(
         settings.sound.volume.master * 100
       )}%`;
     }

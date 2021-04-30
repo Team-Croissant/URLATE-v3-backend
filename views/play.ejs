@@ -84,7 +84,7 @@
       <div id="backToHome" class="menuBtn" onclick="home()"><span>Back to home</span></div>
       <div class="optionValueContainer">
           <p class="optionSemiTitle"><%= __('volume') %></p>
-          <input type="range" min="0" max="100" value="50" id="volumeMaster" class="optionSlider" oninput="settingChanged(this, 'volumeMaster')">
+          <input type="range" min="0" max="100" value="50" class="optionSlider volumeMaster" oninput="settingChanged(this, 'volumeMaster')">
       </div>
     </div>
   </div>
@@ -115,7 +115,7 @@
   </div>
   <div class="overlay" id="volumeOverlay">
     <p class="optionSemiTitle"><%= __('volume') %></p>
-    <input type="range" min="0" max="100" value="50" id="volumeMaster" class="optionSlider" oninput="settingChanged(this, 'volumeMaster')">
+    <input type="range" min="0" max="100" value="50" class="optionSlider volumeMaster" oninput="settingChanged(this, 'volumeMaster')">
     <p class="optionValue" id="volumeMasterValue">50%</p>
   </div>
   <script>

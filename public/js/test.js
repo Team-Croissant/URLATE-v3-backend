@@ -231,7 +231,9 @@ const settingApply = () => {
   hide.miss = settings.game.applyJudge.Miss;
   frameCounter = settings.game.counter;
   for (let i = 0; i <= 1; i++) {
-    volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+    document.getElementsByClassName("volumeMaster")[i].value = Math.round(
+      settings.sound.volume.master * 100
+    );
   }
   for (let i = 0; i < tracks.length; i++) {
     if (tracks[i].name == pattern.information.track) {
@@ -1188,7 +1190,9 @@ const settingChanged = (e, v) => {
     settings.sound.volume.master = e.value / 100;
     volumeMasterValue.textContent = e.value + "%";
     for (let i = 0; i <= 1; i++) {
-      volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+      document.getElementsByClassName("volumeMaster")[i].value = Math.round(
+        settings.sound.volume.master * 100
+      );
     }
     overlayTime = new Date().getTime();
     setTimeout(() => {
@@ -1228,7 +1232,9 @@ const globalScrollEvent = (e) => {
       }
     }
     for (let i = 0; i <= 1; i++) {
-      volumeMaster[i].value = Math.round(settings.sound.volume.master * 100);
+      document.getElementsByClassName("volumeMaster")[i].value = Math.round(
+        settings.sound.volume.master * 100
+      );
     }
     volumeMasterValue.textContent = `${Math.round(
       settings.sound.volume.master * 100
