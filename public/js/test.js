@@ -46,6 +46,7 @@ let comboAlert = false,
   comboCount = 50;
 let comboAlertMs = 0,
   comboAlertCount = 0;
+let shiftDown = false;
 let hide = {},
   frameCounter;
 let load = 0;
