@@ -541,15 +541,15 @@ app.put("/record", async (req, res) => {
     return;
   }
   try {
-    let isBest = 1;
+    let isBest = 0;
     const result = await knex("trackRecords")
       .select("record")
       .where("nickname", req.body.nickname)
       .where("name", req.body.name)
       .where("isBest", 1)
       .where("difficulty", req.body.difficulty);
-    if (result.length && result[0].record > req.body.record) {
-      isBest--;
+    if (result.length && result[0].record < req.body.record) {
+      isBest++;
       await knex("trackRecords")
         .update({
           isBest: 0,
