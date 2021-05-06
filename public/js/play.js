@@ -297,8 +297,8 @@ const initialize = (isFirstCalled) => {
         });
       })
       .catch((error) => {
-        alert(`Error occured.\n${error}`);
-        console.error(`Error occured.\n${error}`);
+        alert(patternError);
+        window.location.href = `${url}/game?initialize=0`;
       });
   } else {
     if (pattern.background.type) {

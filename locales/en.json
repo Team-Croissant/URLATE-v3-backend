@@ -184,5 +184,6 @@
   "tutorial_information_2": "We recommend conducting the tutorial to show you how to understand URLATE and enjoy it more.",
   "all_good": "All good!",
   "skip_tutorial": "Sorry, I don't want to.",
-  "confirm_exit_tutorial": "Would you like to skip the tutorial? You can proceed with the tutorial again in Settings."
+  "confirm_exit_tutorial": "Would you like to skip the tutorial? You can proceed with the tutorial again in Settings.",
+  "pattern_error": "Error occured while loading pattern."
 }
