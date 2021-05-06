@@ -40,6 +40,7 @@ let bulletsOverlapNum = 1;
 let triggersOverlapNum = 2;
 let isTextboxFocused = false;
 let skin, denyCursor, denySkin;
+let dragMouseX, dragMouseY;
 let copied = false,
   copiedTime = 0;
 
@@ -1747,35 +1748,30 @@ const elementFollowMouse = (v1, v2, i) => {
         v2 = pointingCntElement.v2;
         i = pointingCntElement.i;
       }
+      if (dragMouseX == undefined) {
+        dragMouseX = mouseX;
+        dragMouseY = mouseY;
+      }
+      let newX, newY;
       switch (v1) {
         case 0:
+          newX = pattern.patterns[i].x + mouseX - dragMouseX;
+          newY = pattern.patterns[i].y + mouseY - dragMouseY;
           if (
-            (mouseX <= 100 || mouseX >= -100) &&
-            (mouseY <= 100 || mouseY >= -100) &&
+            newX <= 100 &&
+            newX >= -100 &&
+            newY <= 100 &&
+            newY >= -100 &&
             mouseMode == 0
           ) {
-            pattern.patterns[i].x = parseInt(mouseX);
-            pattern.patterns[i].y = parseInt(mouseY);
+            pattern.patterns[i].x = newX;
+            pattern.patterns[i].y = newY;
           }
           break;
         case 1:
-          if ((mouseY <= 100 || mouseY >= -100) && mouseMode == 0) {
-            const seek = song.seek();
-            const left = pattern.bullets[i].direction == "L";
-            const p =
-              ((seek * 1000 - pattern.bullets[i].ms) /
-                ((bpm * 40) / speed / pattern.bullets[i].speed)) *
-              100;
-            const y =
-              mouseY -
-              p *
-                getTan(
-                  circleBulletAngles[i] != undefined
-                    ? circleBulletAngles[i]
-                    : pattern.bullets[i].angle
-                ) *
-                (left ? 1 : -1);
-            pattern.bullets[i].location = y;
+          newY = pattern.bullets[i].location + mouseY - dragMouseY;
+          if (newY <= 100 && newY >= -100 && mouseMode == 0) {
+            pattern.bullets[i].location = newY;
           }
           break;
       }
@@ -1788,6 +1784,23 @@ const elementFollowMouse = (v1, v2, i) => {
       }, 100);
       elementFollowMouse(v1, v2, i);
       changeSettingsMode(v1, v2, i);
+      dragMouseX = mouseX;
+      dragMouseY = mouseY;
+    } else {
+      if (v1 == undefined) {
+        v1 = pointingCntElement.v1;
+        v2 = pointingCntElement.v2;
+        i = pointingCntElement.i;
+      }
+      switch (v1) {
+        case 0:
+          pattern.patterns[i].x = parseInt(pattern.patterns[i].x);
+          pattern.patterns[i].y = parseInt(pattern.patterns[i].y);
+        case 1:
+          pattern.bullets[i].location = parseInt(pattern.bullets[i].location);
+      }
+      dragMouseX = undefined;
+      dragMouseY = undefined;
     }
   });
 };
