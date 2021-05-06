@@ -1298,8 +1298,10 @@ document.onkeydown = (e) => {
     }
     compClicked(true);
   } else {
-    if (confirm(returnToEditor)) {
-      editor();
+    if (e.key == "Enter") {
+      if (confirm(returnToEditor)) {
+        editor();
+      }
     }
   }
 };

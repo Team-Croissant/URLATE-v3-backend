@@ -1343,8 +1343,10 @@ document.onkeydown = (e) => {
     }
     compClicked(true);
   } else {
-    if (confirm(returnToGame)) {
-      window.location.href = `${url}/game?initialize=0`;
+    if (e.key == "Enter") {
+      if (confirm(returnToGame)) {
+        window.location.href = `${url}/game?initialize=0`;
+      }
     }
   }
 };
