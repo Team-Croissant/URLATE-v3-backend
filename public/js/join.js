@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       } else if (data.status == "Not logined") {
         window.location.href = projectUrl;
       }
+      if (nameReg.test(data.tempName)) {
+        document.getElementById("nickname").value = data.tempName;
+      }
     })
     .catch((error) => {
       alert(`Error occured.\n${error}`);

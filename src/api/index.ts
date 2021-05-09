@@ -87,7 +87,9 @@ app.get("/auth/status", async (req, res) => {
     .select("userid", "nickname")
     .where("userid", req.session.userid);
   if (!results[0]) {
-    res.status(200).json(createStatusResponse("Not registered"));
+    res
+      .status(200)
+      .json({ status: "Not registered", tempName: req.session.tempName });
     return;
   }
 
