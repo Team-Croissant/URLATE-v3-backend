@@ -2099,10 +2099,10 @@ p {
   text-decoration: line-through;
 }
 
-#storeFooterLeft {
+.storeFooterLeft {
   position: fixed;
   text-align: left;
-  font-size: 1.6vh;
+  font-size: 1.5vh;
   color: black;
   left: 2vh;
   bottom: 2vh;
