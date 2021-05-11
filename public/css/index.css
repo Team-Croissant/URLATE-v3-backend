@@ -36,7 +36,6 @@ body {
 }
 
 #buttonContainer {
-  z-index: 1;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -114,4 +113,15 @@ kbd {
   color: #bbb;
   position: fixed;
   bottom: 5vh;
+}
+
+#policies {
+  z-index: 1;
+  margin: 2vh;
+}
+
+.bottomPolicy {
+  color: #ffffffdd;
+  font-size: 0.9em;
+  margin: 0.3vh;
 }

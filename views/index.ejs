@@ -53,6 +53,15 @@
     </div>
     <div id="buttonContainer">
         <div id="my-signin2" onclick="loginTrigger()"></div>
+        <div id="policies">
+            <% if(__('lang') == 'en') { %>
+                <a href="/en/privacyPolicy" class="bottomPolicy">Privacy Policy</a>
+                <a href="/en/termsOfService" class="bottomPolicy">Terms Of Service</a>
+            <% } else { %>
+                <a href="/ko/privacyPolicy" class="bottomPolicy">개인정보처리방침</a>
+                <a href="/ko/termsOfService" class="bottomPolicy">이용약관</a>
+            <% } %>
+        </div>
     </div>
     <span id="footerLeft">
         통신판매업신고번호: 2021-제주조천-0014<br>
