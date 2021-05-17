@@ -175,8 +175,10 @@ const settingApply = () => {
     Number(settings.input.keys)
   ].selected = true;
   for (let i = 0; i <= 1; i++) {
-    document.getElementsByClassName("volumeMaster")[i].value = settings.sound.volume.master * 100;
-    document.getElementsByClassName("volumeMasterValue")[i].textContent = settings.sound.volume.master * 100 + "%";
+    document.getElementsByClassName("volumeMaster")[i].value =
+      settings.sound.volume.master * 100;
+    document.getElementsByClassName("volumeMasterValue")[i].textContent =
+      settings.sound.volume.master * 100 + "%";
   }
   volumeSong.value = settings.sound.volume.music * 100;
   volumeHit.value = settings.sound.volume.hitSound * 100;
@@ -1109,12 +1111,10 @@ const loadingHide = () => {
 
 const showDLCinfo = async (n) => {
   loadingOverlayShow();
-  DLCInfoDLCName.textContent = document.getElementsByClassName("storeName")[
-    n
-  ].textContent;
-  DLCinfoArtistName.textContent = document.getElementsByClassName(
-    "storeSongArtist"
-  )[n].textContent;
+  DLCInfoDLCName.textContent =
+    document.getElementsByClassName("storeName")[n].textContent;
+  DLCinfoArtistName.textContent =
+    document.getElementsByClassName("storeSongArtist")[n].textContent;
   DLCInfoAlbum.src = document.getElementsByClassName("storeSongsAlbum")[n].src;
   if (DLCs.indexOf(DLCInfoDLCName.textContent) != -1) {
     DLCbasketButton.classList.add("storeButtonDisabled");
@@ -1166,9 +1166,8 @@ const showDLCinfo = async (n) => {
 
 const showSkinInfo = (n) => {
   loadingOverlayShow();
-  SkinInfoSkinName.textContent = document.getElementsByClassName(
-    "storeSkinName"
-  )[n].textContent;
+  SkinInfoSkinName.textContent =
+    document.getElementsByClassName("storeSkinName")[n].textContent;
   skinInfoPreview.src = `${cdn}/skins/preview/${skinData[n]}.png`;
   if (skins.indexOf(SkinInfoSkinName.textContent) != -1) {
     skinBasketButton.classList.add("storeButtonDisabled");
@@ -1487,9 +1486,8 @@ const updateStore = () => {
         }
         elements += "</div>";
       }
-      document.getElementsByClassName(
-        "storeContentsContainer"
-      )[0].innerHTML = elements;
+      document.getElementsByClassName("storeContentsContainer")[0].innerHTML =
+        elements;
       loadingOverlayHide();
     })
     .catch((error) => {
@@ -1538,9 +1536,8 @@ const updateStore = () => {
         }
         elements += "</div>";
       }
-      document.getElementsByClassName(
-        "storeContentsContainer"
-      )[1].innerHTML = elements;
+      document.getElementsByClassName("storeContentsContainer")[1].innerHTML =
+        elements;
     })
     .catch((error) => {
       alert(`Error occured.\n${error}`);
@@ -1675,7 +1672,8 @@ const settingChanged = (e, v) => {
   } else if (v == "volumeMaster") {
     settings.sound.volume.master = e.value / 100;
     for (let i = 0; i <= 1; i++) {
-      document.getElementsByClassName("volumeMasterValue")[i].textContent = e.value + "%";
+      document.getElementsByClassName("volumeMasterValue")[i].textContent =
+        e.value + "%";
     }
     overlayTime = new Date().getTime();
     setTimeout(() => {
@@ -2073,10 +2071,12 @@ const scrollEvent = (e) => {
       }
     }
     for (let i = 0; i <= 1; i++) {
-      document.getElementsByClassName("volumeMaster")[i].value = Math.round(settings.sound.volume.master * 100);
-      document.getElementsByClassName("volumeMasterValue")[i].textContent = `${Math.round(
+      document.getElementsByClassName("volumeMaster")[i].value = Math.round(
         settings.sound.volume.master * 100
-      )}%`;
+      );
+      document.getElementsByClassName("volumeMasterValue")[
+        i
+      ].textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
     }
     Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
     intro1video.volume =
