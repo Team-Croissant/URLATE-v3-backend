@@ -282,6 +282,7 @@ const tutorialSkip = () => {
         alert(`Error occured.\n${error}`);
         console.error(`Error occured.\n${error}`);
       });
+    tutorial -= 2;
   }
 };
 
@@ -808,7 +809,7 @@ const gameLoaded = () => {
   localStorage.clear("songName");
   localStorage.clear("difficulty");
   setTimeout(() => {
-    if (tutorial) {
+    if (tutorial >= 3) {
       document.getElementById("tutorialInformation").style.display = "flex";
       document.getElementById("tutorialInformation").classList.add("fadeIn");
     }
@@ -1045,6 +1046,38 @@ const displayClose = () => {
       overlayCodeContainer.style.pointerEvents = "none";
       overlayCodeContainer.style.opacity = "0";
       display = 2;
+      return;
+    } else if (display == 13) {
+      //store tutorial
+      tutorial--;
+      document
+        .getElementById("storeTutorialContainer")
+        .classList.remove("fadeIn");
+      document
+        .getElementById("storeTutorialContainer")
+        .classList.add("fadeOut");
+      setTimeout(() => {
+        document
+          .getElementById("storeTutorialContainer")
+          .classList.remove("fadeOut");
+        document.getElementById("storeTutorialContainer").style.display =
+          "none";
+      }, 500);
+      display = 8;
+      fetch(`${api}/storeTutorial`, {
+        method: "PUT",
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.result != "success") {
+            alert(`Error occured.\n${data.error}`);
+          }
+        })
+        .catch((error) => {
+          alert(`Error occured.\n${error}`);
+          console.error(`Error occured.\n${error}`);
+        });
       return;
     }
     lottieAnim.play();
@@ -1576,6 +1609,11 @@ const menuSelected = (n) => {
     document.getElementById("storeContainer").classList.add("fadeIn");
     updateCart();
     display = 8;
+    if (tutorial == 1) {
+      document.getElementById("storeTutorialContainer").style.display = "flex";
+      document.getElementById("storeTutorialContainer").classList.add("fadeIn");
+      display = 13;
+    }
   }
 };
 

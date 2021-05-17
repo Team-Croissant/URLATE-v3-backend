@@ -840,6 +840,10 @@ p {
 }
 
 .containersTitle {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  position: fixed;
   font-size: 5vh;
   margin-top: 4vh;
   padding: 0;
@@ -2320,4 +2324,45 @@ p {
 #tl_popupPOSDV {
   display: none !important;
   opacity: 0;
+}
+
+#storeTutorialScreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.storeTutorial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 30vw;
+  height: 40vh;
+}
+
+.storeTutorialImage {
+  width: 25vw;
+}
+
+.storeTutorialText {
+  margin-top: 3vh;
+  font-size: 2vh;
+}
+
+#storeTutorialButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  top: 80vh;
 }

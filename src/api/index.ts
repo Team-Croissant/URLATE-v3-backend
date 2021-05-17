@@ -214,7 +214,7 @@ app.post("/auth/join", async (req, res) => {
           advancedBillingCode: "",
           advancedExpireDate: new Date(),
           advancedType: "",
-          tutorial: true,
+          tutorial: 3,
         });
         delete req.session.tempName;
         req.session.save(() => {
@@ -470,6 +470,32 @@ app.put("/settings", async (req, res) => {
 });
 
 app.put("/tutorial", async (req, res) => {
+  if (!req.session.userid) {
+    res
+      .status(400)
+      .json(
+        createErrorResponse(
+          "failed",
+          "UserID Required",
+          "UserID is required for this task."
+        )
+      );
+    return;
+  }
+  try {
+    await knex("users")
+      .update({ tutorial: 1 })
+      .where("userid", req.session.userid);
+  } catch (e) {
+    res
+      .status(400)
+      .json(createErrorResponse("failed", "Error occured while updating", e));
+    return;
+  }
+  res.status(200).json(createSuccessResponse("success"));
+});
+
+app.put("/storeTutorial", async (req, res) => {
   if (!req.session.userid) {
     res
       .status(400)

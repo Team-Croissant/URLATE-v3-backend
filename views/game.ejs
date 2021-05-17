@@ -609,6 +609,30 @@
         </div>
     </div>
     <div id="storeContainer" class="containers metropolis">
+        <div id="storeTutorialContainer" class="containers metropolis">
+            <h1 class="containersTitle">STORE</h1>
+            <div id="storeTutorialScreen">
+                <div class="storeTutorial">
+                    <img src="/images/parts/elements/store_songs.png" class="storeTutorialImage">
+                    <span class="storeTutorialText">
+                        <%= __('store_tutorial_1_1') %><br>
+                        <%= __('store_tutorial_1_2') %><br>
+                        <%= __('store_tutorial_1_3') %>
+                    </span>
+                </div>
+                <div class="storeTutorial">
+                    <img src="/images/parts/elements/store_skins.png" class="storeTutorialImage">
+                    <span class="storeTutorialText">
+                        <%= __('store_tutorial_2_1') %><br>
+                        <%= __('store_tutorial_2_2') %><br>
+                        <%= __('store_tutorial_2_3') %>
+                    </span>
+                </div>
+            </div>
+            <div id="storeTutorialButtonContainer">
+                <button class="storeButton metropolis" onclick="displayClose()"><%= __('all_good') %></button>
+            </div>
+        </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
         <span class="storeFooterLeft">
             통신판매업신고번호: 2021-제주조천-0014<br>

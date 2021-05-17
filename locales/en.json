@@ -185,5 +185,11 @@
   "all_good": "All good!",
   "skip_tutorial": "Sorry, I don't want to.",
   "confirm_exit_tutorial": "Would you like to skip the tutorial? You can proceed with the tutorial again in Settings.",
-  "pattern_error": "Error occured while loading pattern."
+  "pattern_error": "Error occured while loading pattern.",
+  "store_tutorial_1_1": "You can purchase locked songs on the STORE.",
+  "store_tutorial_1_2": "The songs are included in the DLC pack,",
+  "store_tutorial_1_3": "and cannot be purchased single.",
+  "store_tutorial_2_1": "Skins that can decorate the appearance of in-game",
+  "store_tutorial_2_2": "can also be purchased from STORE.",
+  "store_tutorial_2_3": "It can be applied in the settings after purchase."
 }
