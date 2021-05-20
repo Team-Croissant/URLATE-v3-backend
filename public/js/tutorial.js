@@ -1260,6 +1260,29 @@ const globalScrollEvent = (e) => {
   }
 };
 
+const finish = () => {
+  if (confirm(returnToGame)) {
+    if (confirm(returnToGame)) {
+      fetch(`${api}/tutorial`, {
+        method: "PUT",
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.result != "success") {
+            alert(`Error occured.\n${data.error}`);
+          } else {
+            window.location.href = `${url}/game?initialize=0`;
+          }
+        })
+        .catch((error) => {
+          alert(`Error occured.\n${error}`);
+          console.error(`Error occured.\n${error}`);
+        });
+    }
+  }
+};
+
 document.onkeydown = (e) => {
   e = e || window.event;
   if (e.key == "Shift") {
@@ -1288,27 +1311,6 @@ document.onkeydown = (e) => {
       return;
     }
     compClicked(true);
-  } else {
-    if (e.key == "Enter") {
-      if (confirm(returnToGame)) {
-        fetch(`${api}/tutorial`, {
-          method: "PUT",
-          credentials: "include",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.result != "success") {
-              alert(`Error occured.\n${data.error}`);
-            } else {
-              window.location.href = `${url}/game?initialize=0`;
-            }
-          })
-          .catch((error) => {
-            alert(`Error occured.\n${error}`);
-            console.error(`Error occured.\n${error}`);
-          });
-      }
-    }
   }
 };
 

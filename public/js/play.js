@@ -1308,6 +1308,12 @@ const globalScrollEvent = (e) => {
   }
 };
 
+const finish = () => {
+  if (confirm(returnToGame)) {
+    window.location.href = `${url}/game?initialize=0`;
+  }
+};
+
 document.onkeydown = (e) => {
   e = e || window.event;
   if (e.key == "Shift") {
@@ -1338,13 +1344,6 @@ document.onkeydown = (e) => {
       return;
     } else if (inputMode == 2 && !/^[zx]{1}$/i.test(e.key)) {
       return;
-    }
-    compClicked(true);
-  } else {
-    if (e.key == "Enter") {
-      if (confirm(returnToGame)) {
-        window.location.href = `${url}/game?initialize=0`;
-      }
     }
   }
 };
