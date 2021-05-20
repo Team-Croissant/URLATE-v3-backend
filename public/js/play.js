@@ -280,11 +280,9 @@ const initialize = (isFirstCalled) => {
           autoplay: false,
           loop: false,
           onend: () => {
-            setTimeout(() => {
-              isResultShowing = true;
-              menuAllowed = false;
-              calculateResult();
-            }, 1000);
+            isResultShowing = true;
+            menuAllowed = false;
+            calculateResult();
           },
           onload: () => {
             Howler.volume(settings.sound.volume.master);

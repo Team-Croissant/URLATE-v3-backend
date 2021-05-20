@@ -280,11 +280,9 @@ const settingApply = () => {
     autoplay: false,
     loop: false,
     onend: () => {
-      setTimeout(() => {
-        isResultShowing = true;
-        menuAllowed = false;
-        calculateResult();
-      }, 1000);
+      isResultShowing = true;
+      menuAllowed = false;
+      calculateResult();
     },
     onload: () => {
       song.volume(settings.sound.volume.master * settings.sound.volume.music);
