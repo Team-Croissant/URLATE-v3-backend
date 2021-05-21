@@ -19,7 +19,7 @@ const OAuth2 = google.auth.OAuth2;
 const plus = google.plus("v1");
 
 let whitelist =
-  "bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com, jungin7612@gmail.com, greenstar1151@gmail.com, kiwiyou.dev@gmail.com, hwymaster01@gmail.com";
+  "bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com, jungin7612@gmail.com, greenstar1151@gmail.com, kiwiyou.dev@gmail.com, hwymaster01@gmail.com, testcroissant1@gmail.com";
 
 import {
   createSuccessResponse,
@@ -124,7 +124,7 @@ app.post("/auth/login", (req, res) => {
     const { access_token, refresh_token } = tokens;
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: "me", auth: oauth2Client }, (err, response) => {
-      if (whitelist.indexOf(response.data.emails[0].value) != -1 || true) {
+      if (whitelist.indexOf(response.data.emails[0].value) != -1) {
         req.session.userid = response.data.id;
         req.session.email = response.data.emails[0].value;
         req.session.tempName = response.data.displayName;
