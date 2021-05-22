@@ -45,6 +45,8 @@ let offsetInput = false;
 let offsetPrevInput = false;
 let offsetAverage = [];
 
+let iniMode = -1;
+
 let trackRecords = [];
 
 let themeSong;
@@ -358,7 +360,9 @@ const intro2play = () => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  const iniMode = new URLSearchParams(window.location.search).get("initialize");
+  iniMode = Number(
+    new URLSearchParams(window.location.search).get("initialize")
+  );
   history.pushState("someAwesomeState", null, null);
   let widthWidth = window.innerWidth;
   let heightWidth = (window.innerHeight / 9) * 16;
@@ -381,7 +385,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.getElementById("pressAnywhere").style.opacity = "1";
     warningInner.style.borderBottom = "0.1vh solid #555";
   }, 3000);
-  if (iniMode == 0) {
+  if (iniMode != -1) {
     //no intro
     loaded++;
     display = 0;
@@ -803,7 +807,9 @@ const numberWithCommas = (x) => {
 };
 
 const gameLoaded = () => {
-  if (display == 0 && songSelection == -1) {
+  if (iniMode == 1) {
+    menuSelected(0);
+  } else if (display == 0 && songSelection == -1) {
     themeSong.play();
   }
   document.getElementById("menuContainer").style.display = "flex";
