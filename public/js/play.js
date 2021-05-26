@@ -1345,6 +1345,7 @@ document.onkeydown = (e) => {
     } else if (inputMode == 2 && !/^[zx]{1}$/i.test(e.key)) {
       return;
     }
+    compClicked(true);
   }
 };
 
