@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const initialize = (isFirstCalled) => {
   if (isFirstCalled) {
-    fetch(`${cdn}/patterns/tutorial/0.json`, {
+    fetch(`${cdn}/patterns/tutorial/0_${lang}.json`, {
       method: "GET",
       credentials: "include",
     })
@@ -1021,10 +1021,10 @@ const compClicked = (isTyped) => {
       drawParticle(1, mouseX, mouseY);
       let seek = song.seek() * 1000 - (offset + sync);
       let ms = pattern.patterns[pointingCntElement[i].i].ms;
-      let perfectJudge = 60000 / bpm / 8;
-      let greatJudge = 60000 / bpm / 5;
-      let goodJudge = 60000 / bpm / 3;
-      let badJudge = 60000 / bpm / 2;
+      let perfectJudge = 60000 / bpm / 3;
+      let greatJudge = 60000 / bpm / 2;
+      let goodJudge = 60000 / bpm / 1;
+      let badJudge = 60000 / bpm;
       let x = pattern.patterns[pointingCntElement[i].i].x;
       let y = pattern.patterns[pointingCntElement[i].i].y;
       if (seek < ms + perfectJudge && seek > ms - perfectJudge) {
