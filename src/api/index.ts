@@ -124,7 +124,7 @@ app.post("/auth/login", (req, res) => {
     const { access_token, refresh_token } = tokens;
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: "me", auth: oauth2Client }, (err, response) => {
-      if (whitelist.indexOf(response.data.emails[0].value) != -1 || true) {
+      if (whitelist.indexOf(response.data.emails[0].value) != -1) {
         req.session.userid = response.data.id;
         req.session.email = response.data.emails[0].value;
         req.session.tempName = response.data.displayName;
