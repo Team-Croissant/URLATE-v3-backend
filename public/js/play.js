@@ -296,7 +296,7 @@ const initialize = (isFirstCalled) => {
       })
       .catch((error) => {
         alert(patternError);
-        window.location.href = `${url}/game?initialize=0`;
+        window.location.href = `${url}/game?initialize=1`;
       });
   } else {
     if (pattern.background.type) {
@@ -1222,7 +1222,7 @@ const retry = () => {
 };
 
 const home = () => {
-  window.location.href = `${url}/game?initialize=0`;
+  window.location.href = `${url}/game?initialize=1`;
 };
 
 const settingChanged = (e, v) => {
@@ -1310,7 +1310,7 @@ const globalScrollEvent = (e) => {
 
 const finish = () => {
   if (confirm(returnToGame)) {
-    window.location.href = `${url}/game?initialize=0`;
+    window.location.href = `${url}/game?initialize=1`;
   }
 };
 
