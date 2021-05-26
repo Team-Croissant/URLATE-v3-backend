@@ -1110,7 +1110,7 @@ const doneLoading = () => {
       document.getElementById("componentCanvas").style.transitionDuration =
         "0s";
     }, 1000);
-    setTimeout(songPlayPause, 4000);
+    setTimeout(songPlayPause, 1000);
   }, 1000);
 };
 
