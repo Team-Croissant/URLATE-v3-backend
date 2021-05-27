@@ -51,6 +51,7 @@ let hide = {},
   frameCounter;
 let load = 0;
 let fileName = "";
+let paceLoaded = 0;
 let lottieAnim = {
   play: () => {},
   stop: () => {},
@@ -1112,9 +1113,11 @@ const calculateScore = (judge, i, isMissed) => {
 };
 
 Pace.on("done", () => {
+  if (paceLoaded) return;
   if (load == 1) {
     doneLoading();
   }
+  paceLoaded++;
   load++;
 });
 

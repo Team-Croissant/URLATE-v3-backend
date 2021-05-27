@@ -58,6 +58,7 @@ let lottieAnim = {
   goToAndStop: () => {},
   setSpeed: () => {},
 };
+let paceLoaded = 0;
 let tick = new Howl({
   src: [`/sounds/tick.mp3`],
   autoplay: false,
@@ -1092,10 +1093,12 @@ const calculateScore = (judge, i, isMissed) => {
 };
 
 Pace.on("done", () => {
+  if (paceLoaded) return;
   if (load == 1) {
     doneLoading();
   }
   load++;
+  paceLoaded++;
 });
 
 const doneLoading = () => {
