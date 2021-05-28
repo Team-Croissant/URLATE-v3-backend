@@ -995,12 +995,12 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
   }
 };
 
-const compClicked = (isTyped) => {
+const compClicked = (isTyped, key) => {
   if (
     (!isTyped && !settings.input.mouse) ||
     isMenuOpened ||
     !menuAllowed ||
-    mouseClicked
+    mouseClicked == key
   ) {
     return;
   }
@@ -1012,7 +1012,8 @@ const compClicked = (isTyped) => {
     song.play();
     lottieAnim.play();
   }
-  mouseClicked = true;
+  if (key) mouseClicked = key;
+  else mouseClicked = true;
   mouseClickedMs = Date.now();
   for (let i = 0; i < pointingCntElement.length; i++) {
     if (
@@ -1313,7 +1314,7 @@ document.onkeydown = (e) => {
     } else if (inputMode == 2 && !/^[zx]{1}$/i.test(e.key)) {
       return;
     }
-    compClicked(true);
+    compClicked(true, e.key);
   }
 };
 
