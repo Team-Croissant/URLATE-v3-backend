@@ -60,6 +60,7 @@ let lottieAnim = {
   goToAndStop: () => {},
   setSpeed: () => {},
 };
+
 let tick = new Howl({
   src: [`/sounds/tick.mp3`],
   autoplay: false,
