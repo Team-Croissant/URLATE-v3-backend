@@ -1272,7 +1272,7 @@ const globalScrollEvent = (e) => {
 };
 
 const finish = () => {
-  if (confirm(returnToGame)) {
+  if (confirm(returnToEditor)) {
     window.location.href = `${url}/game?initialize=0`;
   }
 };
