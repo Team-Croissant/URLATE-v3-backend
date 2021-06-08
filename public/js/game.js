@@ -1,5 +1,7 @@
-const clientKey = "test_ck_7XZYkKL4Mrjb7EZwR6Lr0zJwlEWR";
+const clientKey = "test_ck_dP9BRQmyarY9pb7Ejy7rJ07KzLNk";
+const billingKey = "test_ck_OAQ92ymxN34k59e5E0p8ajRKXvdk";
 const tossPayments = TossPayments(clientKey);
+const tossBilling = TossPayments(billingKey);
 
 let display = -1;
 let userid;
@@ -1623,7 +1625,7 @@ const menuSelected = (n) => {
 const getAdvanced = () => {
   purchasingContainer.style.pointerEvents = "all";
   purchasingContainer.style.opacity = "1";
-  tossPayments.requestBillingAuth("카드", {
+  tossBilling.requestBillingAuth("카드", {
     customerKey: userid,
     successUrl: `${api}/billing/success`,
     failUrl: `${api}/store/fail`,

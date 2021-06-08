@@ -943,7 +943,7 @@ app.get("/billing/success", async (req, res) => {
     }),
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Basic ${config.toss.basicKey}`,
+      Authorization: `Basic ${config.tossBilling.basicKey}`,
     },
   })
     .then((res) => res.json())
@@ -963,7 +963,7 @@ app.get("/billing/success", async (req, res) => {
         }),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${config.toss.basicKey}`,
+          Authorization: `Basic ${config.tossBilling.basicKey}`,
         },
       })
         .then((res) => res.json())
@@ -1175,7 +1175,7 @@ const advancedUpdate = async () => {
           }),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Basic ${config.toss.basicKey}`,
+            Authorization: `Basic ${config.tossBilling.basicKey}`,
           },
         }
       )
