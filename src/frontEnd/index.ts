@@ -1,5 +1,3 @@
-import bodyParser = require("body-parser");
-import cookieParser = require("cookie-parser");
 import signale = require("signale");
 import http = require("http");
 import express = require("express");
@@ -15,8 +13,6 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/../../views");
 app.use(express.static(__dirname + "/../../views"));
 app.use(express.static(__dirname + "/../../public"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(i18n);
 
 app.get("/", (req, res) => {
