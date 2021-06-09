@@ -37,6 +37,32 @@ app.get("/join", (req, res) => {
   res.render("join", { api: config.project.api, url: config.project.url });
 });
 
+app.get("/authentication", (req, res) => {
+  res.render("authentication", {
+    api: config.project.api,
+    url: config.project.url,
+  });
+});
+
+app.get("/authentication/success", (req, res) => {
+  res.render("authenticationSuccess", {
+    api: config.project.api,
+    url: config.project.url,
+  });
+});
+
+app.get("/authentication/failed", (req, res) => {
+  res.render("authenticationFailed", {
+    url: config.project.url,
+  });
+});
+
+app.post("/authentication/failed", (req, res) => {
+  res.render("authenticationFailed", {
+    url: config.project.url,
+  });
+});
+
 app.get("/authorize", (req, res) => {
   if (req.query.status == "fail") {
     res.render("authorizeFail", {
