@@ -1001,6 +1001,74 @@ app.get("/store/fail", async (req, res) => {
   res.redirect(`${config.project.url}/storeDenied?error=${req.params.message}`);
 });
 
+app.post("/danal/complete", async (req, res) => {
+  res.redirect(`${config.project.url}/authentication/success`);
+});
+
+app.post("/danal/final", (req, res) => {
+  if (req.session.TID) {
+    fetch(
+      `https://uas.teledit.com/uas?TXTYPE=CONFIRM&TID=${req.session.TID}&IDENOPTION=1`
+    )
+      .then((res) => res.text())
+      .then(async (data) => {
+        data = data.split("&");
+        if (data[0].split("=")[1] == "0000") {
+          await knex("users")
+            .update({
+              authentication: 1,
+              name: data[4].split("=")[1],
+              birth: data[5].split("=")[1],
+            })
+            .where("userid", req.session.userid);
+          res.status(200).json(createSuccessResponse("success"));
+        } else {
+          res
+            .status(400)
+            .json(
+              createErrorResponse(
+                "failed",
+                "Authentication Failed",
+                data[1].split("=")[1]
+              )
+            );
+        }
+      });
+  } else {
+    res
+      .status(400)
+      .json(createErrorResponse("failed", "Data format error", "TID required"));
+  }
+});
+
+app.get("/danal/ready", async (req, res) => {
+  fetch(
+    `https://uas.teledit.com/uas?TXTYPE=ITEMSEND&CPID=${config.danal.CPID}&CPPWD=${config.danal.CPPWD}&SERVICE=UAS&AUTHTYPE=36&TARGETURL=${config.danal.targetUrl}&CPTITLE=URLATE`
+  )
+    .then((res) => res.text())
+    .then((data) => {
+      data = data.split("&");
+      if (data[0].split("=")[1] == "0000") {
+        req.session.TID = data[2].split("=")[1];
+        req.session.save(() => {
+          res
+            .status(200)
+            .json({ status: "Success", TID: data[2].split("=")[1] });
+        });
+      } else {
+        res
+          .status(400)
+          .json(
+            createErrorResponse(
+              "failed",
+              "fetch failed",
+              "fetch to ready server failed."
+            )
+          );
+      }
+    });
+});
+
 app.put("/coupon", async (req, res) => {
   if (!req.session.userid) {
     res
