@@ -1,3 +1,4 @@
+import bodyParser = require("body-parser");
 import cookieParser = require("cookie-parser");
 import signale = require("signale");
 import http = require("http");
@@ -58,7 +59,8 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) =>
