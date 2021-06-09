@@ -2,7 +2,7 @@ let lottieAnim = bodymovin.loadAnimation({
   wrapper: animContainer,
   animType: "canvas",
   loop: false,
-  path: "lottie/fail.json",
+  path: "/lottie/fail.json",
 });
 
 document.addEventListener("DOMContentLoaded", (event) => {
