@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = `${projectUrl}/game`;
       } else if (data.status == "Not authorized") {
         window.location.href = `${projectUrl}/authorize`;
+      } else if (data.status == "Not authenticated") {
+        window.location.href = `${projectUrl}/authentication`;
       } else if (data.status == "Not logined") {
         window.location.href = projectUrl;
       }

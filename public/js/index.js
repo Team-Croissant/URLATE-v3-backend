@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = `${projectUrl}/authorize`;
       } else if (data.status == "Not registered") {
         window.location.href = `${projectUrl}/join`;
+      } else if (data.status == "Not authenticated") {
+        window.location.href = `${projectUrl}/authentication`;
       }
     })
     .catch((error) => {
@@ -95,9 +97,7 @@ window.onload = () => {
     try {
       document
         .getElementsByClassName("abcRioButtonContents")[0]
-        .getElementsByTagName(
-          "span"
-        )[1].innerHTML = document
+        .getElementsByTagName("span")[1].innerHTML = document
         .getElementsByClassName("abcRioButtonContents")[0]
         .getElementsByTagName("span")[0].innerHTML;
     } catch (e) {

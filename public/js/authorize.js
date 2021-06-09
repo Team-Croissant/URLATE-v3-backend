@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = `${projectUrl}/join`;
       } else if (data.status == "Not logined") {
         window.location.href = projectUrl;
+      } else if (data.status == "Not authenticated") {
+        window.location.href = `${projectUrl}/authentication`;
       }
     })
     .catch((error) => {

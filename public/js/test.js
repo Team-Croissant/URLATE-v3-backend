@@ -103,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `${url}/join`;
       } else if (data.status == "Not logined") {
         window.location.href = url;
+      } else if (data.status == "Not authenticated") {
+        window.location.href = `${url}/authentication`;
       } else {
         fetch(`${api}/user`, {
           method: "GET",

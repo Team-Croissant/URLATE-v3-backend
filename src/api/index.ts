@@ -86,12 +86,16 @@ app.get("/auth/status", async (req, res) => {
   }
 
   const results = await knex("users")
-    .select("userid", "nickname")
+    .select("userid", "nickname", "authentication")
     .where("userid", req.session.userid);
   if (!results[0]) {
     res
       .status(200)
       .json({ status: "Not registered", tempName: req.session.tempName });
+    return;
+  }
+  if (results[0].authentication == 0) {
+    res.status(200).json(createStatusResponse("Not authenticated"));
     return;
   }
 
