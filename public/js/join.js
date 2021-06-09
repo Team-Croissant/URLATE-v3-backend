@@ -77,7 +77,7 @@ const check = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.result == "success") {
-            window.location.href = `${projectUrl}/authorize`;
+            window.location.href = `${projectUrl}/authentication`;
           } else if (data.result == "failed") {
             if (data.error == "Exist Name") {
               document.getElementById("nameExist").style.display = "initial";
