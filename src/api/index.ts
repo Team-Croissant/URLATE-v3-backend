@@ -221,6 +221,9 @@ app.post("/auth/join", async (req, res) => {
           advancedExpireDate: new Date(),
           advancedType: "",
           tutorial: 3,
+          authentication: 0,
+          name: "",
+          birth: new Date(0),
         });
         delete req.session.tempName;
         req.session.save(() => {
