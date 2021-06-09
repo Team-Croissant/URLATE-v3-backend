@@ -191,5 +191,9 @@
   "store_tutorial_1_3": "and cannot be purchased single.",
   "store_tutorial_2_1": "Skins that can decorate the appearance of in-game",
   "store_tutorial_2_2": "can also be purchased from STORE.",
-  "store_tutorial_2_3": "It can be applied in the settings after purchase."
+  "store_tutorial_2_3": "It can be applied in the settings after purchase.",
+  "authentication_fail": "Authentication failed",
+	"move_to_auth_after_1": "Retry authentication after ",
+	"move_to_auth_after_2": " seconds.",
+	"auth_success": "Authentication success"
 }
