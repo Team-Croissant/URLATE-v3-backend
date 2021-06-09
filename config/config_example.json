@@ -5,7 +5,8 @@
     "cdn": "https://cdn.example.com",
     "game": "https://game.example.com",
     "communityUrl": "https://community.example.com",
-    "miraiUrl": "https://mirai.example.com"
+    "miraiUrl": "https://mirai.example.com",
+    "secretKey": "Something Random"
   },
   "database" : {
     "db": "ExampleDB",
@@ -28,5 +29,15 @@
     "clientKey": "TOSS PAYMENTS CLIENT KEY",
     "secretKey": "TOSS PAYMENTS SECRET KEY",
     "basicKey": "TOSS PAYMENTS BASIC KEY"
+  },
+  "tossBilling": {
+    "clientKey": "TOSS PAYMENTS CLIENT KEY FOR BILLING",
+    "secretKey": "TOSS PAYMENTS SECRET KEY FOR BILLING",
+    "basicKey": "TOSS PAYMENTS BASIC KEY FOR BILLING"
+  },
+  "danal": {
+    "CPID": "DANAL CPID",
+    "CPPWD": "DANAL CPPWD",
+    "targetUrl": "DANAL TARGETURL"
   }
 }
