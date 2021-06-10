@@ -195,5 +195,9 @@
   "authentication_fail": "Authentication failed",
 	"move_to_auth_after_1": "Retry authentication after ",
 	"move_to_auth_after_2": " seconds.",
-	"auth_success": "Authentication success"
+	"auth_success": "Authentication success",
+	"authentication_needed": "Authentication",
+	"authentication_detail": "In order to complete the registration, we proceed with identity verification.",
+	"move_to_authentication_after_1": "After ",
+	"move_to_authentication_after_2": " seconds, you will be taken to the authentication screen."
 }

@@ -212,5 +212,9 @@
 	"authentication_fail": "본인인증 실패",
 	"move_to_auth_after_1": "",
 	"move_to_auth_after_2": " 초 뒤 본인인증을 재시도합니다..",
-	"auth_success": "본인인증 성공"
+	"auth_success": "본인인증 성공",
+	"authentication_needed": "본인인증",
+	"authentication_detail": "회원가입을 마무리하기 위해 본인인증을 진행합니다.",
+	"move_to_authentication_after_1": "",
+	"move_to_authentication_after_2": " 초 뒤 본인인증 화면으로 이동합니다.."
 }

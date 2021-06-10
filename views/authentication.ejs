@@ -4,14 +4,22 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting...</title>
+  <title>Authentication</title>
+  <link rel="stylesheet" href="css/storeResult.css">
 </head>
-<body>
-  Wait a second..
+<body oncontextmenu='return false'>
+  <div id="titleContainer">
+    <span id="title"><%= __('authentication_needed') %></span>
+  </div>
+  <div id="contentsContainer">
+    <div id="animContainer"></div>
+    <span id="infoText"><%= __('authentication_detail') %><br><%= __('move_to_authentication_after_1') %><span id="infoSecondText">3</span><%= __('move_to_authentication_after_2') %></span>
+  </div>
   <script>
     const url = "<%= url %>";
     const api = "<%= api %>";
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.js"></script>
   <script src="js/authentication.js"></script>
 </body>
 </html>
