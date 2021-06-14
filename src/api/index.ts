@@ -305,6 +305,7 @@ app.get("/user", async (req, res) => {
       "settings",
       "skins",
       "advanced",
+      "advancedType",
       "DLCs",
       "userid",
       "tutorial"
@@ -995,6 +996,43 @@ app.get("/billing/success", async (req, res) => {
           }
         });
     });
+});
+
+app.put("/billing/cancel", async (req, res) => {
+  if (!req.session.userid) {
+    res
+      .status(400)
+      .json(
+        createErrorResponse(
+          "failed",
+          "UserID Required",
+          "UserID is required for this task."
+        )
+      );
+    return;
+  }
+
+  let type = await knex("users")
+    .select("advancedType")
+    .where("userid", req.session.userid);
+  if (type[0].advancedType == "s") {
+    await knex("users")
+      .update({
+        advancedType: "c",
+      })
+      .where("userid", req.session.userid);
+    res.status(200).json(createSuccessResponse("success"));
+  } else {
+    res
+      .status(400)
+      .json(
+        createErrorResponse(
+          "failed",
+          "Not registered",
+          "You are not registered to advanced."
+        )
+      );
+  }
 });
 
 app.get("/store/fail", async (req, res) => {
