@@ -91,7 +91,7 @@
 	"register": "가입하기",
 	"purchasing_1": "잠시만 기다려주십시오,",
 	"purchasing_2": "결제창으로 이동하고 있습니다..",
-	"registered": "가입됨",
+	"registered": "구독 중",
 	"enabled": "활성화됨",
 	"disabled": "비활성화됨",
 	"show_original": "원어 표시",
@@ -216,5 +216,7 @@
 	"authentication_needed": "본인인증",
 	"authentication_detail": "회원가입을 마무리하기 위해 본인인증을 진행합니다.",
 	"move_to_authentication_after_1": "",
-	"move_to_authentication_after_2": " 초 뒤 본인인증 화면으로 이동합니다.."
+	"move_to_authentication_after_2": " 초 뒤 본인인증 화면으로 이동합니다..",
+	"cancel_subscription": "구독을 그만두시겠습니까? ADVANCED의 기능들은 남은 시간동안만 이용 가능합니다.",
+	"cancel_success": "구독 중지 완료!"
 }

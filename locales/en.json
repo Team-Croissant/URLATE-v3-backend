@@ -199,5 +199,7 @@
 	"authentication_needed": "Authentication",
 	"authentication_detail": "In order to complete the registration, we proceed with identity verification.",
 	"move_to_authentication_after_1": "After ",
-	"move_to_authentication_after_2": " seconds, you will be taken to the authentication screen."
+	"move_to_authentication_after_2": " seconds, you will be taken to the authentication screen.",
+	"cancel_subscription": "Would you like to unsubscribe? ADVANCED's functions are only available during the remaining time.",
+	"cancel_success": "Stop Subscription Complete!"
 }
