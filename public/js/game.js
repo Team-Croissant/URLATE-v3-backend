@@ -453,10 +453,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 isAdvanced = true;
                 document.getElementById("optionAdvanced").textContent = enabled;
                 urlateText.innerHTML = "<strong>URLATE</strong> Advanced";
-                registerBtn.value = registered;
-                registerBtn.style.background = "#444";
-                registerBtn.disabled = true;
-                registerBtn.classList.remove("clickable");
+                if (data.advancedType == "c") {
+                  registerBtn.value = registered;
+                  registerBtn.style.background = "#444";
+                  registerBtn.disabled = true;
+                  registerBtn.classList.remove("clickable");
+                } else {
+                  registerBtn.value = registered;
+                  registerBtn.style.background = "#444";
+                  registerBtn.classList.add("cancel");
+                }
                 headerLeft.style.backgroundImage = `url('/images/parts/elements/namespace_advanced.png')`;
                 let elements = document.getElementsByClassName("advancedOnly");
                 for (let i = 0; i < elements.length; i++) {
@@ -1627,13 +1633,30 @@ const menuSelected = (n) => {
 const getAdvanced = () => {
   purchasingContainer.style.pointerEvents = "all";
   purchasingContainer.style.opacity = "1";
-  tossBilling.requestBillingAuth("카드", {
-    customerKey: userid,
-    successUrl: `${api}/billing/success`,
-    failUrl: `${api}/store/fail`,
-  });
-  purchasingContainer.style.pointerEvents = "none";
-  purchasingContainer.style.opacity = "0";
+  if (registerBtn.classList.contains("cancel")) {
+    let result = confirm(cancelSubscription);
+    purchasingContainer.style.pointerEvents = "none";
+    purchasingContainer.style.opacity = "0";
+    if (!result) return;
+  }
+  fetch(`${api}/billing/cancel`, {
+    method: "PUT",
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.result == "failed") {
+        tossBilling.requestBillingAuth("카드", {
+          customerKey: userid,
+          successUrl: `${api}/billing/success`,
+          failUrl: `${api}/store/fail`,
+        });
+      } else {
+        window.location.href = `${url}/advanced/canceled`;
+      }
+      purchasingContainer.style.pointerEvents = "none";
+      purchasingContainer.style.opacity = "0";
+    });
 };
 
 const optionSelect = (n) => {
