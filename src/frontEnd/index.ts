@@ -63,6 +63,12 @@ app.post("/authentication/failed", (req, res) => {
   });
 });
 
+app.get("/advanced/canceled", (req, res) => {
+  res.render("subscriptionCanceled", {
+    url: config.project.url,
+  });
+});
+
 app.get("/authorize", (req, res) => {
   if (req.query.status == "fail") {
     res.render("authorizeFail", {
