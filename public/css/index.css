@@ -116,12 +116,13 @@ kbd {
 }
 
 #policies {
-  color: #ffffffdd;
   z-index: 1;
   margin: 2vh;
 }
 
 .bottomPolicy {
+  color: #ffffffdd;
+  text-decoration: none;
   font-size: 0.9em;
   margin: 0.3vh;
 }
