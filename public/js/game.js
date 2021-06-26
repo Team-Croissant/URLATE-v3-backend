@@ -664,6 +664,7 @@ const songSelected = (n) => {
     ) {
       alert("NOT ALLOWED TO PLAY"); //TODO
     } else {
+      localStorage.songNum = songSelection;
       localStorage.difficultySelection = difficultySelection;
       localStorage.difficulty = JSON.parse(tracks[0].difficulty)[
         difficultySelection
@@ -818,6 +819,10 @@ const numberWithCommas = (x) => {
 
 const gameLoaded = () => {
   if (iniMode == 1) {
+    if(localStorage.songNum) {
+      let songNum = Number(localStorage.songNum);
+      songSelected(songNum);
+    }
     menuSelected(0);
   } else if (display == 0 && songSelection == -1) {
     themeSong.play();
