@@ -1,6 +1,7 @@
 let lottieAnim;
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  alert("테스트용 계정을 받으신 경우 관리자 로그인을 클릭하여 진행해주세요.");
   let UserAgent = navigator.userAgent;
   console.log(UserAgent);
   if (
