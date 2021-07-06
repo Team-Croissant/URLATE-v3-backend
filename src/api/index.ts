@@ -161,6 +161,64 @@ app.post("/auth/login", (req, res) => {
   });
 });
 
+const accUserPattern = /^[a-z0-9]{1,10}$/;
+const accPattern = /^[a-zA-Z0-9!]{10}$/;
+app.post("/acc/login", async (req, res) => {
+  if (!accUserPattern.test(req.body.username)) {
+    res
+      .status(400)
+      .json(
+        createErrorResponse("failed", "Wrong Format", "Wrong username format.")
+      );
+    return;
+  }
+  if (!accPattern.test(req.body.password)) {
+    res
+      .status(400)
+      .json(
+        createErrorResponse("failed", "Wrong Format", "Wrong password format.")
+      );
+    return;
+  }
+  const results = await knex("users")
+    .select("secondary", "salt", "userid")
+    .where("nickname", req.body.username);
+  if (results.length == 0) {
+    res
+      .status(400)
+      .json(createErrorResponse("failed", "Wrong User", "Wrong username."));
+    return;
+  }
+
+  hasher(
+    {
+      password: req.body.password,
+      salt: results[0].salt,
+    },
+    (err, pass, salt, hash) => {
+      if (hash !== results[0].secondary) {
+        res
+          .status(400)
+          .json(
+            createErrorResponse(
+              "failed",
+              "Wrong Password",
+              "User entered wrong password."
+            )
+          );
+        return;
+      }
+      req.session.accessToken = "TESTTOKEN";
+      req.session.refreshToken = "TESTREFRESHTOKEN";
+      req.session.userid = results[0].userid;
+      req.session.authorized = true;
+      req.session.save(() => {
+        res.status(200).json(createSuccessResponse("success"));
+      });
+    }
+  );
+});
+
 app.post("/auth/join", async (req, res) => {
   const hasToken =
     req.session.tempName && req.session.accessToken && req.session.refreshToken;

@@ -33,6 +33,10 @@ app.get("/ko", function (req, res) {
   res.redirect("/");
 });
 
+app.get("/acc", (req, res) => {
+  res.render("account", { api: config.project.api, url: config.project.url });
+});
+
 app.get("/join", (req, res) => {
   res.render("join", { api: config.project.api, url: config.project.url });
 });
