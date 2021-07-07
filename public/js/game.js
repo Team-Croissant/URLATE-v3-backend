@@ -362,9 +362,10 @@ const intro2play = () => {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  iniMode = Number(
-    new URLSearchParams(window.location.search).get("initialize")
+  let initialize = new URLSearchParams(window.location.search).get(
+    "initialize"
   );
+  iniMode = initialize == null ? -1 : Number(initialize);
   history.pushState("someAwesomeState", null, null);
   let widthWidth = window.innerWidth;
   let heightWidth = (window.innerHeight / 9) * 16;
@@ -819,7 +820,7 @@ const numberWithCommas = (x) => {
 
 const gameLoaded = () => {
   if (iniMode == 1) {
-    if(localStorage.songNum) {
+    if (localStorage.songNum) {
       let songNum = Number(localStorage.songNum);
       songSelected(songNum);
     }
