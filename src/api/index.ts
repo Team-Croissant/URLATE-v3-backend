@@ -645,7 +645,7 @@ app.put("/record", async (req, res) => {
       .where("isBest", 1)
       .where("difficulty", req.body.difficulty);
     if (result.length && result[0].record < req.body.record) {
-      isBest++;
+      isBest = 1;
       await knex("trackRecords")
         .update({
           isBest: 0,
@@ -655,6 +655,7 @@ app.put("/record", async (req, res) => {
         .where("isBest", 1)
         .where("difficulty", req.body.difficulty);
     }
+    if (result.length) isBest = 1;
     await knex("trackRecords").insert({
       name: req.body.name,
       nickname: req.body.nickname,
