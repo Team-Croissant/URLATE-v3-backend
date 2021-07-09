@@ -1149,6 +1149,7 @@ app.post("/danal/final", (req, res) => {
               )
             );
         }
+        delete req.session.TID;
       });
   } else {
     res
