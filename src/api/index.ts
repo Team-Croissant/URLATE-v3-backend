@@ -282,6 +282,8 @@ app.post("/auth/join", async (req, res) => {
           authentication: 0,
           name: "",
           birth: new Date(0),
+          CI: "",
+          DI: "",
         });
         delete req.session.tempName;
         req.session.save(() => {
@@ -1110,23 +1112,40 @@ app.post("/danal/final", (req, res) => {
       .then((res) => res.text())
       .then(async (data) => {
         data = data.split("&");
-        if (data[0].split("=")[1] == "0000") {
-          await knex("users")
-            .update({
-              authentication: 1,
-              name: data[4].split("=")[1],
-              birth: data[5].split("=")[1],
-            })
-            .where("userid", req.session.userid);
-          res.status(200).json(createSuccessResponse("success"));
+        const results = await knex("users")
+          .select("CI")
+          .where("CI", data[3].split("=")[1]);
+        if (!results[0]) {
+          if (data[0].split("=")[1] == "0000") {
+            await knex("users")
+              .update({
+                authentication: 1,
+                name: data[4].split("=")[1],
+                birth: data[5].split("=")[1],
+                CI: data[3].split("=")[1],
+                DI: data[7].split("=")[1],
+              })
+              .where("userid", req.session.userid);
+            res.status(200).json(createSuccessResponse("success"));
+          } else {
+            res
+              .status(400)
+              .json(
+                createErrorResponse(
+                  "failed",
+                  "Authentication Failed",
+                  data[1].split("=")[1]
+                )
+              );
+          }
         } else {
           res
             .status(400)
             .json(
               createErrorResponse(
                 "failed",
-                "Authentication Failed",
-                data[1].split("=")[1]
+                "Exist person",
+                "User credentials already exist on different account."
               )
             );
         }
