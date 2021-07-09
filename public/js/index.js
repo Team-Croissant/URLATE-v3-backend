@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = `${projectUrl}/join`;
       } else if (data.status == "Not authenticated") {
         window.location.href = `${projectUrl}/authentication`;
+      } else if (data.status == "Not authenticated(adult)") {
+        window.location.href = `${projectUrl}/authentication?adult=1`;
       }
     })
     .catch((error) => {

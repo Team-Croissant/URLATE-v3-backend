@@ -86,7 +86,7 @@ app.get("/auth/status", async (req, res) => {
   }
 
   const results = await knex("users")
-    .select("userid", "nickname", "authentication")
+    .select("userid", "nickname", "adultCert", "authentication")
     .where("userid", req.session.userid);
   if (!results[0]) {
     res
@@ -94,8 +94,14 @@ app.get("/auth/status", async (req, res) => {
       .json({ status: "Not registered", tempName: req.session.tempName });
     return;
   }
+
   if (results[0].authentication == 0) {
     res.status(200).json(createStatusResponse("Not authenticated"));
+    return;
+  }
+
+  if (results[0].adultCert == 0) {
+    res.status(200).json(createStatusResponse("Not authenticated(adult)"));
     return;
   }
 
@@ -284,6 +290,7 @@ app.post("/auth/join", async (req, res) => {
           birth: new Date(0),
           CI: "",
           DI: "",
+          adultCert: 0,
         });
         delete req.session.tempName;
         req.session.save(() => {
@@ -1112,18 +1119,22 @@ app.post("/danal/final", (req, res) => {
       .then((res) => res.text())
       .then(async (data) => {
         data = data.split("&");
-        const results = await knex("users")
-          .select("CI")
-          .where("CI", data[3].split("=")[1]);
-        if (!results[0]) {
-          if (data[0].split("=")[1] == "0000") {
+        let adultCert = 0;
+        let birth = data[5].split("=")[1].split("");
+        birth.splice(4, 0, "-");
+        birth.splice(7, 0, "-");
+        birth = birth.join("");
+        if (new Date().getTime() - new Date(birth).getTime() >= 599184000000) {
+          adultCert = 1;
+        }
+        const userData = await knex("users")
+          .select("adultCert", "authentication")
+          .where("userid", req.session.userid);
+        if (userData[0].authentication == 1 && userData[0].adultCert == 0) {
+          if (adultCert) {
             await knex("users")
               .update({
-                authentication: 1,
-                name: data[4].split("=")[1],
-                birth: data[5].split("=")[1],
-                CI: data[3].split("=")[1],
-                DI: data[7].split("=")[1],
+                adultCert: adultCert,
               })
               .where("userid", req.session.userid);
             res.status(200).json(createSuccessResponse("success"));
@@ -1133,21 +1144,50 @@ app.post("/danal/final", (req, res) => {
               .json(
                 createErrorResponse(
                   "failed",
-                  "Authentication Failed",
-                  data[1].split("=")[1]
+                  "Adult credentials needed",
+                  "Needs to authenticate with adult's ID."
                 )
               );
           }
         } else {
-          res
-            .status(400)
-            .json(
-              createErrorResponse(
-                "failed",
-                "Exist person",
-                "User credentials already exist on different account."
-              )
-            );
+          const results = await knex("users")
+            .select("CI")
+            .where("CI", data[3].split("=")[1]);
+          if (!results[0]) {
+            if (data[0].split("=")[1] == "0000") {
+              await knex("users")
+                .update({
+                  authentication: 1,
+                  name: data[4].split("=")[1],
+                  birth: data[5].split("=")[1],
+                  CI: data[3].split("=")[1],
+                  DI: data[7].split("=")[1],
+                  adultCert: adultCert,
+                })
+                .where("userid", req.session.userid);
+              res.status(200).json(createSuccessResponse("success"));
+            } else {
+              res
+                .status(400)
+                .json(
+                  createErrorResponse(
+                    "failed",
+                    "Authentication Failed",
+                    data[1].split("=")[1]
+                  )
+                );
+            }
+          } else {
+            res
+              .status(400)
+              .json(
+                createErrorResponse(
+                  "failed",
+                  "Exist person",
+                  "User credentials already exist on different account."
+                )
+              );
+          }
         }
         delete req.session.TID;
       });

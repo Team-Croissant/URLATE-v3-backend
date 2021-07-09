@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert(`Error occured.\n${error}`);
       console.error(`Error occured.\n${error}`);
     });
+  if (Number(new URLSearchParams(window.location.search).get("adult")))
+    alert(adultAlert);
   setInterval(async () => {
     infoSecondText.textContent = infoSecondText.textContent - 1;
     if (infoSecondText.textContent == 0) {

@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     .then((res) => res.json())
     .then((data) => {
       if (data.result == "failed") {
+        if (data.error == "Adult credentials needed") {
+          alert(adultAlert);
+        }
         if (data.error == "Exist person") {
           alert(personAlert);
           window.location.href = `${api}/auth/logout?redirect=true`;
