@@ -86,7 +86,7 @@ app.get("/auth/status", async (req, res) => {
   }
 
   const results = await knex("users")
-    .select("userid", "nickname", "adultCert", "authentication")
+    .select("userid", "nickname", "adultCert", "authentication", "birth")
     .where("userid", req.session.userid);
   if (!results[0]) {
     res
@@ -103,6 +103,13 @@ app.get("/auth/status", async (req, res) => {
   if (results[0].adultCert == 0) {
     res.status(200).json(createStatusResponse("Not authenticated(adult)"));
     return;
+  }
+
+  let date = new Date();
+  if (date.getTime() - new Date(results[0].birth).getTime() <= 504576000000) {
+    if (0 <= date.getHours() && date.getHours() <= 6) {
+      res.status(200).json(createStatusResponse("Shutdowned"));
+    }
   }
 
   if (!req.session.authorized) {
@@ -1332,7 +1339,9 @@ app.get("/auth/logout", (req, res) => {
   delete req.session.bag;
   req.session.save(() => {
     if (req.query.redirect == "true") {
-      res.redirect(config.project.url);
+      let adder = "";
+      if (req.query.shutdowned == "true") adder = "/?shutdowned=true";
+      res.redirect(config.project.url + adder);
     } else {
       res.status(200).json(createSuccessResponse("success"));
     }

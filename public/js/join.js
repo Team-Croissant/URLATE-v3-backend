@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = `${projectUrl}/authentication?adult=1`;
       } else if (data.status == "Not logined") {
         window.location.href = projectUrl;
+      } else if (data.status == "Shutdowned") {
+        window.location.href = `${api}/auth/logout?redirect=true&shutdowned=true`;
       }
       if (nameReg.test(data.tempName)) {
         document.getElementById("nickname").value = data.tempName;

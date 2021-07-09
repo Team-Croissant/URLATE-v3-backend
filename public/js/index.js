@@ -48,11 +48,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.location.href = `${projectUrl}/authentication`;
       } else if (data.status == "Not authenticated(adult)") {
         window.location.href = `${projectUrl}/authentication?adult=1`;
+      } else if (data.status == "Shutdowned") {
+        window.location.href = `${api}/auth/logout?redirect=true&shutdowned=true`;
       }
     })
     .catch((error) => {
       alert(`Error occured.\n${error}`);
     });
+  let shutdowned = new URLSearchParams(window.location.search).get(
+    "shutdowned"
+  );
+  if (shutdowned == "true") {
+    alert(shutdownAlert);
+  }
 });
 
 /*const mouseMove = (e) => {

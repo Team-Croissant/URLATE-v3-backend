@@ -168,6 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `${url}/authentication`;
       } else if (data.status == "Not authenticated(adult)") {
         window.location.href = `${url}/authentication?adult=1`;
+      } else if (data.status == "Shutdowned") {
+        window.location.href = `${api}/auth/logout?redirect=true&shutdowned=true`;
       } else {
         fetch(`${api}/user`, {
           method: "GET",
