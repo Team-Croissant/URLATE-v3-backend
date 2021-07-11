@@ -298,6 +298,7 @@ app.post("/auth/join", async (req, res) => {
           CI: "",
           DI: "",
           adultCert: 0,
+          paid: 0,
         });
         delete req.session.tempName;
         req.session.save(() => {
@@ -949,53 +950,62 @@ app.get("/store/success", async (req, res) => {
       return;
     }
     if (Number(data) == amount) {
-      fetch(`https://api.tosspayments.com/v1/payments/${paymentKey}`, {
-        method: "post",
-        body: JSON.stringify({
-          orderId: orderId,
-          amount: amount,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${config.toss.basicKey}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.status == "DONE") {
-            redisClient.get(`Cart${orderId}`, async (err, reply) => {
-              if (err) {
-                res.redirect(`${config.project.url}/storeDenied?error=${err}`);
-                return;
-              }
-              let cart = JSON.parse(reply);
-              let saved = await knex("users")
-                .select("skins", "DLCs")
-                .where("userid", req.session.userid);
-              let DLCs = new Set(JSON.parse(saved[0]["DLCs"]));
-              let skins = new Set(JSON.parse(saved[0]["skins"]));
-              for (let i = 0; i < cart.length; i++) {
-                if (cart[i].type == "DLC") {
-                  DLCs.add(cart[i].item);
-                } else if (cart[i].type == "Skin") {
-                  skins.add(cart[i].item);
-                }
-              }
-              await knex("users")
-                .update({
-                  skins: JSON.stringify(Array.from(skins)),
-                  DLCs: JSON.stringify(Array.from(DLCs)),
-                })
-                .where("userid", req.session.userid);
-              res.redirect(`${config.project.url}/storePurchased`);
-            });
-          } else {
-            res.redirect(`${config.project.url}/storeDenied?error=undefined`);
-          }
+      let amountCheck = await paidAmountCheck(req.session.userid, amount);
+      if (amountCheck) {
+        fetch(`https://api.tosspayments.com/v1/payments/${paymentKey}`, {
+          method: "post",
+          body: JSON.stringify({
+            orderId: orderId,
+            amount: amount,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${config.toss.basicKey}`,
+          },
         })
-        .catch((error) => {
-          res.redirect(`${config.project.url}/storeDenied?error=${error}`);
-        });
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status == "DONE") {
+              redisClient.get(`Cart${orderId}`, async (err, reply) => {
+                if (err) {
+                  res.redirect(
+                    `${config.project.url}/storeDenied?error=${err}`
+                  );
+                  return;
+                }
+                let cart = JSON.parse(reply);
+                let saved = await knex("users")
+                  .select("skins", "DLCs")
+                  .where("userid", req.session.userid);
+                let DLCs = new Set(JSON.parse(saved[0]["DLCs"]));
+                let skins = new Set(JSON.parse(saved[0]["skins"]));
+                for (let i = 0; i < cart.length; i++) {
+                  if (cart[i].type == "DLC") {
+                    DLCs.add(cart[i].item);
+                  } else if (cart[i].type == "Skin") {
+                    skins.add(cart[i].item);
+                  }
+                }
+                await knex("users")
+                  .update({
+                    skins: JSON.stringify(Array.from(skins)),
+                    DLCs: JSON.stringify(Array.from(DLCs)),
+                  })
+                  .where("userid", req.session.userid);
+                res.redirect(`${config.project.url}/storePurchased`);
+              });
+            } else {
+              res.redirect(`${config.project.url}/storeDenied?error=undefined`);
+            }
+          })
+          .catch((error) => {
+            res.redirect(`${config.project.url}/storeDenied?error=${error}`);
+          });
+      } else {
+        res.redirect(
+          `${config.project.url}/storeDenied?error=Exceeding the payment limit for minors`
+        );
+      }
     } else {
       res.redirect(`${config.project.url}/storeDenied?error=Wrong request`);
     }
@@ -1033,43 +1043,50 @@ app.get("/billing/success", async (req, res) => {
   })
     .then((res) => res.json())
     .then(async (data) => {
-      await knex("users")
-        .update({ advancedBillingCode: data.billingKey })
-        .where("userid", req.session.userid);
-      fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
-        method: "post",
-        body: JSON.stringify({
-          amount: 4900,
-          customerEmail: req.session.email,
-          customerKey: customerKey,
-          orderId: uuidv4(),
-          orderName: "URLATE ADVANCED 구독",
-          taxFreeAmount: 0,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${config.tossBilling.basicKey}`,
-        },
-      })
-        .then((res) => res.json())
-        .then(async (data) => {
-          if (data.status == "DONE") {
-            let date = new Date();
-            date.setMonth(date.getMonth() + 1);
-            await knex("users")
-              .update({
-                advanced: true,
-                advancedDate: new Date(),
-                advancedUpdatedDate: new Date(),
-                advancedExpireDate: date,
-                advancedType: "s",
-              })
-              .where("userid", req.session.userid);
-            res.redirect(`${config.project.url}/storePurchased`);
-          } else {
-            res.redirect(`${config.project.url}/storeDenied?error=undefined`);
-          }
-        });
+      let amountCheck = await paidAmountCheck(req.session.userid, 4900);
+      if (amountCheck) {
+        await knex("users")
+          .update({ advancedBillingCode: data.billingKey })
+          .where("userid", req.session.userid);
+        fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
+          method: "post",
+          body: JSON.stringify({
+            amount: 4900,
+            customerEmail: req.session.email,
+            customerKey: customerKey,
+            orderId: uuidv4(),
+            orderName: "URLATE ADVANCED 구독",
+            taxFreeAmount: 0,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${config.tossBilling.basicKey}`,
+          },
+        })
+          .then((res) => res.json())
+          .then(async (data) => {
+            if (data.status == "DONE") {
+              let date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              await knex("users")
+                .update({
+                  advanced: true,
+                  advancedDate: new Date(),
+                  advancedUpdatedDate: new Date(),
+                  advancedExpireDate: date,
+                  advancedType: "s",
+                })
+                .where("userid", req.session.userid);
+              res.redirect(`${config.project.url}/storePurchased`);
+            } else {
+              res.redirect(`${config.project.url}/storeDenied?error=undefined`);
+            }
+          });
+      } else {
+        res.redirect(
+          `${config.project.url}/storeDenied?error=Exceeding the payment limit for minors`
+        );
+      }
     });
 });
 
@@ -1404,40 +1421,45 @@ const advancedUpdate = async () => {
   for (let i = 0; i < results.length; i++) {
     const rst = results[i];
     if (rst.advancedType == "s") {
-      fetch(
-        `https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`,
-        {
-          method: "post",
-          body: JSON.stringify({
-            amount: 4900,
-            customerEmail: rst.email,
-            customerKey: rst.userid,
-            orderId: uuidv4(),
-            orderName: "URLATE ADVANCED 구독",
-            taxFreeAmount: 0,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Basic ${config.tossBilling.basicKey}`,
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then(async (data) => {
-          if (data.status == "DONE") {
-            let date = new Date();
-            date.setMonth(date.getMonth() + 1);
-            await knex("users")
-              .update({
-                advancedUpdatedDate: new Date(),
-                advancedExpireDate: date,
-              })
-              .where("userid", rst.userid);
-            successCount++;
-          } else {
-            failCount++;
+      let amountCheck = await paidAmountCheck(rst.userid, 4900);
+      if (amountCheck) {
+        fetch(
+          `https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`,
+          {
+            method: "post",
+            body: JSON.stringify({
+              amount: 4900,
+              customerEmail: rst.email,
+              customerKey: rst.userid,
+              orderId: uuidv4(),
+              orderName: "URLATE ADVANCED 구독",
+              taxFreeAmount: 0,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Basic ${config.tossBilling.basicKey}`,
+            },
           }
-        });
+        )
+          .then((res) => res.json())
+          .then(async (data) => {
+            if (data.status == "DONE") {
+              let date = new Date();
+              date.setMonth(date.getMonth() + 1);
+              await knex("users")
+                .update({
+                  advancedUpdatedDate: new Date(),
+                  advancedExpireDate: date,
+                })
+                .where("userid", rst.userid);
+              successCount++;
+            } else {
+              failCount++;
+            }
+          });
+      } else {
+        failCount++;
+      }
     }
   }
   setTimeout(advancedUpdate, 3600000);
@@ -1448,6 +1470,26 @@ const advancedUpdate = async () => {
   }, 5000);
 };
 setTimeout(advancedUpdate, 1000);
+
+const paidAmountCheck = async (uid, amount) => {
+  let result = await knex("users").select("paid", "birth").where("userid", uid);
+  let paid = Number(result[0].paid);
+  amount = Number(amount);
+  if (
+    new Date().getTime() - new Date(result[0].birth).getTime() <=
+    599184000000
+  ) {
+    if (paid + amount > 70000) {
+      return false;
+    }
+  }
+  await knex("users")
+    .update({
+      paid: paid + amount,
+    })
+    .where("userid", uid);
+  return true;
+};
 
 const PORT = 1024;
 http.createServer(app).listen(PORT, () => {
