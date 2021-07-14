@@ -212,6 +212,24 @@ const settingApply = () => {
     offsetButtonText.textContent = offset + "ms";
   }
   initialize();
+  storeSong = new Howl({
+    src: [`${cdn}/tracks/128kbps/store.mp3`],
+    format: ["mp3"],
+    autoplay: false,
+    loop: true,
+    onload: () => {
+      loaded++;
+      storeSong.volume(0);
+      storeSong.rate(1.5818181818);
+      if (loaded == 4) {
+        loaded = -1;
+        gameLoaded();
+      }
+      Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
+      intro1video.volume =
+        settings.sound.volume.master * settings.sound.volume.music;
+    },
+  });
   themeSong = new Howl({
     src: [`${cdn}/tracks/${settings.sound.res}/urlate_theme.mp3`],
     format: ["mp3"],
@@ -219,7 +237,7 @@ const settingApply = () => {
     loop: true,
     onload: () => {
       loaded++;
-      if (loaded == 3) {
+      if (loaded == 4) {
         loaded = -1;
         gameLoaded();
       }
@@ -329,7 +347,7 @@ const intro2skip = () => {
     setTimeout(() => {
       loaded++;
       setTimeout(() => {
-        if (loaded == 3) {
+        if (loaded == 4) {
           loaded = -1;
           gameLoaded();
         }
@@ -831,6 +849,10 @@ const gameLoaded = () => {
     menuSelected(0);
   } else if (display == 0 && songSelection == -1) {
     themeSong.play();
+    setTimeout(() => {
+      storeSong.rate(1.5818181818);
+      storeSong.play();
+    }, 1400);
   }
   document.getElementById("menuContainer").style.display = "flex";
   document.getElementById("loadingContainer").classList.add("fadeOut");
@@ -883,7 +905,7 @@ Pace.on("done", () => {
     loaded++;
     paceLoaded++;
   }
-  if (loaded == 3) {
+  if (loaded == 4) {
     loaded = -1;
     gameLoaded();
   }
@@ -1038,6 +1060,10 @@ const displayClose = () => {
       //STORE
       document.getElementById("storeContainer").classList.remove("fadeIn");
       document.getElementById("storeContainer").classList.add("fadeOut");
+      themeSong.fade(0, 1, 300);
+      storeSong.fade(1, 0, 300);
+      fadeRate(themeSong, 0.632183908, 1, 300, new Date().getTime());
+      fadeRate(storeSong, 1, 1.5818181818, 300, new Date().getTime());
       setTimeout(() => {
         document.getElementById("storeContainer").classList.remove("fadeOut");
         document.getElementById("storeContainer").style.display = "none";
@@ -1628,6 +1654,10 @@ const menuSelected = (n) => {
     document.getElementById("advancedContainer").classList.add("fadeIn");
   } else if (n == 3) {
     //store
+    themeSong.fade(1, 0, 300);
+    storeSong.fade(0, 1, 300);
+    fadeRate(themeSong, 1, 0.632183908, 300, new Date().getTime());
+    fadeRate(storeSong, 1.5818181818, 1, 300, new Date().getTime());
     document.getElementById("storeContainer").style.display = "block";
     document.getElementById("storeContainer").classList.add("fadeIn");
     updateCart();
@@ -1638,6 +1668,18 @@ const menuSelected = (n) => {
       display = 13;
     }
   }
+};
+
+const fadeRate = (track, start, end, duration, time) => {
+  let p = (new Date().getTime() - time) / duration;
+  if (p >= 1) {
+    track.rate(end);
+    return;
+  }
+  track.rate(start + (end - start) * p);
+  requestAnimationFrame(() => {
+    fadeRate(track, start, end, duration, time);
+  });
 };
 
 const getAdvanced = () => {
