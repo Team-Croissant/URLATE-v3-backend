@@ -801,6 +801,20 @@ const tmlRender = () => {
   tmlCtx.textAlign = "left";
   if (copied) {
     tmlCtx.fillText(`${copiedText}`, tmlStartX, endY + 5);
+  } else if (shiftDown) {
+    let msg = "Shift : ON";
+    if (ctrlDown) {
+      msg += ", Ctrl : ON";
+    }
+    tmlCtx.fillStyle = "#F55";
+    tmlCtx.fillText(msg, tmlStartX, endY + 5);
+  } else if (ctrlDown) {
+    let msg = "Ctrl : ON";
+    if (shiftDown) {
+      msg = "Shift : ON, Ctrl : ON";
+    }
+    tmlCtx.fillStyle = "#F55";
+    tmlCtx.fillText(msg, tmlStartX, endY + 5);
   } else {
     tmlCtx.fillText(`${timeAlert}`, tmlStartX, endY + 5);
   }
