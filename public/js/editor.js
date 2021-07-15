@@ -114,16 +114,8 @@ const settingApply = () => {
     });
   if (localStorage.pattern) {
     pattern = JSON.parse(localStorage.pattern);
-    for (
-      let i = 0;
-      document.getElementById("songSelectBox").options.length > i;
-      i++
-    ) {
-      if (
-        document.getElementById("songSelectBox").options[i].value ==
-        pattern.information.track
-      )
-        songSelectBox.selectedIndex = i;
+    for (let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
+      if (document.getElementById("songSelectBox").options[i].value == pattern.information.track) songSelectBox.selectedIndex = i;
     }
     songSelected(true);
   }
@@ -219,16 +211,8 @@ const dataLoaded = (event) => {
   let reader = new FileReader();
   reader.onload = (e) => {
     pattern = JSON.parse(e.target.result);
-    for (
-      let i = 0;
-      document.getElementById("songSelectBox").options.length > i;
-      i++
-    ) {
-      if (
-        document.getElementById("songSelectBox").options[i].value ==
-        pattern.information.track
-      )
-        songSelectBox.selectedIndex = i;
+    for (let i = 0; document.getElementById("songSelectBox").options.length > i; i++) {
+      if (document.getElementById("songSelectBox").options[i].value == pattern.information.track) songSelectBox.selectedIndex = i;
     }
     songSelected(true);
   };
@@ -238,16 +222,12 @@ const dataLoaded = (event) => {
 const songSelected = (isLoaded, withoutSong) => {
   if (!withoutSong) {
     song = new Howl({
-      src: `${cdn}/tracks/${settings.sound.res}/${
-        tracks[songSelectBox.selectedIndex].fileName
-      }.mp3`,
+      src: `${cdn}/tracks/${settings.sound.res}/${tracks[songSelectBox.selectedIndex].fileName}.mp3`,
       format: ["mp3"],
       autoplay: false,
       loop: false,
       onload: () => {
-        Howler.volume(
-          settings.sound.volume.master * settings.sound.volume.music
-        );
+        Howler.volume(settings.sound.volume.master * settings.sound.volume.music);
       },
     });
   }
@@ -270,24 +250,15 @@ const songSelected = (isLoaded, withoutSong) => {
   document.getElementById("controlBtn").classList.add("timeline-play");
   document.getElementById("controlBtn").classList.remove("timeline-pause");
   songName.innerText = pattern.information.track;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[0].value =
-    pattern.information.track;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[1].value =
-    pattern.information.producer;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[2].value =
-    pattern.information.author;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[3].value =
-    pattern.information.bpm;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[4].value =
-    pattern.information.speed;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[5].value =
-    pattern.information.offset;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[6].value =
-    pattern.background.boxColor;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[7].value =
-    pattern.background.grayscale;
-  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[8].value =
-    pattern.background.opacity;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.information.track;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.information.producer;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.information.author;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[3].value = pattern.information.bpm;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[4].value = pattern.information.speed;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[5].value = pattern.information.offset;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[6].value = pattern.background.boxColor;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[7].value = pattern.background.grayscale;
+  trackSettings.getElementsByClassName("settingsPropertiesTextbox")[8].value = pattern.background.opacity;
   lottieInitBox.value = pattern.background.type;
   canvasBackground.style.filter = `grayscale(${pattern.background.grayscale}%) opacity(${pattern.background.opacity}%)`;
   bpm = pattern.information.bpm;
@@ -295,11 +266,7 @@ const songSelected = (isLoaded, withoutSong) => {
   speed = pattern.information.speed;
   document.getElementById("percentage").innerText = "100%";
   rate = 1;
-  document.getElementById(
-    "canvasBackground"
-  ).style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${
-    tracks[songSelectBox.selectedIndex].fileName
-  } (Custom).png")`;
+  document.getElementById("canvasBackground").style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
   document.getElementById("songSelectionContainer").style.display = "none";
   document.getElementById("initialScreenContainer").style.display = "none";
   document.getElementById("editorMainContainer").style.display = "initial";
@@ -328,16 +295,10 @@ const toggleSettings = () => {
 };
 
 const changeMode = (n) => {
-  document
-    .getElementsByClassName("menuIcon")
-    [n].classList.toggle("menuSelected");
-  document
-    .getElementsByClassName("menuIcon")
-    [mode].classList.toggle("menuSelected");
+  document.getElementsByClassName("menuIcon")[n].classList.toggle("menuSelected");
+  document.getElementsByClassName("menuIcon")[mode].classList.toggle("menuSelected");
   document.getElementsByClassName("menuIcon")[n].classList.toggle("clickable");
-  document
-    .getElementsByClassName("menuIcon")
-    [mode].classList.toggle("clickable");
+  document.getElementsByClassName("menuIcon")[mode].classList.toggle("clickable");
   mode = n;
 };
 
@@ -350,10 +311,7 @@ const drawCursor = () => {
     if (skin.cursor.type == "gradient") {
       let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
       for (let i = 0; i < skin.cursor.stops.length; i++) {
-        grd.addColorStop(
-          skin.cursor.stops[i].percentage / 100,
-          `#${skin.cursor.stops[i].color}`
-        );
+        grd.addColorStop(skin.cursor.stops[i].percentage / 100, `#${skin.cursor.stops[i].color}`);
       }
       cntCtx.fillStyle = grd;
     } else if (skin.cursor.type == "color") {
@@ -386,10 +344,7 @@ const drawNote = (p, x, y, s) => {
       if (skin.note.type == "gradient") {
         let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
         for (let i = 0; i < skin.note.stops.length; i++) {
-          grd.addColorStop(
-            skin.note.stops[i].percentage / 100,
-            `#${skin.note.stops[i].color}${opacity.toString(16)}`
-          );
+          grd.addColorStop(skin.note.stops[i].percentage / 100, `#${skin.note.stops[i].color}${opacity.toString(16)}`);
         }
         cntCtx.fillStyle = grd;
         cntCtx.strokeStyle = grd;
@@ -425,10 +380,7 @@ const drawBullet = (n, x, y, a, s) => {
       if (skin.bullet.type == "gradient") {
         let grd = cntCtx.createLinearGradient(x - w, y - w, x + w, y + w);
         for (let i = 0; i < skin.bullet.stops.length; i++) {
-          grd.addColorStop(
-            skin.bullet.stops[i].percentage / 100,
-            `#${skin.bullet.stops[i].color}`
-          );
+          grd.addColorStop(skin.bullet.stops[i].percentage / 100, `#${skin.bullet.stops[i].color}`);
         }
         cntCtx.fillStyle = grd;
         cntCtx.strokeStyle = grd;
@@ -461,11 +413,7 @@ const drawBullet = (n, x, y, a, s) => {
       cntCtx.fillStyle = "#F55";
       cntCtx.textAlign = "left";
       cntCtx.textBaseline = "top";
-      cntCtx.fillText(
-        `drawBullet:bullet number isn't specified.`,
-        cntCanvas.width / 100,
-        cntCanvas.height / 100
-      );
+      cntCtx.fillText(`drawBullet:bullet number isn't specified.`, cntCanvas.width / 100, cntCanvas.height / 100);
       console.error(`drawBullet:bullet number isn't specified.`);
   }
 };
@@ -479,13 +427,7 @@ const drawParticle = (n, x, y, j) => {
     for (let i = 0; i < 3; i++) {
       cntCtx.beginPath();
       cntCtx.fillStyle = "#222";
-      cntCtx.arc(
-        cx + (n * destroyParticles[j].d[i][0]) / 2,
-        cy + (n * destroyParticles[j].d[i][1]) / 2,
-        w,
-        0,
-        2 * Math.PI
-      );
+      cntCtx.arc(cx + (n * destroyParticles[j].d[i][0]) / 2, cy + (n * destroyParticles[j].d[i][1]) / 2, w, 0, 2 * Math.PI);
       cntCtx.fill();
     }
   }
@@ -500,18 +442,8 @@ const eraseTml = () => {
 };
 
 const initialize = () => {
-  cntCanvas.width =
-    (window.innerWidth *
-      0.6 *
-      window.devicePixelRatio *
-      settings.display.canvasRes) /
-    100;
-  cntCanvas.height =
-    (window.innerHeight *
-      0.65 *
-      window.devicePixelRatio *
-      settings.display.canvasRes) /
-    100;
+  cntCanvas.width = (window.innerWidth * 0.6 * window.devicePixelRatio * settings.display.canvasRes) / 100;
+  cntCanvas.height = (window.innerHeight * 0.65 * window.devicePixelRatio * settings.display.canvasRes) / 100;
   tmlCanvas.height = window.innerHeight * 0.27 * window.devicePixelRatio;
   if (isSettingsOpened) {
     tmlCanvas.width = window.innerWidth * 0.8 * window.devicePixelRatio;
@@ -580,35 +512,17 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
     if (pointingCntElement.i == "") {
       //MEMO: this line rejects overlap of tracking
       const seek = song.seek() - (offset + sync) / 1000;
-      const powX =
-        ((((mouseX - x) * canvasContainer.offsetWidth) / 200) *
-          pixelRatio *
-          settings.display.canvasRes) /
-        100;
-      const powY =
-        ((((mouseY - y) * canvasContainer.offsetHeight) / 200) *
-          pixelRatio *
-          settings.display.canvasRes) /
-        100;
+      const powX = ((((mouseX - x) * canvasContainer.offsetWidth) / 200) * pixelRatio * settings.display.canvasRes) / 100;
+      const powY = ((((mouseY - y) * canvasContainer.offsetHeight) / 200) * pixelRatio * settings.display.canvasRes) / 100;
       switch (v1) {
         case 0:
-          const p =
-            (((bpm * 14) / speed - (pattern.patterns[i].ms - seek * 1000)) /
-              ((bpm * 14) / speed)) *
-            100;
-          if (
-            Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
-              cntCanvas.width / 40 &&
-            p <= 100
-          ) {
+          const p = (((bpm * 14) / speed - (pattern.patterns[i].ms - seek * 1000)) / ((bpm * 14) / speed)) * 100;
+          if (Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= cntCanvas.width / 40 && p <= 100) {
             pointingCntElement = { v1: v1, v2: v2, i: i };
           }
           break;
         case 1:
-          if (
-            Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
-            cntCanvas.width / (song.playing() ? 80 : 50)
-          ) {
+          if (Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= cntCanvas.width / (song.playing() ? 80 : 50)) {
             pointingCntElement = { v1: v1, v2: v2, i: i };
           }
           break;
@@ -617,20 +531,13 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
           cntCtx.fillStyle = "#F55";
           cntCtx.textAlign = "left";
           cntCtx.textBaseline = "top";
-          cntCtx.fillText(
-            `trackMouseSelection:Undefined element.`,
-            cntCanvas.width / 100,
-            cntCanvas.height / 100
-          );
+          cntCtx.fillText(`trackMouseSelection:Undefined element.`, cntCanvas.width / 100, cntCanvas.height / 100);
           console.error(`trackMouseSelection:Undefined element.`);
       }
     }
   } else if (mode != 2 && mouseMode == 1) {
     if (pointingCntElement.i == "") {
-      if (
-        Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <=
-        tmlCanvas.height / 27
-      ) {
+      if (Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)) <= tmlCanvas.height / 27) {
         pointingCntElement = { v1: v1, v2: v2, i: i };
       }
     }
@@ -638,10 +545,7 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
 };
 
 const selectedCheck = (n, i) => {
-  return (
-    (pointingCntElement.v1 === n && pointingCntElement.i == i) ||
-    (selectedCntElement.v1 === n && selectedCntElement.i == i)
-  );
+  return (pointingCntElement.v1 === n && pointingCntElement.i == i) || (selectedCntElement.v1 === n && selectedCntElement.i == i);
 };
 
 const tmlRender = () => {
@@ -670,8 +574,7 @@ const tmlRender = () => {
       tmlCtx.beginPath();
       let x = tmlStartX + parseInt((renderNotes[j].ms - renderStart) * msToPx);
       let y = startY + timelineYLoc + height / 2;
-      if (mouseMode == 1)
-        trackMouseSelection(start + j, 0, renderNotes[j].value, x, y);
+      if (mouseMode == 1) trackMouseSelection(start + j, 0, renderNotes[j].value, x, y);
       if (selectedCheck(0, start + j)) {
         tmlCtx.fillStyle = "#ed5b45";
       } else {
@@ -693,10 +596,7 @@ const tmlRender = () => {
         bulletsOverlap[parseInt(renderBullets[i].ms / 100)] = 1;
       }
       for (let j = 0; j < renderBullets.length; j++) {
-        if (
-          parseInt(renderBullets[i].ms / 100) ==
-          parseInt(renderBullets[j].ms / 100)
-        ) {
+        if (parseInt(renderBullets[i].ms / 100) == parseInt(renderBullets[j].ms / 100)) {
           count++;
         }
       }
@@ -704,16 +604,10 @@ const tmlRender = () => {
     }
     for (let j = 0; j < renderBullets.length; j++) {
       tmlCtx.beginPath();
-      let x =
-        tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
-      let y =
-        startY +
-        timelineYLoc +
-        height * bulletsOverlap[parseInt(renderBullets[j].ms / 100)] +
-        height / 2;
+      let x = tmlStartX + parseInt((renderBullets[j].ms - renderStart) * msToPx);
+      let y = startY + timelineYLoc + height * bulletsOverlap[parseInt(renderBullets[j].ms / 100)] + height / 2;
       let w = height / 3;
-      if (mouseMode == 1)
-        trackMouseSelection(start + j, 1, renderBullets[j].value, x, y);
+      if (mouseMode == 1) trackMouseSelection(start + j, 1, renderBullets[j].value, x, y);
       if (selectedCheck(1, start + j)) {
         tmlCtx.fillStyle = "#ed5b45";
       } else {
@@ -744,10 +638,7 @@ const tmlRender = () => {
         triggersOverlap[parseInt(renderTriggers[i].ms / 100)] = 1;
       }
       for (let j = 0; j < renderTriggers.length; j++) {
-        if (
-          parseInt(renderTriggers[i].ms / 100) ==
-          parseInt(renderTriggers[j].ms / 100)
-        ) {
+        if (parseInt(renderTriggers[i].ms / 100) == parseInt(renderTriggers[j].ms / 100)) {
           count++;
         }
       }
@@ -755,18 +646,10 @@ const tmlRender = () => {
     }
     for (let j = 0; j < renderTriggers.length; j++) {
       tmlCtx.beginPath();
-      let x =
-        tmlStartX + parseInt((renderTriggers[j].ms - renderStart) * msToPx);
-      let y =
-        startY +
-        timelineYLoc +
-        height *
-          (bulletsOverlapNum +
-            triggersOverlap[parseInt(renderTriggers[j].ms / 100)]) +
-        height / 2;
+      let x = tmlStartX + parseInt((renderTriggers[j].ms - renderStart) * msToPx);
+      let y = startY + timelineYLoc + height * (bulletsOverlapNum + triggersOverlap[parseInt(renderTriggers[j].ms / 100)]) + height / 2;
       let w = height / 3;
-      if (mouseMode == 1)
-        trackMouseSelection(start + j, 2, renderTriggers[j].value, x, y);
+      if (mouseMode == 1) trackMouseSelection(start + j, 2, renderTriggers[j].value, x, y);
       if (selectedCheck(2, start + j)) {
         tmlCtx.fillStyle = "#ed5b45";
       } else {
@@ -782,8 +665,7 @@ const tmlRender = () => {
     tmlCtx.beginPath();
     tmlCtx.fillStyle = "#2f91ed";
     tmlCtx.strokeStyle = "#2f91ed";
-    let offsetLineX =
-      tmlStartX + parseInt((seek * 1000 - sync - renderStart) * msToPx);
+    let offsetLineX = tmlStartX + parseInt((seek * 1000 - sync - renderStart) * msToPx);
     tmlCtx.moveTo(offsetLineX, endY);
     tmlCtx.lineTo(offsetLineX, startY);
     tmlCtx.stroke();
@@ -791,59 +673,29 @@ const tmlRender = () => {
     tmlCtx.fillRect(0, 0, tmlStartX, endY);
     tmlCtx.beginPath();
     tmlCtx.fillStyle = "#fbaf34";
-    tmlCtx.arc(
-      startX,
-      startY + height / 2 + timelineYLoc,
-      height / 6,
-      0,
-      2 * Math.PI
-    );
+    tmlCtx.arc(startX, startY + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
     tmlCtx.fill();
     tmlCtx.fillStyle = "#111";
     tmlCtx.textAlign = "left";
     tmlCtx.textBaseline = "middle";
     tmlCtx.font = `${tmlCanvas.height / 14}px Metropolis`;
-    tmlCtx.fillText(
-      "Note",
-      startX * 1.2 + height / 6,
-      startY + timelineYLoc + height / 1.8
-    );
+    tmlCtx.fillText("Note", startX * 1.2 + height / 6, startY + timelineYLoc + height / 1.8);
     let i = 1;
     for (i; i <= bulletsOverlapNum; i++) {
       tmlCtx.beginPath();
       tmlCtx.fillStyle = "#2f91ed";
-      tmlCtx.arc(
-        startX,
-        startY + timelineYLoc + height * i + height / 2,
-        height / 6,
-        0,
-        2 * Math.PI
-      );
+      tmlCtx.arc(startX, startY + timelineYLoc + height * i + height / 2, height / 6, 0, 2 * Math.PI);
       tmlCtx.fill();
       tmlCtx.fillStyle = "#111";
-      tmlCtx.fillText(
-        "Bullet",
-        startX * 1.2 + height / 6,
-        startY + timelineYLoc + height * i + height / 1.8
-      );
+      tmlCtx.fillText("Bullet", startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
     }
     for (i; i < bulletsOverlapNum + triggersOverlapNum; i++) {
       tmlCtx.beginPath();
       tmlCtx.fillStyle = "#2ec90e";
-      tmlCtx.arc(
-        startX,
-        startY + height * i + height / 2 + timelineYLoc,
-        height / 6,
-        0,
-        2 * Math.PI
-      );
+      tmlCtx.arc(startX, startY + height * i + height / 2 + timelineYLoc, height / 6, 0, 2 * Math.PI);
       tmlCtx.fill();
       tmlCtx.fillStyle = "#111";
-      tmlCtx.fillText(
-        "Trigger",
-        startX * 1.2 + height / 6,
-        startY + timelineYLoc + height * i + height / 1.8
-      );
+      tmlCtx.fillText("Trigger", startX * 1.2 + height / 6, startY + timelineYLoc + height * i + height / 1.8);
     }
     timelineElementNum = i;
     tmlCtx.fillStyle = "#FFF";
@@ -853,24 +705,11 @@ const tmlRender = () => {
     tmlCtx.textAlign = "center";
     tmlCtx.textBaseline = "bottom";
     tmlCtx.fillStyle = "#777";
-    for (
-      let t = baseMs - (renderStart % baseMs) - baseMs;
-      t <= renderEnd + baseMs;
-      t += baseMs
-    ) {
-      if (
-        (renderStart + t) / 1000 < song._duration &&
-        (renderStart + t) / 1000 >= 0
-      ) {
+    for (let t = baseMs - (renderStart % baseMs) - baseMs; t <= renderEnd + baseMs; t += baseMs) {
+      if ((renderStart + t) / 1000 < song._duration && (renderStart + t) / 1000 >= 0) {
         const tmlMinutes = Math.floor((renderStart + t) / 60000),
           tmlSeconds = (renderStart + t) / 1000 - tmlMinutes * 60;
-        tmlCtx.fillText(
-          `${String(tmlMinutes).padStart(2, "0")}:${tmlSeconds
-            .toFixed(2)
-            .padStart(5, "0")}`,
-          tmlStartX + t * msToPx,
-          startY / 1.3
-        );
+        tmlCtx.fillText(`${String(tmlMinutes).padStart(2, "0")}:${tmlSeconds.toFixed(2).padStart(5, "0")}`, tmlStartX + t * msToPx, startY / 1.3);
         for (let i = 0; i < split; i++) {
           tmlCtx.beginPath();
           let strokeY;
@@ -881,14 +720,8 @@ const tmlRender = () => {
             tmlCtx.strokeStyle = "#999";
             strokeY = startY - 5;
           }
-          tmlCtx.moveTo(
-            tmlStartX + t * msToPx + ((baseMs * msToPx) / split) * i,
-            startY
-          );
-          tmlCtx.lineTo(
-            tmlStartX + t * msToPx + ((baseMs * msToPx) / split) * i,
-            strokeY
-          );
+          tmlCtx.moveTo(tmlStartX + t * msToPx + ((baseMs * msToPx) / split) * i, startY);
+          tmlCtx.lineTo(tmlStartX + t * msToPx + ((baseMs * msToPx) / split) * i, strokeY);
           tmlCtx.stroke();
         }
       }
@@ -906,13 +739,7 @@ const tmlRender = () => {
       if (isNaN(minutes)) {
         tmlCtx.fillText("Wait..", tmlStartX, startY / 1.7);
       } else {
-        tmlCtx.fillText(
-          `${String(minutes).padStart(2, "0")}:${seconds
-            .toFixed(2)
-            .padStart(5, "0")}`,
-          tmlStartX,
-          startY / 1.7
-        );
+        tmlCtx.fillText(`${String(minutes).padStart(2, "0")}:${seconds.toFixed(2).padStart(5, "0")}`, tmlStartX, startY / 1.7);
       }
     }
     tmlCtx.beginPath();
@@ -931,12 +758,7 @@ const tmlRender = () => {
     console.error(e);
   }
   if (mode == 2 && mouseMode == 1) {
-    if (
-      mouseX > tmlStartX &&
-      mouseX < endX &&
-      mouseY > startY &&
-      mouseY < endY
-    ) {
+    if (mouseX > tmlStartX && mouseX < endX && mouseY > startY && mouseY < endY) {
       let height = tmlCanvas.height / 9;
       let w = height / 3;
       let mousePosY = mouseY - timelineYLoc;
@@ -944,17 +766,8 @@ const tmlRender = () => {
       tmlCtx.fillStyle = "#ebd534";
       if (mousePosY >= startY && mousePosY <= startY + height) {
         tmlCtx.arc(mouseX, startY + height / 2, w, 0, 2 * Math.PI);
-      } else if (
-        mousePosY >= startY + height &&
-        mousePosY <= startY + height * (bulletsOverlapNum + 1)
-      ) {
-        let mouseYLocCount =
-          1 +
-          bulletsOverlapNum -
-          Math.round(
-            Math.round(2 * startY + height * bulletsOverlapNum - mousePosY) /
-              height
-          );
+      } else if (mousePosY >= startY + height && mousePosY <= startY + height * (bulletsOverlapNum + 1)) {
+        let mouseYLocCount = 1 + bulletsOverlapNum - Math.round(Math.round(2 * startY + height * bulletsOverlapNum - mousePosY) / height);
         let y = startY + height * mouseYLocCount + height / 2 + timelineYLoc;
         if (selectedValue == 0) {
           tmlCtx.moveTo(mouseX - w, y);
@@ -965,25 +778,9 @@ const tmlRender = () => {
         } else if (selectedValue == 1) {
           tmlCtx.arc(mouseX, y, w, 0, 2 * Math.PI);
         }
-      } else if (
-        mousePosY >= startY + height * (bulletsOverlapNum + 1) &&
-        mousePosY <=
-          startY +
-            height * (bulletsOverlapNum + 1) +
-            height * (triggersOverlapNum - 1)
-      ) {
-        let mouseYLocCount = -(
-          1 -
-          Math.round(
-            (mousePosY - height - height * (bulletsOverlapNum + 1)) / height
-          )
-        );
-        let y =
-          startY +
-          height * (bulletsOverlapNum + 1) +
-          height * mouseYLocCount +
-          height / 2 +
-          timelineYLoc;
+      } else if (mousePosY >= startY + height * (bulletsOverlapNum + 1) && mousePosY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum - 1)) {
+        let mouseYLocCount = -(1 - Math.round((mousePosY - height - height * (bulletsOverlapNum + 1)) / height));
+        let y = startY + height * (bulletsOverlapNum + 1) + height * mouseYLocCount + height / 2 + timelineYLoc;
         tmlCtx.moveTo(mouseX - w / 1.1, y - w);
         tmlCtx.lineTo(mouseX + w / 1.1, y);
         tmlCtx.lineTo(mouseX - w / 1.1, y + w);
@@ -999,11 +796,7 @@ const tmlRender = () => {
   if (sync >= 50 || sync <= -50) {
     tmlCtx.fillText(syncAlert, endX, endY);
   } else if (pixelRatio != 1) {
-    tmlCtx.fillText(
-      `${zoomAlert} ${(100 * pixelRatio).toFixed()}%`,
-      endX,
-      endY + 5
-    );
+    tmlCtx.fillText(`${zoomAlert} ${(100 * pixelRatio).toFixed()}%`, endX, endY + 5);
   }
   tmlCtx.textAlign = "left";
   if (copied) {
@@ -1015,55 +808,34 @@ const tmlRender = () => {
     copied = false;
   }
   if (pointingCntElement.i === "") {
-    if (
-      mouseX >= tmlCanvas.width / 20 &&
-      mouseX <= tmlCanvas.width / 10 &&
-      mouseY < tmlCanvas.height / 6
-    ) {
-      timelineContainer.style.cursor =
-        "url('/images/parts/cursor/blueSelect.cur'), pointer";
+    if (mouseX >= tmlCanvas.width / 20 && mouseX <= tmlCanvas.width / 10 && mouseY < tmlCanvas.height / 6) {
+      timelineContainer.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
     } else {
       timelineContainer.style.cursor = "";
     }
   } else {
-    timelineContainer.style.cursor =
-      "url('/images/parts/cursor/blueSelect.cur'), pointer";
+    timelineContainer.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
   }
 };
 
 const callBulletDestroy = (j) => {
   const seek = song.seek() - (offset + sync) / 1000;
-  const p =
-    ((seek * 1000 - pattern.bullets[j].ms) /
-      ((bpm * 40) / speed / pattern.bullets[j].speed)) *
-    100;
+  const p = ((seek * 1000 - pattern.bullets[j].ms) / ((bpm * 40) / speed / pattern.bullets[j].speed)) * 100;
   const left = pattern.bullets[j].direction == "L";
   let x = (left ? -1 : 1) * (100 - p);
   let y = 0;
   if (pattern.bullets[j].value == 0) {
-    y =
-      pattern.bullets[j].location +
-      p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
+    y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
   } else {
-    if (!circleBulletAngles[j])
-      circleBulletAngles[j] = calcAngleDegrees(
-        (left ? -100 : 100) - mouseX,
-        pattern.bullets[j].location - mouseY
-      );
+    if (!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
     if (left) {
-      if (110 > circleBulletAngles[j] && circleBulletAngles[j] > 0)
-        circleBulletAngles[j] = 110;
-      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] > -110)
-        circleBulletAngles[j] = -110;
+      if (110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
     } else {
-      if (70 < circleBulletAngles[j] && circleBulletAngles[j] > 0)
-        circleBulletAngles[j] = 70;
-      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] < -70)
-        circleBulletAngles[j] = -70;
+      if (70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
     }
-    y =
-      pattern.bullets[j].location +
-      p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
+    y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
   }
   let randomDirection = [];
   for (let i = 0; i < 3; i++) {
@@ -1127,20 +899,13 @@ const cntRender = () => {
         speedCount++;
         speed = renderTriggers[i].speed;
       } else if (renderTriggers[i].value == 5) {
-        if (
-          renderTriggers[i].ms - 1 <= seek * 1000 &&
-          renderTriggers[i].ms + renderTriggers[i].time > seek * 1000
-        ) {
+        if (renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time > seek * 1000) {
           cntCtx.beginPath();
           cntCtx.fillStyle = "#111";
           cntCtx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis, Noto Sans KR`;
           cntCtx.textAlign = renderTriggers[i].align;
           cntCtx.textBaseline = renderTriggers[i].valign;
-          cntCtx.fillText(
-            renderTriggers[i].text,
-            (cntCanvas.width / 200) * (renderTriggers[i].x + 100),
-            (cntCanvas.height / 200) * (renderTriggers[i].y + 100)
-          );
+          cntCtx.fillText(renderTriggers[i].text, (cntCanvas.width / 200) * (renderTriggers[i].x + 100), (cntCanvas.height / 200) * (renderTriggers[i].y + 100));
         }
       } else if (renderTriggers[i].value == 6) {
         if (!destroyedSeeks.has(renderTriggers[i])) {
@@ -1194,91 +959,35 @@ const cntRender = () => {
       }
     }
     for (let i = 0; i < renderNotes.length; i++) {
-      const p =
-        (((bpm * 14) / speed - (renderNotes[i].ms - seek * 1000)) /
-          ((bpm * 14) / speed)) *
-        100;
-      if (mouseMode == 0)
-        trackMouseSelection(
-          start + i,
-          0,
-          renderNotes[i].value,
-          renderNotes[i].x,
-          renderNotes[i].y
-        );
-      drawNote(
-        p,
-        renderNotes[i].x,
-        renderNotes[i].y,
-        selectedCheck(0, start + i)
-      );
+      const p = (((bpm * 14) / speed - (renderNotes[i].ms - seek * 1000)) / ((bpm * 14) / speed)) * 100;
+      if (mouseMode == 0) trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
+      drawNote(p, renderNotes[i].x, renderNotes[i].y, selectedCheck(0, start + i));
     }
     start = lowerBound(pattern.bullets, seek * 1000 - bpm * 100);
     end = upperBound(pattern.bullets, seek * 1000);
     const renderBullets = pattern.bullets.slice(start, end);
     for (let i = 0; i < renderBullets.length; i++) {
       if (!destroyedBullets.has(start + i)) {
-        const p =
-          ((seek * 1000 - renderBullets[i].ms) /
-            ((bpm * 40) / speed / renderBullets[i].speed)) *
-          100;
+        const p = ((seek * 1000 - renderBullets[i].ms) / ((bpm * 40) / speed / renderBullets[i].speed)) * 100;
         const left = renderBullets[i].direction == "L";
         let x = (left ? -1 : 1) * (100 - p);
         let y = 0;
         if (renderBullets[i].value == 0) {
-          y =
-            renderBullets[i].location +
-            p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
-          if (mouseMode == 0)
-            trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-          drawBullet(
-            renderBullets[i].value,
-            x,
-            y,
-            renderBullets[i].angle + (left ? 0 : 180),
-            selectedCheck(1, start + i)
-          );
+          y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
+          if (mouseMode == 0) trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+          drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180), selectedCheck(1, start + i));
         } else {
-          if (!circleBulletAngles[start + i])
-            circleBulletAngles[start + i] = calcAngleDegrees(
-              (left ? -100 : 100) - mouseX,
-              renderBullets[i].location - mouseY
-            );
+          if (!circleBulletAngles[start + i]) circleBulletAngles[start + i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
           if (left) {
-            if (
-              110 > circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] > 0
-            )
-              circleBulletAngles[start + i] = 110;
-            else if (
-              0 > circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] > -110
-            )
-              circleBulletAngles[start + i] = -110;
+            if (110 > circleBulletAngles[start + i] && circleBulletAngles[start + i] > 0) circleBulletAngles[start + i] = 110;
+            else if (0 > circleBulletAngles[start + i] && circleBulletAngles[start + i] > -110) circleBulletAngles[start + i] = -110;
           } else {
-            if (
-              70 < circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] > 0
-            )
-              circleBulletAngles[start + i] = 70;
-            else if (
-              0 > circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] < -70
-            )
-              circleBulletAngles[start + i] = -70;
+            if (70 < circleBulletAngles[start + i] && circleBulletAngles[start + i] > 0) circleBulletAngles[start + i] = 70;
+            else if (0 > circleBulletAngles[start + i] && circleBulletAngles[start + i] < -70) circleBulletAngles[start + i] = -70;
           }
-          y =
-            renderBullets[i].location +
-            p * getTan(circleBulletAngles[start + i]) * (left ? 1 : -1);
-          if (mouseMode == 0)
-            trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-          drawBullet(
-            renderBullets[i].value,
-            x,
-            y,
-            "",
-            selectedCheck(1, start + i)
-          );
+          y = renderBullets[i].location + p * getTan(circleBulletAngles[start + i]) * (left ? 1 : -1);
+          if (mouseMode == 0) trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
+          drawBullet(renderBullets[i].value, x, y, "", selectedCheck(1, start + i));
         }
       }
     }
@@ -1298,17 +1007,12 @@ const cntRender = () => {
       cntCtx.font = "24px Metropolis";
       cntCtx.textAlign = "center";
       cntCtx.textBaseline = "top";
-      cntCtx.fillText(
-        "Click to add Trigger",
-        cntCanvas.width / 2,
-        cntCanvas.height / 2 + 10
-      );
+      cntCtx.fillText("Click to add Trigger", cntCanvas.width / 2, cntCanvas.height / 2 + 10);
     }
     if (pointingCntElement.i === "") {
       componentView.style.cursor = "";
     } else {
-      componentView.style.cursor =
-        "url('/images/parts/cursor/blueSelect.cur'), pointer";
+      componentView.style.cursor = "url('/images/parts/cursor/blueSelect.cur'), pointer";
     }
   } catch (e) {
     if (e) {
@@ -1325,9 +1029,7 @@ const cntRender = () => {
 };
 
 const songPlayPause = () => {
-  if (
-    document.getElementById("editorMainContainer").style.display == "initial"
-  ) {
+  if (document.getElementById("editorMainContainer").style.display == "initial") {
     prevDestroyedSeeks.clear();
     destroyedSeeks.clear();
     if (song.playing()) {
@@ -1346,9 +1048,7 @@ const songPlayPause = () => {
 };
 
 const save = () => {
-  let trackSettingsForm = trackSettings.getElementsByClassName(
-    "settingsPropertiesTextbox"
-  );
+  let trackSettingsForm = trackSettings.getElementsByClassName("settingsPropertiesTextbox");
   pattern.information = {
     version: "1.0",
     track: trackSettingsForm[0].value,
@@ -1449,19 +1149,13 @@ const settingsInput = (v, e) => {
           targetElements = pattern.triggers;
         }
         for (let i = 0; i < targetElements.length; i++) {
-          if (
-            JSON.stringify(targetElements[i]) == JSON.stringify(changedResult)
-          ) {
+          if (JSON.stringify(targetElements[i]) == JSON.stringify(changedResult)) {
             selectedCntElement = {
               i: i,
               v1: selectedCntElement.v1,
               v2: selectedCntElement.v2,
             };
-            changeSettingsMode(
-              selectedCntElement.v1,
-              selectedCntElement.v2,
-              selectedCntElement.i
-            );
+            changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
             return;
           }
         }
@@ -1478,10 +1172,7 @@ const settingsInput = (v, e) => {
       if (e.value.toUpperCase() == "L" || e.value.toUpperCase() == "LEFT") {
         pattern.bullets[selectedCntElement.i].direction = "L";
         patternChanged();
-      } else if (
-        e.value.toUpperCase() == "R" ||
-        e.value.toUpperCase() == "RIGHT"
-      ) {
+      } else if (e.value.toUpperCase() == "R" || e.value.toUpperCase() == "RIGHT") {
         pattern.bullets[selectedCntElement.i].direction = "R";
         patternChanged();
       } else if (e.value == "") {
@@ -1584,10 +1275,7 @@ const triggersInput = (v, e) => {
     case "num":
       if (isNaN(Number(e.value))) {
         alert("Input value is not number.");
-      } else if (
-        Number(e.value) > pattern.bullets.length ||
-        Number(e.value) < 0
-      ) {
+      } else if (Number(e.value) > pattern.bullets.length || Number(e.value) < 0) {
         alert(`Bullet${e.value} is undefined.`);
       } else {
         pattern.triggers[selectedCntElement.i][v] = Number(e.value);
@@ -1653,20 +1341,12 @@ const triggersInput = (v, e) => {
       break;
     case "valign":
       textBlurred();
-      if (
-        e.value == "top" ||
-        e.value == "bottom" ||
-        e.value == "middle" ||
-        e.value == "alphabetic" ||
-        e.value == "hanging"
-      ) {
+      if (e.value == "top" || e.value == "bottom" || e.value == "middle" || e.value == "alphabetic" || e.value == "hanging") {
         pattern.triggers[selectedCntElement.i][v] = e.value;
         patternChanged();
         return;
       }
-      alert(
-        "Input value should be 'top', 'bottom', 'middle', 'alphabetic', 'hanging'."
-      );
+      alert("Input value should be 'top', 'bottom', 'middle', 'alphabetic', 'hanging'.");
       e.value = pattern.triggers[selectedCntElement.i][v];
       break;
     case "size":
@@ -1722,14 +1402,10 @@ const changeOffset = (e) => {
 };
 
 const trackMousePos = () => {
-  const width = parseInt(
-    (componentView.offsetWidth - canvasContainer.offsetWidth) / 2 +
-      menuContainer.offsetWidth
-  );
+  const width = parseInt((componentView.offsetWidth - canvasContainer.offsetWidth) / 2 + menuContainer.offsetWidth);
   const height = navbar.offsetHeight;
   const x = ((event.clientX - width) / canvasContainer.offsetWidth) * 200 - 100;
-  const y =
-    ((event.clientY - height) / canvasContainer.offsetHeight) * 200 - 100;
+  const y = ((event.clientY - height) / canvasContainer.offsetHeight) * 200 - 100;
   if (!(x < -100 || y < -100 || x > 100 || y > 100)) {
     mouseMode = 0;
     mouseX = x;
@@ -1742,8 +1418,7 @@ const trackMousePos = () => {
 const trackTimelineMousePos = () => {
   mouseMode = 1;
   mouseX = event.clientX * pixelRatio;
-  mouseY =
-    (event.clientY - Math.floor((window.innerHeight / 100) * 73)) * pixelRatio;
+  mouseY = (event.clientY - Math.floor((window.innerHeight / 100) * 73)) * pixelRatio;
 };
 
 const elementFollowMouse = (v1, v2, i) => {
@@ -1763,13 +1438,7 @@ const elementFollowMouse = (v1, v2, i) => {
         case 0:
           newX = pattern.patterns[i].x + mouseX - dragMouseX;
           newY = pattern.patterns[i].y + mouseY - dragMouseY;
-          if (
-            newX <= 100 &&
-            newX >= -100 &&
-            newY <= 100 &&
-            newY >= -100 &&
-            mouseMode == 0
-          ) {
+          if (newX <= 100 && newX >= -100 && newY <= 100 && newY >= -100 && mouseMode == 0) {
             pattern.patterns[i].x = newX;
             pattern.patterns[i].y = newY;
           }
@@ -1819,21 +1488,10 @@ const timelineFollowMouse = (v1, v2, i) => {
         v2 = pointingCntElement.v2;
         i = pointingCntElement.i;
       }
-      if (
-        mouseMode == 1 &&
-        mouseX > tmlCanvas.width / 10 &&
-        mouseX < tmlCanvas.width / 1.01
-      ) {
+      if (mouseMode == 1 && mouseX > tmlCanvas.width / 10 && mouseX < tmlCanvas.width / 1.01) {
         let msToPx =
-          (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) /
-          (parseInt(
-            parseInt(song.seek() * 1000) - (60000 / bpm) * zoom + 5000 * zoom
-          ) -
-            (parseInt(song.seek() * 1000) - (60000 / bpm) * zoom));
-        let calculatedMs =
-          (mouseX - tmlCanvas.width / 10) / msToPx -
-          (60 / bpm) * 1000 +
-          song.seek() * 1000;
+          (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) / (parseInt(parseInt(song.seek() * 1000) - (60000 / bpm) * zoom + 5000 * zoom) - (parseInt(song.seek() * 1000) - (60000 / bpm) * zoom));
+        let calculatedMs = (mouseX - tmlCanvas.width / 10) / msToPx - (60 / bpm) * 1000 + song.seek() * 1000;
         if (calculatedMs <= 0) calculatedMs = 0;
         switch (v1) {
           case 0:
@@ -1865,18 +1523,12 @@ const tmlClicked = () => {
     timelineFollowMouse();
   } else if (mode == 1) {
     if (pointingCntElement.v1 !== "") {
-      if (
-        JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)
-      ) {
+      if (JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
         changeSettingsMode(-1);
         if (isSettingsOpened) toggleSettings();
         selectedCntElement = { v1: "", v2: "", i: "" };
       } else {
-        changeSettingsMode(
-          pointingCntElement.v1,
-          pointingCntElement.v2,
-          pointingCntElement.i
-        );
+        changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
         if (!isSettingsOpened) toggleSettings();
         selectedCntElement = pointingCntElement;
       }
@@ -1902,23 +1554,10 @@ const copySeek = () => {
 const timelineAddElement = () => {
   let startY = tmlCanvas.height / 6;
   let height = tmlCanvas.height / 9;
-  let msToPx =
-    (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) /
-    (parseInt(
-      parseInt(song.seek() * 1000) - (60000 / bpm) * zoom + 5000 * zoom
-    ) -
-      (parseInt(song.seek() * 1000) - (60000 / bpm) * zoom));
-  let calculatedMs =
-    (mouseX - tmlCanvas.width / 10) / msToPx -
-    (60 / bpm) * 1000 +
-    song.seek() * 1000;
+  let msToPx = (tmlCanvas.width / 1.01 - tmlCanvas.width / 10) / (parseInt(parseInt(song.seek() * 1000) - (60000 / bpm) * zoom + 5000 * zoom) - (parseInt(song.seek() * 1000) - (60000 / bpm) * zoom));
+  let calculatedMs = (mouseX - tmlCanvas.width / 10) / msToPx - (60 / bpm) * 1000 + song.seek() * 1000;
   let mousePosY = mouseY - timelineYLoc;
-  if (
-    mouseX > tmlCanvas.width / 10 &&
-    mouseX < tmlCanvas.width / 1.01 &&
-    mouseY > startY &&
-    mouseY < tmlCanvas.height / 1.1
-  ) {
+  if (mouseX > tmlCanvas.width / 10 && mouseX < tmlCanvas.width / 1.01 && mouseY > startY && mouseY < tmlCanvas.height / 1.1) {
     if (mousePosY >= startY && mousePosY <= startY + height) {
       let newElement = { ms: parseInt(calculatedMs), value: 0, x: 0, y: 0 };
       pattern.patterns.push(newElement);
@@ -1929,10 +1568,7 @@ const timelineAddElement = () => {
           selectedCntElement = { v1: 0, v2: 0, i: i };
         }
       }
-    } else if (
-      mousePosY >= startY + height &&
-      mousePosY <= startY + height * (bulletsOverlapNum + 1)
-    ) {
+    } else if (mousePosY >= startY + height && mousePosY <= startY + height * (bulletsOverlapNum + 1)) {
       let newElement = {
         ms: parseInt(calculatedMs),
         value: selectedValue,
@@ -1949,13 +1585,7 @@ const timelineAddElement = () => {
           selectedCntElement = { v1: 1, v2: selectedValue, i: i };
         }
       }
-    } else if (
-      mousePosY >= startY + height * (bulletsOverlapNum + 1) &&
-      mousePosY <=
-        startY +
-          height * (bulletsOverlapNum + 1) +
-          height * (triggersOverlapNum + 1)
-    ) {
+    } else if (mousePosY >= startY + height * (bulletsOverlapNum + 1) && mousePosY <= startY + height * (bulletsOverlapNum + 1) + height * (triggersOverlapNum + 1)) {
       pattern.triggers.push({
         ms: parseInt(calculatedMs),
         value: -1,
@@ -1978,9 +1608,7 @@ const timelineAddElement = () => {
       for (let i = 0; i < pattern.triggers.length; i++) {
         if (
           JSON.stringify(pattern.triggers[i]) ==
-          `{"ms":${parseInt(
-            calculatedMs
-          )},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","valign":"middle","weight":500,"size":"1vh","time":${parseInt(
+          `{"ms":${parseInt(calculatedMs)},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","valign":"middle","weight":500,"size":"1vh","time":${parseInt(
             (60 / bpm) * 1000
           )},"x":0,"y":0,"text":"","seek":0}`
         ) {
@@ -1990,11 +1618,7 @@ const timelineAddElement = () => {
     } else {
       return;
     }
-    changeSettingsMode(
-      selectedCntElement.v1,
-      selectedCntElement.v2,
-      selectedCntElement.i
-    );
+    changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
     if (!isSettingsOpened) toggleSettings();
   }
 };
@@ -2004,18 +1628,12 @@ const compClicked = () => {
     elementFollowMouse();
   } else if (mode == 1) {
     if (pointingCntElement.v1 !== "") {
-      if (
-        JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)
-      ) {
+      if (JSON.stringify(pointingCntElement) == JSON.stringify(selectedCntElement)) {
         changeSettingsMode(-1);
         if (isSettingsOpened) toggleSettings();
         selectedCntElement = { v1: "", v2: "", i: "" };
       } else {
-        changeSettingsMode(
-          pointingCntElement.v1,
-          pointingCntElement.v2,
-          pointingCntElement.i
-        );
+        changeSettingsMode(pointingCntElement.v1, pointingCntElement.v2, pointingCntElement.i);
         if (!isSettingsOpened) toggleSettings();
         selectedCntElement = pointingCntElement;
       }
@@ -2040,9 +1658,7 @@ const compClicked = () => {
         pattern.bullets.sort(sortAsTiming);
         patternChanged();
         for (let i = 0; i < pattern.bullets.length; i++) {
-          if (
-            JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)
-          ) {
+          if (JSON.stringify(pattern.bullets[i]) == JSON.stringify(newElement)) {
             selectedCntElement = { v1: 1, v2: selectedValue, i: i };
           }
         }
@@ -2057,18 +1673,12 @@ const compClicked = () => {
         pattern.patterns.sort(sortAsTiming);
         patternChanged();
         for (let i = 0; i < pattern.patterns.length; i++) {
-          if (
-            JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)
-          ) {
+          if (JSON.stringify(pattern.patterns[i]) == JSON.stringify(newElement)) {
             selectedCntElement = { v1: 0, v2: 0, i: i };
           }
         }
       }
-      changeSettingsMode(
-        selectedCntElement.v1,
-        selectedCntElement.v2,
-        selectedCntElement.i
-      );
+      changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
       if (!isSettingsOpened) toggleSettings();
     } else {
       pattern.triggers.push({
@@ -2092,19 +1702,13 @@ const compClicked = () => {
       for (let i = 0; i < pattern.triggers.length; i++) {
         if (
           JSON.stringify(pattern.triggers[i]) ==
-          `{"ms":${
-            song.seek() * 1000
-          },"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","valign":"middle","weight":500,"size":"1vh","time":${parseInt(
+          `{"ms":${song.seek() * 1000},"value":-1,"num":0,"bpm":${bpm},"opacity":1,"speed":${speed},"align":"center","valign":"middle","weight":500,"size":"1vh","time":${parseInt(
             (60 / bpm) * 1000
           )},"x":0,"y":0,"text":"","seek":0}`
         ) {
           selectedCntElement = { i: i, v1: 2, v2: -1 };
           patternChanged();
-          changeSettingsMode(
-            selectedCntElement.v1,
-            selectedCntElement.v2,
-            selectedCntElement.i
-          );
+          changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
           if (!isSettingsOpened) toggleSettings();
         }
       }
@@ -2131,55 +1735,30 @@ const changeSettingsMode = (v1, v2, i) => {
       document.getElementById("elementsSettings").style.display = "block";
       document.getElementById("noteSettingsContainer").style.display = "block";
       document.getElementById("bulletSettingsContainer").style.display = "none";
-      document.getElementById("triggerSettingsContainer").style.display =
-        "none";
-      document.getElementById("triggerInitializeContainer").style.display =
-        "none";
-      noteSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[0].value = pattern.patterns[i].x;
-      noteSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[1].value = pattern.patterns[i].y;
-      noteSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[2].value = pattern.patterns[i].ms.toFixed();
+      document.getElementById("triggerSettingsContainer").style.display = "none";
+      document.getElementById("triggerInitializeContainer").style.display = "none";
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.patterns[i].x;
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.patterns[i].y;
+      noteSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.patterns[i].ms.toFixed();
       break;
     case 1:
       document.getElementById("noteSettingsContainer").style.display = "none";
-      document.getElementById("triggerSettingsContainer").style.display =
-        "none";
-      document.getElementById("bulletSettingsContainer").style.display =
-        "block";
-      document.getElementById("triggerInitializeContainer").style.display =
-        "none";
-      bulletSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[0].value = pattern.bullets[i].direction;
-      bulletSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[1].value = pattern.bullets[i].location;
-      bulletSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[3].value = pattern.bullets[i].ms.toFixed();
-      bulletSettingsContainer.getElementsByClassName(
-        "settingsPropertiesTextbox"
-      )[4].value = pattern.bullets[i].speed;
+      document.getElementById("triggerSettingsContainer").style.display = "none";
+      document.getElementById("bulletSettingsContainer").style.display = "block";
+      document.getElementById("triggerInitializeContainer").style.display = "none";
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.bullets[i].direction;
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[1].value = pattern.bullets[i].location;
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[3].value = pattern.bullets[i].ms.toFixed();
+      bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[4].value = pattern.bullets[i].speed;
       switch (v2) {
         case 0:
           document.getElementById("dot").style.color = "#6fdef7";
-          bulletSettingsContainer.getElementsByClassName(
-            "settingsPropertiesIndividual"
-          )[2].style.display = "flex";
-          bulletSettingsContainer.getElementsByClassName(
-            "settingsPropertiesTextbox"
-          )[2].value = pattern.bullets[i].angle;
+          bulletSettingsContainer.getElementsByClassName("settingsPropertiesIndividual")[2].style.display = "flex";
+          bulletSettingsContainer.getElementsByClassName("settingsPropertiesTextbox")[2].value = pattern.bullets[i].angle;
           break;
         case 1:
           document.getElementById("dot").style.color = "#575cf2";
-          bulletSettingsContainer.getElementsByClassName(
-            "settingsPropertiesIndividual"
-          )[2].style.display = "none";
+          bulletSettingsContainer.getElementsByClassName("settingsPropertiesIndividual")[2].style.display = "none";
           break;
         default:
           alert("changeSettingsMode:Error");
@@ -2193,34 +1772,24 @@ const changeSettingsMode = (v1, v2, i) => {
       document.getElementById("elementsSettings").style.display = "block";
       document.getElementById("noteSettingsContainer").style.display = "none";
       document.getElementById("bulletSettingsContainer").style.display = "none";
-      document.getElementById("triggerSettingsContainer").style.display =
-        "block";
-      document.getElementById("triggerInitializeContainer").style.display =
-        "none";
+      document.getElementById("triggerSettingsContainer").style.display = "block";
+      document.getElementById("triggerInitializeContainer").style.display = "none";
       triggerSelectBox.selectedIndex = pattern.triggers[i].value;
       if (v2 == -1) {
-        document.getElementById("triggerSettingsContainer").style.display =
-          "none";
-        document.getElementById("triggerInitializeContainer").style.display =
-          "block";
+        document.getElementById("triggerSettingsContainer").style.display = "none";
+        document.getElementById("triggerInitializeContainer").style.display = "block";
         triggerInitBox.selectedIndex = 0;
       } else {
-        let properties = triggerSettingsContainer.getElementsByClassName(
-          "settingsPropertiesContainer"
-        );
+        let properties = triggerSettingsContainer.getElementsByClassName("settingsPropertiesContainer");
         let start = 1;
         for (let j = start; properties.length - start > j; j++) {
           properties[j].style.display = "none";
           if (j - start == v2) {
             properties[j].style.display = "block";
-            properties[j].getElementsByClassName(
-              "settingsPropertiesTextbox"
-            )[0].value = pattern.triggers[i].ms;
+            properties[j].getElementsByClassName("settingsPropertiesTextbox")[0].value = pattern.triggers[i].ms;
           }
         }
-        let textBox = properties[v2 + start].getElementsByClassName(
-          "settingsPropertiesTextbox"
-        );
+        let textBox = properties[v2 + start].getElementsByClassName("settingsPropertiesTextbox");
         switch (v2) {
           case 0:
             //Destroy
@@ -2262,15 +1831,11 @@ const changeSettingsMode = (v1, v2, i) => {
 };
 
 const triggerSet = (isChanged) => {
-  pattern.triggers[selectedCntElement.i].value =
-    (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex -
-    (isChanged ? 0 : 1);
+  pattern.triggers[selectedCntElement.i].value = (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1);
   selectedCntElement = {
     i: selectedCntElement.i,
     v1: 2,
-    v2:
-      (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex -
-      (isChanged ? 0 : 1),
+    v2: (isChanged ? triggerSelectBox : triggerInitBox).selectedIndex - (isChanged ? 0 : 1),
   };
   changeSettingsMode(2, selectedCntElement.v2, selectedCntElement.i);
 };
@@ -2307,9 +1872,7 @@ const changeRate = () => {
 const test = () => {
   alert(need2Save);
   save();
-  let trackSettingsForm = trackSettings.getElementsByClassName(
-    "settingsPropertiesTextbox"
-  );
+  let trackSettingsForm = trackSettings.getElementsByClassName("settingsPropertiesTextbox");
   pattern.information = {
     version: "1.0",
     track: trackSettingsForm[0].value,
@@ -2356,10 +1919,7 @@ const deleteElement = () => {
 
 const patternChanged = () => {
   if (patternSeek != patternHistory.length - 1) {
-    patternHistory.splice(
-      patternSeek + 1,
-      patternHistory.length - 1 - patternSeek
-    );
+    patternHistory.splice(patternSeek + 1, patternHistory.length - 1 - patternSeek);
   }
   patternHistory.push(eval(`(${JSON.stringify(pattern)})`));
   if (patternHistory.length > 50) {
@@ -2389,17 +1949,11 @@ const patternRedo = () => {
 const elementCopy = () => {
   copiedElement.v1 = selectedCntElement.v1;
   if (selectedCntElement.v1 == 0) {
-    copiedElement.element = eval(
-      `(${JSON.stringify(pattern.patterns[selectedCntElement.i])})`
-    );
+    copiedElement.element = eval(`(${JSON.stringify(pattern.patterns[selectedCntElement.i])})`);
   } else if (selectedCntElement.v1 == 1) {
-    copiedElement.element = eval(
-      `(${JSON.stringify(pattern.bullets[selectedCntElement.i])})`
-    );
+    copiedElement.element = eval(`(${JSON.stringify(pattern.bullets[selectedCntElement.i])})`);
   } else if (selectedCntElement.v1 == 2) {
-    copiedElement.element = eval(
-      `(${JSON.stringify(pattern.triggers[selectedCntElement.i])})`
-    );
+    copiedElement.element = eval(`(${JSON.stringify(pattern.triggers[selectedCntElement.i])})`);
   }
 };
 
@@ -2420,9 +1974,7 @@ const elementPaste = () => {
     searchTarget = pattern.triggers;
   }
   for (let i = 0; i < searchTarget.length; i++) {
-    if (
-      JSON.stringify(searchTarget[i]) == JSON.stringify(copiedElement.element)
-    ) {
+    if (JSON.stringify(searchTarget[i]) == JSON.stringify(copiedElement.element)) {
       selectedCntElement = {
         i: i,
         v1: copiedElement.v1,
@@ -2431,11 +1983,7 @@ const elementPaste = () => {
     }
   }
   if (!isSettingsOpened) toggleSettings();
-  changeSettingsMode(
-    selectedCntElement.v1,
-    selectedCntElement.v2,
-    selectedCntElement.i
-  );
+  changeSettingsMode(selectedCntElement.v1, selectedCntElement.v2, selectedCntElement.i);
   patternChanged();
 };
 
@@ -2540,24 +2088,20 @@ const globalScrollEvent = (e) => {
     if (delta == 1) {
       //UP
       if (settings.sound.volume.master <= 0.95) {
-        settings.sound.volume.master =
-          Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+        settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
       } else {
         settings.sound.volume.master = 1;
       }
     } else {
       //DOWN
       if (settings.sound.volume.master >= 0.05) {
-        settings.sound.volume.master =
-          Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+        settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
       } else {
         settings.sound.volume.master = 0;
       }
     }
     volumeMaster.value = Math.round(settings.sound.volume.master * 100);
-    volumeMasterValue.textContent = `${Math.round(
-      settings.sound.volume.master * 100
-    )}%`;
+    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
     Howler.volume(settings.sound.volume.master);
     volumeOverlay.classList.add("overlayOpen");
     overlayTime = new Date().getTime();
@@ -2633,23 +2177,16 @@ const lottieSet = () => {
   switch (lottieInitBox.value) {
     case "0": //Image
       canvasBackground.getElementsByTagName("svg")[0].style.display = "none";
-      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${
-        settings.display.albumRes
-      }/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
+      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
       break;
     case "1": //Image & BGA
       canvasBackground.getElementsByTagName("svg")[0].style.display = "initial";
-      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${
-        settings.display.albumRes
-      }/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
+      canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${tracks[songSelectBox.selectedIndex].fileName} (Custom).png")`;
       break;
     case "2": //BGA
       canvasBackground.getElementsByTagName("svg")[0].style.display = "initial";
       canvasBackground.style.backgroundImage = "none";
-      canvasBackground.style.backgroundColor = `#${
-        trackSettings.getElementsByClassName("settingsPropertiesTextbox")[6]
-          .value
-      }`;
+      canvasBackground.style.backgroundColor = `#${trackSettings.getElementsByClassName("settingsPropertiesTextbox")[6].value}`;
       break;
   }
   pattern.background.type = Number(lottieInitBox.value);
@@ -2671,9 +2208,7 @@ const changeGrayscale = (e) => {
     alert("Input value is not number.");
     e.value = "30";
   } else {
-    canvasBackground.style.filter = `grayscale(${e.value}%) opacity(${
-      trackSettings.getElementsByClassName("settingsPropertiesTextbox")[8].value
-    }%)`;
+    canvasBackground.style.filter = `grayscale(${e.value}%) opacity(${trackSettings.getElementsByClassName("settingsPropertiesTextbox")[8].value}%)`;
   }
   pattern.background.grayscale = Number(e.value);
 };
@@ -2683,19 +2218,13 @@ const changeOpacity = (e) => {
     alert("Input value is not number.");
     e.value = "20";
   } else {
-    canvasBackground.style.filter = `grayscale(${
-      trackSettings.getElementsByClassName("settingsPropertiesTextbox")[7].value
-    }%) opacity(${e.value}%)`;
+    canvasBackground.style.filter = `grayscale(${trackSettings.getElementsByClassName("settingsPropertiesTextbox")[7].value}%) opacity(${e.value}%)`;
   }
   pattern.background.opacity = Number(e.value);
 };
 
-document
-  .getElementById("timelineContainer")
-  .addEventListener("mousewheel", scrollEvent);
-document
-  .getElementById("timelineContainer")
-  .addEventListener("DOMMouseScroll", scrollEvent);
+document.getElementById("timelineContainer").addEventListener("mousewheel", scrollEvent);
+document.getElementById("timelineContainer").addEventListener("DOMMouseScroll", scrollEvent);
 window.addEventListener("mousewheel", globalScrollEvent);
 window.addEventListener("DOMMouseScroll", globalScrollEvent);
 window.addEventListener("resize", initialize);
