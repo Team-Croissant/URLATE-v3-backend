@@ -659,6 +659,11 @@ const songSelected = (n) => {
       themeSong.stop();
     }, 500);
     songs[n].play();
+    if (tracks[n].name == "URLATE Theme") {
+      setTimeout(() => {
+        storeSong.seek(0);
+      }, 1400);
+    }
   }
   if (document.getElementsByClassName("songSelected")[0]) {
     arrowAnim.destroy();
@@ -958,9 +963,14 @@ const displayClose = () => {
       //STORE
       document.getElementById("storeContainer").classList.remove("fadeIn");
       document.getElementById("storeContainer").classList.add("fadeOut");
-      themeSong.fade(0, 1, 300);
+      if (songSelection != -1) {
+        songs[songSelection].fade(0, 1, 300);
+        fadeRate(songs[songSelection], 0.632183908, 1, 300, new Date().getTime());
+      } else {
+        themeSong.fade(0, 1, 300);
+        fadeRate(themeSong, 0.632183908, 1, 300, new Date().getTime());
+      }
       storeSong.fade(1, 0, 300);
-      fadeRate(themeSong, 0.632183908, 1, 300, new Date().getTime());
       fadeRate(storeSong, 1, 1.5818181818, 300, new Date().getTime());
       setTimeout(() => {
         document.getElementById("storeContainer").classList.remove("fadeOut");
@@ -1482,9 +1492,14 @@ const menuSelected = (n) => {
     document.getElementById("advancedContainer").classList.add("fadeIn");
   } else if (n == 3) {
     //store
-    themeSong.fade(1, 0, 300);
+    if (songSelection != -1) {
+      songs[songSelection].fade(1, 0, 300);
+      fadeRate(songs[songSelection], 1, 0.632183908, 300, new Date().getTime());
+    } else {
+      themeSong.fade(1, 0, 300);
+      fadeRate(themeSong, 1, 0.632183908, 300, new Date().getTime());
+    }
     storeSong.fade(0, 1, 300);
-    fadeRate(themeSong, 1, 0.632183908, 300, new Date().getTime());
     fadeRate(storeSong, 1.5818181818, 1, 300, new Date().getTime());
     document.getElementById("storeContainer").style.display = "block";
     document.getElementById("storeContainer").classList.add("fadeIn");
