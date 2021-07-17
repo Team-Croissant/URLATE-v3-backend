@@ -672,7 +672,7 @@ app.put("/record", async (req, res) => {
         .where("isBest", 1)
         .where("difficulty", req.body.difficulty);
     }
-    if (result.length) isBest = 1;
+    if (!result.length) isBest = 1;
     await knex("trackRecords").insert({
       name: req.body.name,
       nickname: req.body.nickname,
