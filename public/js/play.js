@@ -82,50 +82,40 @@ const socketInitialize = () => {
   });
 
   socket.on("connect", () => {
-    socket.emit(
-      "game init",
-      localStorage.songName,
-      localStorage.difficultySelection
-    );
+    socket.emit("game init", localStorage.songName, localStorage.difficultySelection);
 
-    socket.on(
-      "game result",
-      (perfect, great, good, bad, miss, bullet, score, accuracy, rank) => {
-        resultEffect.play();
-        perfectResult.textContent = perfect;
-        greatResult.textContent = great;
-        goodResult.textContent = good;
-        badResult.textContent = bad;
-        missResult.textContent = miss;
-        bulletResult.textContent = bullet;
-        scoreText.textContent = numberWithCommas(`${score}`);
-        comboText.textContent = `${maxCombo}x`;
-        accuracyText.textContent = `${accuracy}%`;
-        rankImg.src = `/images/parts/elements/${rank}.png`;
-        if (rank == "SS") {
-          rankImg.style.animationName = "rainbow";
-        }
-        scoreInfoRank.style.setProperty(
-          "--background",
-          `url('/images/parts/elements/${rank}back.png')`
-        );
-        setTimeout(() => {
-          document.getElementById("componentCanvas").style.opacity = "0";
-        }, 500);
-        setTimeout(() => {
-          floatingArrowContainer.style.display = "flex";
-          floatingArrowContainer.classList.toggle("arrowFade");
-        }, 1000);
-        setTimeout(() => {
-          floatingResultContainer.style.display = "flex";
-          floatingResultContainer.classList.toggle("resultFade");
-        }, 1300);
-        setTimeout(() => {
-          scoreContainer.style.opacity = "1";
-          scoreContainer.style.pointerEvents = "all";
-        }, 2000);
+    socket.on("game result", (perfect, great, good, bad, miss, bullet, score, accuracy, rank) => {
+      resultEffect.play();
+      perfectResult.textContent = perfect;
+      greatResult.textContent = great;
+      goodResult.textContent = good;
+      badResult.textContent = bad;
+      missResult.textContent = miss;
+      bulletResult.textContent = bullet;
+      scoreText.textContent = numberWithCommas(`${score}`);
+      comboText.textContent = `${maxCombo}x`;
+      accuracyText.textContent = `${accuracy}%`;
+      rankImg.src = `/images/parts/elements/${rank}.png`;
+      if (rank == "SS") {
+        rankImg.style.animationName = "rainbow";
       }
-    );
+      scoreInfoRank.style.setProperty("--background", `url('/images/parts/elements/${rank}back.png')`);
+      setTimeout(() => {
+        document.getElementById("componentCanvas").style.opacity = "0";
+      }, 500);
+      setTimeout(() => {
+        floatingArrowContainer.style.display = "flex";
+        floatingArrowContainer.classList.toggle("arrowFade");
+      }, 1000);
+      setTimeout(() => {
+        floatingResultContainer.style.display = "flex";
+        floatingResultContainer.classList.toggle("resultFade");
+      }, 1300);
+      setTimeout(() => {
+        scoreContainer.style.opacity = "1";
+        scoreContainer.style.pointerEvents = "all";
+      }, 2000);
+    });
   });
 };
 
@@ -181,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
               data = data.user;
               userName = data.nickname;
               userid = data.userid;
-              socketInitialize();
               settings = JSON.parse(data.settings);
               initialize(true);
               if (data.advanced) {
@@ -206,39 +195,27 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const initialize = (isFirstCalled) => {
-  canvas.width =
-    (window.innerWidth * pixelRatio * settings.display.canvasRes) / 100;
-  canvas.height =
-    (window.innerHeight * pixelRatio * settings.display.canvasRes) / 100;
+  canvas.width = (window.innerWidth * pixelRatio * settings.display.canvasRes) / 100;
+  canvas.height = (window.innerHeight * pixelRatio * settings.display.canvasRes) / 100;
   missCanvas.width = window.innerWidth * 0.2 * pixelRatio;
   missCanvas.height = window.innerHeight * 0.05 * pixelRatio;
   if (isFirstCalled) {
-    fetch(
-      `${cdn}/patterns/${localStorage.songName}/${localStorage.difficultySelection}.json`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
+    fetch(`${cdn}/patterns/${localStorage.songName}/${localStorage.difficultySelection}.json`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         pattern = data;
         patternLength = pattern.patterns.length;
         scoreDifficultyNum.textContent = localStorage.difficulty;
-        scoreDifficultyName.textContent =
-          difficultyNames[localStorage.difficultySelection];
-        alertMessage.textContent =
-          difficultyNames[localStorage.difficultySelection];
-        document.getElementById("title").textContent =
-          pattern.information.track;
-        document.getElementById("scoreTitle").textContent =
-          pattern.information.track;
-        document.getElementById("artist").textContent =
-          pattern.information.producer;
-        document.getElementById("scoreArtist").textContent =
-          pattern.information.producer;
-        document.getElementById("authorNamespace").textContent =
-          pattern.information.author;
+        scoreDifficultyName.textContent = difficultyNames[localStorage.difficultySelection];
+        alertMessage.textContent = difficultyNames[localStorage.difficultySelection];
+        document.getElementById("title").textContent = pattern.information.track;
+        document.getElementById("scoreTitle").textContent = pattern.information.track;
+        document.getElementById("artist").textContent = pattern.information.producer;
+        document.getElementById("scoreArtist").textContent = pattern.information.producer;
+        document.getElementById("authorNamespace").textContent = pattern.information.author;
         canvasBackground.style.filter = `grayscale(${pattern.background.grayscale}%) opacity(${pattern.background.opacity}%)`;
         offset = pattern.information.offset;
         bpm = pattern.information.bpm;
@@ -246,18 +223,10 @@ const initialize = (isFirstCalled) => {
         for (let i = 0; i < tracks.length; i++) {
           if (tracks[i].name == pattern.information.track) {
             fileName = tracks[i].fileName;
-            document.getElementById(
-              "album"
-            ).src = `${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png`;
-            document.getElementById(
-              "canvasBackground"
-            ).style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
-            document.getElementById(
-              "scoreBackground"
-            ).style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
-            document.getElementById(
-              "scoreAlbum"
-            ).style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+            document.getElementById("album").src = `${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png`;
+            document.getElementById("canvasBackground").style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+            document.getElementById("scoreBackground").style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
+            document.getElementById("scoreAlbum").style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
             break;
           }
         }
@@ -312,10 +281,8 @@ const initialize = (isFirstCalled) => {
     socket.emit(
       "game resized",
       canvas.width,
-      ((window.innerWidth / 200) * pixelRatio * settings.display.canvasRes) /
-        100,
-      ((window.innerHeight / 200) * pixelRatio * settings.display.canvasRes) /
-        100
+      ((window.innerWidth / 200) * pixelRatio * settings.display.canvasRes) / 100,
+      ((window.innerHeight / 200) * pixelRatio * settings.display.canvasRes) / 100
     );
   }
 };
@@ -353,13 +320,11 @@ const lottieSet = () => {
       canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       break;
     case 1: //Image & BGA
-      canvasBackground.getElementsByTagName("canvas")[0].style.display =
-        "initial";
+      canvasBackground.getElementsByTagName("canvas")[0].style.display = "initial";
       canvasBackground.style.backgroundImage = `url("${cdn}/albums/${settings.display.albumRes}/${fileName} (Custom).png")`;
       break;
     case 2: //BGA
-      canvasBackground.getElementsByTagName("canvas")[0].style.display =
-        "initial";
+      canvasBackground.getElementsByTagName("canvas")[0].style.display = "initial";
       canvasBackground.style.backgroundImage = "none";
       canvasBackground.style.backgroundColor = `#${pattern.background.boxColor}`;
       break;
@@ -384,8 +349,7 @@ const settingApply = () => {
   hide.miss = settings.game.applyJudge.Miss;
   frameCounter = settings.game.counter;
   for (let i = 0; i <= 1; i++) {
-    document.getElementsByClassName("volumeMaster")[i].value =
-      settings.sound.volume.master * 100;
+    document.getElementsByClassName("volumeMaster")[i].value = settings.sound.volume.master * 100;
   }
   volumeMasterValue.textContent = settings.sound.volume.master * 100 + "%";
 };
@@ -424,10 +388,7 @@ const getJudgeStyle = (j, p, x, y) => {
     if (skin[j].type == "gradient") {
       let grd = ctx.createLinearGradient(x - 50, y - 20, x + 50, y + 20);
       for (let i = 0; i < skin[j].stops.length; i++) {
-        grd.addColorStop(
-          skin[j].stops[i].percentage / 100,
-          `#${skin[j].stops[i].color}${p.toString(16)}`
-        );
+        grd.addColorStop(skin[j].stops[i].percentage / 100, `#${skin[j].stops[i].color}${p.toString(16)}`);
       }
       return grd;
     } else if (skin[j].type == "color") {
@@ -445,13 +406,7 @@ const drawParticle = (n, x, y, j) => {
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();
         ctx.fillStyle = "#222";
-        ctx.arc(
-          cx + n * destroyParticles[j].d[i][0],
-          cy + n * destroyParticles[j].d[i][1],
-          w,
-          0,
-          2 * Math.PI
-        );
+        ctx.arc(cx + n * destroyParticles[j].d[i][0], cy + n * destroyParticles[j].d[i][1], w, 0, 2 * Math.PI);
         ctx.fill();
       }
     };
@@ -550,10 +505,7 @@ const drawNote = (p, x, y) => {
   if (skin.note.type == "gradient") {
     let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
     for (let i = 0; i < skin.note.stops.length; i++) {
-      grd.addColorStop(
-        skin.note.stops[i].percentage / 100,
-        `#${skin.note.stops[i].color}${opacity.toString(16)}`
-      );
+      grd.addColorStop(skin.note.stops[i].percentage / 100, `#${skin.note.stops[i].color}${opacity.toString(16)}`);
     }
     ctx.fillStyle = grd;
     ctx.strokeStyle = grd;
@@ -577,16 +529,13 @@ const drawCursor = () => {
   }
   if (mouseClicked) {
     if (mouseClickedMs + 10 > Date.now()) {
-      w =
-        w +
-        (canvas.width / 400) * (1 - (mouseClickedMs + 10 - Date.now()) / 10);
+      w = w + (canvas.width / 400) * (1 - (mouseClickedMs + 10 - Date.now()) / 10);
     } else {
       w = w + (canvas.width / 400) * 1;
     }
   } else {
     if (mouseClickedMs + 100 > Date.now()) {
-      w =
-        w + ((canvas.width / 400) * (mouseClickedMs + 100 - Date.now())) / 100;
+      w = w + ((canvas.width / 400) * (mouseClickedMs + 100 - Date.now())) / 100;
     }
   }
   x = (canvas.width / 200) * (mouseX + 100);
@@ -594,10 +543,7 @@ const drawCursor = () => {
   if (skin.cursor.type == "gradient") {
     let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
     for (let i = 0; i < skin.cursor.stops.length; i++) {
-      grd.addColorStop(
-        skin.cursor.stops[i].percentage / 100,
-        `#${skin.cursor.stops[i].color}`
-      );
+      grd.addColorStop(skin.cursor.stops[i].percentage / 100, `#${skin.cursor.stops[i].color}`);
     }
     ctx.fillStyle = grd;
   } else if (skin.cursor.type == "color") {
@@ -614,10 +560,7 @@ const drawBullet = (n, x, y, a) => {
   if (skin.bullet.type == "gradient") {
     let grd = ctx.createLinearGradient(x - w, y - w, x + w, y + w);
     for (let i = 0; i < skin.bullet.stops.length; i++) {
-      grd.addColorStop(
-        skin.bullet.stops[i].percentage / 100,
-        `#${skin.bullet.stops[i].color}`
-      );
+      grd.addColorStop(skin.bullet.stops[i].percentage / 100, `#${skin.bullet.stops[i].color}`);
     }
     ctx.fillStyle = grd;
     ctx.strokeStyle = grd;
@@ -645,11 +588,7 @@ const drawBullet = (n, x, y, a) => {
       ctx.fillStyle = "#F55";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.fillText(
-        `drawBullet:bullet number isn't specified.`,
-        canvas.width / 100,
-        canvas.height / 100
-      );
+      ctx.fillText(`drawBullet:bullet number isn't specified.`, canvas.width / 100, canvas.height / 100);
       console.error(`drawBullet:bullet number isn't specified.`);
   }
 };
@@ -657,37 +596,22 @@ const drawBullet = (n, x, y, a) => {
 const callBulletDestroy = (j) => {
   let date = new Date().getTime();
   const seek = date - startDate - (offset + sync);
-  const p =
-    ((seek - pattern.bullets[j].ms) /
-      ((bpm * 40) / speed / pattern.bullets[j].speed)) *
-    100;
+  const p = ((seek - pattern.bullets[j].ms) / ((bpm * 40) / speed / pattern.bullets[j].speed)) * 100;
   const left = pattern.bullets[j].direction == "L";
   let x = (left ? -1 : 1) * (100 - p);
   let y = 0;
   if (pattern.bullets[j].value == 0) {
-    y =
-      pattern.bullets[j].location +
-      p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
+    y = pattern.bullets[j].location + p * getTan(pattern.bullets[j].angle) * (left ? 1 : -1);
   } else {
-    if (!circleBulletAngles[j])
-      circleBulletAngles[j] = calcAngleDegrees(
-        (left ? -100 : 100) - mouseX,
-        pattern.bullets[j].location - mouseY
-      );
+    if (!circleBulletAngles[j]) circleBulletAngles[j] = calcAngleDegrees((left ? -100 : 100) - mouseX, pattern.bullets[j].location - mouseY);
     if (left) {
-      if (110 > circleBulletAngles[j] && circleBulletAngles[j] > 0)
-        circleBulletAngles[j] = 110;
-      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] > -110)
-        circleBulletAngles[j] = -110;
+      if (110 > circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 110;
+      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] > -110) circleBulletAngles[j] = -110;
     } else {
-      if (70 < circleBulletAngles[j] && circleBulletAngles[j] > 0)
-        circleBulletAngles[j] = 70;
-      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] < -70)
-        circleBulletAngles[j] = -70;
+      if (70 < circleBulletAngles[j] && circleBulletAngles[j] > 0) circleBulletAngles[j] = 70;
+      else if (0 > circleBulletAngles[j] && circleBulletAngles[j] < -70) circleBulletAngles[j] = -70;
     }
-    y =
-      pattern.bullets[j].location +
-      p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
+    y = pattern.bullets[j].location + p * getTan(circleBulletAngles[j]) * (left ? 1 : -1);
   }
   let randomDirection = [];
   for (let i = 0; i < 3; i++) {
@@ -724,15 +648,9 @@ const cntRender = () => {
       let fontSize = 20;
       if (comboAlertMs + 300 > Date.now()) {
         comboOpacity = 1 - (comboAlertMs + 300 - Date.now()) / 300;
-      } else if (
-        comboAlertMs + 300 <= Date.now() &&
-        comboAlertMs + 600 > Date.now()
-      ) {
+      } else if (comboAlertMs + 300 <= Date.now() && comboAlertMs + 600 > Date.now()) {
         comboOpacity = 1;
-      } else if (
-        comboAlertMs + 600 <= Date.now() &&
-        comboAlertMs + 900 > Date.now()
-      ) {
+      } else if (comboAlertMs + 600 <= Date.now() && comboAlertMs + 900 > Date.now()) {
         comboOpacity = (comboAlertMs + 900 - Date.now()) / 900;
       }
       fontSize = 30 - (comboAlertMs + 900 - Date.now()) / 90;
@@ -777,20 +695,13 @@ const cntRender = () => {
       } else if (renderTriggers[i].value == 4) {
         speed = renderTriggers[i].speed;
       } else if (renderTriggers[i].value == 5) {
-        if (
-          renderTriggers[i].ms - 1 <= seek &&
-          renderTriggers[i].ms + renderTriggers[i].time > seek
-        ) {
+        if (renderTriggers[i].ms - 1 <= seek && renderTriggers[i].ms + renderTriggers[i].time > seek) {
           ctx.beginPath();
           ctx.fillStyle = "#111";
           ctx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis, Noto Sans KR`;
           ctx.textAlign = renderTriggers[i].align;
           ctx.textBaseline = renderTriggers[i].valign;
-          ctx.fillText(
-            renderTriggers[i].text,
-            (canvas.width / 200) * (renderTriggers[i].x + 100),
-            (canvas.height / 200) * (renderTriggers[i].y + 100)
-          );
+          ctx.fillText(renderTriggers[i].text, (canvas.width / 200) * (renderTriggers[i].x + 100), (canvas.height / 200) * (renderTriggers[i].y + 100));
         }
       }
     }
@@ -806,17 +717,8 @@ const cntRender = () => {
     end = upperBound(pattern.patterns, seek + (bpm * 14) / speed);
     const renderNotes = pattern.patterns.slice(start, end);
     for (let i = 0; i < renderNotes.length; i++) {
-      const p =
-        (((bpm * 14) / speed - (renderNotes[i].ms - seek)) /
-          ((bpm * 14) / speed)) *
-        100;
-      trackMouseSelection(
-        start + i,
-        0,
-        renderNotes[i].value,
-        renderNotes[i].x,
-        renderNotes[i].y
-      );
+      const p = (((bpm * 14) / speed - (renderNotes[i].ms - seek)) / ((bpm * 14) / speed)) * 100;
+      trackMouseSelection(start + i, 0, renderNotes[i].value, renderNotes[i].x, renderNotes[i].y);
       drawNote(p, renderNotes[i].x, renderNotes[i].y);
       if (p >= 120 && !destroyedNotes.has(start + i)) {
         calculateScore("miss", start + i, true);
@@ -839,56 +741,24 @@ const cntRender = () => {
     const renderBullets = pattern.bullets.slice(start, end);
     for (let i = 0; i < renderBullets.length; i++) {
       if (!destroyedBullets.has(start + i)) {
-        const p =
-          ((seek - renderBullets[i].ms) /
-            ((bpm * 40) / speed / renderBullets[i].speed)) *
-          100;
+        const p = ((seek - renderBullets[i].ms) / ((bpm * 40) / speed / renderBullets[i].speed)) * 100;
         const left = renderBullets[i].direction == "L";
         let x = (left ? -1 : 1) * (100 - p);
         let y = 0;
         if (renderBullets[i].value == 0) {
-          y =
-            renderBullets[i].location +
-            p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
+          y = renderBullets[i].location + p * getTan(renderBullets[i].angle) * (left ? 1 : -1);
           trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
-          drawBullet(
-            renderBullets[i].value,
-            x,
-            y,
-            renderBullets[i].angle + (left ? 0 : 180)
-          );
+          drawBullet(renderBullets[i].value, x, y, renderBullets[i].angle + (left ? 0 : 180));
         } else {
-          if (!circleBulletAngles[start + i])
-            circleBulletAngles[start + i] = calcAngleDegrees(
-              (left ? -100 : 100) - mouseX,
-              renderBullets[i].location - mouseY
-            );
+          if (!circleBulletAngles[start + i]) circleBulletAngles[start + i] = calcAngleDegrees((left ? -100 : 100) - mouseX, renderBullets[i].location - mouseY);
           if (left) {
-            if (
-              110 > circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] > 0
-            )
-              circleBulletAngles[start + i] = 110;
-            else if (
-              0 > circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] > -110
-            )
-              circleBulletAngles[start + i] = -110;
+            if (110 > circleBulletAngles[start + i] && circleBulletAngles[start + i] > 0) circleBulletAngles[start + i] = 110;
+            else if (0 > circleBulletAngles[start + i] && circleBulletAngles[start + i] > -110) circleBulletAngles[start + i] = -110;
           } else {
-            if (
-              70 < circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] > 0
-            )
-              circleBulletAngles[start + i] = 70;
-            else if (
-              0 > circleBulletAngles[start + i] &&
-              circleBulletAngles[start + i] < -70
-            )
-              circleBulletAngles[start + i] = -70;
+            if (70 < circleBulletAngles[start + i] && circleBulletAngles[start + i] > 0) circleBulletAngles[start + i] = 70;
+            else if (0 > circleBulletAngles[start + i] && circleBulletAngles[start + i] < -70) circleBulletAngles[start + i] = -70;
           }
-          y =
-            renderBullets[i].location +
-            p * getTan(circleBulletAngles[start + i]) * (left ? 1 : -1);
+          y = renderBullets[i].location + p * getTan(circleBulletAngles[start + i]) * (left ? 1 : -1);
           trackMouseSelection(start + i, 1, renderBullets[i].value, x, y);
           drawBullet(renderBullets[i].value, x, y, "");
         }
@@ -914,18 +784,10 @@ const cntRender = () => {
   ctx.fillStyle = "#333";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText(
-    numberWithCommas(`${Math.round(displayScore)}`.padStart(9, 0)),
-    canvas.width / 2,
-    canvas.height / 80
-  );
+  ctx.fillText(numberWithCommas(`${Math.round(displayScore)}`.padStart(9, 0)), canvas.width / 2, canvas.height / 80);
   ctx.font = "2.5vh Metropolis";
   ctx.fillStyle = "#555";
-  ctx.fillText(
-    `${combo}x`,
-    canvas.width / 2,
-    canvas.height / 70 + canvas.height / 25
-  );
+  ctx.fillText(`${combo}x`, canvas.width / 2, canvas.height / 70 + canvas.height / 25);
   drawCursor();
 
   //fps counter
@@ -977,13 +839,7 @@ const calculateResult = () => {
   missCtx.lineWidth = 2;
   for (let i = 0; i < missPoint.length; i++) {
     missCtx.beginPath();
-    missCtx.arc(
-      missCanvas.width * (missPoint[i] / length),
-      missCanvas.height * 0.8,
-      missCanvas.height * 0.1,
-      0,
-      2 * Math.PI
-    );
+    missCtx.arc(missCanvas.width * (missPoint[i] / length), missCanvas.height * 0.8, missCanvas.height * 0.1, 0, 2 * Math.PI);
     missCtx.fill();
     missCtx.stroke();
   }
@@ -992,40 +848,22 @@ const calculateResult = () => {
     missCtx.font = "500 3vh Metropolis";
     missCtx.textAlign = "right";
     missCtx.textBaseline = "bottom";
-    missCtx.fillText(
-      "Perfect!",
-      missCanvas.width - 10,
-      missCanvas.height * 0.8 - 10
-    );
+    missCtx.fillText("Perfect!", missCanvas.width - 10, missCanvas.height * 0.8 - 10);
   }
 };
 
 const trackMouseSelection = (i, v1, v2, x, y) => {
   if (song.playing()) {
-    const powX =
-      ((((mouseX - x) * canvasContainer.offsetWidth) / 200) *
-        pixelRatio *
-        settings.display.canvasRes) /
-      100;
-    const powY =
-      ((((mouseY - y) * canvasContainer.offsetHeight) / 200) *
-        pixelRatio *
-        settings.display.canvasRes) /
-      100;
+    const powX = ((((mouseX - x) * canvasContainer.offsetWidth) / 200) * pixelRatio * settings.display.canvasRes) / 100;
+    const powY = ((((mouseY - y) * canvasContainer.offsetHeight) / 200) * pixelRatio * settings.display.canvasRes) / 100;
     switch (v1) {
       case 0:
-        if (
-          Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
-          canvas.width / 40 + canvas.width / 70
-        ) {
+        if (Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 40 + canvas.width / 70) {
           pointingCntElement.push({ v1: v1, v2: v2, i: i });
         }
         break;
       case 1:
-        if (
-          Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <=
-          canvas.width / 80
-        ) {
+        if (Math.sqrt(Math.pow(powX, 2) + Math.pow(powY, 2)) <= canvas.width / 80) {
           if (!destroyedBullets.has(i)) {
             bullet++;
             missPoint.push(song.seek() * 1000);
@@ -1043,23 +881,14 @@ const trackMouseSelection = (i, v1, v2, x, y) => {
         ctx.fillStyle = "#F55";
         ctx.textAlign = "left";
         ctx.textBaseline = "top";
-        ctx.fillText(
-          `trackMouseSelection:Undefined element.`,
-          canvas.width / 100,
-          canvas.height / 100
-        );
+        ctx.fillText(`trackMouseSelection:Undefined element.`, canvas.width / 100, canvas.height / 100);
         console.error(`trackMouseSelection:Undefined element.`);
     }
   }
 };
 
 const compClicked = (isTyped, key) => {
-  if (
-    (!isTyped && !settings.input.mouse) ||
-    isMenuOpened ||
-    !menuAllowed ||
-    mouseClicked == key
-  ) {
+  if ((!isTyped && !settings.input.mouse) || isMenuOpened || !menuAllowed || mouseClicked == key) {
     return;
   }
   let d = new Date().getTime();
@@ -1080,10 +909,7 @@ const compClicked = (isTyped, key) => {
   else mouseClicked = true;
   mouseClickedMs = Date.now();
   for (let i = 0; i < pointingCntElement.length; i++) {
-    if (
-      pointingCntElement[i].v1 === 0 &&
-      !destroyedNotes.has(pointingCntElement[i].i)
-    ) {
+    if (pointingCntElement[i].v1 === 0 && !destroyedNotes.has(pointingCntElement[i].i)) {
       drawParticle(1, mouseX, mouseY);
       let date = d;
       const seek = date - startDate - (offset + sync);
@@ -1176,8 +1002,7 @@ const doneLoading = () => {
     document.getElementById("wallRight").style.right = "0vw";
     setTimeout(() => {
       document.getElementById("loadingContainer").style.display = "none";
-      document.getElementById("componentCanvas").style.transitionDuration =
-        "0s";
+      document.getElementById("componentCanvas").style.transitionDuration = "0s";
     }, 1000);
     setTimeout(() => {
       song.play();
@@ -1188,14 +1013,8 @@ const doneLoading = () => {
         "game start",
         startDate,
         canvas.width,
-        ((canvasContainer.offsetWidth / 200) *
-          pixelRatio *
-          settings.display.canvasRes) /
-          100,
-        ((canvasContainer.offsetHeight / 200) *
-          pixelRatio *
-          settings.display.canvasRes) /
-          100
+        ((canvasContainer.offsetWidth / 200) * pixelRatio * settings.display.canvasRes) / 100,
+        ((canvasContainer.offsetHeight / 200) * pixelRatio * settings.display.canvasRes) / 100
       );
     }, 4000);
   }, 1000);
@@ -1240,9 +1059,7 @@ const settingChanged = (e, v) => {
     settings.sound.volume.master = e.value / 100;
     volumeMasterValue.textContent = e.value + "%";
     for (let i = 0; i <= 1; i++) {
-      document.getElementsByClassName("volumeMaster")[i].value = Math.round(
-        settings.sound.volume.master * 100
-      );
+      document.getElementsByClassName("volumeMaster")[i].value = Math.round(settings.sound.volume.master * 100);
     }
     overlayTime = new Date().getTime();
     setTimeout(() => {
@@ -1267,28 +1084,22 @@ const globalScrollEvent = (e) => {
     if (delta == 1) {
       //UP
       if (settings.sound.volume.master <= 0.95) {
-        settings.sound.volume.master =
-          Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
+        settings.sound.volume.master = Math.round((settings.sound.volume.master + 0.05) * 100) / 100;
       } else {
         settings.sound.volume.master = 1;
       }
     } else {
       //DOWN
       if (settings.sound.volume.master >= 0.05) {
-        settings.sound.volume.master =
-          Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
+        settings.sound.volume.master = Math.round((settings.sound.volume.master - 0.05) * 100) / 100;
       } else {
         settings.sound.volume.master = 0;
       }
     }
     for (let i = 0; i <= 1; i++) {
-      document.getElementsByClassName("volumeMaster")[i].value = Math.round(
-        settings.sound.volume.master * 100
-      );
+      document.getElementsByClassName("volumeMaster")[i].value = Math.round(settings.sound.volume.master * 100);
     }
-    volumeMasterValue.textContent = `${Math.round(
-      settings.sound.volume.master * 100
-    )}%`;
+    volumeMasterValue.textContent = `${Math.round(settings.sound.volume.master * 100)}%`;
     Howler.volume(settings.sound.volume.master);
     volumeOverlay.classList.add("overlayOpen");
     overlayTime = new Date().getTime();
