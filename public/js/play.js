@@ -206,6 +206,7 @@ const initialize = (isFirstCalled) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        socketInitialize();
         pattern = data;
         patternLength = pattern.patterns.length;
         scoreDifficultyNum.textContent = localStorage.difficulty;
