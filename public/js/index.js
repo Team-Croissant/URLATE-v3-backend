@@ -5,9 +5,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let UserAgent = navigator.userAgent;
   console.log(UserAgent);
   if (
-    UserAgent.match(
-      /iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i
-    ) != null ||
+    UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null ||
     UserAgent.match(/LG|SAMSUNG|Samsung/) != null ||
     (UserAgent.match(/Safari/i) != null && UserAgent.match(/Chrome/i) == null)
   ) {
@@ -55,9 +53,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     .catch((error) => {
       alert(`Error occured.\n${error}`);
     });
-  let shutdowned = new URLSearchParams(window.location.search).get(
-    "shutdowned"
-  );
+  let shutdowned = new URLSearchParams(window.location.search).get("shutdowned");
   if (shutdowned == "true") {
     alert(shutdownAlert);
   }
@@ -106,9 +102,7 @@ window.onresize = () => {
 window.onload = () => {
   setTimeout(() => {
     try {
-      document
-        .getElementsByClassName("abcRioButtonContents")[0]
-        .getElementsByTagName("span")[1].innerHTML = document
+      document.getElementsByClassName("abcRioButtonContents")[0].getElementsByTagName("span")[1].innerHTML = document
         .getElementsByClassName("abcRioButtonContents")[0]
         .getElementsByTagName("span")[0].innerHTML;
     } catch (e) {
@@ -131,8 +125,7 @@ const signInCallback = (authResult) => {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
-        ClientId:
-          "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
+        ClientId: "300804215392-fcv3uph5mscb39av0c4kk65gq8oupqrq.apps.googleusercontent.com",
         ClientSecret: "WVUB-PJDdwdm3dHpkOMbacqw",
         RedirectionUrl: `${projectUrl}`,
         code: authResult["code"],
