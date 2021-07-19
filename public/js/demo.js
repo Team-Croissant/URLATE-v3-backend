@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     sound: {
       volume: {
-        master: 1,
+        master: 0.5,
         music: 1,
         hitSound: 1,
         effect: 1,
