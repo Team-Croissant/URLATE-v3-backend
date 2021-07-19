@@ -129,6 +129,15 @@ app.get("/tutorial", async (req, res) => {
   });
 });
 
+app.get("/demo", async (req, res) => {
+  res.render("demo", {
+    cdn: config.project.cdn,
+    url: config.project.url,
+    api: config.project.api,
+    game: config.project.game,
+  });
+});
+
 app.get("/accessDenined", (req, res) => {
   res.render("accessDenined");
 });
