@@ -227,6 +227,7 @@ app.post("/auth/join", async (req, res) => {
           DI: "",
           adultCert: 0,
           paid: 0,
+          paidDate: new Date(0),
         });
         delete req.session.tempName;
         req.session.save(() => {
@@ -988,10 +989,15 @@ const advancedUpdate = async () => {
 setTimeout(advancedUpdate, 1000);
 
 const paidAmountCheck = async (uid, amount) => {
-  let result = await knex("users").select("paid", "birth").where("userid", uid);
+  let d = new Date();
+  let result = await knex("users").select("paid", "birth", "paidDate").where("userid", uid);
+  let paidDate = new Date(result[0].paidDate);
   let paid = Number(result[0].paid);
   amount = Number(amount);
-  if (new Date().getTime() - new Date(result[0].birth).getTime() <= 599184000000) {
+  if (paidDate.getMonth() != d.getMonth() && paidDate.getFullYear() != d.getFullYear()) {
+    paid = 0;
+  }
+  if (d.getTime() - new Date(result[0].birth).getTime() <= 599184000000) {
     if (paid + amount > 70000) {
       return false;
     }
@@ -999,6 +1005,7 @@ const paidAmountCheck = async (uid, amount) => {
   await knex("users")
     .update({
       paid: paid + amount,
+      paidDate: d,
     })
     .where("userid", uid);
   return true;
