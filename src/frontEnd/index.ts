@@ -1,4 +1,5 @@
 import signale = require("signale");
+import cookieParser = require("cookie-parser");
 import http = require("http");
 import express = require("express");
 import i18n from "./i18n";
@@ -11,6 +12,7 @@ const port = 1025;
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/../../views");
+app.use(cookieParser());
 app.use(express.static(__dirname + "/../../public"));
 app.use(i18n);
 
