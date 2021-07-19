@@ -22,11 +22,7 @@ const plus = google.plus("v1");
 let whitelist =
   "bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com, jungin7612@gmail.com, greenstar1151@gmail.com, kiwiyou.dev@gmail.com, hwymaster01@gmail.com, testcroissant1@gmail.com, officialteamcroissant@gmail.com";
 
-import {
-  createSuccessResponse,
-  createErrorResponse,
-  createStatusResponse,
-} from "./api-response";
+import { createSuccessResponse, createErrorResponse, createStatusResponse } from "./api-response";
 
 const app = express();
 app.locals.pretty = true;
@@ -63,8 +59,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) =>
-  new OAuth2(ClientId, ClientSecret, RedirectionUrl);
+const getOAuthClient = (ClientId, ClientSecret, RedirectionUrl) => new OAuth2(ClientId, ClientSecret, RedirectionUrl);
 
 redisClient.on("error", function (error) {
   signale.error(error);
@@ -85,13 +80,9 @@ app.get("/auth/status", async (req, res) => {
     return;
   }
 
-  const results = await knex("users")
-    .select("userid", "nickname", "adultCert", "authentication", "birth")
-    .where("userid", req.session.userid);
+  const results = await knex("users").select("userid", "nickname", "adultCert", "authentication", "birth").where("userid", req.session.userid);
   if (!results[0]) {
-    res
-      .status(200)
-      .json({ status: "Not registered", tempName: req.session.tempName });
+    res.status(200).json({ status: "Not registered", tempName: req.session.tempName });
     return;
   }
 
@@ -121,22 +112,10 @@ app.get("/auth/status", async (req, res) => {
 });
 
 app.post("/auth/login", (req, res) => {
-  var oauth2Client = getOAuthClient(
-    req.body.ClientId,
-    req.body.ClientSecret,
-    req.body.RedirectionUrl
-  );
+  var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
   oauth2Client.getToken(req.body.code, (err, tokens) => {
     if (err) {
-      res
-        .status(400)
-        .json(
-          createErrorResponse(
-            "failed",
-            err.response.data.error,
-            err.response.data.error_description
-          )
-        );
+      res.status(400).json(createErrorResponse("failed", err.response.data.error, err.response.data.error_description));
       return;
     }
 
@@ -156,18 +135,8 @@ app.post("/auth/login", (req, res) => {
         });
       } else {
         signale.debug(new Date());
-        signale.debug(
-          `User login blocked by whitelist : ${response.data.emails[0].value}`
-        );
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Not Whitelisted",
-              "Provided email is not whitelisted."
-            )
-          );
+        signale.debug(`User login blocked by whitelist : ${response.data.emails[0].value}`);
+        res.status(400).json(createErrorResponse("failed", "Not Whitelisted", "Provided email is not whitelisted."));
       }
       return;
     });
@@ -178,28 +147,16 @@ const accUserPattern = /^[a-z0-9]{1,10}$/;
 const accPattern = /^[a-zA-Z0-9!]{10}$/;
 app.post("/acc/login", async (req, res) => {
   if (!accUserPattern.test(req.body.username)) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse("failed", "Wrong Format", "Wrong username format.")
-      );
+    res.status(400).json(createErrorResponse("failed", "Wrong Format", "Wrong username format."));
     return;
   }
   if (!accPattern.test(req.body.password)) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse("failed", "Wrong Format", "Wrong password format.")
-      );
+    res.status(400).json(createErrorResponse("failed", "Wrong Format", "Wrong password format."));
     return;
   }
-  const results = await knex("users")
-    .select("secondary", "salt", "userid")
-    .where("nickname", req.body.username);
+  const results = await knex("users").select("secondary", "salt", "userid").where("nickname", req.body.username);
   if (results.length == 0) {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Wrong User", "Wrong username."));
+    res.status(400).json(createErrorResponse("failed", "Wrong User", "Wrong username."));
     return;
   }
 
@@ -210,15 +167,7 @@ app.post("/acc/login", async (req, res) => {
     },
     (err, pass, salt, hash) => {
       if (hash !== results[0].secondary) {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Wrong Password",
-              "User entered wrong password."
-            )
-          );
+        res.status(400).json(createErrorResponse("failed", "Wrong Password", "User entered wrong password."));
         return;
       }
       req.session.accessToken = "TESTTOKEN";
@@ -233,42 +182,21 @@ app.post("/acc/login", async (req, res) => {
 });
 
 app.post("/auth/join", async (req, res) => {
-  const hasToken =
-    req.session.tempName && req.session.accessToken && req.session.refreshToken;
+  const hasToken = req.session.tempName && req.session.accessToken && req.session.refreshToken;
   if (!hasToken) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Wrong Request",
-          "You need to login first."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Wrong Request", "You need to login first."));
     return;
   }
 
   const namePattern = /^[a-zA-Z0-9_-]{5,12}$/;
   const passPattern = /^[0-9]{4,6}$/;
-  const isValidated =
-    namePattern.test(req.body.displayName) &&
-    passPattern.test(req.body.secondaryPassword);
+  const isValidated = namePattern.test(req.body.displayName) && passPattern.test(req.body.secondaryPassword);
   if (!isValidated) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Wrong Format",
-          "Wrong name OR password format."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Wrong Format", "Wrong name OR password format."));
     return;
   }
 
-  const results = await knex("users")
-    .select("nickname")
-    .where("nickname", req.body.displayName);
+  const results = await knex("users").select("nickname").where("nickname", req.body.displayName);
   if (!results[0]) {
     hasher(
       {
@@ -307,31 +235,17 @@ app.post("/auth/join", async (req, res) => {
       }
     );
   } else {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Exist Name",
-          "The name sent already exists."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Exist Name", "The name sent already exists."));
   }
 });
 
 const passwordPattern = /^[0-9]{4,6}$/;
 app.post("/auth/authorize", async (req, res) => {
   if (!passwordPattern.test(req.body.secondaryPassword)) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse("failed", "Wrong Format", "Wrong password format.")
-      );
+    res.status(400).json(createErrorResponse("failed", "Wrong Format", "Wrong password format."));
     return;
   }
-  const results = await knex("users")
-    .select("secondary", "salt")
-    .where("userid", req.session.userid);
+  const results = await knex("users").select("secondary", "salt").where("userid", req.session.userid);
 
   hasher(
     {
@@ -340,15 +254,7 @@ app.post("/auth/authorize", async (req, res) => {
     },
     (err, pass, salt, hash) => {
       if (hash !== results[0].secondary) {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Wrong Password",
-              "User entered wrong password."
-            )
-          );
+        res.status(400).json(createErrorResponse("failed", "Wrong Password", "User entered wrong password."));
         return;
       }
 
@@ -362,40 +268,13 @@ app.post("/auth/authorize", async (req, res) => {
 
 app.get("/user", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
 
-  const results = await knex("users")
-    .select(
-      "nickname",
-      "settings",
-      "skins",
-      "advanced",
-      "advancedType",
-      "DLCs",
-      "userid",
-      "tutorial"
-    )
-    .where("userid", req.session.userid);
+  const results = await knex("users").select("nickname", "settings", "skins", "advanced", "advancedType", "DLCs", "userid", "tutorial").where("userid", req.session.userid);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load data. Use /auth/status to check your status."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load data. Use /auth/status to check your status."));
     return;
   }
 
@@ -404,27 +283,13 @@ app.get("/user", async (req, res) => {
 
 app.post("/user", async (req, res) => {
   if (!req.body.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
 
-  const results = await knex("users")
-    .select("nickname", "settings", "advanced")
-    .where("userid", req.body.userid);
+  const results = await knex("users").select("nickname", "settings", "advanced").where("userid", req.body.userid);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse("failed", "Failed to Load", "Failed to load data.")
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load data."));
     return;
   }
 
@@ -432,25 +297,9 @@ app.post("/user", async (req, res) => {
 });
 
 app.get("/tracks", async (req, res) => {
-  const results = await knex("tracks").select(
-    "name",
-    "fileName",
-    "producer",
-    "bpm",
-    "difficulty",
-    "originalName",
-    "type"
-  );
+  const results = await knex("tracks").select("name", "fileName", "producer", "bpm", "difficulty", "originalName", "type");
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load tracks. It may be a problem with the DB."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load tracks. It may be a problem with the DB."));
     return;
   }
 
@@ -458,27 +307,9 @@ app.get("/tracks", async (req, res) => {
 });
 
 app.get("/track/:name", async (req, res) => {
-  const results = await knex("tracks")
-    .select(
-      "name",
-      "fileName",
-      "producer",
-      "bpm",
-      "difficulty",
-      "originalName",
-      "type"
-    )
-    .where("name", req.params.name);
+  const results = await knex("tracks").select("name", "fileName", "producer", "bpm", "difficulty", "originalName", "type").where("name", req.params.name);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load track. It may be a problem with the DB."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load track. It may be a problem with the DB."));
     return;
   }
 
@@ -486,19 +317,9 @@ app.get("/track/:name", async (req, res) => {
 });
 
 app.get("/trackInfo/:name", async (req, res) => {
-  const results = await knex("patternInfo")
-    .select("bpm", "bullet_density", "note_density", "speed")
-    .where("name", req.params.name);
+  const results = await knex("patternInfo").select("bpm", "bullet_density", "note_density", "speed").where("name", req.params.name);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load track data. It may be a problem with the DB."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load track data. It may be a problem with the DB."));
     return;
   }
 
@@ -507,15 +328,7 @@ app.get("/trackInfo/:name", async (req, res) => {
 
 app.put("/settings", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   try {
@@ -523,22 +336,11 @@ app.put("/settings", async (req, res) => {
     if (
       settings.sound.res == "192kbps" ||
       !settings.game.judgeSkin ||
-      JSON.stringify(settings.game.applyJudge) !=
-        `{"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false}`
+      JSON.stringify(settings.game.applyJudge) != `{"Perfect":false,"Great":false,"Good":false,"Bad":false,"Miss":false,"Bullet":false}`
     ) {
-      const advanced = await knex("users")
-        .select("advanced")
-        .where("userid", req.session.userid);
+      const advanced = await knex("users").select("advanced").where("userid", req.session.userid);
       if (!advanced[0].advanced) {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Error occured while updating",
-              "wrong request"
-            )
-          );
+        res.status(400).json(createErrorResponse("failed", "Error occured while updating", "wrong request"));
         return;
       }
     }
@@ -546,9 +348,7 @@ app.put("/settings", async (req, res) => {
       .update({ settings: JSON.stringify(req.body.settings) })
       .where("userid", req.session.userid);
   } catch (e) {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Error occured while updating", e));
+    res.status(400).json(createErrorResponse("failed", "Error occured while updating", e));
     return;
   }
   res.status(200).json(createSuccessResponse("success"));
@@ -556,25 +356,13 @@ app.put("/settings", async (req, res) => {
 
 app.put("/tutorial", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   try {
-    await knex("users")
-      .update({ tutorial: 1 })
-      .where("userid", req.session.userid);
+    await knex("users").update({ tutorial: 1 }).where("userid", req.session.userid);
   } catch (e) {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Error occured while updating", e));
+    res.status(400).json(createErrorResponse("failed", "Error occured while updating", e));
     return;
   }
   res.status(200).json(createSuccessResponse("success"));
@@ -582,59 +370,31 @@ app.put("/tutorial", async (req, res) => {
 
 app.put("/storeTutorial", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   try {
-    await knex("users")
-      .update({ tutorial: 0 })
-      .where("userid", req.session.userid);
+    await knex("users").update({ tutorial: 0 }).where("userid", req.session.userid);
   } catch (e) {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Error occured while updating", e));
+    res.status(400).json(createErrorResponse("failed", "Error occured while updating", e));
     return;
   }
   res.status(200).json(createSuccessResponse("success"));
 });
 
 app.get("/skin/:skinName", async (req, res) => {
-  const results = await knex("skins")
-    .select("data")
-    .where("name", req.params.skinName);
+  const results = await knex("skins").select("data").where("name", req.params.skinName);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load skin data."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load skin data."));
     return;
   }
   res.status(200).json({ result: "success", data: results[0].data });
 });
 
 app.get("/teamProfile/:name", async (req, res) => {
-  const results = await knex("teamProfiles")
-    .select("data")
-    .where("name", req.params.name);
+  const results = await knex("teamProfiles").select("data").where("name", req.params.name);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse("failed", "Failed to Load", "Failed to load data.")
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load data."));
     return;
   }
   res.status(200).json({ result: "success", data: results[0].data });
@@ -642,25 +402,12 @@ app.get("/teamProfile/:name", async (req, res) => {
 
 app.put("/record", async (req, res) => {
   if (req.body.secret !== config.project.secretKey) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Authorize failed",
-          "Project secret key is not vaild."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Authorize failed", "Project secret key is not vaild."));
     return;
   }
   try {
     let isBest = 0;
-    const result = await knex("trackRecords")
-      .select("record")
-      .where("nickname", req.body.nickname)
-      .where("name", req.body.name)
-      .where("isBest", 1)
-      .where("difficulty", req.body.difficulty);
+    const result = await knex("trackRecords").select("record").where("nickname", req.body.nickname).where("name", req.body.name).where("isBest", 1).where("difficulty", req.body.difficulty);
     if (result.length && result[0].record < req.body.record) {
       isBest = 1;
       await knex("trackRecords")
@@ -684,9 +431,7 @@ app.put("/record", async (req, res) => {
       isBest: isBest,
     });
   } catch (e) {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Error occured while updating", e));
+    res.status(400).json(createErrorResponse("failed", "Error occured while updating", e));
     return;
   }
   res.status(200).json(createSuccessResponse("success"));
@@ -706,106 +451,53 @@ app.get("/record/:track/:name", async (req, res) => {
   res.status(200).json({ result: "success", results });
 });
 
-app.get(
-  "/records/:track/:difficulty/:order/:sort/:nickname",
-  async (req, res) => {
-    const results = await knex("trackRecords")
-      .select("rank", "record", "maxcombo", "nickname")
-      .where("name", req.params.track)
-      .where("difficulty", req.params.difficulty)
-      .where("isBest", 1)
-      .orderBy(req.params.order, req.params.sort);
-    const rank =
-      results
-        .map((d) => {
-          return d["nickname"];
-        })
-        .indexOf(req.params.nickname) + 1;
-    res
-      .status(200)
-      .json({ result: "success", results: results.slice(0, 100), rank: rank });
-  }
-);
+app.get("/records/:track/:difficulty/:order/:sort/:nickname", async (req, res) => {
+  const results = await knex("trackRecords")
+    .select("rank", "record", "maxcombo", "nickname")
+    .where("name", req.params.track)
+    .where("difficulty", req.params.difficulty)
+    .where("isBest", 1)
+    .orderBy(req.params.order, req.params.sort);
+  const rank =
+    results
+      .map((d) => {
+        return d["nickname"];
+      })
+      .indexOf(req.params.nickname) + 1;
+  res.status(200).json({ result: "success", results: results.slice(0, 100), rank: rank });
+});
 
 app.get("/store/DLCs", async (req, res) => {
-  const results = await knex("storeDLC").select(
-    "name",
-    "previewFile",
-    "price",
-    "composer",
-    "songs",
-    "sale"
-  );
+  const results = await knex("storeDLC").select("name", "previewFile", "price", "composer", "songs", "sale");
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load DLC data."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load DLC data."));
     return;
   }
   res.status(200).json({ result: "success", data: results });
 });
 
 app.get("/store/DLC/:name", async (req, res) => {
-  const results = await knex("storeDLC")
-    .select("name", "previewFile", "price", "composer", "songs", "sale")
-    .where("name", req.params.name);
+  const results = await knex("storeDLC").select("name", "previewFile", "price", "composer", "songs", "sale").where("name", req.params.name);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load DLC data."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load DLC data."));
     return;
   }
   res.status(200).json({ result: "success", data: results[0] });
 });
 
 app.get("/store/skins", async (req, res) => {
-  const results = await knex("storeSkin").select(
-    "name",
-    "previewFile",
-    "price",
-    "sale"
-  );
+  const results = await knex("storeSkin").select("name", "previewFile", "price", "sale");
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load Skin data."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load Skin data."));
     return;
   }
   res.status(200).json({ result: "success", data: results });
 });
 
 app.get("/store/skin/:name", async (req, res) => {
-  const results = await knex("storeSkin")
-    .select("name", "previewFile", "price", "sale")
-    .where("name", req.params.name);
+  const results = await knex("storeSkin").select("name", "previewFile", "price", "sale").where("name", req.params.name);
   if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load Skin data."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load Skin data."));
     return;
   }
   res.status(200).json({ result: "success", data: results[0] });
@@ -814,20 +506,8 @@ app.get("/store/skin/:name", async (req, res) => {
 app.post("/store/bag", (req, res) => {
   if (req.body.type == "DLC" || req.body.type == "Skin") {
     if (req.session.bag) {
-      if (
-        req.session.bag
-          .map((i) => JSON.stringify(i))
-          .indexOf(JSON.stringify(req.body)) != -1
-      ) {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Wrong request",
-              `Item ${req.body.type} already exist.`
-            )
-          );
+      if (req.session.bag.map((i) => JSON.stringify(i)).indexOf(JSON.stringify(req.body)) != -1) {
+        res.status(400).json(createErrorResponse("failed", "Wrong request", `Item ${req.body.type} already exist.`));
         return;
       } else {
         req.session.bag.push(req.body);
@@ -836,15 +516,7 @@ app.post("/store/bag", (req, res) => {
       req.session.bag = [req.body];
     }
   } else {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Wrong request",
-          `Item type ${req.body.type} doesn't exist.`
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Wrong request", `Item type ${req.body.type} doesn't exist.`));
     return;
   }
   req.session.save(() => {
@@ -862,61 +534,35 @@ app.get("/store/bag", (req, res) => {
 
 app.delete("/store/bag", (req, res) => {
   if (req.session.bag && req.session.bag != []) {
-    let index = req.session.bag
-      .map((i) => JSON.stringify(i))
-      .indexOf(JSON.stringify(req.body));
+    let index = req.session.bag.map((i) => JSON.stringify(i)).indexOf(JSON.stringify(req.body));
     if (index != -1) {
       req.session.bag.splice(index, 1);
       req.session.save(() => {
         res.status(200).json({ result: "success", bag: req.session.bag });
       });
     } else {
-      res
-        .status(400)
-        .json(
-          createErrorResponse(
-            "failed",
-            "Wrong request",
-            `Item ${req.body.type} doesn't exist.`
-          )
-        );
+      res.status(400).json(createErrorResponse("failed", "Wrong request", `Item ${req.body.type} doesn't exist.`));
     }
   } else {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Bag empty", "Bag is empty."));
+    res.status(400).json(createErrorResponse("failed", "Bag empty", "Bag is empty."));
   }
 });
 
 app.post("/store/purchase", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   let orderId = uuidv4();
   let cart = req.body.cart;
   redisClient.set(`Cart${orderId}`, JSON.stringify(cart));
   let price = 0;
-  let isAdvanced = await knex("users")
-    .select("advanced")
-    .where("userid", req.session.userid);
+  let isAdvanced = await knex("users").select("advanced").where("userid", req.session.userid);
   isAdvanced = isAdvanced[0].advanced;
   for (let i = 0; i < cart.length; i++) {
-    const result = await knex(`store${cart[i].type}`)
-      .select("price", "sale")
-      .where("name", cart[i].item);
+    const result = await knex(`store${cart[i].type}`).select("price", "sale").where("name", cart[i].item);
     let add = JSON.parse(result[0].price)[0];
-    price += Math.round(
-      ((add - add * 0.2 * isAdvanced) / 100) * result[0].sale
-    );
+    price += Math.round(((add - add * 0.2 * isAdvanced) / 100) * result[0].sale);
   }
   redisClient.set(`Amount${orderId}`, price.toString());
   res.status(200).json({
@@ -930,15 +576,7 @@ app.post("/store/purchase", async (req, res) => {
 app.get("/store/success", async (req, res) => {
   delete req.session.bag;
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   const paymentKey = req.query.paymentKey;
@@ -968,15 +606,11 @@ app.get("/store/success", async (req, res) => {
             if (data.status == "DONE") {
               redisClient.get(`Cart${orderId}`, async (err, reply) => {
                 if (err) {
-                  res.redirect(
-                    `${config.project.url}/storeDenied?error=${err}`
-                  );
+                  res.redirect(`${config.project.url}/storeDenied?error=${err}`);
                   return;
                 }
                 let cart = JSON.parse(reply);
-                let saved = await knex("users")
-                  .select("skins", "DLCs")
-                  .where("userid", req.session.userid);
+                let saved = await knex("users").select("skins", "DLCs").where("userid", req.session.userid);
                 let DLCs = new Set(JSON.parse(saved[0]["DLCs"]));
                 let skins = new Set(JSON.parse(saved[0]["skins"]));
                 for (let i = 0; i < cart.length; i++) {
@@ -1002,9 +636,7 @@ app.get("/store/success", async (req, res) => {
             res.redirect(`${config.project.url}/storeDenied?error=${error}`);
           });
       } else {
-        res.redirect(
-          `${config.project.url}/storeDenied?error=Exceeding the payment limit for minors`
-        );
+        res.redirect(`${config.project.url}/storeDenied?error=Exceeding the payment limit for minors`);
       }
     } else {
       res.redirect(`${config.project.url}/storeDenied?error=Wrong request`);
@@ -1016,15 +648,7 @@ app.get("/billing/success", async (req, res) => {
   const customerKey = req.query.customerKey;
   const authKey = req.query.authKey;
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   if (req.session.userid != customerKey) {
@@ -1045,9 +669,7 @@ app.get("/billing/success", async (req, res) => {
     .then(async (data) => {
       let amountCheck = await paidAmountCheck(req.session.userid, 4900);
       if (amountCheck) {
-        await knex("users")
-          .update({ advancedBillingCode: data.billingKey })
-          .where("userid", req.session.userid);
+        await knex("users").update({ advancedBillingCode: data.billingKey }).where("userid", req.session.userid);
         fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
           method: "post",
           body: JSON.stringify({
@@ -1083,30 +705,18 @@ app.get("/billing/success", async (req, res) => {
             }
           });
       } else {
-        res.redirect(
-          `${config.project.url}/storeDenied?error=Exceeding the payment limit for minors`
-        );
+        res.redirect(`${config.project.url}/storeDenied?error=Exceeding the payment limit for minors`);
       }
     });
 });
 
 app.put("/billing/cancel", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
 
-  let type = await knex("users")
-    .select("advancedType")
-    .where("userid", req.session.userid);
+  let type = await knex("users").select("advancedType").where("userid", req.session.userid);
   if (type[0].advancedType == "s") {
     await knex("users")
       .update({
@@ -1115,15 +725,7 @@ app.put("/billing/cancel", async (req, res) => {
       .where("userid", req.session.userid);
     res.status(200).json(createSuccessResponse("success"));
   } else {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Not registered",
-          "You are not registered to advanced."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "Not registered", "You are not registered to advanced."));
   }
 });
 
@@ -1137,9 +739,7 @@ app.post("/danal/complete", async (req, res) => {
 
 app.post("/danal/final", (req, res) => {
   if (req.session.TID) {
-    fetch(
-      `https://uas.teledit.com/uas?TXTYPE=CONFIRM&TID=${req.session.TID}&IDENOPTION=1`
-    )
+    fetch(`https://uas.teledit.com/uas?TXTYPE=CONFIRM&TID=${req.session.TID}&IDENOPTION=1`)
       .then((res) => res.text())
       .then(async (data) => {
         data = data.split("&");
@@ -1151,9 +751,7 @@ app.post("/danal/final", (req, res) => {
         if (new Date().getTime() - new Date(birth).getTime() >= 599184000000) {
           adultCert = 1;
         }
-        const userData = await knex("users")
-          .select("adultCert", "authentication")
-          .where("userid", req.session.userid);
+        const userData = await knex("users").select("adultCert", "authentication").where("userid", req.session.userid);
         if (userData[0].authentication == 1 && userData[0].adultCert == 0) {
           if (adultCert) {
             await knex("users")
@@ -1163,20 +761,10 @@ app.post("/danal/final", (req, res) => {
               .where("userid", req.session.userid);
             res.status(200).json(createSuccessResponse("success"));
           } else {
-            res
-              .status(400)
-              .json(
-                createErrorResponse(
-                  "failed",
-                  "Adult credentials needed",
-                  "Needs to authenticate with adult's ID."
-                )
-              );
+            res.status(400).json(createErrorResponse("failed", "Adult credentials needed", "Needs to authenticate with adult's ID."));
           }
         } else {
-          const results = await knex("users")
-            .select("CI")
-            .where("CI", data[3].split("=")[1]);
+          const results = await knex("users").select("CI").where("CI", data[3].split("=")[1]);
           if (!results[0]) {
             if (data[0].split("=")[1] == "0000") {
               await knex("users")
@@ -1191,102 +779,50 @@ app.post("/danal/final", (req, res) => {
                 .where("userid", req.session.userid);
               res.status(200).json(createSuccessResponse("success"));
             } else {
-              res
-                .status(400)
-                .json(
-                  createErrorResponse(
-                    "failed",
-                    "Authentication Failed",
-                    data[1].split("=")[1]
-                  )
-                );
+              res.status(400).json(createErrorResponse("failed", "Authentication Failed", data[1].split("=")[1]));
             }
           } else {
-            res
-              .status(400)
-              .json(
-                createErrorResponse(
-                  "failed",
-                  "Exist person",
-                  "User credentials already exist on different account."
-                )
-              );
+            res.status(400).json(createErrorResponse("failed", "Exist person", "User credentials already exist on different account."));
           }
         }
         delete req.session.TID;
       });
   } else {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Data format error", "TID required"));
+    res.status(400).json(createErrorResponse("failed", "Data format error", "TID required"));
   }
 });
 
 app.get("/danal/ready", async (req, res) => {
-  fetch(
-    `https://uas.teledit.com/uas?TXTYPE=ITEMSEND&CPID=${config.danal.CPID}&CPPWD=${config.danal.CPPWD}&SERVICE=UAS&AUTHTYPE=36&TARGETURL=${config.danal.targetUrl}&CPTITLE=URLATE`
-  )
+  fetch(`https://uas.teledit.com/uas?TXTYPE=ITEMSEND&CPID=${config.danal.CPID}&CPPWD=${config.danal.CPPWD}&SERVICE=UAS&AUTHTYPE=36&TARGETURL=${config.danal.targetUrl}&CPTITLE=URLATE`)
     .then((res) => res.text())
     .then((data) => {
       data = data.split("&");
       if (data[0].split("=")[1] == "0000") {
         req.session.TID = data[2].split("=")[1];
         req.session.save(() => {
-          res
-            .status(200)
-            .json({ status: "Success", TID: data[2].split("=")[1] });
+          res.status(200).json({ status: "Success", TID: data[2].split("=")[1] });
         });
       } else {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "fetch failed",
-              "fetch to ready server failed."
-            )
-          );
+        res.status(400).json(createErrorResponse("failed", "fetch failed", "fetch to ready server failed."));
       }
     });
 });
 
 app.put("/coupon", async (req, res) => {
   if (!req.session.userid) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "UserID Required",
-          "UserID is required for this task."
-        )
-      );
+    res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
   try {
     const code = req.body.code;
-    let coupon = await knex("codes")
-      .select("reward", "used")
-      .where("code", code);
+    let coupon = await knex("codes").select("reward", "used").where("code", code);
     if (coupon.length != 1) {
-      res
-        .status(400)
-        .json(
-          createErrorResponse("failed", "Invalid code", "Invalid code sent.")
-        );
+      res.status(400).json(createErrorResponse("failed", "Invalid code", "Invalid code sent."));
       return;
     }
     coupon = coupon[0];
     if (coupon.used) {
-      res
-        .status(400)
-        .json(
-          createErrorResponse(
-            "failed",
-            "Used code",
-            "The code sent has already been used."
-          )
-        );
+      res.status(400).json(createErrorResponse("failed", "Used code", "The code sent has already been used."));
       return;
     }
     const reward = JSON.parse(coupon.reward);
@@ -1298,9 +834,7 @@ app.put("/coupon", async (req, res) => {
       } else {
         addD = Number(reward.content.split("D")[0]);
       }
-      let status = await knex("users")
-        .select("advanced", "advancedExpireDate", "advancedType")
-        .where("userid", req.session.userid);
+      let status = await knex("users").select("advanced", "advancedExpireDate", "advancedType").where("userid", req.session.userid);
       status = status[0];
       if (!status.advanced) {
         let date = new Date();
@@ -1319,27 +853,15 @@ app.put("/coupon", async (req, res) => {
         let date = new Date(status.advancedExpireDate);
         date.setMonth(date.getMonth() + addM);
         date.setMonth(date.getDate() + addD);
-        await knex("users")
-          .update({ advancedUpdatedDate: new Date(), advancedExpireDate: date })
-          .where("userid", req.session.userid);
+        await knex("users").update({ advancedUpdatedDate: new Date(), advancedExpireDate: date }).where("userid", req.session.userid);
       } else {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Already subscribed",
-              "User is already subscribed to ADVANCED."
-            )
-          );
+        res.status(400).json(createErrorResponse("failed", "Already subscribed", "User is already subscribed to ADVANCED."));
         return;
       }
     }
     await knex("codes").update({ used: 1 }).where("code", code);
   } catch (e) {
-    res
-      .status(400)
-      .json(createErrorResponse("failed", "Error occured while loading", e));
+    res.status(400).json(createErrorResponse("failed", "Error occured while loading", e));
     return;
   }
   res.status(200).json(createSuccessResponse("success"));
@@ -1370,10 +892,7 @@ const advancedCancel = async () => {
   signale.start(`Advanced subscription canceling..`);
   let maxDate = new Date();
   maxDate.setDate(maxDate.getDate() - 3);
-  let results = await knex("users")
-    .select("settings", "userid")
-    .where("advanced", true)
-    .where("advancedExpireDate", "<", maxDate);
+  let results = await knex("users").select("settings", "userid").where("advanced", true).where("advancedExpireDate", "<", maxDate);
   let successCount = 0;
   for (const rst of results) {
     let setting = JSON.parse(rst.settings);
@@ -1423,24 +942,21 @@ const advancedUpdate = async () => {
     if (rst.advancedType == "s") {
       let amountCheck = await paidAmountCheck(rst.userid, 4900);
       if (amountCheck) {
-        fetch(
-          `https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`,
-          {
-            method: "post",
-            body: JSON.stringify({
-              amount: 4900,
-              customerEmail: rst.email,
-              customerKey: rst.userid,
-              orderId: uuidv4(),
-              orderName: "URLATE ADVANCED 구독",
-              taxFreeAmount: 0,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Basic ${config.tossBilling.basicKey}`,
-            },
-          }
-        )
+        fetch(`https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`, {
+          method: "post",
+          body: JSON.stringify({
+            amount: 4900,
+            customerEmail: rst.email,
+            customerKey: rst.userid,
+            orderId: uuidv4(),
+            orderName: "URLATE ADVANCED 구독",
+            taxFreeAmount: 0,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${config.tossBilling.basicKey}`,
+          },
+        })
           .then((res) => res.json())
           .then(async (data) => {
             if (data.status == "DONE") {
@@ -1475,10 +991,7 @@ const paidAmountCheck = async (uid, amount) => {
   let result = await knex("users").select("paid", "birth").where("userid", uid);
   let paid = Number(result[0].paid);
   amount = Number(amount);
-  if (
-    new Date().getTime() - new Date(result[0].birth).getTime() <=
-    599184000000
-  ) {
+  if (new Date().getTime() - new Date(result[0].birth).getTime() <= 599184000000) {
     if (paid + amount > 70000) {
       return false;
     }
