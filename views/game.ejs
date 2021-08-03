@@ -12,9 +12,9 @@
     </script>
     <meta charset="UTF-8">
     <title>URLATE Client</title>
-    <link rel="stylesheet" href="css/game.css">
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <script src="js/pace.js"></script>
+    <link rel="stylesheet" href="/css/game.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <script src="/js/pace.js"></script>
     <script>
         let intro1load = 0;
 
@@ -30,11 +30,11 @@
 <body oncontextmenu='return false'>
     <div id="footer">
         <div id="footerLeft">
-            <img src="images/parts/icons/return.png" class="icon">
+            <img src="/images/parts/icons/return.png" class="icon">
             <span class="medium">&nbsp;&nbsp;Enter or Click to <strong>Select</strong></span>
         </div>
         <div id="footerCenter">
-            <strong id="songName"><img src="images/parts/icons/note.png" id="noteIcon"><span id="songNameText">&nbsp;URLATE Theme</span></strong>
+            <strong id="songName"><img src="/images/parts/icons/note.png" id="noteIcon"><span id="songNameText">&nbsp;URLATE Theme</span></strong>
             <span id="urlateText"><strong>URLATE</strong> Pure</span>
         </div>
         <div id="footerRight">
@@ -58,7 +58,7 @@
         <div id="intro2"></div>
     </div>
     <div id="loadingContainer">
-        <img src="images/logos/URLATE.png" id="logo">
+        <img src="/images/logos/URLATE.png" id="logo">
     </div>
     <div id="header">
         <div id="headerLeft">
@@ -76,7 +76,7 @@
             <span id="tutorialText"><%= __('tutorial_information_1') %><br><%= __('tutorial_information_2') %></span>
         </div>
         <div id="tutorialInfoMid" class="tutorialInner">
-            <img src="images/parts/elements/elements.png" alt="O O O">
+            <img src="/images/parts/elements/elements.png" alt="O O O">
         </div>
         <div id="tutorialInfoBottom" class="tutorialInner">
             <button class="storeButton metropolis" onclick="location.href = '<%= url %>/tutorial'"><%= __('all_good') %></button>
@@ -86,32 +86,32 @@
     <div id="menuContainer">
         <div id="menuMain" class="menuSelector clickable" onclick="menuSelected(0)">
             <div class="fadeIconContainer">
-                <img src="images/parts/graphicIcons/play.png" class="mainIcon">
-                <img src="images/parts/graphicIcons/play_selected.png" class="fadeIcon">
+                <img src="/images/parts/graphicIcons/play.png" class="mainIcon">
+                <img src="/images/parts/graphicIcons/play_selected.png" class="fadeIcon">
             </div>
             <span class="menuTitle"><%= __('play_title') %></span>
             <span class="light menuSubtitle"><%= __('play_subtitle') %></span>
         </div>
         <div id="menuEditor" class="menuSelector clickable" onclick="menuSelected(1)">
             <div class="fadeIconContainer">
-                <img src="images/parts/graphicIcons/editor.png" class="mainIcon">
-                <img src="images/parts/graphicIcons/editor_selected.png" class="fadeIcon">
+                <img src="/images/parts/graphicIcons/editor.png" class="mainIcon">
+                <img src="/images/parts/graphicIcons/editor_selected.png" class="fadeIcon">
             </div>
             <span class="menuTitle"><%= __('editor_title') %></span>
             <span class="light menuSubtitle"><%= __('editor_subtitle') %></span>
         </div>
         <div id="menuStore" class="menuSelector clickable" onclick="menuSelected(3)">
             <div class="fadeIconContainer">
-                <img src="images/parts/graphicIcons/store.png" class="mainIcon">
-                <img src="images/parts/graphicIcons/store_selected.png" class="fadeIcon">
+                <img src="/images/parts/graphicIcons/store.png" class="mainIcon">
+                <img src="/images/parts/graphicIcons/store_selected.png" class="fadeIcon">
             </div>
             <span class="menuTitle"><%= __('store_title') %></span>
             <span class="light menuSubtitle"><%= __('store_subtitle') %></span>
         </div>
         <div id="menuAdvanced" class="menuSelector clickable" onclick="menuSelected(2)">
             <div class="fadeIconContainer">
-                <img src="images/parts/graphicIcons/advanced.png" class="mainIcon">
-                <img src="images/parts/graphicIcons/advanced_selected.png" class="fadeIcon">
+                <img src="/images/parts/graphicIcons/advanced.png" class="mainIcon">
+                <img src="/images/parts/graphicIcons/advanced_selected.png" class="fadeIcon">
             </div>
             <span class="menuTitle"><%= __('advanced_title') %></span>
             <span class="light menuSubtitle"><%= __('advanced_subtitle') %></span>
@@ -121,7 +121,7 @@
         <div id="visualizer"><canvas id="renderer"></canvas></div>
         <div id="selectBackground"></div>
         <img src="https://img.icons8.com/windows/32/FFFFFF/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <img src="images/parts/elements/TRACKS.png" id="tracks">
+        <img src="/images/parts/elements/TRACKS.png" id="tracks">
         <div id="selectContainerLeft">
             <div id="selectContainerTitle">
                 <div id="selectContainerTitleLeft">
@@ -188,9 +188,9 @@
                         <span class="selectInfoTitle">MEDAL</span>
                     </div>
                     <div class="selectInfoContentsContainer">
-                        <img src="images/parts/icons/GOLD_MEDAL.png" class="medals" id="goldMedal">
-                        <img src="images/parts/icons/SILVER_MEDAL.png" class="medals" id="silverMedal">
-                        <img src="images/parts/icons/CHECK_MEDAL.png" class="medals" id="checkMedal">
+                        <img src="/images/parts/icons/GOLD_MEDAL.png" class="medals" id="goldMedal">
+                        <img src="/images/parts/icons/SILVER_MEDAL.png" class="medals" id="silverMedal">
+                        <img src="/images/parts/icons/CHECK_MEDAL.png" class="medals" id="checkMedal">
                     </div>
                 </div>
             </div>
@@ -240,31 +240,31 @@
         <div id="advancedIconsContainer">
             <div id="advancedIconsInnerContainer">
                 <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_1.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_1.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_1') %><br><%= __('advanced_wicon_description_2') %></span>
                 </div>
                 <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_2.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_2.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_3') %><br><%= __('advanced_wicon_description_4') %></span>
                 </div>
                 <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_3.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_3.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_5') %><br><%= __('advanced_wicon_description_6') %><br><span class="additionalDescription"><%= __('advanced_additional_description_1') %></span></span>
                 </div>
                 <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_4.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_4.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_7') %><br><%= __('advanced_wicon_description_8') %></span>
                 </div>
                 <!-- <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_5.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_5.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_9') %><br><%= __('advanced_wicon_description_10') %></span>
                 </div> -->
                 <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_6.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_6.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_11') %><br><%= __('advanced_wicon_description_12') %><br><%= __('advanced_wicon_description_13') %></span>
                 </div>
                 <div class="advancedIconWithDescription">
-                    <img class="advancedIcon" src="images/parts/graphicIcons/advanced_icon_7.png">
+                    <img class="advancedIcon" src="/images/parts/graphicIcons/advanced_icon_7.png">
                     <span class="advancedIconDescription"><%= __('advanced_wicon_description_14') %><br><%= __('advanced_wicon_description_15') %></span>
                 </div>
             </div>
@@ -291,7 +291,7 @@
             </div>
         </div>
         <img src="https://img.icons8.com/windows/32/000000/macos-close.png" class="icon clickable closeBtn" onclick="displayClose()">
-        <img src="images/logos/URLATE_NO_CIRCLE.png" id="infoLogo">
+        <img src="/images/logos/URLATE_NO_CIRCLE.png" id="infoLogo">
         <br>
         <span id="license">
             <span id="licenseMain">URLATE is under the MIT license.</span>
@@ -663,7 +663,7 @@
                     <div class="storeColumnContainer">
                         <div class="storeBasketsContainer">
                             <div class="storeBasketsLeft">
-                                <img class="storeBasketsAlbum" src="images/mainImage.png">
+                                <img class="storeBasketsAlbum" src="/images/mainImage.png">
                                 <div class="storeBasketsInfo">
                                     <span class="storeName">DLC Name</span>
                                     <span class="storeSongArtist">Composer Name</span>
@@ -807,6 +807,6 @@
         if(lang == "en") document.body.style.letterSpacing = "-0.3px";
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.js"></script>
-    <script src="js/game.js"></script>
+    <script src="/js/game.js"></script>
 </body>
 </html>

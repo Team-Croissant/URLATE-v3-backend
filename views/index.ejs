@@ -15,9 +15,9 @@
     <meta property="og:site_name" content="URLATE">
     <meta property="og:url" content="<%= url %>">
     <meta property="og:description" content="Avoid & Get on the tempo, URLATE">
-    <meta property="og:image" content="images/mainImage.png">
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/index.css">
+    <meta property="og:image" content="/images/mainImage.png">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/index.css">
     <script>
         function start() {
             gapi.load('auth2', function() {
@@ -44,7 +44,7 @@
     </div>
     <div id="animContainer" class="widthAnim"></div>
     <div id="logoContainer">
-        <img src="images/logos/URLATE_WHITE.png" id="logo" alt="<%= __('index_logoAlt') %>">
+        <img src="/images/logos/URLATE_WHITE.png" id="logo" alt="<%= __('index_logoAlt') %>">
         <% if(__('lang') == 'en') { %>
             <a href="/ko" class="bottomLang">English(영어)</a>
         <% } else { %>
@@ -85,6 +85,6 @@
         if(lang == "en") document.body.style.letterSpacing = "-0.3px";
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.js"></script>
-    <script src="js/index.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 </html>
