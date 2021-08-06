@@ -916,7 +916,7 @@ const cntRender = () => {
         if (renderTriggers[i].ms - 1 <= seek * 1000 && renderTriggers[i].ms + renderTriggers[i].time > seek * 1000) {
           cntCtx.beginPath();
           cntCtx.fillStyle = "#111";
-          cntCtx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis, Noto Sans KR`;
+          cntCtx.font = `${renderTriggers[i].weight} ${renderTriggers[i].size} Metropolis, Pretendard Variable`;
           cntCtx.textAlign = renderTriggers[i].align;
           cntCtx.textBaseline = renderTriggers[i].valign;
           cntCtx.fillText(renderTriggers[i].text, (cntCanvas.width / 200) * (renderTriggers[i].x + 100), (cntCanvas.height / 200) * (renderTriggers[i].y + 100));

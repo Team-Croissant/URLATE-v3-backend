@@ -1,6 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Heebo:200,400,500,600,800&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
 @import url("metropolis.css");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
   background-size: cover;
@@ -10,14 +9,14 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: "Heebo", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   overflow-x: hidden;
   overflow-y: hidden;
 }
 
 .metropolis {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  font-family: "Metropolis", "Pretendard Variable", "나눔바른고딕", arial;
 }
 
 .lighter {
@@ -77,8 +76,10 @@ body {
 }
 
 .menuTitle {
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
   font-size: 3vh;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .menuSubtitle {
@@ -286,6 +287,7 @@ p {
 }
 
 #songName {
+  margin-bottom: 0.5vh;
   opacity: 0;
   transition-duration: 1s;
 }
@@ -423,7 +425,6 @@ p {
 }
 
 #infoContainer {
-  letter-spacing: -0.5px;
   color: #333;
   background-color: #fff;
   background-image: url("/images/backgrounds/option_decorations.png");
@@ -444,7 +445,6 @@ p {
 
 #license {
   line-height: 150%;
-  letter-spacing: -1px;
   font-size: 2.5vh;
   font-weight: 400;
   margin-top: 16vh;
@@ -881,7 +881,7 @@ p {
 .optionSelected {
   cursor: default;
   color: #404040;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .optionContentsContainer {
@@ -898,7 +898,7 @@ p {
 
 .optionTitle {
   margin-top: 4vh;
-  font-weight: 600;
+  font-weight: 750;
   color: #404040;
   font-size: 3.3vh;
 }
@@ -918,7 +918,8 @@ p {
 }
 
 .optionValue {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  margin-top: 0.5vh;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
   font-weight: 400;
   color: #404040;
   font-size: 2vh;
@@ -931,8 +932,8 @@ p {
   width: 10vw;
   height: 5vh;
   font-size: 2vh;
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   color: #fff;
   background-color: #666;
   border-radius: 10px;
@@ -975,8 +976,8 @@ p {
   text-align: center;
   padding: 1.2vh 3vw 1.2vh 3vw;
   font-size: 2vh;
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   color: #fff;
   text-decoration: none;
   background-color: #666;
@@ -1375,12 +1376,7 @@ p {
   padding-top: 1.5vh;
   padding-bottom: 1.5vh;
   --artist-display: none;
-  --title-weight: 600;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 30%,
-    rgba(255, 255, 255, 0.5)
-  );
+  --title-weight: 800;
 }
 
 #selectRankContainer {
@@ -1536,7 +1532,7 @@ p {
 
 .timingText {
   margin-top: 1vh;
-  font-family: "Metropolis", "나눔바른고딕", arial;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
   font-size: 2vh;
   font-weight: 400;
 }

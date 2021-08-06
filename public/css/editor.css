@@ -1,6 +1,6 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
 @import url("https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap");
 @import url("metropolis.css");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
   background: #eee url("/images/backgrounds/editor.png");
@@ -12,8 +12,8 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: "Heebo", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   overflow-x: hidden;
   overflow-y: hidden;
   -webkit-font-smoothing: antialiased;
@@ -139,7 +139,7 @@ body {
 }
 
 .metropolis {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  font-family: "Metropolis", "Pretendard Variable", "나눔바른고딕", arial;
 }
 
 #topCenterBar {
@@ -161,14 +161,12 @@ body {
 }
 
 .icon {
-  filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%)
-    contrast(96%);
+  filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%) contrast(96%);
   width: 1vw;
 }
 
 .menuIcon {
-  filter: invert(70%) sepia(53%) saturate(0%) hue-rotate(222deg)
-    brightness(100%) contrast(95%);
+  filter: invert(70%) sepia(53%) saturate(0%) hue-rotate(222deg) brightness(100%) contrast(95%);
   width: 1.3vw;
   margin-top: 3vh;
 }
@@ -178,8 +176,7 @@ body {
 }
 
 .menuSelected {
-  filter: invert(25%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%)
-    contrast(96%);
+  filter: invert(25%) sepia(0%) saturate(0%) hue-rotate(64deg) brightness(92%) contrast(96%);
 }
 
 .backIcon {
@@ -189,8 +186,7 @@ body {
 }
 
 #horizontalLine {
-  filter: invert(83%) sepia(53%) saturate(0%) hue-rotate(222deg)
-    brightness(100%) contrast(95%);
+  filter: invert(83%) sepia(53%) saturate(0%) hue-rotate(222deg) brightness(100%) contrast(95%);
   width: 2vw;
   height: 2px;
   background-color: #000;
@@ -502,8 +498,7 @@ body {
   align-items: center;
   bottom: 23.5vh;
   left: 1vw;
-  filter: invert(30%) sepia(0%) saturate(572%) hue-rotate(158deg)
-    brightness(102%) contrast(86%);
+  filter: invert(30%) sepia(0%) saturate(572%) hue-rotate(158deg) brightness(102%) contrast(86%);
 }
 
 #timelineSplitController {
@@ -612,7 +607,7 @@ body {
 }
 
 kbd {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  font-family: "Metropolis", "Pretendard Variable", "나눔바른고딕", arial;
   font-style: italic;
   border: 2px solid #555;
   padding: 4px 14px 4px 8px;
@@ -684,7 +679,7 @@ kbd {
 }
 
 .optionValue {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  font-family: "Metropolis", "Pretendard Variable", "나눔바른고딕", arial;
   font-weight: 400;
   color: #404040;
   font-size: 2vh;

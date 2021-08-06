@@ -1,12 +1,11 @@
-@import url("metropolis.css");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
 
 body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   overflow: hidden;
   user-select: none;
 }
@@ -52,19 +51,29 @@ body {
 #footerLeft {
   position: fixed;
   text-align: left;
-  font-size: 1.6vh;
+  font-size: 1.3vh;
   color: white;
   left: 2vh;
   bottom: 2vh;
 }
 
 #footerRight {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
   position: fixed;
-  text-align: right;
-  font-size: 1.6vh;
+  font-size: 1.3vh;
   color: white;
   right: 2vh;
   bottom: 2vh;
+}
+
+#allContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .link {
@@ -74,7 +83,7 @@ body {
 .bottomLang {
   text-decoration: none;
   color: #ffffffdd;
-  font-size: 0.9em;
+  font-size: 1.5vh;
 }
 
 #fullscreenRequired {
@@ -100,7 +109,7 @@ body {
 }
 
 kbd {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
   border: 2px solid #bbb;
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
   margin: 3px;
@@ -124,6 +133,11 @@ kbd {
 .bottomPolicy {
   color: #ffffffdd;
   text-decoration: none;
-  font-size: 0.9em;
+  font-size: 1.5vh;
   margin: 0.3vh;
+}
+
+#allImage {
+  margin-left: 0.5vw;
+  height: 6vh;
 }

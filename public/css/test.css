@@ -1,6 +1,6 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
 @import url("https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap");
 @import url("metropolis.css");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
   background: #eee;
@@ -11,8 +11,8 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Metropolis", "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   overflow-x: hidden;
   overflow-y: hidden;
   -webkit-font-smoothing: antialiased;
@@ -708,7 +708,7 @@ body {
 }
 
 .optionValue {
-  font-family: "Metropolis", "Noto Sans KR", "나눔바른고딕", arial;
+  font-family: "Metropolis", "Pretendard Variable", "나눔바른고딕", arial;
   font-weight: 400;
   color: #404040;
   font-size: 2vh;

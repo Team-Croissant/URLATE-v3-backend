@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Heebo:400,500,600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
 
 body {
   width: 100vw;
@@ -7,12 +6,16 @@ body {
   margin: 0;
   padding: 0;
   background-color: #eee;
-  font-family: "Heebo", "Noto Sans KR", "나눔바른고딕", arial;
-  letter-spacing: -1px;
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
+  letter-spacing: -0.5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+input {
+  font-family: "Pretendard Variable", "나눔바른고딕", arial;
 }
 
 form {
