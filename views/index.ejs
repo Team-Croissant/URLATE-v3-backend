@@ -45,17 +45,17 @@
     <div id="animContainer" class="widthAnim"></div>
     <div id="logoContainer">
         <img src="/images/logos/URLATE_WHITE.png" id="logo" alt="<%= __('index_logoAlt') %>">
+        <strong>
         <% if(__('lang') == 'en') { %>
             <a href="/ko" class="bottomLang">English(영어)</a>
         <% } else { %>
             <a href="/en" class="bottomLang">한국어(Korean)</a>
         <% } %>
+        </strong>
     </div>
     <div id="buttonContainer">
         <div id="my-signin2" onclick="loginTrigger()"></div>
         <div id="policies">
-            URLATE는 개발중인 게임입니다! 현재 게임심의를 위해 화이트리스트를 일시적으로 해제하였으나 관계자의 출입만이 허용되며 이외 비인가 접속시 ip밴등을 통해 추후 게임 플레이가 불가능함을 알려드립니다.
-            <br><br><br>
             <% if(__('lang') == 'en') { %>
                 <a href="/en/privacyPolicy" class="bottomPolicy">Privacy Policy</a>
                 <a href="/en/termsOfService" class="bottomPolicy">Terms Of Service</a>
@@ -67,14 +67,20 @@
         <a href="/acc" class="bottomPolicy" style="z-index: 1;">관리자 계정 로그인</a>
     </div>
     <span id="footerLeft">
-        통신판매업신고번호: 2021-제주조천-0014<br>
-        사업장주소: 제주특별자치도 제주시 조천읍 신촌8길1 편안채1층 102호<br>
-        팀 크루아상│사업자등록번호: 310-10-22439 <a href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=3101022439" target="_blank" class="link">사업자등록번호 조회</a><br>
-        E-mail: coupy@croissant.tech│대표: 강혁진│전화번호: 070-4505-6424│FAX: 070-7966-3277
+        <b>통신판매업신고번호</b>: 2021-제주조천-0014<br>
+        <b>팀 크루아상</b> | <b>사업자등록번호</b>: <a href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=3101022439" class="link" onclick="window.open(this.href,'저작권 정보','width=800, height=800'); return false;">310-10-22439</a><br>
+        <b>사업장주소</b>: 제주특별자치도 제주시 조천읍 신촌8길1 편안채1층 102호<br>
+        <b>E-mail</b>: coupy@croissant.tech | <b>대표</b>: 강혁진 | <b>전화번호</b>: 070-4505-6424 | <b>FAX</b>: 070-7966-3277
     </span>
-    <span id="footerRight">
-        <strong>© 2021 URLATE</strong>, All contents cannot be copied without permission.
-    </span>
+    <div id="footerRight">
+        <div id="allContainer">
+            <span><b>등급분류 일자</b>: 2021. 08. 06<br></span>
+            <span><b>제명</b>: URLATE (얼레이트) | <b>상호</b>: 팀 크루아상<br></span>
+            <span><b>이용등급</b>: 전체이용가 | <b>등급분류번호</b>: <a href="https://www.grac.or.kr/Statistics/Popup/Pop_StatisticsDetails.aspx?bfe594b3906a6fc21ebfb5982f7132cda6c813a6a053e8e5ec12581d53453bb0" class="link" onclick="window.open(this.href,'저작권 정보','width=800, height=800'); return false;">제 GC-CC-NP-210806-002 호</a><br></span>
+            <span><b>제작 · 배급업신고번호</b>: 제주시청 제 2021-000001 호 · 제주시청 제 2021-000003 호</span>
+        </div>
+        <img src="/images/logos/all.png" id="allImage">
+    </div>
     <script>
         const projectUrl = "<%= url %>";
         const api = "<%= api %>";
