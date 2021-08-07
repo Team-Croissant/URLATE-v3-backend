@@ -323,7 +323,7 @@ app.get("/trackInfo/:name", async (req, res) => {
     res.status(400).json(createErrorResponse("failed", "Failed to Load", "Failed to load track data. It may be a problem with the DB."));
     return;
   }
-
+  songCountUp(req.params.name);
   res.status(200).json({ result: "success", info: results });
 });
 
@@ -399,6 +399,11 @@ app.get("/teamProfile/:name", async (req, res) => {
     return;
   }
   res.status(200).json({ result: "success", data: results[0].data });
+});
+
+app.get("/trackCount/:name", async (req, res) => {
+  songCountUp(req.params.name);
+  res.end();
 });
 
 app.put("/record", async (req, res) => {
@@ -987,6 +992,22 @@ const advancedUpdate = async () => {
   }, 5000);
 };
 setTimeout(advancedUpdate, 1000);
+
+const songCountUp = async (track) => {
+  let result = await knex("trackCount").select("count").where("name", track);
+  if (!result.length) {
+    await knex("trackCount").insert({
+      name: track,
+      count: 1,
+    });
+  } else {
+    await knex("trackCount")
+      .update({
+        count: Number(result[0].count) + 1,
+      })
+      .where("name", track);
+  }
+};
 
 const paidAmountCheck = async (uid, amount) => {
   let d = new Date();

@@ -208,6 +208,7 @@ const initialize = (isFirstCalled) => {
       .then((data) => {
         socketInitialize();
         pattern = data;
+        fetch(`${api}/trackCount/${pattern.information.track}`);
         patternLength = pattern.patterns.length;
         scoreDifficultyNum.textContent = localStorage.difficulty;
         scoreDifficultyName.textContent = difficultyNames[localStorage.difficultySelection];
