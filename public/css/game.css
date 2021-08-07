@@ -2364,7 +2364,7 @@ p {
   width: 4vw;
 }
 
-#badgeIcon {
+.badgeIcon {
   height: 10vh;
   margin-left: 1vw;
   margin-right: 1vw;
