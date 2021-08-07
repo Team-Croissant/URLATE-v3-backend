@@ -53,3 +53,8 @@ td {
 .descriptions {
   font-size: 1.1em;
 }
+
+.badgeIcon {
+  height: 10vh;
+  margin-right: 1vw;
+}
