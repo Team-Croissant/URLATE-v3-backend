@@ -518,6 +518,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     tracks.sort(sortAsName);
                     let songList = "";
                     for (let i = 0; i < tracks.length; i++) {
+                      if (tracks[i].type == 3) continue;
                       songs[i] = new Howl({
                         src: [`https://cdn.rhyga.me/tracks/preview/${tracks[i].fileName}.mp3`],
                         format: ["mp3"],

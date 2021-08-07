@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.result == "success") {
         tracks = data.tracks;
         for (let i = 0; tracks.length > i; i++) {
+          if (tracks[i].type == 3) continue;
           let option = document.createElement("option");
           option.innerHTML = tracks[i].name;
           document.getElementById("songSelectBox").options.add(option);
