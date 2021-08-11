@@ -518,7 +518,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     tracks.sort(sortAsName);
                     let songList = "";
                     for (let i = 0; i < tracks.length; i++) {
-                      if (tracks[i].type == 3) continue;
+                      if (tracks[i].type == 3) {
+                        songList += `<div class="songSelectionContainer songSelectionDisable">
+                          <div class="songSelectionLottie"></div>
+                          <div class="songSelectionInfo">
+                              <span class="songSelectionTitle"></span>
+                              <span class="songSelectionArtist"></span>
+                          </div>
+                          <div class="songSelectionRank">
+                              <span class="ranks rankQ"></span>
+                          </div>
+                        </div>`;
+                        continue;
+                      }
                       songs[i] = new Howl({
                         src: [`https://cdn.rhyga.me/tracks/preview/${tracks[i].fileName}.mp3`],
                         format: ["mp3"],
@@ -2005,10 +2017,24 @@ document.onkeydown = (e) => {
   } else if (display == 1 || display == 6) {
     if (key == "arrowup") {
       e.preventDefault();
-      if (songSelection != 0) songSelected(songSelection - 1);
+      if (songSelection != 0) {
+        let i = songSelection - 1;
+        while (tracks[i].type == 3) {
+          i--;
+          if (i == 0) return;
+        }
+        songSelected(i);
+      }
     } else if (key == "arrowdown") {
       e.preventDefault();
-      if (songSelection < tracks.length - 1) songSelected(songSelection + 1);
+      if (songSelection < tracks.length - 1) {
+        let i = songSelection + 1;
+        while (tracks[i].type == 3) {
+          i++;
+          if (i == tracks.length - 1) return;
+        }
+        songSelected(i);
+      }
     } else if (key == "tab") {
       e.preventDefault();
       difficultySelected(difficultySelection + 1 == 3 ? 0 : difficultySelection + 1);
