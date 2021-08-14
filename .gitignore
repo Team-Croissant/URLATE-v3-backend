@@ -3,12 +3,6 @@ config/config\.json
 
 node_modules/
 
-.vscode/
-
-URLATE-skins/
-
-resources/
-
 *.swp
 
 dist/

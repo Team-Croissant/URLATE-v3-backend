@@ -12,8 +12,8 @@ const hasher = require("pbkdf2-password")();
 
 const redisClient = redis.createClient();
 
-const config = require(__dirname + "/../../config/config.json");
-const settingsConfig = require(__dirname + "/../../config/settings.json");
+const config = require(__dirname + "/../config/config.json");
+const settingsConfig = require(__dirname + "/../config/settings.json");
 
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
