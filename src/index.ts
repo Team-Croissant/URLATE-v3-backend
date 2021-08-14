@@ -1032,7 +1032,7 @@ const paidAmountCheck = async (uid, amount) => {
   return true;
 };
 
-const PORT = 1024;
+const PORT = 80;
 http.createServer(app).listen(PORT, () => {
   signale.success(`API Server running at port ${PORT}.`);
 });

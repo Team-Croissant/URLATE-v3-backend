@@ -6,3 +6,5 @@ node_modules/
 *.swp
 
 dist/
+
+package-lock.json
