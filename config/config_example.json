@@ -6,9 +6,11 @@
     "game": "https://game.example.com",
     "communityUrl": "https://community.example.com",
     "miraiUrl": "https://mirai.example.com",
-    "secretKey": "Something Random"
+    "secretKey": "Something Random",
+    "port": 8080
   },
   "database" : {
+    "redis": "redisURL",
     "db": "ExampleDB",
     "host": "localhost",
     "port": 3306,
