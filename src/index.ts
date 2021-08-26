@@ -12,6 +12,7 @@ const hasher = require("pbkdf2-password")();
 
 const config = require(__dirname + "/../config/config.json");
 const settingsConfig = require(__dirname + "/../config/settings.json");
+const allowlist = require(__dirname + "/../config/allowlist.json");
 
 const redisClient = redis.createClient(config.database.redis);
 
@@ -123,7 +124,7 @@ app.post("/auth/login", (req, res) => {
     const { access_token, refresh_token } = tokens;
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: "me", auth: oauth2Client }, (err, response) => {
-      if (whitelist.indexOf(response.data.emails[0].value) != -1) {
+      if (allowlist.indexOf(response.data.emails[0].value) != -1) {
         req.session.userid = response.data.id;
         req.session.email = response.data.emails[0].value;
         req.session.tempName = response.data.displayName;
