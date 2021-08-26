@@ -9,6 +9,7 @@
   "main": "src/",
   "scripts": {
     "auto-build": "tsc-watch",
+    "lint": "eslint",
     "start": "supervisor dist/index.js"
   },
   "author": "Team Croissant",
@@ -30,6 +31,9 @@
   },
   "devDependencies": {
     "@types/node": "^13.7.7",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
     "signale": "^1.4.0",
     "supervisor": "^0.12.0"
   }
