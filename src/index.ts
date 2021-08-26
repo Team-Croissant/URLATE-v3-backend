@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as bodyParser from "body-parser";
-import * as http from "http";
 import * as redis from "redis";
 import * as session from "express-session";
 import pbkdf2 from "pbkdf2-password";
@@ -1036,6 +1035,6 @@ const paidAmountCheck = async (uid, amount) => {
   return true;
 };
 
-http.createServer(app).listen(config.project.port, () => {
+app.listen(config.project.port, () => {
   signale.success(`API Server running at port ${config.project.port}.`);
 });
