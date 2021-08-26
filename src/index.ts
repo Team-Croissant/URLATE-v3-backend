@@ -1,34 +1,37 @@
-import bodyParser = require("body-parser");
-import cookieParser = require("cookie-parser");
-import signale = require("signale");
-import http = require("http");
-import express = require("express");
-import session = require("express-session");
-import fetch = require("node-fetch");
-import redis = require("redis");
+/* eslint-disable @typescript-eslint/no-var-requires */
+import * as bodyParser from "body-parser";
+import * as http from "http";
+import * as redis from "redis";
+import * as session from "express-session";
+import pbkdf2 from "pbkdf2-password";
+import fetch from "node-fetch";
+import cookieParser from "cookie-parser";
+import express from "express";
+import mysqlSession from "express-mysql-session";
+import signale from "signale";
+import knexClient from "knex";
 import { v4 as uuidv4 } from "uuid";
-const MySQLStore = require("express-mysql-session")(session);
-const hasher = require("pbkdf2-password")();
+import { google } from "googleapis";
+import { Request } from "express-serve-static-core";
 
 const config = require(__dirname + "/../config/config.json");
 const settingsConfig = require(__dirname + "/../config/settings.json");
 const allowlist = require(__dirname + "/../config/allowlist.json");
 
+import { createSuccessResponse, createErrorResponse, createStatusResponse } from "./api-response";
+
+const MySQLStore = mysqlSession(session);
+const hasher = pbkdf2();
+
 const redisClient = redis.createClient(config.database.redis);
 
-const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const plus = google.plus("v1");
-
-let whitelist =
-  "bjgumsun@gmail.com, bjgumsun@dimigo.hs.kr, kyungblog@gmail.com, pop06296347@gmail.com, combbm@gmail.com, jeongjy0317@gmail.com, electrochemistry04@gmail.com, jungin7612@gmail.com, greenstar1151@gmail.com, kiwiyou.dev@gmail.com, hwymaster01@gmail.com, testcroissant1@gmail.com, officialteamcroissant@gmail.com, tlsehdgus0212@gmail.com, along181228@gmail.com, leemck5690@gmail.com, combbm@gmail.com, lenn102227@gmail.com, lee7306jj@gmail.com, blackteaaaaaaa@gmail.com, long82da2@gmail.com, arkc1009@gmail.com, gmrdytjr12@gmail.com, itx.ljh.developer@gmail.com, hssoonjook@gmail.com, klbsice@gmail.com, ndbb0142@gmail.com, dbwlszee@gmail.com, dlaud5379@gmail.com, oohanjune@gmail.com, kirito61254@gmail.com, rhryuah@gmail.com, rlarbwls0916@gmail.com, song46224622@gmail.com, TBvwv123@gmail.com, tbvwv123@gmail.com, obbpty16799@gmail.com, tlqkftorldi1379@gmail.com, kevin587121@gmail.com, tworiver1213@gmail.com, shlee15490@gmail.com, khrim3024@gmail.com, hysa14@gmail.com, gunheechoi9@gmail.com, parkjaehyeok1010@gmail.com, minuuu03@gmail.com, ghkdqhdyn@gmail.com, ferrymaster98@gmail.com, tomatohands@gmail.com, mikeylen62@gmail.com, 514kaonsi@gmail.com, alex689345@gmail.com, cw5424907@gmail.com, ulsanmugo@gmail.com, yellowdust777@gmail.com, yeeun010908@gmail.com, sih5214p@gmail.com, seolryuhee@gmail.com, dmitri0620@gmail.com, hanul031221@gmail.com, dnjohnn@gmail.com, pianory123@gmail.com, srkim0728@gmail.com, kirbyherty@gmail.com, tjwogus98@gmail.com, clfhekfr@gmail.com, hsjj8824@gmail.com, nembee01@gmail.com, cube990130@gmail.com, jeongseeun67@gmail.com, opnayn@gmail.com, kiharry579@gmail.com, popcornnyamnyam@gmail.com, bluepencil.wk@gmail.com, wjblueknave@gmail.com, ksj19101@gmail.com, jmj971203@gmail.com, wjdgks1224@gmail.com, lcy496530@gmail.com, kieyeeun2327@gmail.com, tjwogus98@gmail.com";
-
-import { createSuccessResponse, createErrorResponse, createStatusResponse } from "./api-response";
 
 const app = express();
 app.locals.pretty = true;
 
-const knex = require("knex")({
+const knex = knexClient({
   client: "mysql",
   connection: {
     host: config.database.host,
@@ -47,8 +50,7 @@ const sessionStore = new MySQLStore({
 });
 
 app.use(
-  session({
-    key: config.session.key,
+  session.default({
     secret: config.session.secret,
     store: sessionStore,
     resave: config.session.resave,
@@ -97,7 +99,7 @@ app.get("/auth/status", async (req, res) => {
     return;
   }
 
-  let date = new Date();
+  const date = new Date();
   if (date.getTime() - new Date(results[0].birth).getTime() <= 504576000000) {
     if (0 <= date.getHours() && date.getHours() <= 6) {
       res.status(200).json(createStatusResponse("Shutdowned"));
@@ -114,7 +116,7 @@ app.get("/auth/status", async (req, res) => {
 });
 
 app.post("/auth/login", (req, res) => {
-  var oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
+  const oauth2Client = getOAuthClient(req.body.ClientId, req.body.ClientSecret, req.body.RedirectionUrl);
   oauth2Client.getToken(req.body.code, (err, tokens) => {
     if (err) {
       res.status(400).json(createErrorResponse("failed", err.response.data.error, err.response.data.error_description));
@@ -335,7 +337,7 @@ app.put("/settings", async (req, res) => {
     return;
   }
   try {
-    let settings = req.body.settings;
+    const settings = req.body.settings;
     if (
       settings.sound.res == "192kbps" ||
       !settings.game.judgeSkin ||
@@ -542,7 +544,7 @@ app.get("/store/bag", (req, res) => {
 
 app.delete("/store/bag", (req, res) => {
   if (req.session.bag && req.session.bag != []) {
-    let index = req.session.bag.map((i) => JSON.stringify(i)).indexOf(JSON.stringify(req.body));
+    const index = req.session.bag.map((i) => JSON.stringify(i)).indexOf(JSON.stringify(req.body));
     if (index != -1) {
       req.session.bag.splice(index, 1);
       req.session.save(() => {
@@ -561,15 +563,15 @@ app.post("/store/purchase", async (req, res) => {
     res.status(400).json(createErrorResponse("failed", "UserID Required", "UserID is required for this task."));
     return;
   }
-  let orderId = uuidv4();
-  let cart = req.body.cart;
+  const orderId = uuidv4();
+  const cart = req.body.cart;
   redisClient.set(`Cart${orderId}`, JSON.stringify(cart));
   let price = 0;
-  let isAdvanced = await knex("users").select("advanced").where("userid", req.session.userid);
-  isAdvanced = isAdvanced[0].advanced;
+  const userData = await knex("users").select("advanced").where("userid", req.session.userid);
+  const isAdvanced = userData[0].advanced;
   for (let i = 0; i < cart.length; i++) {
     const result = await knex(`store${cart[i].type}`).select("price", "sale").where("name", cart[i].item);
-    let add = JSON.parse(result[0].price)[0];
+    const add = JSON.parse(result[0].price)[0];
     price += Math.round(((add - add * 0.2 * isAdvanced) / 100) * result[0].sale);
   }
   redisClient.set(`Amount${orderId}`, price.toString());
@@ -595,8 +597,8 @@ app.get("/store/success", async (req, res) => {
       res.redirect(`${config.project.url}/storeDenied?error=${err}`);
       return;
     }
-    if (Number(data) == amount) {
-      let amountCheck = await paidAmountCheck(req.session.userid, amount);
+    if (data == amount) {
+      const amountCheck = await paidAmountCheck(req.session.userid, amount);
       if (amountCheck) {
         fetch(`https://api.tosspayments.com/v1/payments/${paymentKey}`, {
           method: "post",
@@ -617,10 +619,10 @@ app.get("/store/success", async (req, res) => {
                   res.redirect(`${config.project.url}/storeDenied?error=${err}`);
                   return;
                 }
-                let cart = JSON.parse(reply);
-                let saved = await knex("users").select("skins", "DLCs").where("userid", req.session.userid);
-                let DLCs = new Set(JSON.parse(saved[0]["DLCs"]));
-                let skins = new Set(JSON.parse(saved[0]["skins"]));
+                const cart = JSON.parse(reply);
+                const saved = await knex("users").select("skins", "DLCs").where("userid", req.session.userid);
+                const DLCs = new Set(JSON.parse(saved[0]["DLCs"]));
+                const skins = new Set(JSON.parse(saved[0]["skins"]));
                 for (let i = 0; i < cart.length; i++) {
                   if (cart[i].type == "DLC") {
                     DLCs.add(cart[i].item);
@@ -675,7 +677,7 @@ app.get("/billing/success", async (req, res) => {
   })
     .then((res) => res.json())
     .then(async (data) => {
-      let amountCheck = await paidAmountCheck(req.session.userid, 4900);
+      const amountCheck = await paidAmountCheck(req.session.userid, 4900);
       if (amountCheck) {
         await knex("users").update({ advancedBillingCode: data.billingKey }).where("userid", req.session.userid);
         fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
@@ -696,7 +698,7 @@ app.get("/billing/success", async (req, res) => {
           .then((res) => res.json())
           .then(async (data) => {
             if (data.status == "DONE") {
-              let date = new Date();
+              const date = new Date();
               date.setMonth(date.getMonth() + 1);
               await knex("users")
                 .update({
@@ -724,7 +726,7 @@ app.put("/billing/cancel", async (req, res) => {
     return;
   }
 
-  let type = await knex("users").select("advancedType").where("userid", req.session.userid);
+  const type = await knex("users").select("advancedType").where("userid", req.session.userid);
   if (type[0].advancedType == "s") {
     await knex("users")
       .update({
@@ -737,7 +739,7 @@ app.put("/billing/cancel", async (req, res) => {
   }
 });
 
-app.get("/store/fail", async (req, res) => {
+app.get("/store/fail", async (req: Request<{ message?: unknown }>, res) => {
   res.redirect(`${config.project.url}/storeDenied?error=${req.params.message}`);
 });
 
@@ -749,13 +751,13 @@ app.post("/danal/final", (req, res) => {
   if (req.session.TID) {
     fetch(`https://uas.teledit.com/uas?TXTYPE=CONFIRM&TID=${req.session.TID}&IDENOPTION=1`)
       .then((res) => res.text())
-      .then(async (data) => {
-        data = data.split("&");
+      .then(async (e) => {
+        const data = e.split("&");
         let adultCert = 0;
-        let birth = data[5].split("=")[1].split("");
-        birth.splice(4, 0, "-");
-        birth.splice(7, 0, "-");
-        birth = birth.join("");
+        const birthArr = data[5].split("=")[1].split("");
+        birthArr.splice(4, 0, "-");
+        birthArr.splice(7, 0, "-");
+        const birth = birthArr.join("");
         if (new Date().getTime() - new Date(birth).getTime() >= 599184000000) {
           adultCert = 1;
         }
@@ -803,8 +805,8 @@ app.post("/danal/final", (req, res) => {
 app.get("/danal/ready", async (req, res) => {
   fetch(`https://uas.teledit.com/uas?TXTYPE=ITEMSEND&CPID=${config.danal.CPID}&CPPWD=${config.danal.CPPWD}&SERVICE=UAS&AUTHTYPE=36&TARGETURL=${config.danal.targetUrl}&CPTITLE=URLATE`)
     .then((res) => res.text())
-    .then((data) => {
-      data = data.split("&");
+    .then((e) => {
+      const data = e.split("&");
       if (data[0].split("=")[1] == "0000") {
         req.session.TID = data[2].split("=")[1];
         req.session.save(() => {
@@ -823,12 +825,12 @@ app.put("/coupon", async (req, res) => {
   }
   try {
     const code = req.body.code;
-    let coupon = await knex("codes").select("reward", "used").where("code", code);
-    if (coupon.length != 1) {
+    const couponArr = await knex("codes").select("reward", "used").where("code", code);
+    if (couponArr.length != 1) {
       res.status(400).json(createErrorResponse("failed", "Invalid code", "Invalid code sent."));
       return;
     }
-    coupon = coupon[0];
+    const coupon = couponArr[0];
     if (coupon.used) {
       res.status(400).json(createErrorResponse("failed", "Used code", "The code sent has already been used."));
       return;
@@ -842,10 +844,10 @@ app.put("/coupon", async (req, res) => {
       } else {
         addD = Number(reward.content.split("D")[0]);
       }
-      let status = await knex("users").select("advanced", "advancedExpireDate", "advancedType").where("userid", req.session.userid);
-      status = status[0];
+      const statusArr = await knex("users").select("advanced", "advancedExpireDate", "advancedType").where("userid", req.session.userid);
+      const status = statusArr[0];
       if (!status.advanced) {
-        let date = new Date();
+        const date = new Date();
         date.setMonth(date.getMonth() + addM);
         date.setMonth(date.getDate() + addD);
         await knex("users")
@@ -858,7 +860,7 @@ app.put("/coupon", async (req, res) => {
           })
           .where("userid", req.session.userid);
       } else if (status.advancedType == "c") {
-        let date = new Date(status.advancedExpireDate);
+        const date = new Date(status.advancedExpireDate);
         date.setMonth(date.getMonth() + addM);
         date.setMonth(date.getDate() + addD);
         await knex("users").update({ advancedUpdatedDate: new Date(), advancedExpireDate: date }).where("userid", req.session.userid);
@@ -898,12 +900,12 @@ app.get("/auth/logout", (req, res) => {
 const advancedCancel = async () => {
   console.log("");
   signale.start(`Advanced subscription canceling..`);
-  let maxDate = new Date();
+  const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() - 3);
-  let results = await knex("users").select("settings", "userid").where("advanced", true).where("advancedExpireDate", "<", maxDate);
+  const results = await knex("users").select("settings", "userid").where("advanced", true).where("advancedExpireDate", "<", maxDate);
   let successCount = 0;
   for (const rst of results) {
-    let setting = JSON.parse(rst.settings);
+    const setting = JSON.parse(rst.settings);
     if (setting.sound.res == "192kbps") {
       setting.sound.res = "128kbps";
     }
@@ -935,8 +937,8 @@ const advancedCancel = async () => {
 const advancedUpdate = async () => {
   console.log("");
   signale.start(`Advanced subscription updating..`);
-  let maxDate = new Date();
-  let minDate = new Date();
+  const maxDate = new Date();
+  const minDate = new Date();
   minDate.setDate(minDate.getDate() - 3);
   const results = await knex("users")
     .select("userid", "email", "advancedBillingCode", "advancedType")
@@ -948,7 +950,7 @@ const advancedUpdate = async () => {
   for (let i = 0; i < results.length; i++) {
     const rst = results[i];
     if (rst.advancedType == "s") {
-      let amountCheck = await paidAmountCheck(rst.userid, 4900);
+      const amountCheck = await paidAmountCheck(rst.userid, 4900);
       if (amountCheck) {
         fetch(`https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`, {
           method: "post",
@@ -968,7 +970,7 @@ const advancedUpdate = async () => {
           .then((res) => res.json())
           .then(async (data) => {
             if (data.status == "DONE") {
-              let date = new Date();
+              const date = new Date();
               date.setMonth(date.getMonth() + 1);
               await knex("users")
                 .update({
@@ -996,7 +998,7 @@ const advancedUpdate = async () => {
 setTimeout(advancedUpdate, 1000);
 
 const songCountUp = async (track) => {
-  let result = await knex("trackCount").select("count").where("name", track);
+  const result = await knex("trackCount").select("count").where("name", track);
   if (!result.length) {
     await knex("trackCount").insert({
       name: track,
@@ -1012,9 +1014,9 @@ const songCountUp = async (track) => {
 };
 
 const paidAmountCheck = async (uid, amount) => {
-  let d = new Date();
-  let result = await knex("users").select("paid", "birth", "paidDate").where("userid", uid);
-  let paidDate = new Date(result[0].paidDate);
+  const d = new Date();
+  const result = await knex("users").select("paid", "birth", "paidDate").where("userid", uid);
+  const paidDate = new Date(result[0].paidDate);
   let paid = Number(result[0].paid);
   amount = Number(amount);
   if (paidDate.getMonth() != d.getMonth() && paidDate.getFullYear() != d.getFullYear()) {
