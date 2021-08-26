@@ -18,7 +18,6 @@
     "password": "PASSWORD"
   },
   "session" : {
-    "key": "SESSION KEY",
     "secret": "SESSION SECRET",
     "resave": false,
     "saveUninitialized": false

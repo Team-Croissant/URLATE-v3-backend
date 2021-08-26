@@ -8,7 +8,8 @@
     // Disable for now...
     "strict": false,
     "esModuleInterop": true,
-    "typeRoots": ["node_modules/@types", "typings"]
+    "typeRoots": ["node_modules/@types", "typings"],
+    "resolveJsonModule": true
   },
   "include": ["src", "typings"]
 }
