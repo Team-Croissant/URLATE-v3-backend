@@ -53,7 +53,7 @@
     },
     "database": {
       "title": "Database",
-      "description": "데이터베이스 연결을 위한 설정입니다.",
+      "description": "데이터베이스 연결 설정입니다.",
 
       "type": "object",
       "additionalProperties": false,
@@ -63,7 +63,7 @@
         "redis": {
           "type": "string",
           "format": "uri",
-          "description": "Redis 서버 주소입니다.",
+          "description": "Redis 서버 접근 URI입니다.",
           "examples": ["redis://:secret@localhost:6379/0"]
         },
         "host": {
@@ -98,7 +98,7 @@
     },
     "session": {
       "title": "Session",
-      "description": "세션 관련 설정입니다.",
+      "description": "세션 설정입니다.",
 
       "type": "object",
       "additionalProperties": false,
