@@ -26,15 +26,14 @@ export interface URLATEConfig {
  */
 export interface Project {
   /**
-   * 현재 프론트 엔드 서버가 호스트되고 있는 URL입니다.
+   * 현재 프론트 엔드 서버가 호스트되고 있는 URL입니다. 슬래시로 끝나면 안되는 것에 주의합니다.
    */
   url: string;
   /**
    * 백엔드 서버가 열릴 포트입니다.
    */
-  port: {
-    [k: string]: unknown;
-  };
+  port: number;
+  secretKey: string;
 }
 /**
  * 데이터베이스 연결을 위한 설정입니다.
@@ -113,4 +112,8 @@ export interface TossBillingAPI {
 /**
  * Danal API 설정입니다.
  */
-export interface DanalAPI {}
+export interface DanalAPI {
+  CPID: string;
+  CPPWD: string;
+  targetUrl: string;
+}
