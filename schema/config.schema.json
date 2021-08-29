@@ -64,7 +64,7 @@
           "type": "string",
           "format": "uri",
           "description": "Redis 서버 주소입니다.",
-          "examples": ["localhost:6379"]
+          "examples": ["redis://:secret@localhost:6379/0"]
         },
         "host": {
           "type": "string",
