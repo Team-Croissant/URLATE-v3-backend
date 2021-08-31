@@ -12,16 +12,16 @@ import knexClient from "knex";
 import { v4 as uuidv4 } from "uuid";
 import { google } from "googleapis";
 import { Request } from "express-serve-static-core";
-
-const config = require(__dirname + "/../config/config.json");
-const settingsConfig = require(__dirname + "/../config/settings.json");
-const allowlist = require(__dirname + "/../config/allowlist.json");
-
+import { URLATEConfig } from "./types/config.schema";
 import {
   createSuccessResponse,
   createErrorResponse,
   createStatusResponse,
 } from "./api-response";
+
+const config: URLATEConfig = require(__dirname + "/../config/config.json");
+const settingsConfig = require(__dirname + "/../config/settings.json");
+const allowlist = require(__dirname + "/../config/allowlist.json");
 
 const MySQLStore = mysqlSession(session);
 const hasher = pbkdf2();

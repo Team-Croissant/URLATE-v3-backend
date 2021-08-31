@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Team-Croissant/URLATE-backend/blob/master/src/schema/config.schema.json",
+
+  "title": "URLATE Config",
+  "description": "URLATE 백엔드 서버를 구동하기 위한 설정입니다.",
+
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "project",
+    "database",
+    "session",
+    "google",
+    "toss",
+    "tossBilling",
+    "danal"
+  ],
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON 스키마 지정입니다.",
+      "examples": ["../schema/config.schema.json"]
+    },
+    "project": {
+      "title": "Project",
+      "description": "URLATE 자체 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "port", "secretKey"],
+
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "현재 프론트 엔드 서버가 호스트되고 있는 URL입니다. 슬래시로 끝나면 안되는 것에 주의합니다.",
+          "examples": ["http://localhost"]
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "백엔드 서버가 열릴 포트입니다.",
+          "examples": [8080]
+        },
+        "secretKey": {
+          "type": "string"
+        }
+      }
+    },
+    "database": {
+      "title": "Database",
+      "description": "데이터베이스 연결 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["redis", "host", "port", "user", "password", "db"],
+
+      "properties": {
+        "redis": {
+          "type": "string",
+          "format": "uri",
+          "description": "Redis 서버 접근 URI입니다.",
+          "examples": ["redis://:secret@localhost:6379/0"]
+        },
+        "host": {
+          "type": "string",
+          "format": "hostname",
+          "description": "MySQL 서버 호스트입니다. 주 데이터베이스 및 세션 저장소에 활용됩니다.",
+          "examples": ["localhost"]
+        },
+        "port": {
+          "type": "number",
+          "description": "MySQL 세션 저장소 포트입니다.",
+          "minimum": 0,
+          "maximum": 65535,
+          "examples": [3306]
+        },
+        "user": {
+          "type": "string",
+          "description": "MySQL 사용자명입니다.",
+          "examples": ["USERNAME"]
+        },
+        "password": {
+          "type": "string",
+          "description": "MySQL 사용자의 비밀번호입니다.",
+          "examples": ["PASSWORD"]
+        },
+        "db": {
+          "type": "string",
+          "description": "MySQL에서 사용할 데이터베이스 이름입니다.",
+          "examples": ["ExampleDB"]
+        }
+      }
+    },
+    "session": {
+      "title": "Session",
+      "description": "세션 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["secret"],
+
+      "properties": {
+        "secret": {
+          "type": "string",
+          "description": "세션 암호화에 사용할 시크릿 키입니다."
+        },
+        "resave": {
+          "type": "boolean",
+          "description": "세션을 언제나 세션 저장소에 다시 저장할지 여부입니다.\n변경된 점이 없더라도 다시 저장할 것이며,\n이 값을 true로 설정하는 것은 동시성 문제를 야기할 수도 있습니다.\n설정하지 않는다면 true로 설정될 것이나, 미래 버전에서 바뀔 수 있습니다.",
+          "examples": [false]
+        },
+        "saveUninitialized": {
+          "type": "boolean",
+          "description": "초기화하지 않은 세션일지라도 강제로 저장할지 여부입니다.\n초기화하지 않은 세션이라 함은 새로운 세션에 값을 넣지 않았을 때를 말합니다.\nfalse로 설정한다면 서버 용량 절약이나 개인정보 보호법 준수, 동시성 문제 해소 등 이점이 많습니다.\n설정하지 않는다면 true로 설정될 것이나, 미래 버전에서 바뀔 수 있습니다.",
+          "examples": [false]
+        }
+      }
+    },
+    "google": {
+      "title": "Google API",
+      "description": "Google API 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+
+      "properties": {}
+    },
+    "toss": {
+      "title": "Toss API",
+      "description": "Toss API 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basicKey"],
+
+      "properties": {
+        "basicKey": {
+          "type": "string",
+          "description": "Toss API를 사용할 때 Basic 인증을 하기 위해 쓰는 토큰입니다."
+        }
+      }
+    },
+    "tossBilling": {
+      "title": "Toss Billing API",
+      "description": "Toss Billing API 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basicKey"],
+
+      "properties": {
+        "basicKey": {
+          "type": "string",
+          "description": "Toss Billing API를 사용할 때 Basic 인증을 하기 위해 쓰는 토큰입니다."
+        }
+      }
+    },
+    "danal": {
+      "title": "Danal API",
+      "description": "Danal API 설정입니다.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["CPID", "CPPWD", "targetUrl"],
+
+      "properties": {
+        "CPID": {
+          "type": "string"
+        },
+        "CPPWD": {
+          "type": "string"
+        },
+        "targetUrl": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
