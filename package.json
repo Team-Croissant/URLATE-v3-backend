@@ -11,7 +11,8 @@
     "build": "tsc",
     "auto-build": "tsc --watch",
     "lint": "eslint",
-    "start": "supervisor dist/index.js"
+    "start": "supervisor dist/index.js",
+    "generate-types-from-schema": "json2ts -i schema/ -o src/types/"
   },
   "author": "Team Croissant",
   "license": "MIT",
@@ -42,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
+    "json-schema-to-typescript": "^10.1.4",
     "signale": "^1.4.0",
     "supervisor": "^0.12.0",
     "typescript": "^3.9.10"
