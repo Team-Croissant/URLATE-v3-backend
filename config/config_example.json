@@ -1,5 +1,6 @@
 {
-  "project" : {
+  "$schema": "../schema/config.schema.json",
+  "project": {
     "url": "https://example.com",
     "api": "https://api.example.com",
     "cdn": "https://cdn.example.com",
@@ -9,24 +10,24 @@
     "secretKey": "Something Random",
     "port": 8080
   },
-  "database" : {
-    "redis": "redisURL",
+  "database": {
+    "redis": "localhost:6379",
     "db": "ExampleDB",
     "host": "localhost",
     "port": 3306,
     "user": "USERNAME",
     "password": "PASSWORD"
   },
-  "session" : {
+  "session": {
     "secret": "SESSION SECRET",
     "resave": false,
     "saveUninitialized": false
   },
-  "google" : {
-    "clientId" : "GOOGLE CLIENT ID",
-    "clientSecret" : "GOOGLE CLIENT SECRET"
+  "google": {
+    "clientId": "GOOGLE CLIENT ID",
+    "clientSecret": "GOOGLE CLIENT SECRET"
   },
-  "toss" : {
+  "toss": {
     "clientKey": "TOSS PAYMENTS CLIENT KEY",
     "secretKey": "TOSS PAYMENTS SECRET KEY",
     "basicKey": "TOSS PAYMENTS BASIC KEY"
