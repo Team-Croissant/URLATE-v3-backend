@@ -32,10 +32,4 @@ jobs:
         run: npm run build
       
       - name: Deploy
-        uses: up9cloud/action-rsync@master
-        env:
-          HOST: ${{secrets.DEPLOY_HOST}}
-          USER: ${{secrets.DEPLOY_USER}}
-          KEY: ${{secrets.DEPLOY_SSH_KEY}}
-          TARGET: ${{secrets.DEPLOY_TARGET}}
-          ARGS: -z -q --exclude=/.git/
+        run: rsync -zq --exclude=/.git/ $GITHUB_WORKSPACE remote:${{secrets.DEPLOY_TARGET}}
