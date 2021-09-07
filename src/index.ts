@@ -72,14 +72,6 @@ redisClient.on("error", function (error) {
   signale.error(error);
 });
 
-app.get("/", (req, res) => {
-  res.end("Welcome to URLATE API!");
-});
-
-app.post("/", (req, res) => {
-  res.end("Welcome to URLATE API!");
-});
-
 app.get("/auth/status", async (req, res) => {
   const hasToken = req.session.accessToken && req.session.refreshToken;
   if (!hasToken) {
