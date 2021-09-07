@@ -32,4 +32,4 @@ jobs:
         run: npm run build
 
       - name: Deploy
-        run: rsync -azvh --exclude=/.git/ $GITHUB_WORKSPACE remote:${{secrets.DEPLOY_TARGET}}
+        run: rsync -azq --exclude=/.git/ $GITHUB_WORKSPACE remote:${{secrets.DEPLOY_TARGET}}
