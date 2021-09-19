@@ -1149,7 +1149,7 @@ app.post("/danal/final", (req, res) => {
         birthArr.splice(4, 0, "-");
         birthArr.splice(7, 0, "-");
         const birth = birthArr.join("");
-        if (new Date().getTime() - new Date(birth).getTime() >= 599184000000) {
+        if (new Date().getTime() - new Date(birth).getTime() >= 567648000000) {
           adultCert = 1;
         }
         const userData = await knex("users")
