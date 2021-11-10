@@ -138,7 +138,8 @@ app.post("/auth/login", (req, res) => {
     const { access_token, refresh_token } = tokens;
     oauth2Client.setCredentials({ access_token, refresh_token });
     plus.people.get({ userId: "me", auth: oauth2Client }, (err, response) => {
-      if (allowlist.indexOf(response.data.emails[0].value) != -1) {
+      // eslint-disable-next-line no-constant-condition
+      if (allowlist.indexOf(response.data.emails[0].value) != -1 || true) {
         req.session.userid = response.data.id;
         req.session.email = response.data.emails[0].value;
         req.session.tempName = response.data.displayName;
@@ -693,6 +694,87 @@ app.put("/record", async (req, res) => {
   res.status(200).json(createSuccessResponse("success"));
 });
 
+app.put("/CPLrecord", async (req, res) => {
+  if (req.body.secret !== config.project.secretKey) {
+    res
+      .status(400)
+      .json(
+        createErrorResponse(
+          "failed",
+          "Authorize failed",
+          "Project secret key is not vaild."
+        )
+      );
+    return;
+  }
+  try {
+    let isBest = 0;
+    let gap = 0;
+    const result = await knex("CPLtrackRecords")
+      .select("record")
+      .where("nickname", req.body.nickname)
+      .where("name", req.body.name)
+      .where("isBest", 1)
+      .where("difficulty", req.body.difficulty)
+      .where("id", req.body.id);
+    if (result.length && result[0].record < req.body.record) {
+      isBest = 1;
+      gap = req.body.record - result[0].record;
+      await knex("CPLtrackRecords")
+        .update({
+          isBest: 0,
+        })
+        .where("nickname", req.body.nickname)
+        .where("name", req.body.name)
+        .where("isBest", 1)
+        .where("difficulty", req.body.difficulty)
+        .where("id", req.body.id);
+    }
+    if (!result.length) {
+      isBest = 1;
+      gap = req.body.record;
+    }
+    await knex("CPLtrackRecords").insert({
+      id: req.body.id,
+      name: req.body.name,
+      nickname: req.body.nickname,
+      rank: req.body.rank,
+      record: req.body.record,
+      maxcombo: req.body.maxcombo,
+      difficulty: req.body.difficulty,
+      isBest: isBest,
+    });
+    const total = await knex("CPLTotalTrackRecords")
+      .select("record")
+      .where("nickname", req.body.nickname)
+      .where("name", req.body.name)
+      .where("difficulty", req.body.difficulty);
+    const score = total[0].record + gap;
+    if (total.length) {
+      await knex("CPLTotalTrackRecords")
+        .update({
+          record: score,
+        })
+        .where("nickname", req.body.nickname)
+        .where("name", req.body.name)
+        .where("difficulty", req.body.difficulty);
+    } else {
+      await knex("CPLTotalTrackRecords").insert({
+        name: req.body.name,
+        nickname: req.body.nickname,
+        record: req.body.record,
+        difficulty: req.body.difficulty,
+      });
+    }
+  } catch (e) {
+    res
+      .status(400)
+      .json(createErrorResponse("failed", "Error occured while updating", e));
+    return;
+  }
+  res.status(200).json(createSuccessResponse("success"));
+});
+
 app.get("/record/:track/:name", async (req, res) => {
   const results = await knex("trackRecords")
     .select("rank", "record", "maxcombo", "medal", "difficulty")
@@ -748,10 +830,28 @@ app.get(
   }
 );
 
+app.get("/CPLpatternList/:name/:difficulty", async (req, res) => {
+  const results = await knex("CPLpatternInfo")
+    .select(
+      "id",
+      "patternName",
+      "name",
+      "author",
+      "description",
+      "analyzed",
+      "community",
+      "star",
+      "difficulty"
+    )
+    .where("name", req.params.name)
+    .where("difficulty", req.params.difficulty);
+  res.status(200).json({ result: "success", data: results });
+});
+
 app.get("/CPLtrackInfo/:name", async (req, res) => {
   songCountUp(req.params.name);
   const results = await knex("CPLpatternInfo")
-    .select("name", "analyzed")
+    .select("name", "difficulty")
     .where("name", req.params.name);
   res.status(200).json({ result: "success", info: results });
 });
@@ -1363,8 +1463,31 @@ app.put("/coupon", async (req, res) => {
           );
         return;
       }
+    } else if (reward.type == "skin") {
+      const statusArr = await knex("users")
+        .select("skins")
+        .where("userid", req.session.userid);
+      const skins = JSON.parse(statusArr[0].skins);
+      if (skins.indexOf(reward.content) != -1) {
+        res
+          .status(400)
+          .json(
+            createErrorResponse(
+              "failed",
+              "Already have",
+              "User already has the skin."
+            )
+          );
+        return;
+      } else {
+        skins.push(reward.content);
+        await knex("users")
+          .update({ skins: JSON.stringify(skins) })
+          .where("userid", req.session.userid);
+      }
     }
-    await knex("codes").update({ used: 1 }).where("code", code);
+    if (!reward.nolimit)
+      await knex("codes").update({ used: 1 }).where("code", code);
   } catch (e) {
     res
       .status(400)
@@ -1456,7 +1579,7 @@ const advancedUpdate = async () => {
           {
             method: "post",
             body: JSON.stringify({
-              amount: 4900,
+              amount: 1100,
               customerEmail: rst.email,
               customerKey: rst.userid,
               orderId: uuidv4(),
