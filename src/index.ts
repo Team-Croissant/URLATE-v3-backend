@@ -748,10 +748,28 @@ app.get(
   }
 );
 
+app.get("/CPLpatternList/:name/:difficulty", async (req, res) => {
+  const results = await knex("CPLpatternInfo")
+    .select(
+      "id",
+      "patternName",
+      "name",
+      "author",
+      "description",
+      "analyzed",
+      "community",
+      "star",
+      "difficulty"
+    )
+    .where("name", req.params.name)
+    .where("difficulty", req.params.difficulty);
+  res.status(200).json({ result: "success", data: results });
+});
+
 app.get("/CPLtrackInfo/:name", async (req, res) => {
   songCountUp(req.params.name);
   const results = await knex("CPLpatternInfo")
-    .select("name", "analyzed")
+    .select("name", "difficulty")
     .where("name", req.params.name);
   res.status(200).json({ result: "success", info: results });
 });
