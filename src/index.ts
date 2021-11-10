@@ -728,6 +728,34 @@ app.get(
   }
 );
 
+app.get(
+  "/CPLrecords/:track/:difficulty/:order/:sort/:nickname",
+  async (req, res) => {
+    const results = await knex("CPLTotalTrackRecords")
+      .select("record", "nickname")
+      .where("name", req.params.track)
+      .where("difficulty", req.params.difficulty)
+      .orderBy(req.params.order, req.params.sort);
+    const rank =
+      results
+        .map((d) => {
+          return d["nickname"];
+        })
+        .indexOf(req.params.nickname) + 1;
+    res
+      .status(200)
+      .json({ result: "success", results: results.slice(0, 100), rank: rank });
+  }
+);
+
+app.get("/CPLtrackInfo/:name", async (req, res) => {
+  songCountUp(req.params.name);
+  const results = await knex("CPLpatternInfo")
+    .select("name", "analyzed")
+    .where("name", req.params.name);
+  res.status(200).json({ result: "success", info: results });
+});
+
 app.get("/store/DLCs", async (req, res) => {
   const results = await knex("storeDLC").select(
     "name",
@@ -1367,7 +1395,6 @@ app.get("/auth/logout", (req, res) => {
 });
 
 const advancedCancel = async () => {
-  console.log("");
   signale.start(`Advanced subscription canceling..`);
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() - 3);
