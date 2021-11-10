@@ -1462,8 +1462,31 @@ app.put("/coupon", async (req, res) => {
           );
         return;
       }
+    } else if (reward.type == "skin") {
+      const statusArr = await knex("users")
+        .select("skins")
+        .where("userid", req.session.userid);
+      const skins = JSON.parse(statusArr[0].skins);
+      if (skins.indexOf(reward.content) != -1) {
+        res
+          .status(400)
+          .json(
+            createErrorResponse(
+              "failed",
+              "Already have",
+              "User already has the skin."
+            )
+          );
+        return;
+      } else {
+        skins.push(reward.content);
+        await knex("users")
+          .update({ skins: JSON.stringify(skins) })
+          .where("userid", req.session.userid);
+      }
     }
-    await knex("codes").update({ used: 1 }).where("code", code);
+    if (!reward.nolimit)
+      await knex("codes").update({ used: 1 }).where("code", code);
   } catch (e) {
     res
       .status(400)
