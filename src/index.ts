@@ -1578,7 +1578,7 @@ const advancedUpdate = async () => {
           {
             method: "post",
             body: JSON.stringify({
-              amount: 4900,
+              amount: 1100,
               customerEmail: rst.email,
               customerKey: rst.userid,
               orderId: uuidv4(),
