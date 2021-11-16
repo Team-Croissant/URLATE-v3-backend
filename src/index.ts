@@ -1172,7 +1172,7 @@ app.get("/billing/success", async (req, res) => {
   })
     .then((res) => res.json())
     .then(async (data) => {
-      const amountCheck = await paidAmountCheck(req.session.userid, 1100);
+      const amountCheck = await paidAmountCheck(req.session.userid, 4900);
       if (amountCheck) {
         await knex("users")
           .update({ advancedBillingCode: data.billingKey })
@@ -1180,7 +1180,7 @@ app.get("/billing/success", async (req, res) => {
         fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
           method: "post",
           body: JSON.stringify({
-            amount: 1100,
+            amount: 4900,
             customerEmail: req.session.email,
             customerKey: customerKey,
             orderId: uuidv4(),
@@ -1572,14 +1572,14 @@ const advancedUpdate = async () => {
   for (let i = 0; i < results.length; i++) {
     const rst = results[i];
     if (rst.advancedType == "s") {
-      const amountCheck = await paidAmountCheck(rst.userid, 1100);
+      const amountCheck = await paidAmountCheck(rst.userid, 4900);
       if (amountCheck) {
         fetch(
           `https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`,
           {
             method: "post",
             body: JSON.stringify({
-              amount: 1100,
+              amount: 4900,
               customerEmail: rst.email,
               customerKey: rst.userid,
               orderId: uuidv4(),
