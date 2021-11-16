@@ -1257,7 +1257,7 @@ app.put("/billing/cancel", async (req, res) => {
 });
 
 app.get("/store/fail", async (req: Request<{ message?: unknown }>, res) => {
-  res.redirect(`${config.project.url}/storeDenied?error=${req.params.message}`);
+  res.redirect(`${config.project.url}/storeDenied?error=${req.query.message}`);
 });
 
 app.post("/danal/complete", async (req, res) => {
@@ -1579,7 +1579,7 @@ const advancedUpdate = async () => {
           {
             method: "post",
             body: JSON.stringify({
-              amount: 1100,
+              amount: 4900,
               customerEmail: rst.email,
               customerKey: rst.userid,
               orderId: uuidv4(),
