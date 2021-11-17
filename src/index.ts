@@ -1395,7 +1395,7 @@ app.put("/coupon", async (req, res) => {
   try {
     const code = req.body.code;
     const couponArr = await knex("codes")
-      .select("reward", "used")
+      .select("reward", "used", "usedUser")
       .where("code", code);
     if (couponArr.length != 1) {
       res
@@ -1407,6 +1407,19 @@ app.put("/coupon", async (req, res) => {
     }
     const coupon = couponArr[0];
     if (coupon.used) {
+      res
+        .status(400)
+        .json(
+          createErrorResponse(
+            "failed",
+            "Used code",
+            "The code sent has already been used."
+          )
+        );
+      return;
+    }
+    const usedUser = JSON.parse(coupon.usedUser);
+    if (usedUser.indexOf(req.session.userid) != -1) {
       res
         .status(400)
         .json(
@@ -1434,7 +1447,7 @@ app.put("/coupon", async (req, res) => {
       if (!status.advanced) {
         const date = new Date();
         date.setMonth(date.getMonth() + addM);
-        date.setMonth(date.getDate() + addD);
+        date.setDate(date.getDate() + addD);
         await knex("users")
           .update({
             advanced: true,
@@ -1447,7 +1460,7 @@ app.put("/coupon", async (req, res) => {
       } else if (status.advancedType == "c") {
         const date = new Date(status.advancedExpireDate);
         date.setMonth(date.getMonth() + addM);
-        date.setMonth(date.getDate() + addD);
+        date.setDate(date.getDate() + addD);
         await knex("users")
           .update({ advancedUpdatedDate: new Date(), advancedExpireDate: date })
           .where("userid", req.session.userid);
@@ -1486,8 +1499,14 @@ app.put("/coupon", async (req, res) => {
           .where("userid", req.session.userid);
       }
     }
-    if (!reward.nolimit)
+    if (!reward.nolimit) {
       await knex("codes").update({ used: 1 }).where("code", code);
+    } else {
+      usedUser.push(req.session.userid);
+      await knex("codes")
+        .update({ usedUser: JSON.stringify(usedUser) })
+        .where("code", code);
+    }
   } catch (e) {
     res
       .status(400)
