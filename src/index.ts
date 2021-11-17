@@ -1172,15 +1172,19 @@ app.get("/billing/success", async (req, res) => {
   })
     .then((res) => res.json())
     .then(async (data) => {
-      const amountCheck = await paidAmountCheck(req.session.userid, 1100);
+      const amountCheck = await paidAmountCheck(req.session.userid, 4900);
       if (amountCheck) {
         await knex("users")
           .update({ advancedBillingCode: data.billingKey })
           .where("userid", req.session.userid);
+        const name = await knex("users")
+          .select("nickname")
+          .where("userid", req.session.userid);
         fetch(`https://api.tosspayments.com/v1/billing/${data.billingKey}`, {
           method: "post",
           body: JSON.stringify({
-            amount: 1100,
+            amount: 4900,
+            customerName: name[0].nickname,
             customerEmail: req.session.email,
             customerKey: customerKey,
             orderId: uuidv4(),
@@ -1582,7 +1586,13 @@ const advancedUpdate = async () => {
   const minDate = new Date();
   minDate.setDate(minDate.getDate() - 3);
   const results = await knex("users")
-    .select("userid", "email", "advancedBillingCode", "advancedType")
+    .select(
+      "userid",
+      "nickname",
+      "email",
+      "advancedBillingCode",
+      "advancedType"
+    )
     .where("advanced", true)
     .where("advancedExpireDate", "<=", maxDate)
     .where("advancedExpireDate", ">=", minDate);
@@ -1591,7 +1601,7 @@ const advancedUpdate = async () => {
   for (let i = 0; i < results.length; i++) {
     const rst = results[i];
     if (rst.advancedType == "s") {
-      const amountCheck = await paidAmountCheck(rst.userid, 1100);
+      const amountCheck = await paidAmountCheck(rst.userid, 4900);
       if (amountCheck) {
         fetch(
           `https://api.tosspayments.com/v1/billing/${rst.advancedBillingCode}`,
@@ -1599,6 +1609,7 @@ const advancedUpdate = async () => {
             method: "post",
             body: JSON.stringify({
               amount: 4900,
+              customerName: rst.nickname,
               customerEmail: rst.email,
               customerKey: rst.userid,
               orderId: uuidv4(),
