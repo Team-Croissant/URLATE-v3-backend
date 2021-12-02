@@ -436,7 +436,8 @@ app.get("/tracks", async (req, res) => {
     "bpm",
     "difficulty",
     "originalName",
-    "type"
+    "type",
+    "isPreview"
   );
   if (!results.length) {
     res
@@ -463,7 +464,8 @@ app.get("/track/:name", async (req, res) => {
       "bpm",
       "difficulty",
       "originalName",
-      "type"
+      "type",
+      "isPreview"
     )
     .where("name", req.params.name);
   if (!results.length) {
