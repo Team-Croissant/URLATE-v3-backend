@@ -529,16 +529,16 @@ app.put("/settings", async (req, res) => {
         .select("advanced")
         .where("userid", req.session.userid);
       if (!advanced[0].advanced) {
-        res
-          .status(400)
-          .json(
-            createErrorResponse(
-              "failed",
-              "Error occured while updating",
-              "wrong request"
-            )
-          );
-        return;
+        settings.sound.res = "128kbps";
+        settings.game.judgeSkin = true;
+        settings.game.applyJudge = {
+          Perfect: false,
+          Great: false,
+          Good: false,
+          Bad: false,
+          Miss: false,
+          Bullet: false,
+        };
       }
     }
     await knex("users")
