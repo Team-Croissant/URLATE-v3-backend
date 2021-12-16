@@ -1425,17 +1425,19 @@ app.put("/coupon", async (req, res) => {
       return;
     }
     const usedUser = JSON.parse(coupon.usedUser);
-    if (usedUser.indexOf(req.session.userid) != -1) {
-      res
-        .status(400)
-        .json(
-          createErrorResponse(
-            "failed",
-            "Used code",
-            "The code sent has already been used."
-          )
-        );
-      return;
+    if (usedUser) {
+      if (usedUser.indexOf(req.session.userid) != -1) {
+        res
+          .status(400)
+          .json(
+            createErrorResponse(
+              "failed",
+              "Used code",
+              "The code sent has already been used."
+            )
+          );
+        return;
+      }
     }
     const reward = JSON.parse(coupon.reward);
     if (reward.type == "advanced") {
