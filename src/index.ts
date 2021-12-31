@@ -99,14 +99,6 @@ app.get("/auth/status", async (req, res) => {
     return;
   }
 
-  const date = new Date();
-  if (date.getTime() - new Date(results[0].birth).getTime() <= 504576000000) {
-    if (0 <= date.getHours() && date.getHours() <= 6) {
-      res.status(200).json(createStatusResponse("Shutdowned"));
-      return;
-    }
-  }
-
   if (!req.session.authorized) {
     res.status(200).json(createStatusResponse("Not authorized"));
     return;
