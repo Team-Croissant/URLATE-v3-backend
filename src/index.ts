@@ -859,18 +859,6 @@ app.get("/store/DLCs", async (req, res) => {
     "songs",
     "sale"
   );
-  if (!results.length) {
-    res
-      .status(400)
-      .json(
-        createErrorResponse(
-          "failed",
-          "Failed to Load",
-          "Failed to load DLC data."
-        )
-      );
-    return;
-  }
   res.status(200).json({ result: "success", data: results });
 });
 
