@@ -24,7 +24,7 @@
     "express-session": "^1.17.1",
     "googleapis": "^61.0.0",
     "knex": "^0.21.12",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "pbkdf2-password": "^1.2.1",
     "redis": "^3.0.2",
     "uuid": "^3.3.3"
