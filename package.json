@@ -23,7 +23,7 @@
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
     "googleapis": "^61.0.0",
-    "knex": "^0.21.12",
+    "knex": "^2.4.0",
     "node-fetch": "^2.6.1",
     "pbkdf2-password": "^1.2.1",
     "redis": "^3.0.2",
